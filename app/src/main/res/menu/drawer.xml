@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group>
+        <item
+            android:id="@+id/nav_home"
+            android:checkable="true"
+
+            android:title="home"
+            android:checked="true"/>
+
+    </group>
+
+    <!--<item android:title="@string/preference">-->
+        <!--<menu>-->
+            <!--<item-->
+                <!--android:id="@+id/nav_theme"-->
+                <!--android:icon="@drawable/ic_color_lens_black_48dp"-->
+                <!--android:title="@string/theme" />-->
+            <!--<item-->
+                <!--android:id="@+id/nav_language"-->
+                <!--android:icon="@drawable/ic_language_black_48dp"-->
+                <!--android:title="@string/language" />-->
+        <!--</menu>-->
+    <!--</item>-->
+
+</menu>

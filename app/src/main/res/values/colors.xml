@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="colorGreyBackGround">#FFE8E8E8</color>
+
+    <color name="white">#ffffff</color>
+    <color name="white_0_5">#32FFFFFF</color>
+    <color name="white_0_10">#64FFFFFF</color>
+    <color name="white_0_20">#C8FFFFFF</color>
+    <color name="Soil_grey">#333333</color>
+    <color name="black">#111111</color>
+
+    <!--Panzer Theme-->
+    <color name="primary">#2f414a</color>
+    <color name="primary_dark">#25343b</color>
+    <color name="primary_light">#CFD8DC</color>
+    <color name="accent">#00c4cf</color>
+    <color name="A_score_green">#00796B</color>
+    <color name="B_score_yellow">#388E3C</color>
+    <color name="Cp_score_yellow">#FFA000</color>
+    <color name="C_score_orange">#FF5722</color>
+    <color name="Cm_score_red">#D32F2F</color>
+
+    <color name="dark_blue_background">#202235</color>
+    <color name="dark_blue_table">#343447</color>
+    <color name="text_primary_black">#383838</color>
+    <color name="text_secondary_black">#787878</color>
+    <color name="text_tertiary_black">#909090</color>
+
+</resources>

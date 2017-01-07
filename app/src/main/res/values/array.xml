@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="period_indicators">
+        <item>T1</item>
+        <item>T2</item>
+        <item>S1</item>
+        <item>X1</item>
+        <item>T3</item>
+        <item>T4</item>
+        <item>Y1</item>
+        <item>Abs</item>
+    </array>
+</resources>
