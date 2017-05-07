@@ -1,8 +1,14 @@
-package carbonylgroup.com.schoolpower.classes;
+/**
+ * Copyright (C) 2017 Gustav Wang
+ */
 
+package carbonylgroup.com.schoolpower.classes.ListItems;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class PeriodGradeItem {
+
+public class PeriodGradeItem implements Serializable {
 
     private String termIndicator;
     private String termLetterGrade;
@@ -37,20 +43,5 @@ public class PeriodGradeItem {
 
     public void setTermPercentageGrade(String _termPercentageGrade){
         this.termPercentageGrade = _termPercentageGrade;
-    }
-
-    /**
-     * @return List of elements prepared for tests
-     */
-    public static ArrayList<PeriodGradeItem> getTestingList() {
-        ArrayList<PeriodGradeItem> items = new ArrayList<>();
-        items.add(new PeriodGradeItem("T1", "A", "95"));
-        items.add(new PeriodGradeItem("T2", "A", "94"));
-        items.add(new PeriodGradeItem("S1", "A", "95"));
-        items.add(new PeriodGradeItem("T3", "A", "100"));
-        items.add(new PeriodGradeItem("T4", "A", "100"));
-        items.add(new PeriodGradeItem("S2", "A", "233"));
-        items.add(new PeriodGradeItem("Y1", "A", "999"));
-        return items;
     }
 }

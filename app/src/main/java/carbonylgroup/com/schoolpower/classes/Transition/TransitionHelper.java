@@ -1,4 +1,4 @@
-package carbonylgroup.com.schoolpower.classes;
+package carbonylgroup.com.schoolpower.classes.Transition;
 
 import android.animation.Animator;
 import android.app.Activity;

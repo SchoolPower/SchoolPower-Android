@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/course_detail_background"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -9,9 +10,41 @@
     <RelativeLayout
         android:id="@+id/detail_view_header"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:background="@color/primary">
+        android:layout_height="wrap_content"
+        android:background="@color/primary"
+        android:paddingTop="10dp"
+        android:paddingBottom="5dp"
+        android:elevation="5dp"
+        android:transitionName="@string/shared_element_course_header">
+
+        <TextView
+            android:id="@+id/detail_subject_title_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginEnd="25dp"
+            android:layout_marginStart="25dp"
+            android:fontFamily="sans-serif-light"
+            android:maxLines="2"
+            android:paddingBottom="10dp"
+            android:text="Foundation of Maths and Pre-Calculus 10"
+            android:textAppearance="@android:style/TextAppearance.Material.Title"
+            android:textColor="@color/white"
+            android:textSize="22sp"
+            android:transitionName="@string/shared_element_course_subject_title" />
 
     </RelativeLayout>
 
-</LinearLayout>
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/course_detail_recycler"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/detail_view_header"
+        android:paddingEnd="10dp"
+        android:layoutAnimation="@anim/layout_swipe_in"
+        android:paddingStart="10dp">
+
+    </android.support.v7.widget.RecyclerView>
+
+</RelativeLayout>

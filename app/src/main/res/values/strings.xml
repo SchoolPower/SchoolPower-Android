@@ -4,4 +4,30 @@
 
     <string name="dashboard">Dashboard</string>
     <string name="course_detail">Course Detail</string>
+
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="copyright">Copyright © 2017 SchoolPower Studio</string>
+
+    <string name="grades">GRADES</string>
+    <string name="attendance">ATTENDANCE</string>
+    <string name="block">Block</string>
+    <string name="room">Room</string>
+    <string name="term">Term</string>
+    <string name="assignments">Assignments</string>
+    <string name="all_terms">ALL TERMS</string>
+
+    <string name="unpublished">Unpublished</string>
+
+    <string name="shared_element_course_header">SHARE://COURSE_HEADER</string>
+    <string name="shared_element_course_fab">SHARE://COURSE_FAB</string>
+    <string name="shared_element_course_subject_title">SHARE://COURSE_SUBJECT_TITLE</string>
+    <string name="shared_element_course_card">SHARE://COURSE_CARD</string>
+    <string name="title_activity_main2">Main2Activity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="postURL">http://schoolpower.studio:8080/api/ps.php</string>
+    <string name="dataFileName">dataMap.json</string>
 </resources>

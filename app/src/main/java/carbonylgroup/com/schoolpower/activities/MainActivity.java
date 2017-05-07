@@ -4,27 +4,37 @@
 
 package carbonylgroup.com.schoolpower.activities;
 
+import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.content.ClipData;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.graphics.drawable.DrawerArrowDrawable;
 import android.support.v7.widget.Toolbar;
-import android.view.KeyEvent;
+import android.util.Log;
 import android.view.View;
 import android.view.MenuItem;
+import android.view.Window;
+import android.view.WindowManager;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.TextView;
 
-import com.balysv.materialmenu.MaterialMenuDrawable;
-import com.balysv.materialmenu.MaterialMenuView;
+import java.util.HashMap;
 
 import carbonylgroup.com.schoolpower.R;
-import carbonylgroup.com.schoolpower.classes.DetailsTransition;
-import carbonylgroup.com.schoolpower.classes.MainListItem;
-import carbonylgroup.com.schoolpower.classes.TransitionHelper;
+import carbonylgroup.com.schoolpower.classes.Transition.DetailsTransition;
+import carbonylgroup.com.schoolpower.classes.ListItems.MainListItem;
+import carbonylgroup.com.schoolpower.classes.Transition.TransitionHelper;
+import carbonylgroup.com.schoolpower.classes.Utils.Utils;
+import carbonylgroup.com.schoolpower.classes.Utils.postData;
 import carbonylgroup.com.schoolpower.fragments.CourseDetailFragment;
 import carbonylgroup.com.schoolpower.fragments.HomeFragment;
 
@@ -35,11 +45,13 @@ public class MainActivity extends TransitionHelper.MainActivity
     private boolean menuOpenDrawer = true;
     private int presentFragment;
 
+    private Utils utils;
     private MainListItem mainListItemTransporter;
     private Toolbar mainToolBar;
+    private AppBarLayout mainAppBar;
     private DrawerLayout drawer;
-    private MaterialMenuView materialMenu;
-    private MaterialMenuDrawable.IconState currentIconState;
+    private DrawerArrowDrawable toggleIcon;
+    private ActionBarDrawerToggle toggle;
 
     /* Fragments */
     private HomeFragment homeFragment;
@@ -72,28 +84,28 @@ public class MainActivity extends TransitionHelper.MainActivity
         outState.putInt("presentFragment", presentFragment);
     }
 
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
+    public void onBackPressed() {
 
         switch (presentFragment) {
 
             case 1:
-                if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
-                    returnToHome();
-                    return true;
-                }
+                returnToHome();
                 break;
 
             default:
+                super.onBackPressed();
                 break;
         }
-        return super.onKeyDown(keyCode, event);
     }
 
     /* Initializer */
     private void initValue() {
 
+        utils = new Utils(this);
+
         mainToolBar = (Toolbar) findViewById(R.id.main_toolbar);
-        materialMenu = (MaterialMenuView) findViewById(R.id.material_menu_view);
+        mainAppBar = (AppBarLayout) findViewById(R.id.main_app_bar);
+        toggleIcon = new DrawerArrowDrawable(this);
     }
 
     private void initUI() {
@@ -104,7 +116,7 @@ public class MainActivity extends TransitionHelper.MainActivity
 
     private void initOnClick() {
 
-        materialMenu.setOnClickListener(new View.OnClickListener() {
+        toggle.setToolbarNavigationClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (menuOpenDrawer) drawer.openDrawer(GravityCompat.START);
@@ -118,6 +130,12 @@ public class MainActivity extends TransitionHelper.MainActivity
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        toggle = new ActionBarDrawerToggle(
+                this, drawer, mainToolBar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        toggle.setDrawerIndicatorEnabled(false);
+        toggle.setHomeAsUpIndicator(toggleIcon);
+        toggle.syncState();
     }
 
     /* Fragments Handler */
@@ -161,18 +179,23 @@ public class MainActivity extends TransitionHelper.MainActivity
 
     public void returnToHome() {
 
+        expandToolBar(true, true);
+
         if (homeFragment == null) homeFragment = new HomeFragment();
         homeFragment.setSharedElementEnterTransition(new DetailsTransition());
         homeFragment.setSharedElementReturnTransition(new DetailsTransition());
 
         getFragmentManager()
                 .beginTransaction()
-                .setCustomAnimations(R.animator.slide_to_right_in, R.animator.slide_from_left_out)
+                .addSharedElement(findViewById(R.id.detail_view_header), getString(R.string.shared_element_course_header))
+                .addSharedElement(findViewById(R.id.detail_subject_title_tv), getString(R.string.shared_element_course_subject_title))
+                .setCustomAnimations(R.animator.do_nothing, R.animator.fade_out)
                 .replace(R.id.content_view, homeFragment)
                 .addToBackStack(null)
                 .commit();
 
-        animateHomeIcon(MaterialMenuDrawable.IconState.BURGER, true);
+        MainActivity.of(this).setToolBarColor(getResources().getColor(R.color.primary), true);
+        animateDrawerToggle(false);
         setToolBarElevation(0);
     }
 
@@ -193,14 +216,31 @@ public class MainActivity extends TransitionHelper.MainActivity
     }
 
     /* Other Method */
-    public boolean animateHomeIcon(MaterialMenuDrawable.IconState iconState, boolean openDrawer) {
+    public void animateDrawerToggle(final boolean toArrow) {
+        ValueAnimator anim;
 
-        menuOpenDrawer = openDrawer;
-        enableDrawer(openDrawer);
-        if (currentIconState == iconState) return false;
-        currentIconState = iconState;
-        materialMenu.animateState(currentIconState);
-        return true;
+        menuOpenDrawer = !toArrow;
+        enableDrawer(!toArrow);
+
+        if (toArrow) {
+
+            anim = ValueAnimator.ofFloat(0, 1);
+            toggle.setDrawerIndicatorEnabled(false);
+        } else anim = ValueAnimator.ofFloat(1, 0);
+
+        anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+
+            @Override
+            public void onAnimationUpdate(ValueAnimator valueAnimator) {
+
+                float slideOffset = (Float) valueAnimator.getAnimatedValue();
+                toggleIcon.setProgress(slideOffset);
+                if (!toArrow && slideOffset == 0) toggle.setDrawerIndicatorEnabled(true);
+            }
+        });
+        anim.setInterpolator(new DecelerateInterpolator());
+        anim.setDuration(500);
+        anim.start();
     }
 
     public void enableDrawer(boolean enable) {
@@ -209,12 +249,51 @@ public class MainActivity extends TransitionHelper.MainActivity
         else drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
     }
 
+    public void expandToolBar(boolean expand, boolean animated) {
+        mainAppBar.setExpanded(expand, animated);
+    }
+
     public void setToolBarTitle(String barTitle) {
         ((TextView) findViewById(R.id.toolbar_title_tv)).setText(barTitle);
     }
 
     public void setToolBarElevation(int toolBarElevation) {
-        mainToolBar.setElevation(toolBarElevation);
+        mainAppBar.setElevation(toolBarElevation);
+    }
+
+    public void setToolBarColor(int _actionBarToColor, boolean _animation) {
+
+        final Window window = this.getWindow();
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+
+        if (_animation) {
+
+            ValueAnimator anim1 = ValueAnimator.ofArgb(((ColorDrawable) mainToolBar.getBackground()).getColor(), _actionBarToColor);
+            ValueAnimator anim2 = ValueAnimator.ofArgb(utils.getDarkColorByPrimary(((ColorDrawable) mainToolBar.getBackground()).getColor()), utils.getDarkColorByPrimary(_actionBarToColor));
+            anim1.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                @Override
+                public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                    mainToolBar.setBackgroundColor((Integer) valueAnimator.getAnimatedValue());
+                    getWindow().setNavigationBarColor((Integer) valueAnimator.getAnimatedValue());
+                }
+            });
+            anim2.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                @Override
+                public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                    window.setStatusBarColor((Integer) valueAnimator.getAnimatedValue());
+                }
+            });
+            anim1.setDuration(300);
+            anim2.setDuration(300);
+            anim1.start();
+            anim2.start();
+
+        } else {
+            mainToolBar.setBackgroundColor(_actionBarToColor);
+            getWindow().setNavigationBarColor(_actionBarToColor);
+            window.setStatusBarColor(utils.getDarkColorByPrimary(_actionBarToColor));
+        }
     }
 
     public void setMainListItemTransporter(MainListItem _mainListItem) {

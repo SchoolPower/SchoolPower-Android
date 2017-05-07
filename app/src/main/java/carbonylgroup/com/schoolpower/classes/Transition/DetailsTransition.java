@@ -2,7 +2,7 @@
  * Copyright (C) 2016 Gustav Wang
  */
 
-package carbonylgroup.com.schoolpower.classes;
+package carbonylgroup.com.schoolpower.classes.Transition;
 
 import android.transition.ChangeBounds;
 import android.transition.ChangeImageTransform;

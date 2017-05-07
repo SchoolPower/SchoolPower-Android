@@ -1,11 +1,15 @@
-package carbonylgroup.com.schoolpower.classes;
+/**
+ * Copyright (C) 2017 Gustav Wang
+ */
+
+package carbonylgroup.com.schoolpower.classes.Adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -15,15 +19,22 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import carbonylgroup.com.schoolpower.R;
 import carbonylgroup.com.schoolpower.R2;
+import carbonylgroup.com.schoolpower.classes.ListItems.PeriodGradeItem;
+import carbonylgroup.com.schoolpower.classes.Utils.Utils;
 
 public class PeriodGradeAdapter extends RecyclerView.Adapter<PeriodGradeAdapter.PeriodGradeViewHolder> {
 
     private LayoutInflater inflater;
     private List<PeriodGradeItem> periodGradeItemList;
+    private Context context;
+    private Utils utils;
 
     public PeriodGradeAdapter(Context context, ArrayList<PeriodGradeItem> objects) {
+
         inflater = LayoutInflater.from(context);
         this.periodGradeItemList = objects;
+        this.context = context;
+        utils = new Utils(context);
     }
 
     @Override
@@ -40,6 +51,7 @@ public class PeriodGradeAdapter extends RecyclerView.Adapter<PeriodGradeAdapter.
         viewHolder.period_indicator.setText(item.getTermIndicator());
         viewHolder.period_latter_grade.setText(item.getTermLetterGrade());
         viewHolder.period_percentage_grade.setText(item.getTermPercentageGrade());
+        viewHolder.period_grade_background.setBackgroundColor(utils.getColorByPeriodItem(context, item));
     }
 
     @Override
@@ -52,19 +64,16 @@ public class PeriodGradeAdapter extends RecyclerView.Adapter<PeriodGradeAdapter.
     }
 
     public static class PeriodGradeViewHolder extends RecyclerView.ViewHolder {
+
         @BindView(R2.id.period_indicator) TextView period_indicator;
         @BindView(R2.id.period_latter_grade) TextView period_latter_grade;
         @BindView(R2.id.period_percentage_grade) TextView period_percentage_grade;
+        @BindView(R2.id.period_grade_background) LinearLayout period_grade_background;
 
         PeriodGradeViewHolder(View view) {
+
             super(view);
             ButterKnife.bind(this, view);
-            view.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Log.d("NormalTextViewHolder", "onClick--> position = " + getPosition());
-                }
-            });
         }
     }
 }
