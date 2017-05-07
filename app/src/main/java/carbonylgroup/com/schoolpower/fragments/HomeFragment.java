@@ -55,7 +55,7 @@ public class HomeFragment extends TransitionHelper.BaseFragment {
 
         new Thread(new postData(
                 getString(R.string.postURL),
-                "username=19050069IBO&password=albb2688",
+                "",
                 new Handler() {
                     @Override
                     public void handleMessage(Message msg) {
