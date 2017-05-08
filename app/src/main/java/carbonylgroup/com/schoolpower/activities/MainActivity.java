@@ -8,6 +8,7 @@ import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
@@ -27,9 +28,12 @@ import android.view.WindowManager;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 
 import carbonylgroup.com.schoolpower.R;
+import carbonylgroup.com.schoolpower.classes.ListItems.AssignmentItem;
 import carbonylgroup.com.schoolpower.classes.Transition.DetailsTransition;
 import carbonylgroup.com.schoolpower.classes.ListItems.MainListItem;
 import carbonylgroup.com.schoolpower.classes.Transition.TransitionHelper;
@@ -47,6 +51,7 @@ public class MainActivity extends TransitionHelper.MainActivity
 
     private Utils utils;
     private MainListItem mainListItemTransporter;
+    private ArrayList<MainListItem> dataList;
     private Toolbar mainToolBar;
     private AppBarLayout mainAppBar;
     private DrawerLayout drawer;
@@ -106,6 +111,14 @@ public class MainActivity extends TransitionHelper.MainActivity
         mainToolBar = (Toolbar) findViewById(R.id.main_toolbar);
         mainAppBar = (AppBarLayout) findViewById(R.id.main_app_bar);
         toggleIcon = new DrawerArrowDrawable(this);
+
+        try {
+            if (utils.inputDataArrayList() != null) dataList = utils.inputDataArrayList();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        initDataJson();
     }
 
     private void initUI() {
@@ -216,6 +229,57 @@ public class MainActivity extends TransitionHelper.MainActivity
     }
 
     /* Other Method */
+    public  ArrayList<MainListItem> getDataList(){
+        return dataList;
+    }
+
+    private String[] getUsernamePassword() {
+
+        SharedPreferences sharedPreferences = getSharedPreferences("accountData", Activity.MODE_PRIVATE);
+        String[] unp = {sharedPreferences.getString("username", ""), sharedPreferences.getString("password", "")};
+        return unp;
+    }
+
+    private void initDataJson() {
+
+        ArrayList<MainListItem> oldMainItemList = dataList;
+
+        String[] unp = getUsernamePassword();
+
+        new Thread(new postData(
+                getString(R.string.postURL),
+                "username=" + unp[0] + "&password=" + unp[1],
+                new Handler() {
+                    @Override
+                    public void handleMessage(Message msg) {
+
+                        String jsonStr = msg.obj.toString().isEmpty() ? "" : msg.obj.toString();
+                        if (!jsonStr.equals("")) {
+                            try {
+                                utils.outputDataJson(jsonStr);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                            dataList = utils.parseJsonResult(jsonStr);
+                            homeFragment.refreshAdapter();
+                        }
+                    }
+                })).start();
+
+        for (int i = 0; i < dataList.size(); i++) {
+
+            Collection<AssignmentItem> oldAssignmentListCollection = oldMainItemList.get(i).getAssignmentItemArrayList();
+            Collection<AssignmentItem> newAssignmentListCollection = dataList.get(i).getAssignmentItemArrayList();
+            newAssignmentListCollection.removeAll(oldAssignmentListCollection);
+            for (AssignmentItem item : newAssignmentListCollection) item.setAsNewItem(true);
+            oldAssignmentListCollection.addAll(newAssignmentListCollection);
+            ArrayList<AssignmentItem> finalList = new ArrayList<>();
+            finalList.addAll(oldAssignmentListCollection);
+            dataList.get(i).setAssignmentItemArrayList(finalList);
+        }
+
+    }
+
     public void animateDrawerToggle(final boolean toArrow) {
         ValueAnimator anim;
 

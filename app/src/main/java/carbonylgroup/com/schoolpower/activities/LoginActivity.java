@@ -64,7 +64,7 @@ public class LoginActivity extends Activity {
         progressDialog.setIndeterminate(true);
         progressDialog.setCancelable(false);
         progressDialog.setCanceledOnTouchOutside(false);
-        progressDialog.setMessage("Authenticating...");
+        progressDialog.setMessage(getString(R.string.authenticating));
         progressDialog.show();
 
         new Thread(new postData(
@@ -77,7 +77,7 @@ public class LoginActivity extends Activity {
                         progressDialog.dismiss();
                         String message = msg.obj.toString();
 
-                        if (message.contains("{\"error\":1,\"")) showSnackBar("WRONG PASSWORD");
+                        if (message.contains("{\"error\":1,\"")) showSnackBar(getString(R.string.wrong_password), true);
 
                         else if (message.contains("[{\"")) {
                             SharedPreferences.Editor spEditor = getSharedPreferences("accountData", Activity.MODE_PRIVATE).edit();
@@ -92,7 +92,7 @@ public class LoginActivity extends Activity {
                             }
                             startMainActivity();
 
-                        } else showSnackBar("NO CONNECTION");
+                        } else showSnackBar(getString(R.string.no_connection), true);
                     }
                 })).start();
     }
@@ -103,10 +103,11 @@ public class LoginActivity extends Activity {
         LoginActivity.this.finish();
     }
 
-    private void showSnackBar(String msg) {
+    private void showSnackBar(String msg, boolean colorRed) {
 
         Snackbar snackbar = Snackbar.make(findViewById(R.id.login_coordinate_layout), msg, Snackbar.LENGTH_SHORT);
-        snackbar.getView().setBackgroundColor(getResources().getColor(R.color.accent));
+        if(colorRed) snackbar.getView().setBackgroundColor(getResources().getColor(R.color.Cm_score_red_dark));
+        else snackbar.getView().setBackgroundColor(getResources().getColor(R.color.accent));
         snackbar.show();
     }
 }

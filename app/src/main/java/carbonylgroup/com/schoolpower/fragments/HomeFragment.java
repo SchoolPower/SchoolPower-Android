@@ -39,7 +39,6 @@ import carbonylgroup.com.schoolpower.classes.Utils.postData;
 public class HomeFragment extends TransitionHelper.BaseFragment {
 
     private int transformedPosition = -1;
-    private boolean previousDataExist;
 
     private View view;
     private Animation fab_out;
@@ -57,57 +56,8 @@ public class HomeFragment extends TransitionHelper.BaseFragment {
 
         initAnim();
         initValue();
-        initDataJson();
 
         return view;
-    }
-
-    private String[] getUsernamePassword() {
-
-        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("accountData", Activity.MODE_PRIVATE);
-        String[] unp = {sharedPreferences.getString("username", ""), sharedPreferences.getString("password", "")};
-        return unp;
-    }
-
-    private void initDataJson() {
-
-        ArrayList<MainListItem> oldMainItemList = dataList;
-
-        String[] unp = getUsernamePassword();
-
-        new Thread(new postData(
-                getString(R.string.postURL),
-                "username=" + unp[0] + "&password=" + unp[1],
-                new Handler() {
-                    @Override
-                    public void handleMessage(Message msg) {
-
-                        String jsonStr = msg.obj.toString().isEmpty() ? "" : msg.obj.toString();
-                        if (!jsonStr.equals("")) {
-                            try {
-                                utils.outputDataJson(jsonStr);
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                            dataList = utils.parseJsonResult(jsonStr);
-                            if (!previousDataExist) initAdapter();
-                            else refreshAdapter();
-                        }
-                    }
-                })).start();
-
-        for (int i = 0; i < dataList.size(); i++) {
-
-            Collection<AssignmentItem> oldAssignmentListCollection = oldMainItemList.get(i).getAssignmentItemArrayList();
-            Collection<AssignmentItem> newAssignmentListCollection = dataList.get(i).getAssignmentItemArrayList();
-            newAssignmentListCollection.removeAll(oldAssignmentListCollection);
-            for (AssignmentItem item : newAssignmentListCollection) item.setAsNewItem(true);
-            oldAssignmentListCollection.addAll(newAssignmentListCollection);
-            ArrayList<AssignmentItem> finalList = new ArrayList<>();
-            finalList.addAll(oldAssignmentListCollection);
-            dataList.get(i).setAssignmentItemArrayList(finalList);
-        }
-
     }
 
     private void initAnim() {
@@ -123,20 +73,11 @@ public class HomeFragment extends TransitionHelper.BaseFragment {
     private void initValue() {
 
         utils = new Utils(getActivity());
-        dataList = new ArrayList<>();
+        dataList = MainActivity.of(getActivity()).getDataList();
         MainActivity.of(getActivity()).setPresentFragment(0);
         MainActivity.of(getActivity()).setToolBarElevation(utils.dpToPx(4));
         MainActivity.of(getActivity()).setToolBarTitle(getString(R.string.dashboard));
-
-        try {
-            if (utils.inputDataArrayList() != null) {
-                dataList = utils.inputDataArrayList();
-                initAdapter();
-                previousDataExist = true;
-            } else previousDataExist = false;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        initAdapter();
     }
 
     private void initAdapter() {
@@ -180,7 +121,7 @@ public class HomeFragment extends TransitionHelper.BaseFragment {
         theListView.setAdapter(adapter);
     }
 
-    private void refreshAdapter() {
+    public void refreshAdapter() {
 
         adapter.setMainListItems(dataList);
         adapter.notifyDataSetChanged();
