@@ -6,35 +6,66 @@ package carbonylgroup.com.schoolpower.activities;
 
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.design.widget.Snackbar;
-import android.widget.Toast;
+import android.util.Log;
+import android.view.View;
+import android.widget.EditText;
 
 import carbonylgroup.com.schoolpower.R;
+import carbonylgroup.com.schoolpower.classes.Utils.Utils;
 import carbonylgroup.com.schoolpower.classes.Utils.postData;
 
 public class LoginActivity extends Activity {
+
+    private Utils utils;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         setTheme(R.style.Theme_Panzer);
         super.onCreate(savedInstanceState);
+        checkIfLoggedIn();
+        setContentView(R.layout.login_content);
+
+        initValue();
+    }
+
+    private void checkIfLoggedIn() {
 
         SharedPreferences sharedPreferences = getSharedPreferences("accountData", Activity.MODE_PRIVATE);
         if (sharedPreferences.getBoolean("loggedIn", false))
             startMainActivity();
+    }
 
-        setContentView(R.layout.login_content);
+    private void initValue() {
 
-        Snackbar.make(findViewById(R.id.login_coordinate_layout), "EHH", Snackbar.LENGTH_SHORT).show();
+        utils = new Utils(this);
+
+        final EditText input_username = (EditText) findViewById(R.id.input_username);
+        final EditText input_password = (EditText) findViewById(R.id.input_password);
+
+        findViewById(R.id.login_fab).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                loginAction(input_username.getText().toString(), input_password.getText().toString());
+            }
+        });
     }
 
     public void loginAction(final String username, final String password) {
+
+        final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this);
+        progressDialog.setIndeterminate(true);
+        progressDialog.setCancelable(false);
+        progressDialog.setCanceledOnTouchOutside(false);
+        progressDialog.setMessage("Authenticating...");
+        progressDialog.show();
 
         new Thread(new postData(
                 getString(R.string.postURL),
@@ -43,33 +74,39 @@ public class LoginActivity extends Activity {
                     @Override
                     public void handleMessage(Message msg) {
 
-                        switch (msg.obj.toString().replace("\n", "").charAt(0)) {
-                            case '0':
-                                showToast("WRONG PASSWORD");
-                                break;
-                            case '1':
-                                SharedPreferences.Editor spEditor = getSharedPreferences("accountData", Activity.MODE_PRIVATE).edit();
-                                spEditor.putString("username", username);
-                                spEditor.putString("password", password);
-                                spEditor.putBoolean("loggedIn", true);
-                                spEditor.apply();
-                                startMainActivity();
-                                break;
-                            default:
-                                showToast("NO CONNECTION");
-                                break;
-                        }
+                        progressDialog.dismiss();
+                        String message = msg.obj.toString();
+
+                        if (message.contains("{\"error\":1,\"")) showSnackBar("WRONG PASSWORD");
+
+                        else if (message.contains("[{\"")) {
+                            SharedPreferences.Editor spEditor = getSharedPreferences("accountData", Activity.MODE_PRIVATE).edit();
+                            spEditor.putString("username", username);
+                            spEditor.putString("password", password);
+                            spEditor.putBoolean("loggedIn", true);
+                            spEditor.apply();
+                            try {
+                                utils.outputDataJson(message);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                            startMainActivity();
+
+                        } else showSnackBar("NO CONNECTION");
                     }
                 })).start();
     }
 
-    private void startMainActivity(){
+    private void startMainActivity() {
 
         startActivity(new Intent(getApplication(), MainActivity.class));
         LoginActivity.this.finish();
     }
 
-    private void showToast(String msg) {
-        Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
+    private void showSnackBar(String msg) {
+
+        Snackbar snackbar = Snackbar.make(findViewById(R.id.login_coordinate_layout), msg, Snackbar.LENGTH_SHORT);
+        snackbar.getView().setBackgroundColor(getResources().getColor(R.color.accent));
+        snackbar.show();
     }
 }

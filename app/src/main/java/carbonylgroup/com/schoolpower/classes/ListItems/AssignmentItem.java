@@ -15,6 +15,7 @@ public class AssignmentItem implements Serializable {
     private String assignmentGrade;
     private String assignmentCategory;
     private String assignmentTerm;
+    private boolean newItem = false;
 
     public AssignmentItem(String _assignmentTitle, String _assignmentDate, String _assignmentPercentage, String _assignmentDividedScore,
                           String _assignmentGrade, String _assignmentCategory, String _assignmentTerm) {
@@ -62,6 +63,14 @@ public class AssignmentItem implements Serializable {
 
     public String getAssignmentTerm() {
         return assignmentTerm;
+    }
+
+    public void setAsNewItem(boolean _newItem) {
+        this.newItem = _newItem;
+    }
+
+    public boolean isNew() {
+        return newItem;
     }
 
 //    public void setTermPercentageGrade(String _termPercentageGrade){

@@ -4,9 +4,12 @@
 
 package carbonylgroup.com.schoolpower.fragments;
 
+import android.app.Activity;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.design.widget.Snackbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,15 +18,16 @@ import android.view.animation.DecelerateInterpolator;
 import android.view.animation.ScaleAnimation;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.ramotion.foldingcell.FoldingCell;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 
 import carbonylgroup.com.schoolpower.R;
 import carbonylgroup.com.schoolpower.activities.MainActivity;
+import carbonylgroup.com.schoolpower.classes.ListItems.AssignmentItem;
 import carbonylgroup.com.schoolpower.classes.Transition.DetailsTransition;
 import carbonylgroup.com.schoolpower.classes.Adapter.FoldingCellListAdapter;
 import carbonylgroup.com.schoolpower.classes.ListItems.MainListItem;
@@ -35,6 +39,7 @@ import carbonylgroup.com.schoolpower.classes.Utils.postData;
 public class HomeFragment extends TransitionHelper.BaseFragment {
 
     private int transformedPosition = -1;
+    private boolean previousDataExist;
 
     private View view;
     private Animation fab_out;
@@ -52,28 +57,57 @@ public class HomeFragment extends TransitionHelper.BaseFragment {
 
         initAnim();
         initValue();
+        initDataJson();
+
+        return view;
+    }
+
+    private String[] getUsernamePassword() {
+
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("accountData", Activity.MODE_PRIVATE);
+        String[] unp = {sharedPreferences.getString("username", ""), sharedPreferences.getString("password", "")};
+        return unp;
+    }
+
+    private void initDataJson() {
+
+        ArrayList<MainListItem> oldMainItemList = dataList;
+
+        String[] unp = getUsernamePassword();
 
         new Thread(new postData(
                 getString(R.string.postURL),
-                "",
+                "username=" + unp[0] + "&password=" + unp[1],
                 new Handler() {
                     @Override
                     public void handleMessage(Message msg) {
 
                         String jsonStr = msg.obj.toString().isEmpty() ? "" : msg.obj.toString();
-                        if(!jsonStr.equals("")) {
+                        if (!jsonStr.equals("")) {
                             try {
                                 utils.outputDataJson(jsonStr);
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
                             dataList = utils.parseJsonResult(jsonStr);
-                            refreshAdapter();
+                            if (!previousDataExist) initAdapter();
+                            else refreshAdapter();
                         }
                     }
                 })).start();
 
-        return view;
+        for (int i = 0; i < dataList.size(); i++) {
+
+            Collection<AssignmentItem> oldAssignmentListCollection = oldMainItemList.get(i).getAssignmentItemArrayList();
+            Collection<AssignmentItem> newAssignmentListCollection = dataList.get(i).getAssignmentItemArrayList();
+            newAssignmentListCollection.removeAll(oldAssignmentListCollection);
+            for (AssignmentItem item : newAssignmentListCollection) item.setAsNewItem(true);
+            oldAssignmentListCollection.addAll(newAssignmentListCollection);
+            ArrayList<AssignmentItem> finalList = new ArrayList<>();
+            finalList.addAll(oldAssignmentListCollection);
+            dataList.get(i).setAssignmentItemArrayList(finalList);
+        }
+
     }
 
     private void initAnim() {
@@ -98,8 +132,9 @@ public class HomeFragment extends TransitionHelper.BaseFragment {
             if (utils.inputDataArrayList() != null) {
                 dataList = utils.inputDataArrayList();
                 initAdapter();
-            }
-        } catch (Exception e){
+                previousDataExist = true;
+            } else previousDataExist = false;
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -149,7 +184,7 @@ public class HomeFragment extends TransitionHelper.BaseFragment {
 
         adapter.setMainListItems(dataList);
         adapter.notifyDataSetChanged();
-        Toast.makeText(getActivity(), "Data Updated", Toast.LENGTH_SHORT).show();
+        showSnackBar(getActivity().getString(R.string.data_updated));
     }
 
     private View getItemViewByPosition(int position, ListView listView) {
@@ -199,6 +234,13 @@ public class HomeFragment extends TransitionHelper.BaseFragment {
             ((FoldingCell) itemView).toggle(false);
             ((FoldingCell) itemView).toggle(false);
         }
+    }
+
+    private void showSnackBar(String msg) {
+
+        Snackbar snackbar = Snackbar.make(getActivity().findViewById(R.id.main_coordinate_layout), msg, Snackbar.LENGTH_SHORT);
+        snackbar.getView().setBackgroundColor(getResources().getColor(R.color.accent));
+        snackbar.show();
     }
 
     @Override

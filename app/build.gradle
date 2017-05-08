@@ -32,6 +32,7 @@ dependencies {
     compile 'com.ramotion.foldingcell:folding-cell:1.0.1'
     compile 'com.jakewharton:butterknife:8.4.0'
     compile 'commons-io:commons-io:2.5'
+    compile 'de.danielbechler:java-object-diff:0.95-RC5'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'
     testCompile 'junit:junit:4.12'
 }

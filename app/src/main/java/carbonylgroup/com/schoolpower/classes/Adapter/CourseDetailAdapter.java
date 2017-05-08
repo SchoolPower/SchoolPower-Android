@@ -87,7 +87,8 @@ public class CourseDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 normalViewHolder.detail_assignment_date_tv.setText(assignmentItem.getAssignmentDate());
                 normalViewHolder.detail_assignment_percentage_tv.setText(assignmentItem.getAssignmentPercentage());
                 normalViewHolder.detail_assignment_dividing_score_tv.setText(assignmentItem.getAssignmentDividedScore());
-                normalViewHolder.detail_assignment_grade_background.setBackgroundColor(utils.getColorByLetterGrade(context, assignmentItem.getAssignmentGrade()));
+                if(assignmentItem.isNew())normalViewHolder.detail_assignment_grade_background.setBackgroundColor(context.getResources().getColor(R.color.accent));
+                else normalViewHolder.detail_assignment_grade_background.setBackgroundColor(utils.getColorByLetterGrade(context, assignmentItem.getAssignmentGrade()));
 
             } else if (holder instanceof HeaderViewHolder) {
 
