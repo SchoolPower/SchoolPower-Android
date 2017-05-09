@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.design.widget.Snackbar;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,6 +45,7 @@ public class HomeFragment extends TransitionHelper.BaseFragment {
     private Animation fab_out;
     private Animation fab_in;
     private CourseDetailFragment courseDetailFragment;
+    private SwipeRefreshLayout home_swipe_refresh_layout;
     private HashSet<Integer> unfoldedIndexesBackUp = new HashSet<>();
     private ArrayList<MainListItem> dataList;
     private FoldingCellListAdapter adapter;
@@ -77,6 +79,15 @@ public class HomeFragment extends TransitionHelper.BaseFragment {
         MainActivity.of(getActivity()).setPresentFragment(0);
         MainActivity.of(getActivity()).setToolBarElevation(utils.dpToPx(4));
         MainActivity.of(getActivity()).setToolBarTitle(getString(R.string.dashboard));
+        home_swipe_refresh_layout = (SwipeRefreshLayout) view.findViewById(R.id.home_swipe_refresh_layout);
+        home_swipe_refresh_layout.setColorSchemeResources(R.color.accent, R.color.A_score_green, R.color.B_score_green,
+                R.color.Cp_score_yellow, R.color.C_score_orange, R.color.Cm_score_red, R.color.primary);
+        home_swipe_refresh_layout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                MainActivity.of(getActivity()).initDataJson();
+            }
+        });
         initAdapter();
     }
 
@@ -126,6 +137,7 @@ public class HomeFragment extends TransitionHelper.BaseFragment {
         adapter.setMainListItems(dataList);
         adapter.notifyDataSetChanged();
         showSnackBar(getActivity().getString(R.string.data_updated));
+        home_swipe_refresh_layout.setRefreshing(false);
     }
 
     private View getItemViewByPosition(int position, ListView listView) {

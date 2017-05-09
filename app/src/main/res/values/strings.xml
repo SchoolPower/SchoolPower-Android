@@ -30,6 +30,15 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
-    <string name="postURL">https://schoolpower.studio:8080/api/ps.php</string>
+    <string name="accountData">accountData</string>
+    <string name="loggedIn">loggedIn</string>
+    <string name="token">token</string>
+
+    <string name="argument_equals">argument=</string>
+    <string name="error_wrong_password">{"error":1,"</string>
+    <string name="json_begin">[{"</string>
+
+    <string name="postURL">http://schoolpower.studio:8080/api/ps.php</string>
+    <string name="publicKeyURL">http://schoolpower.studio:8080/api/get_public_key.php</string>
     <string name="dataFileName">dataMap.json</string>
 </resources>

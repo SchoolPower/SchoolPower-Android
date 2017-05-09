@@ -22,11 +22,11 @@
             android:paddingTop="56dp">
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="72dp"
+                android:layout_width="match_parent"
+                android:layout_height="128dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginBottom="30dp"
-                android:src="@mipmap/ic_launcher" />
+                android:src="@drawable/icon" />
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"

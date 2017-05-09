@@ -17,6 +17,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
+import java.security.PublicKey;
+
 import carbonylgroup.com.schoolpower.R;
 import carbonylgroup.com.schoolpower.classes.Utils.Utils;
 import carbonylgroup.com.schoolpower.classes.Utils.postData;
@@ -38,8 +40,8 @@ public class LoginActivity extends Activity {
 
     private void checkIfLoggedIn() {
 
-        SharedPreferences sharedPreferences = getSharedPreferences("accountData", Activity.MODE_PRIVATE);
-        if (sharedPreferences.getBoolean("loggedIn", false))
+        SharedPreferences sharedPreferences = getSharedPreferences(getString(R.string.accountData), Activity.MODE_PRIVATE);
+        if (sharedPreferences.getBoolean(getString(R.string.loggedIn), false))
             startMainActivity();
     }
 
@@ -53,6 +55,7 @@ public class LoginActivity extends Activity {
         findViewById(R.id.login_fab).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 loginAction(input_username.getText().toString(), input_password.getText().toString());
             }
         });
@@ -68,29 +71,46 @@ public class LoginActivity extends Activity {
         progressDialog.show();
 
         new Thread(new postData(
-                getString(R.string.postURL),
-                "username=" + username + "&password=" + password,
+                getString(R.string.publicKeyURL), "",
                 new Handler() {
                     @Override
                     public void handleMessage(Message msg) {
 
-                        progressDialog.dismiss();
                         String message = msg.obj.toString();
 
-                        if (message.contains("{\"error\":1,\"")) showSnackBar(getString(R.string.wrong_password), true);
+                        if (!message.isEmpty()) {
+                            PublicKey publicKey = Utils.restorePublicKey(message);
 
-                        else if (message.contains("[{\"")) {
-                            SharedPreferences.Editor spEditor = getSharedPreferences("accountData", Activity.MODE_PRIVATE).edit();
-                            spEditor.putString("username", username);
-                            spEditor.putString("password", password);
-                            spEditor.putBoolean("loggedIn", true);
-                            spEditor.apply();
-                            try {
-                                utils.outputDataJson(message);
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                            startMainActivity();
+                            final String encryptedArgument = Utils.RSAEncode(publicKey, username + ";" + password);
+
+                            new Thread(new postData(
+                                    getString(R.string.postURL),
+                                    getString(R.string.argument_equals) + encryptedArgument,
+                                    new Handler() {
+                                        @Override
+                                        public void handleMessage(Message msg) {
+
+                                            progressDialog.dismiss();
+                                            String message = msg.obj.toString();
+                                            if (message.contains(getString(R.string.error_wrong_password)))
+                                                showSnackBar(getString(R.string.wrong_password), true);
+
+                                            else if (message.contains(getString(R.string.json_begin))) {
+                                                SharedPreferences.Editor spEditor = getSharedPreferences(getString(R.string.accountData), Activity.MODE_PRIVATE).edit();
+                                                spEditor.putString(getString(R.string.token), encryptedArgument);
+                                                spEditor.putBoolean(getString(R.string.loggedIn), true);
+                                                spEditor.apply();
+                                                try {
+                                                    utils.outputDataJson(message);
+                                                } catch (Exception e) {
+                                                    e.printStackTrace();
+                                                }
+                                                startMainActivity();
+
+                                            } else
+                                                showSnackBar(getString(R.string.no_connection), true);
+                                        }
+                                    })).start();
 
                         } else showSnackBar(getString(R.string.no_connection), true);
                     }
@@ -106,7 +126,8 @@ public class LoginActivity extends Activity {
     private void showSnackBar(String msg, boolean colorRed) {
 
         Snackbar snackbar = Snackbar.make(findViewById(R.id.login_coordinate_layout), msg, Snackbar.LENGTH_SHORT);
-        if(colorRed) snackbar.getView().setBackgroundColor(getResources().getColor(R.color.Cm_score_red_dark));
+        if (colorRed)
+            snackbar.getView().setBackgroundColor(getResources().getColor(R.color.Cm_score_red_dark));
         else snackbar.getView().setBackgroundColor(getResources().getColor(R.color.accent));
         snackbar.show();
     }

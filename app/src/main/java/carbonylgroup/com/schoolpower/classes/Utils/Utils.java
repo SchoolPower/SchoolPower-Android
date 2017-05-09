@@ -5,6 +5,7 @@
 package carbonylgroup.com.schoolpower.classes.Utils;
 
 import android.content.Context;
+import android.util.Base64;
 import android.util.DisplayMetrics;
 import android.util.Log;
 
@@ -14,21 +15,28 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.net.URL;
 import java.net.URLConnection;
+import java.security.InvalidKeyException;
+import java.security.KeyFactory;
+import java.security.NoSuchAlgorithmException;
+import java.security.PublicKey;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.X509EncodedKeySpec;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+
+import javax.crypto.BadPaddingException;
+import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 
 import carbonylgroup.com.schoolpower.R;
 import carbonylgroup.com.schoolpower.classes.ListItems.AssignmentItem;
@@ -46,6 +54,10 @@ public class Utils {
             R.color.Cm_score_red, R.color.primary_dark, R.color.primary};
     private int[] gradeDarkColorIdsPlain = {R.color.A_score_green_dark, R.color.B_score_green_dark, R.color.Cp_score_yellow_dark, R.color.C_score_orange_dark,
             R.color.Cm_score_red_dark, R.color.primary_darker, R.color.primary_dark};
+
+    private static final String ALGORITHM = "RSA/ECB/PKCS1Padding";
+    private static final String BEGIN_PUB_KEY = "-----BEGIN PUBLIC KEY-----";
+    private static final String END_PUB_KEY = "-----END PUBLIC KEY-----";
 
     public Utils(Context _context) {
 
@@ -111,6 +123,36 @@ public class Utils {
         outputStream.close();
     }
 
+    public static PublicKey restorePublicKey(String key) {
+
+        String publicKeyPEM = key.replace(BEGIN_PUB_KEY, "");
+        publicKeyPEM = publicKeyPEM.replace(END_PUB_KEY, "");
+        byte[] decoded = Base64.decode(publicKeyPEM,Base64.DEFAULT);
+        X509EncodedKeySpec x509EncodedKeySpec = new X509EncodedKeySpec(decoded);
+        try {
+            KeyFactory factory = KeyFactory.getInstance(ALGORITHM);
+            return factory.generatePublic(x509EncodedKeySpec);
+        } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static String RSAEncode(PublicKey key, String plainText) {
+
+        try {
+            Cipher cipher = Cipher.getInstance(ALGORITHM);
+            cipher.init(Cipher.ENCRYPT_MODE, key);
+            return Base64.encodeToString(cipher.doFinal(plainText.getBytes()), Base64.URL_SAFE);
+
+        } catch (NoSuchAlgorithmException | NoSuchPaddingException
+                | InvalidKeyException | IllegalBlockSizeException
+                | BadPaddingException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     /**
      * @param url    url
      * @param params name1=value1&name2=value2
@@ -124,29 +166,21 @@ public class Utils {
         try {
 
             URL realUrl = new URL(url);
-            // Open Connection
             URLConnection conn = realUrl.openConnection();
-            // Setting
-            conn.setRequestProperty("accept", "*/*");
-            conn.setRequestProperty("connection", "Keep-Alive");
-            conn.setRequestProperty("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1)");
+            conn.setRequestProperty("user-agent", "SchoolPower");
             conn.setDoOutput(true);
             conn.setDoInput(true);
-            // Get URLConnection Output
             out = new PrintWriter(conn.getOutputStream());
-            // Send Param
             out.print(params);
             out.flush();
-            // Define BufferedReader Input
             in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
             String line;
             while ((line = in.readLine()) != null) result += "\n" + line;
 
         } catch (Exception e) {
-            System.out.println("发送POST请求出现异常！" + e);
             e.printStackTrace();
         }
-        // Close I/O
+
         finally {
             try {
                 if (out != null) out.close();

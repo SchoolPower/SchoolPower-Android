@@ -233,22 +233,13 @@ public class MainActivity extends TransitionHelper.MainActivity
         return dataList;
     }
 
-    private String[] getUsernamePassword() {
-
-        SharedPreferences sharedPreferences = getSharedPreferences("accountData", Activity.MODE_PRIVATE);
-        String[] unp = {sharedPreferences.getString("username", ""), sharedPreferences.getString("password", "")};
-        return unp;
-    }
-
-    private void initDataJson() {
+    public void initDataJson() {
 
         ArrayList<MainListItem> oldMainItemList = dataList;
-
-        String[] unp = getUsernamePassword();
+        String token = getSharedPreferences("accountData", Activity.MODE_PRIVATE).getString("token", "");
 
         new Thread(new postData(
-                getString(R.string.postURL),
-                "username=" + unp[0] + "&password=" + unp[1],
+                getString(R.string.postURL), "argument=" + token,
                 new Handler() {
                     @Override
                     public void handleMessage(Message msg) {
