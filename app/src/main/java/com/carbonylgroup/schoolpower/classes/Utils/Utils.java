@@ -105,19 +105,21 @@ public class Utils {
         return context.getResources().getColor(gradeDarkColorIdsPlain[flag]);
     }
 
-    public ArrayList<MainListItem> inputDataArrayList() throws Exception {
-
+    public ArrayList<MainListItem> inputDataArrayList() throws IOException {
+        StringBuffer data = new StringBuffer("");
         FileInputStream inputStream = context.openFileInput(context.getString(R.string.dataFileName));
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        byte[] buffer = new byte[1024];
-        int len;
+        InputStreamReader isr = new InputStreamReader(inputStream);
+        BufferedReader buffReader = new BufferedReader(isr);
 
-        while ((len = inputStream.read(buffer)) != -1) outputStream.write(buffer, 0, len);
-        byte[] data = outputStream.toByteArray();
+        String readString = buffReader.readLine();
+        while (readString != null) {
+            data.append(readString);
+            readString = buffReader.readLine();
+        }
 
-        if (data == null) return null;
+        isr.close();
         inputStream.close();
-        return parseJsonResult(new String(data));
+        return parseJsonResult(data.toString());
     }
 
     public void saveDataJson(String jsonStr) throws IOException {
@@ -208,20 +210,20 @@ public class Utils {
                 PeriodGradeItem periodGradeItem = new PeriodGradeItem(termObj.getString("term"),
                         termObj.getString("grade").equals("") ? "--" : termObj.getString("grade"), termObj.getString("mark"));
 
-                    ArrayList<AssignmentItem> assignmentList = new ArrayList<>();
-                    JSONArray asmArray = termObj.getJSONArray("assignments");
-                    for (int j = 0; j < asmArray.length(); j++) {
-                        JSONObject asmObj = asmArray.getJSONObject(j);
-                        String[] dates = asmObj.getString("date").split("/");
-                        String date = dates[2] + "/" + dates[0] + "/" + dates[1];
-                        AssignmentItem assignmentItem = new AssignmentItem(asmObj.getString("assignment"),
+                ArrayList<AssignmentItem> assignmentList = new ArrayList<>();
+                JSONArray asmArray = termObj.getJSONArray("assignments");
+                for (int j = 0; j < asmArray.length(); j++) {
+                    JSONObject asmObj = asmArray.getJSONObject(j);
+                    String[] dates = asmObj.getString("date").split("/");
+                    String date = dates[2] + "/" + dates[0] + "/" + dates[1];
+                    AssignmentItem assignmentItem = new AssignmentItem(asmObj.getString("assignment"),
 
-                                date, asmObj.getString("grade").equals("") ? "--" : asmObj.getString("percent"),
-                                asmObj.getString("score").endsWith("d") ? context.getString(R.string.unpublished) : asmObj.getString("score"),
-                                asmObj.getString("grade").equals("") ? "--" : asmObj.getString("grade"), asmObj.getString("category"), termObj.getString("term"));
-                        assignmentList.add(assignmentItem);
-                    }
-              
+                            date, asmObj.getString("grade").equals("") ? "--" : asmObj.getString("percent"),
+                            asmObj.getString("score").endsWith("d") ? context.getString(R.string.unpublished) : asmObj.getString("score"),
+                            asmObj.getString("grade").equals("") ? "--" : asmObj.getString("grade"), asmObj.getString("category"), termObj.getString("term"));
+                    assignmentList.add(assignmentItem);
+                }
+
                 if (dataMap.get(termObj.getString("name")) == null) {
 
                     ArrayList<PeriodGradeItem> periodGradeList = new ArrayList<>();
@@ -237,7 +239,7 @@ public class Utils {
                     MainListItem mainListItem = dataMap.get(termObj.getString("name"));
                     ArrayList<PeriodGradeItem> periodGradeList = mainListItem.getPeriodGradeItemArrayList();
                     periodGradeList.add(periodGradeItem);
-                  
+
                     mainListItem.setPeriodGradeItemArrayList(periodGradeList);
                     mainListItem.setAssignmentItemArrayList(assignmentList);
                     dataMap.put(termObj.getString("name"), mainListItem);
