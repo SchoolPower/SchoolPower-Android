@@ -21,6 +21,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.graphics.drawable.DrawerArrowDrawable;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.MenuItem;
 import android.view.Window;
@@ -112,7 +113,8 @@ public class MainActivity extends TransitionHelper.MainActivity
         toggleIcon = new DrawerArrowDrawable(this);
 
         try {
-            if (utils.inputDataArrayList() != null) dataList = utils.inputDataArrayList();
+            ArrayList<MainListItem> input = utils.inputDataArrayList();
+            if (input != null) dataList = input;
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -247,7 +249,8 @@ public class MainActivity extends TransitionHelper.MainActivity
 
     public void initDataJson() {
 
-        ArrayList<MainListItem> oldMainItemList = dataList;
+        final ArrayList<MainListItem> oldMainItemList = new ArrayList<>();
+        if(dataList!=null) oldMainItemList.addAll(dataList);
         String token = getSharedPreferences("accountData", Activity.MODE_PRIVATE).getString("token", "");
 
         new Thread(new postData(
@@ -269,24 +272,26 @@ public class MainActivity extends TransitionHelper.MainActivity
                                 e.printStackTrace();
                             }
                             dataList = utils.parseJsonResult(jsonStr);
-                            homeFragment.refreshAdapter();
+
+                            for (int i = 0; i < dataList.size(); i++) {
+
+                                Collection<AssignmentItem> oldAssignmentListCollection = oldMainItemList.get(i).getAssignmentItemArrayList();
+                                Collection<AssignmentItem> newAssignmentListCollection = dataList.get(i).getAssignmentItemArrayList();
+                                newAssignmentListCollection.removeAll(oldAssignmentListCollection);
+                                for (AssignmentItem item : newAssignmentListCollection) item.setAsNewItem(true);
+                                oldAssignmentListCollection.addAll(newAssignmentListCollection);
+                                ArrayList<AssignmentItem> finalList = new ArrayList<>();
+                                finalList.addAll(oldAssignmentListCollection);
+                                dataList.get(i).setAssignmentItemArrayList(finalList);
+                            }
+
+
                         }
 
                     }
                 })).start();
 
-        for (int i = 0; i < dataList.size(); i++) {
-
-            Collection<AssignmentItem> oldAssignmentListCollection = oldMainItemList.get(i).getAssignmentItemArrayList();
-            Collection<AssignmentItem> newAssignmentListCollection = dataList.get(i).getAssignmentItemArrayList();
-            newAssignmentListCollection.removeAll(oldAssignmentListCollection);
-            for (AssignmentItem item : newAssignmentListCollection) item.setAsNewItem(true);
-            oldAssignmentListCollection.addAll(newAssignmentListCollection);
-            ArrayList<AssignmentItem> finalList = new ArrayList<>();
-            finalList.addAll(oldAssignmentListCollection);
-            dataList.get(i).setAssignmentItemArrayList(finalList);
-        }
-
+        homeFragment.refreshAdapter();
     }
 
     private void SignOut() {
