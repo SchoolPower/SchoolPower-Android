@@ -56,6 +56,7 @@ public class Utils {
             R.color.Cm_score_red_dark, R.color.primary_darker, R.color.primary_dark};
 
     private static final String ALGORITHM = "RSA/ECB/PKCS1Padding";
+    private static final String RSA = "RSA";
     private static final String BEGIN_PUB_KEY = "-----BEGIN PUBLIC KEY-----";
     private static final String END_PUB_KEY = "-----END PUBLIC KEY-----";
 
@@ -130,7 +131,7 @@ public class Utils {
         byte[] decoded = Base64.decode(publicKeyPEM,Base64.DEFAULT);
         X509EncodedKeySpec x509EncodedKeySpec = new X509EncodedKeySpec(decoded);
         try {
-            KeyFactory factory = KeyFactory.getInstance(ALGORITHM);
+            KeyFactory factory = KeyFactory.getInstance(RSA);
             return factory.generatePublic(x509EncodedKeySpec);
         } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
             e.printStackTrace();

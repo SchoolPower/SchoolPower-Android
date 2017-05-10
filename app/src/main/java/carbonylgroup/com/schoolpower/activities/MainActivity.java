@@ -8,6 +8,7 @@ import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -20,7 +21,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.graphics.drawable.DrawerArrowDrawable;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.view.MenuItem;
 import android.view.Window;
@@ -30,7 +30,6 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 
 import carbonylgroup.com.schoolpower.R;
 import carbonylgroup.com.schoolpower.classes.ListItems.AssignmentItem;
@@ -78,7 +77,7 @@ public class MainActivity extends TransitionHelper.MainActivity
 
         super.onRestoreInstanceState(savedInstanceState);
         presentFragment = savedInstanceState.getInt("presentFragment");
-        int[] fragments = {R.id.nav_home, R.id.course_detail_background};
+        int[] fragments = {R.id.nav_dashboard, R.id.course_detail_background};
         gotoFragmentWithMenuItemId(fragments[presentFragment]);
     }
 
@@ -149,6 +148,9 @@ public class MainActivity extends TransitionHelper.MainActivity
         toggle.setDrawerIndicatorEnabled(false);
         toggle.setHomeAsUpIndicator(toggleIcon);
         toggle.syncState();
+
+        TextView drawer_username = (TextView) drawer.findViewById(R.id.nav_header_username);
+//        drawer_username.setText("FUCK YOU");
     }
 
     /* Fragments Handler */
@@ -159,7 +161,7 @@ public class MainActivity extends TransitionHelper.MainActivity
 
         switch (id) {
 
-            case R.id.nav_home:
+            case R.id.nav_dashboard:
 
                 if (homeFragment == null) homeFragment = new HomeFragment();
                 transaction.replace(R.id.content_view, homeFragment);
@@ -171,6 +173,16 @@ public class MainActivity extends TransitionHelper.MainActivity
                 if (courseDetailFragment == null) courseDetailFragment = new CourseDetailFragment();
                 transaction.replace(R.id.content_view, courseDetailFragment);
                 presentFragment = 1;
+                break;
+
+            case R.id.nav_sign_out:
+
+                SignOut();
+                break;
+
+            case R.id.action_refresh:
+
+                initDataJson();
                 break;
 
             default:
@@ -224,7 +236,7 @@ public class MainActivity extends TransitionHelper.MainActivity
 
         FragmentManager fm = getFragmentManager();
         FragmentTransaction transaction = fm.beginTransaction();
-        gotoFragmentWithMenuItemId(R.id.nav_home);
+        gotoFragmentWithMenuItemId(R.id.nav_dashboard);
         transaction.commit();
     }
 
@@ -269,6 +281,21 @@ public class MainActivity extends TransitionHelper.MainActivity
             dataList.get(i).setAssignmentItemArrayList(finalList);
         }
 
+    }
+
+    private void SignOut() {
+
+        SharedPreferences.Editor spEditor = getSharedPreferences(getString(R.string.accountData), Activity.MODE_PRIVATE).edit();
+        spEditor.putString(getString(R.string.token), "");
+        spEditor.putBoolean(getString(R.string.loggedIn), false);
+        spEditor.apply();
+        startLoginActivity();
+    }
+
+    private void startLoginActivity() {
+
+        startActivity(new Intent(getApplication(), LoginActivity.class));
+        MainActivity.this.finish();
     }
 
     public void animateDrawerToggle(final boolean toArrow) {
