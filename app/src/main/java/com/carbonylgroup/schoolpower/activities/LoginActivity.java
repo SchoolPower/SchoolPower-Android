@@ -81,7 +81,7 @@ public class LoginActivity extends Activity {
 
         new Thread(new postData(
                 getString(R.string.postURL),
-                getString(R.string.argument_equals) + encryptedArgument,
+                getString(R.string.argument_equals) + encryptedArgument + "&filter=",
                 new Handler() {
                     @Override
                     public void handleMessage(Message msg) {
