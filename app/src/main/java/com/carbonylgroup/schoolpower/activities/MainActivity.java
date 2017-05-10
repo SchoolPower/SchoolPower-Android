@@ -255,9 +255,14 @@ public class MainActivity extends TransitionHelper.MainActivity
                 new Handler() {
                     @Override
                     public void handleMessage(Message msg) {
+                        String[] messages = msg.obj.toString().split("\n");
 
-                        String jsonStr = msg.obj.toString();
-                        if (!jsonStr.isEmpty()) {
+                        SharedPreferences.Editor spEditor = getSharedPreferences(getString(R.string.accountData), Activity.MODE_PRIVATE).edit();
+                        spEditor.putString(getString(R.string.student_name), messages[0]);
+                        spEditor.apply();
+
+                        if (messages.length==2 && !messages[1].isEmpty()) {
+                            String jsonStr = messages[1];
                             try {
                                 utils.saveDataJson(jsonStr);
                             } catch (Exception e) {

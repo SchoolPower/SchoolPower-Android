@@ -132,7 +132,7 @@ public class Utils {
 
         String publicKeyPEM = key.replace(BEGIN_PUB_KEY, "");
         publicKeyPEM = publicKeyPEM.replace(END_PUB_KEY, "");
-        byte[] decoded = Base64.decode(publicKeyPEM,Base64.DEFAULT);
+        byte[] decoded = Base64.decode(publicKeyPEM, Base64.DEFAULT);
         X509EncodedKeySpec x509EncodedKeySpec = new X509EncodedKeySpec(decoded);
         try {
             KeyFactory factory = KeyFactory.getInstance(RSA);
@@ -184,8 +184,7 @@ public class Utils {
 
         } catch (Exception e) {
             e.printStackTrace();
-        }
-        finally {
+        } finally {
             try {
                 if (out != null) out.close();
                 if (in != null) in.close();
@@ -196,89 +195,77 @@ public class Utils {
         return result;
     }
 
-    public ArrayList<MainListItem> parseJsonResult(String allStr) {
+    public ArrayList<MainListItem> parseJsonResult(String jsonStr) {
 
-        if (!allStr.equals("")) {
+        try {
+            JSONArray jsonData = new JSONArray(jsonStr);
+            HashMap<String, MainListItem> dataMap = new HashMap<>();
 
-            try {
+            for (int i = 0; i < jsonData.length(); i++) {
 
-                String[] all = allStr.split("\n");
-                String studentName = all[0];
-                String jsonStr = all[1];
-                JSONArray jsonData = new JSONArray(jsonStr);
-                HashMap<String, MainListItem> dataMap = new HashMap<>();
+                JSONObject termObj = jsonData.getJSONObject(i);
 
-                SharedPreferences.Editor spEditor = context.getSharedPreferences(context.getString(R.string.accountData), Activity.MODE_PRIVATE).edit();
-                spEditor.putString(context.getString(R.string.student_name), studentName);
-                spEditor.apply();
+                PeriodGradeItem periodGradeItem = new PeriodGradeItem(termObj.getString("term"),
+                        termObj.getString("grade").equals("") ? "--" : termObj.getString("grade"), termObj.getString("mark"));
 
-                for (int i = 0; i < jsonData.length(); i++) {
+                if (dataMap.get(termObj.getString("name")) == null) {
 
-                    JSONObject termObj = jsonData.getJSONObject(i);
+                    ArrayList<PeriodGradeItem> periodGradeList = new ArrayList<>();
+                    periodGradeList.add(periodGradeItem);
 
-                    PeriodGradeItem periodGradeItem = new PeriodGradeItem(termObj.getString("term"),
-                            termObj.getString("grade").equals("")?"--":termObj.getString("grade"), termObj.getString("mark"));
-
-                    if (dataMap.get(termObj.getString("name")) == null) {
-
-                        ArrayList<PeriodGradeItem> periodGradeList = new ArrayList<>();
-                        periodGradeList.add(periodGradeItem);
-
-                        ArrayList<AssignmentItem> assignmentList = new ArrayList<>();
-                        JSONArray asmArray = termObj.getJSONArray("assignments");
-                        for (int j = 0; j < asmArray.length(); j++) {
-                            JSONObject asmObj = asmArray.getJSONObject(j);
-                            String[] dates = asmObj.getString("date").split("/");
-                            String date = dates[2] + "/" + dates[0] + "/" + dates[1];
-                            AssignmentItem assignmentItem = new AssignmentItem(asmObj.getString("assignment"),
-                                    date, asmObj.getString("grade").equals("")?"--":asmObj.getString("percent"),
-                                    asmObj.getString("score").endsWith("d")?context.getString(R.string.unpublished):asmObj.getString("score"),
-                                    asmObj.getString("grade").equals("")?"--":asmObj.getString("grade"), asmObj.getString("category"), termObj.getString("term"));
-                            assignmentList.add(assignmentItem);
-                        }
-                        MainListItem mainListItem = new MainListItem(termObj.getString("grade").equals("")?"--":termObj.getString("grade"),
-                                termObj.getString("mark"), termObj.getString("name"), termObj.getString("teacher"),
-                                termObj.getString("block"), termObj.getString("room"), termObj.getString("term"), periodGradeList, assignmentList);
-                        dataMap.put(termObj.getString("name"), mainListItem);
-
-                    } else {
-
-                        MainListItem mainListItem = dataMap.get(termObj.getString("name"));
-                        ArrayList<PeriodGradeItem> periodGradeList = mainListItem.getPeriodGradeItemArrayList();
-
-                        periodGradeList.add(periodGradeItem);
-                        ArrayList<AssignmentItem> assignmentList = mainListItem.getAssignmentItemArrayList();
-                        JSONArray asmArray = termObj.getJSONArray("assignments");
-                        for (int j = 0; j < asmArray.length(); j++) {
-                            JSONObject asmObj = asmArray.getJSONObject(j);
-                            String[] dates = asmObj.getString("date").split("/");
-                            String date = dates[2] + "/" + dates[0] + "/" + dates[1];
-                            AssignmentItem assignmentItem = new AssignmentItem(asmObj.getString("assignment"),
-                                    date, asmObj.getString("grade").equals("")?"--":asmObj.getString("percent"),
-                                    asmObj.getString("score").endsWith("d")?context.getString(R.string.unpublished):asmObj.getString("score"),
-                                    asmObj.getString("grade").equals("")?"--":asmObj.getString("grade"), asmObj.getString("category"), termObj.getString("term"));
-                            assignmentList.add(assignmentItem);
-                        }
-
-                        mainListItem.setPeriodGradeItemArrayList(periodGradeList);
-                        mainListItem.setAssignmentItemArrayList(assignmentList);
-                        dataMap.put(termObj.getString("name"), mainListItem);
+                    ArrayList<AssignmentItem> assignmentList = new ArrayList<>();
+                    JSONArray asmArray = termObj.getJSONArray("assignments");
+                    for (int j = 0; j < asmArray.length(); j++) {
+                        JSONObject asmObj = asmArray.getJSONObject(j);
+                        String[] dates = asmObj.getString("date").split("/");
+                        String date = dates[2] + "/" + dates[0] + "/" + dates[1];
+                        AssignmentItem assignmentItem = new AssignmentItem(asmObj.getString("assignment"),
+                                date, asmObj.getString("grade").equals("") ? "--" : asmObj.getString("percent"),
+                                asmObj.getString("score").endsWith("d") ? context.getString(R.string.unpublished) : asmObj.getString("score"),
+                                asmObj.getString("grade").equals("") ? "--" : asmObj.getString("grade"), asmObj.getString("category"), termObj.getString("term"));
+                        assignmentList.add(assignmentItem);
                     }
+                    MainListItem mainListItem = new MainListItem(termObj.getString("grade").equals("") ? "--" : termObj.getString("grade"),
+                            termObj.getString("mark"), termObj.getString("name"), termObj.getString("teacher"),
+                            termObj.getString("block"), termObj.getString("room"), termObj.getString("term"), periodGradeList, assignmentList);
+                    dataMap.put(termObj.getString("name"), mainListItem);
+
+                } else {
+
+                    MainListItem mainListItem = dataMap.get(termObj.getString("name"));
+                    ArrayList<PeriodGradeItem> periodGradeList = mainListItem.getPeriodGradeItemArrayList();
+
+                    periodGradeList.add(periodGradeItem);
+                    ArrayList<AssignmentItem> assignmentList = mainListItem.getAssignmentItemArrayList();
+                    JSONArray asmArray = termObj.getJSONArray("assignments");
+                    for (int j = 0; j < asmArray.length(); j++) {
+                        JSONObject asmObj = asmArray.getJSONObject(j);
+                        String[] dates = asmObj.getString("date").split("/");
+                        String date = dates[2] + "/" + dates[0] + "/" + dates[1];
+                        AssignmentItem assignmentItem = new AssignmentItem(asmObj.getString("assignment"),
+                                date, asmObj.getString("grade").equals("") ? "--" : asmObj.getString("percent"),
+                                asmObj.getString("score").endsWith("d") ? context.getString(R.string.unpublished) : asmObj.getString("score"),
+                                asmObj.getString("grade").equals("") ? "--" : asmObj.getString("grade"), asmObj.getString("category"), termObj.getString("term"));
+                        assignmentList.add(assignmentItem);
+                    }
+
+                    mainListItem.setPeriodGradeItemArrayList(periodGradeList);
+                    mainListItem.setAssignmentItemArrayList(assignmentList);
+                    dataMap.put(termObj.getString("name"), mainListItem);
                 }
-                ArrayList<MainListItem> dataList = new ArrayList<>();
-                dataList.addAll(dataMap.values());
-                Collections.sort(dataList, new Comparator<MainListItem>() {
-                    public int compare(MainListItem o1, MainListItem o2) {
-                        return o1.getBlockLetter().compareTo(o2.getBlockLetter());
-                    }
-                });
-                return dataList;
-
-            } catch (final JSONException e) {
-                e.printStackTrace();
             }
+            ArrayList<MainListItem> dataList = new ArrayList<>();
+            dataList.addAll(dataMap.values());
+            Collections.sort(dataList, new Comparator<MainListItem>() {
+                public int compare(MainListItem o1, MainListItem o2) {
+                    return o1.getBlockLetter().compareTo(o2.getBlockLetter());
+                }
+            });
+            return dataList;
 
-        } else Log.e("ParseJsonData", "Empty Json");
+        } catch (final JSONException e) {
+            e.printStackTrace();
+        }
 
         return null;
     }
