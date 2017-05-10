@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     android:id="@+id/main_coordinate_layout"
-    tools:context="carbonylgroup.com.schoolpower.activities.MainActivity">
+    tools:context="com.carbonylgroup.schoolpower.activities.MainActivity">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/main_app_bar"
