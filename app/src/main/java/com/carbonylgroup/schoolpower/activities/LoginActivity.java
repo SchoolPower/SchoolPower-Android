@@ -91,7 +91,7 @@ public class LoginActivity extends Activity {
                         if (message.contains(getString(R.string.error_wrong_password)))
                             showSnackBar(getString(R.string.wrong_password), true);
 
-                        else if (message.contains(getString(R.string.json_begin))) {
+                        else if (message.contains("[]")) {
                             SharedPreferences.Editor spEditor = getSharedPreferences(getString(R.string.accountData), Activity.MODE_PRIVATE).edit();
                             spEditor.putString(getString(R.string.token), encryptedArgument);
                             spEditor.putBoolean(getString(R.string.loggedIn), true);

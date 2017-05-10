@@ -248,6 +248,8 @@ public class Utils {
                 dataList.addAll(dataMap.values());
                 Collections.sort(dataList, new Comparator<MainListItem>() {
                     public int compare(MainListItem o1, MainListItem o2) {
+                        if(o1.getBlockLetter().equals("HR(1)")) return 1;
+                        if(o2.getBlockLetter().equals("HR(1)")) return -1;
                         return o1.getBlockLetter().compareTo(o2.getBlockLetter());
                     }
                 });
