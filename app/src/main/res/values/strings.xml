@@ -39,6 +39,5 @@
     <string name="json_begin">[{"</string>
 
     <string name="postURL">http://schoolpower.studio:8080/api/ps.php</string>
-    <string name="publicKeyURL">http://schoolpower.studio:8080/api/get_public_key.php</string>
     <string name="dataFileName">dataMap.json</string>
 </resources>

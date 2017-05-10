@@ -26,6 +26,12 @@ public class LoginActivity extends Activity {
 
     private Utils utils;
 
+    private static String publicKeyString = "" +
+            "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDtILvI2l7yH/9yn/qKmpbqGqSi" +
+            "sawP42X1Js4zykHgGdqSyQ4PsKEbEEWh8KLOdaCeBkxMRzqhKS3WLI78oKijNgg7" +
+            "6z0/jHJoCrOEJmCeWA2ugcgUOrw5i2siFHo/ogHQhtCf0fa1a+6PUjwOvhhaU4yW" +
+            "EXfsfWVY0iJA4qO58wIDAQAB";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -69,51 +75,39 @@ public class LoginActivity extends Activity {
         progressDialog.setMessage(getString(R.string.authenticating));
         progressDialog.show();
 
+        PublicKey publicKey = Utils.restorePublicKey(publicKeyString);
+
+        final String encryptedArgument = Utils.RSAEncode(publicKey, username + ";" + password);
+
         new Thread(new postData(
-                getString(R.string.publicKeyURL), "",
+                getString(R.string.postURL),
+                getString(R.string.argument_equals) + encryptedArgument,
                 new Handler() {
                     @Override
                     public void handleMessage(Message msg) {
 
+                        progressDialog.dismiss();
                         String message = msg.obj.toString();
+                        if (message.contains(getString(R.string.error_wrong_password)))
+                            showSnackBar(getString(R.string.wrong_password), true);
 
-                        if (!message.isEmpty()) {
-                            PublicKey publicKey = Utils.restorePublicKey(message);
+                        else if (message.contains(getString(R.string.json_begin))) {
+                            SharedPreferences.Editor spEditor = getSharedPreferences(getString(R.string.accountData), Activity.MODE_PRIVATE).edit();
+                            spEditor.putString(getString(R.string.token), encryptedArgument);
+                            spEditor.putBoolean(getString(R.string.loggedIn), true);
+                            spEditor.apply();
+                            try {
+                                utils.outputDataJson(message);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                            startMainActivity();
 
-                            final String encryptedArgument = Utils.RSAEncode(publicKey, username + ";" + password);
-
-                            new Thread(new postData(
-                                    getString(R.string.postURL),
-                                    getString(R.string.argument_equals) + encryptedArgument,
-                                    new Handler() {
-                                        @Override
-                                        public void handleMessage(Message msg) {
-
-                                            progressDialog.dismiss();
-                                            String message = msg.obj.toString();
-                                            if (message.contains(getString(R.string.error_wrong_password)))
-                                                showSnackBar(getString(R.string.wrong_password), true);
-
-                                            else if (message.contains(getString(R.string.json_begin))) {
-                                                SharedPreferences.Editor spEditor = getSharedPreferences(getString(R.string.accountData), Activity.MODE_PRIVATE).edit();
-                                                spEditor.putString(getString(R.string.token), encryptedArgument);
-                                                spEditor.putBoolean(getString(R.string.loggedIn), true);
-                                                spEditor.apply();
-                                                try {
-                                                    utils.outputDataJson(message);
-                                                } catch (Exception e) {
-                                                    e.printStackTrace();
-                                                }
-                                                startMainActivity();
-
-                                            } else
-                                                showSnackBar(getString(R.string.no_connection), true);
-                                        }
-                                    })).start();
-
-                        } else showSnackBar(getString(R.string.no_connection), true);
+                        } else
+                            showSnackBar(getString(R.string.no_connection), true);
                     }
                 })).start();
+
     }
 
     private void startMainActivity() {
