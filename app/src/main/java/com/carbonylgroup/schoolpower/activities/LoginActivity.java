@@ -26,7 +26,7 @@ public class LoginActivity extends Activity {
 
     private Utils utils;
 
-    private static String publicKeyString = "" +
+    private final static String publicKeyString = "" +
             "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDtILvI2l7yH/9yn/qKmpbqGqSi" +
             "sawP42X1Js4zykHgGdqSyQ4PsKEbEEWh8KLOdaCeBkxMRzqhKS3WLI78oKijNgg7" +
             "6z0/jHJoCrOEJmCeWA2ugcgUOrw5i2siFHo/ogHQhtCf0fa1a+6PUjwOvhhaU4yW" +
@@ -97,7 +97,7 @@ public class LoginActivity extends Activity {
                             spEditor.putBoolean(getString(R.string.loggedIn), true);
                             spEditor.apply();
                             try {
-                                utils.outputDataJson(message);
+                                utils.saveDataJson(message);
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }

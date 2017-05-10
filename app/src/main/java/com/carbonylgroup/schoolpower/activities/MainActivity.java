@@ -241,16 +241,17 @@ public class MainActivity extends TransitionHelper.MainActivity
                     @Override
                     public void handleMessage(Message msg) {
 
-                        String jsonStr = msg.obj.toString().isEmpty() ? "" : msg.obj.toString();
-                        if (!jsonStr.equals("")) {
+                        String jsonStr = msg.obj.toString();
+                        if (!jsonStr.isEmpty()) {
                             try {
-                                utils.outputDataJson(jsonStr);
+                                utils.saveDataJson(jsonStr);
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
                             dataList = utils.parseJsonResult(jsonStr);
                             homeFragment.refreshAdapter();
                         }
+
                     }
                 })).start();
 

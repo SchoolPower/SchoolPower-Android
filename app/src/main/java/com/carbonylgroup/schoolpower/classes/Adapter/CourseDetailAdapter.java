@@ -47,6 +47,7 @@ public class CourseDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         this.context = context;
         utils = new Utils(context);
         initTermList();
+
     }
 
     @Override

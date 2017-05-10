@@ -16,6 +16,7 @@ import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -116,11 +117,12 @@ public class Utils {
         return parseJsonResult(new String(data));
     }
 
-    public void outputDataJson(String _jsonStr) throws Exception {
+    public void saveDataJson(String jsonStr) throws IOException {
 
         FileOutputStream outputStream = context.openFileOutput(context.getString(R.string.dataFileName), Context.MODE_PRIVATE);
-        outputStream.write(_jsonStr.getBytes());
+        outputStream.write(jsonStr.getBytes());
         outputStream.close();
+
     }
 
     public static PublicKey restorePublicKey(String key) {
@@ -130,7 +132,7 @@ public class Utils {
         byte[] decoded = Base64.decode(publicKeyPEM,Base64.DEFAULT);
         X509EncodedKeySpec x509EncodedKeySpec = new X509EncodedKeySpec(decoded);
         try {
-            KeyFactory factory = KeyFactory.getInstance(ALGORITHM);
+            KeyFactory factory = KeyFactory.getInstance("RSA");
             return factory.generatePublic(x509EncodedKeySpec);
         } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
             e.printStackTrace();
@@ -180,7 +182,6 @@ public class Utils {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         finally {
             try {
                 if (out != null) out.close();
@@ -192,7 +193,7 @@ public class Utils {
         return result;
     }
 
-    public ArrayList<MainListItem>  parseJsonResult(String jsonStr) {
+    public ArrayList<MainListItem> parseJsonResult(String jsonStr) {
 
         if (!jsonStr.equals("")) {
 
