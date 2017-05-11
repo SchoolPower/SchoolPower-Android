@@ -31,6 +31,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Objects;
 
 import com.carbonylgroup.schoolpower.R;
 import com.carbonylgroup.schoolpower.classes.ListItems.AssignmentItem;
@@ -243,7 +244,7 @@ public class MainActivity extends TransitionHelper.MainActivity
     }
 
     /* Other Method */
-    public  ArrayList<MainListItem> getDataList(){
+    public ArrayList<MainListItem> getDataList() {
         return dataList;
     }
 
@@ -264,7 +265,7 @@ public class MainActivity extends TransitionHelper.MainActivity
                         spEditor.putString(getString(R.string.student_name), messages[1]);
                         spEditor.apply();
 
-                        if (messages.length==3 && !messages[2].isEmpty()) {
+                        if (messages.length == 3 && !messages[2].isEmpty()) {
                             String jsonStr = messages[2];
                             try {
                                 utils.saveDataJson(jsonStr);
@@ -273,23 +274,28 @@ public class MainActivity extends TransitionHelper.MainActivity
                             }
                             dataList = utils.parseJsonResult(jsonStr);
 
+                            if (oldMainItemList.size() != 0) {
+                                for (int i = 0; i < dataList.size(); i++) {
+                                    Collection<AssignmentItem> newAssignmentListCollection = dataList.get(i).getAssignmentItemArrayList();
+                                    Collection<AssignmentItem> oldAssignmentListCollection = oldMainItemList.get(i).getAssignmentItemArrayList();
+                                    for (AssignmentItem item : newAssignmentListCollection) {
+                                        boolean found=false;
+                                        for (AssignmentItem item2 : oldAssignmentListCollection) {
+                                            if(Objects.equals(item2.getAssignmentTitle(), item.getAssignmentTitle())&&
+                                                    Objects.equals(item2.getAssignmentDividedScore(), item.getAssignmentDividedScore()))
+                                                found=true;
+                                        }
+                                        if(!found)
+                                            item.setAsNewItem(true);
+                                    }
+                                }
+                            }
+
                             homeFragment.refreshAdapter();
                         }
 
                     }
                 })).start();
-
-        for (int i = 0; i < dataList.size(); i++) {
-
-            Collection<AssignmentItem> oldAssignmentListCollection = oldMainItemList.get(i).getAssignmentItemArrayList();
-            Collection<AssignmentItem> newAssignmentListCollection = dataList.get(i).getAssignmentItemArrayList();
-            newAssignmentListCollection.removeAll(oldAssignmentListCollection);
-            for (AssignmentItem item : newAssignmentListCollection) item.setAsNewItem(true);
-            oldAssignmentListCollection.addAll(newAssignmentListCollection);
-            ArrayList<AssignmentItem> finalList = new ArrayList<>();
-            finalList.addAll(oldAssignmentListCollection);
-            dataList.get(i).setAssignmentItemArrayList(finalList);
-        }
     }
 
     private void SignOut() {
