@@ -64,7 +64,7 @@ public class CourseDetailFragment extends TransitionHelper.BaseFragment {
 
             course_detail_recycler = (RecyclerView) view.findViewById(R.id.course_detail_recycler);
             try {
-                if (utils.inputDataArrayList() != null) dataList = utils.inputDataArrayList();
+                if (utils.readDataArrayList() != null) dataList = utils.readDataArrayList();
             } catch (Exception e){
                 e.printStackTrace();
             }

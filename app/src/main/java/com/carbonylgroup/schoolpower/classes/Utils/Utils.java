@@ -105,8 +105,8 @@ public class Utils {
         return context.getResources().getColor(gradeDarkColorIdsPlain[flag]);
     }
 
-    public ArrayList<MainListItem> inputDataArrayList() throws IOException {
-        StringBuffer data = new StringBuffer("");
+    public ArrayList<MainListItem> readDataArrayList() throws IOException {
+        StringBuilder data = new StringBuilder("");
         FileInputStream inputStream = context.openFileInput(context.getString(R.string.dataFileName));
         InputStreamReader isr = new InputStreamReader(inputStream);
         BufferedReader buffReader = new BufferedReader(isr);
