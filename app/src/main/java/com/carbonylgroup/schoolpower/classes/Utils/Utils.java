@@ -198,7 +198,6 @@ public class Utils {
     }
 
     public ArrayList<MainListItem> parseJsonResult(String jsonStr) {
-
         try {
             JSONArray jsonData = new JSONArray(jsonStr);
             HashMap<String, MainListItem> dataMap = new HashMap<>();

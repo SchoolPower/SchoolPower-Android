@@ -21,6 +21,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.graphics.drawable.DrawerArrowDrawable;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.MenuItem;
 import android.view.Window;
@@ -249,22 +250,22 @@ public class MainActivity extends TransitionHelper.MainActivity
     public void initDataJson() {
 
         final ArrayList<MainListItem> oldMainItemList = new ArrayList<>();
-        if(dataList!=null) oldMainItemList.addAll(dataList);
+        oldMainItemList.addAll(dataList);
         String token = getSharedPreferences("accountData", Activity.MODE_PRIVATE).getString("token", "");
 
         new Thread(new postData(
-                getString(R.string.postURL), "argument=" + token,
+                getString(R.string.postURL), getString(R.string.token_equals) + token,
                 new Handler() {
                     @Override
                     public void handleMessage(Message msg) {
                         String[] messages = msg.obj.toString().split("\n");
 
                         SharedPreferences.Editor spEditor = getSharedPreferences(getString(R.string.accountData), Activity.MODE_PRIVATE).edit();
-                        spEditor.putString(getString(R.string.student_name), messages[0]);
+                        spEditor.putString(getString(R.string.student_name), messages[1]);
                         spEditor.apply();
 
-                        if (messages.length==2 && !messages[1].isEmpty()) {
-                            String jsonStr = messages[1];
+                        if (messages.length==2 && !messages[2].isEmpty()) {
+                            String jsonStr = messages[2];
                             try {
                                 utils.saveDataJson(jsonStr);
                             } catch (Exception e) {
@@ -272,25 +273,23 @@ public class MainActivity extends TransitionHelper.MainActivity
                             }
                             dataList = utils.parseJsonResult(jsonStr);
 
-                            for (int i = 0; i < dataList.size(); i++) {
-
-                                Collection<AssignmentItem> oldAssignmentListCollection = oldMainItemList.get(i).getAssignmentItemArrayList();
-                                Collection<AssignmentItem> newAssignmentListCollection = dataList.get(i).getAssignmentItemArrayList();
-                                newAssignmentListCollection.removeAll(oldAssignmentListCollection);
-                                for (AssignmentItem item : newAssignmentListCollection) item.setAsNewItem(true);
-                                oldAssignmentListCollection.addAll(newAssignmentListCollection);
-                                ArrayList<AssignmentItem> finalList = new ArrayList<>();
-                                finalList.addAll(oldAssignmentListCollection);
-                                dataList.get(i).setAssignmentItemArrayList(finalList);
-                            }
-
-
+                            homeFragment.refreshAdapter();
                         }
 
                     }
                 })).start();
 
-        homeFragment.refreshAdapter();
+        for (int i = 0; i < dataList.size(); i++) {
+
+            Collection<AssignmentItem> oldAssignmentListCollection = oldMainItemList.get(i).getAssignmentItemArrayList();
+            Collection<AssignmentItem> newAssignmentListCollection = dataList.get(i).getAssignmentItemArrayList();
+            newAssignmentListCollection.removeAll(oldAssignmentListCollection);
+            for (AssignmentItem item : newAssignmentListCollection) item.setAsNewItem(true);
+            oldAssignmentListCollection.addAll(newAssignmentListCollection);
+            ArrayList<AssignmentItem> finalList = new ArrayList<>();
+            finalList.addAll(oldAssignmentListCollection);
+            dataList.get(i).setAssignmentItemArrayList(finalList);
+        }
     }
 
     private void SignOut() {
