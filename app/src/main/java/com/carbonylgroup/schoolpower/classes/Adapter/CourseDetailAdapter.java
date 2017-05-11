@@ -6,6 +6,7 @@ package com.carbonylgroup.schoolpower.classes.Adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -223,18 +224,20 @@ public class CourseDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
         if (twoTerms) {
             String[] terms = term.split("&");
-            for (int i = 0; i < allAssignments.size(); i++)
+            for (int i = 0; i < allAssignments.size(); i++) {
                 if (allAssignments.get(i).getAssignmentTerm().equals(terms[0]) || allAssignments.get(i).getAssignmentTerm().equals(terms[1]))
                     assignmentItemList.add(allAssignments.get(i));
+            }
 
         } else for (int i = 0; i < allAssignments.size(); i++)
             if (allAssignments.get(i).getAssignmentTerm().equals(term))
                 assignmentItemList.add(allAssignments.get(i));
+
     }
 
     private void setAllTerms(ArrayList termsList) {
-
-        if (termsList.contains("S1") && termsList.contains("S2")) setTerm("S1&S2", true);
+        if (termsList.contains("Y1")) setTerm("Y1", false);
+        else if (termsList.contains("S1") && termsList.contains("S2")) setTerm("S1&S2", true);
         else if (termsList.contains("S1")) setTerm("S1", false);
         else if (termsList.contains("S2")) setTerm("S2", false);
         else setTerm(termsList.get(1).toString(), false);

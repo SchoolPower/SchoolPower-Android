@@ -4,6 +4,8 @@
 
 package com.carbonylgroup.schoolpower.classes.ListItems;
 
+import android.util.Log;
+
 import java.io.Serializable;
 
 public class AssignmentItem implements Serializable {
