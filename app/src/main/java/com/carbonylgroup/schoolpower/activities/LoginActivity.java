@@ -81,7 +81,7 @@ public class LoginActivity extends Activity {
 
         new Thread(new postData(
                 getString(R.string.postURL),
-                getString(R.string.token_equals) + encryptedArgument,
+                getString(R.string.token_equals) + encryptedArgument + "&filter=",
                 new Handler() {
                     @Override
                     public void handleMessage(Message msg) {
@@ -93,7 +93,7 @@ public class LoginActivity extends Activity {
                         if (srcMessage.contains(getString(R.string.error_wrong_password)))
                             showSnackBar(getString(R.string.wrong_password), true);
 
-                        else if (srcMessage.contains(getString(R.string.json_begin))) {
+                        else if (srcMessage.contains("[]")) {
                             String json=messages[2];
                             SharedPreferences.Editor spEditor = getSharedPreferences(getString(R.string.accountData), Activity.MODE_PRIVATE).edit();
                             spEditor.putString(getString(R.string.token), encryptedArgument);

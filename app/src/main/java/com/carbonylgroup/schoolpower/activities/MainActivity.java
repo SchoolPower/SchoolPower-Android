@@ -264,7 +264,7 @@ public class MainActivity extends TransitionHelper.MainActivity
                         spEditor.putString(getString(R.string.student_name), messages[1]);
                         spEditor.apply();
 
-                        if (messages.length==2 && !messages[2].isEmpty()) {
+                        if (messages.length==3 && !messages[2].isEmpty()) {
                             String jsonStr = messages[2];
                             try {
                                 utils.saveDataJson(jsonStr);
