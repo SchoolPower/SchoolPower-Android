@@ -285,13 +285,12 @@ public class MainActivity extends TransitionHelper.MainActivity
                                                     Objects.equals(item2.getAssignmentDividedScore(), item.getAssignmentDividedScore()))
                                                 found=true;
                                         }
-                                        if(!found)
-                                            item.setAsNewItem(true);
+                                        if(!found) item.setAsNewItem(true);
                                     }
                                 }
                             }
 
-                            homeFragment.refreshAdapter();
+                            homeFragment.refreshAdapter(dataList);
                         }
 
                     }

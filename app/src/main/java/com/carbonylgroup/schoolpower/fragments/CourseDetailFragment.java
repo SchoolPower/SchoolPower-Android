@@ -63,11 +63,7 @@ public class CourseDetailFragment extends TransitionHelper.BaseFragment {
             MainActivity.of(getActivity()).setToolBarColor(utils.getColorByLetterGrade(getActivity(), itemToPresent.getLetterGrade()), true);
 
             course_detail_recycler = (RecyclerView) view.findViewById(R.id.course_detail_recycler);
-            try {
-                if (utils.readDataArrayList() != null) dataList = utils.readDataArrayList();
-            } catch (Exception e){
-                e.printStackTrace();
-            }
+            dataList = MainActivity.of(getActivity()).getDataList();
             LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
             CourseDetailAdapter adapter = new CourseDetailAdapter(getActivity(), dataList.get(transformedPosition));
             course_detail_recycler.setLayoutManager(layoutManager);

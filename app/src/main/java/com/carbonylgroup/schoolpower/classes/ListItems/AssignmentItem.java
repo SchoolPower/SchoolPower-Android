@@ -10,7 +10,7 @@ import java.io.Serializable;
 
 public class AssignmentItem implements Serializable {
 
-    private String assignmentTitle;
+    public String assignmentTitle;
     private String assignmentDate;
     private String assignmentPercentage;
     private String assignmentDividedScore;
