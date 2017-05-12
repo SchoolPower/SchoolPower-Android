@@ -31,6 +31,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Objects;
 
 import com.carbonylgroup.schoolpower.R;
 import com.carbonylgroup.schoolpower.classes.ListItems.AssignmentItem;
@@ -113,7 +114,7 @@ public class MainActivity extends TransitionHelper.MainActivity
         toggleIcon = new DrawerArrowDrawable(this);
 
         try {
-            ArrayList<MainListItem> input = utils.inputDataArrayList();
+            ArrayList<MainListItem> input = utils.readDataArrayList();
             if (input != null) dataList = input;
         } catch (Exception e) {
             e.printStackTrace();
@@ -243,29 +244,29 @@ public class MainActivity extends TransitionHelper.MainActivity
     }
 
     /* Other Method */
-    public  ArrayList<MainListItem> getDataList(){
+    public ArrayList<MainListItem> getDataList() {
         return dataList;
     }
 
     public void initDataJson() {
 
         final ArrayList<MainListItem> oldMainItemList = new ArrayList<>();
-        if(dataList!=null) oldMainItemList.addAll(dataList);
+        oldMainItemList.addAll(dataList);
         String token = getSharedPreferences("accountData", Activity.MODE_PRIVATE).getString("token", "");
 
         new Thread(new postData(
-                getString(R.string.postURL), "argument=" + token,
+                getString(R.string.postURL), getString(R.string.token_equals) + token,
                 new Handler() {
                     @Override
                     public void handleMessage(Message msg) {
                         String[] messages = msg.obj.toString().split("\n");
 
                         SharedPreferences.Editor spEditor = getSharedPreferences(getString(R.string.accountData), Activity.MODE_PRIVATE).edit();
-                        spEditor.putString(getString(R.string.student_name), messages[0]);
+                        spEditor.putString(getString(R.string.student_name), messages[1]);
                         spEditor.apply();
 
-                        if (messages.length==2 && !messages[1].isEmpty()) {
-                            String jsonStr = messages[1];
+                        if (messages.length == 3 && !messages[2].isEmpty()) {
+                            String jsonStr = messages[2];
                             try {
                                 utils.saveDataJson(jsonStr);
                             } catch (Exception e) {
@@ -273,25 +274,27 @@ public class MainActivity extends TransitionHelper.MainActivity
                             }
                             dataList = utils.parseJsonResult(jsonStr);
 
-                            for (int i = 0; i < dataList.size(); i++) {
-
-                                Collection<AssignmentItem> oldAssignmentListCollection = oldMainItemList.get(i).getAssignmentItemArrayList();
-                                Collection<AssignmentItem> newAssignmentListCollection = dataList.get(i).getAssignmentItemArrayList();
-                                newAssignmentListCollection.removeAll(oldAssignmentListCollection);
-                                for (AssignmentItem item : newAssignmentListCollection) item.setAsNewItem(true);
-                                oldAssignmentListCollection.addAll(newAssignmentListCollection);
-                                ArrayList<AssignmentItem> finalList = new ArrayList<>();
-                                finalList.addAll(oldAssignmentListCollection);
-                                dataList.get(i).setAssignmentItemArrayList(finalList);
+                            if (oldMainItemList.size() != 0) {
+                                for (int i = 0; i < dataList.size(); i++) {
+                                    Collection<AssignmentItem> newAssignmentListCollection = dataList.get(i).getAssignmentItemArrayList();
+                                    Collection<AssignmentItem> oldAssignmentListCollection = oldMainItemList.get(i).getAssignmentItemArrayList();
+                                    for (AssignmentItem item : newAssignmentListCollection) {
+                                        boolean found=false;
+                                        for (AssignmentItem item2 : oldAssignmentListCollection) {
+                                            if(Objects.equals(item2.getAssignmentTitle(), item.getAssignmentTitle())&&
+                                                    Objects.equals(item2.getAssignmentDividedScore(), item.getAssignmentDividedScore()))
+                                                found=true;
+                                        }
+                                        if(!found) item.setAsNewItem(true);
+                                    }
+                                }
                             }
 
-
+                            homeFragment.refreshAdapter(dataList);
                         }
 
                     }
                 })).start();
-
-        homeFragment.refreshAdapter();
     }
 
     private void SignOut() {

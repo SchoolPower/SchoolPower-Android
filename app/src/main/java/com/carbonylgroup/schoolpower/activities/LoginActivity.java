@@ -87,17 +87,20 @@ public class LoginActivity extends Activity {
                     public void handleMessage(Message msg) {
 
                         progressDialog.dismiss();
-                        String message = msg.obj.toString();
-                        if (message.contains(getString(R.string.error_wrong_password)))
+                        String srcMessage=msg.obj.toString();
+                        String[] messages = srcMessage.split("\n");
+
+                        if (srcMessage.contains(getString(R.string.error_wrong_password)))
                             showSnackBar(getString(R.string.wrong_password), true);
 
-                        else if (message.contains("[]")) {
+                        else if (srcMessage.contains("[]")) {
+                            String json=messages[2];
                             SharedPreferences.Editor spEditor = getSharedPreferences(getString(R.string.accountData), Activity.MODE_PRIVATE).edit();
                             spEditor.putString(getString(R.string.token), encryptedArgument);
                             spEditor.putBoolean(getString(R.string.loggedIn), true);
                             spEditor.apply();
                             try {
-                                utils.saveDataJson(message);
+                                utils.saveDataJson(json);
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }

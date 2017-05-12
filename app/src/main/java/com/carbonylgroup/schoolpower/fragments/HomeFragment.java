@@ -125,9 +125,9 @@ public class HomeFragment extends TransitionHelper.BaseFragment {
         theListView.setAdapter(adapter);
     }
 
-    public void refreshAdapter() {
+    public void refreshAdapter(ArrayList<MainListItem> newDataList) {
 
-        adapter.setMainListItems(dataList);
+        adapter.setMainListItems(newDataList);
         adapter.notifyDataSetChanged();
         showSnackBar(getActivity().getString(R.string.data_updated));
         home_swipe_refresh_layout.setRefreshing(false);
