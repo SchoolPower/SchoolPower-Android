@@ -154,7 +154,7 @@ public class MainActivity extends TransitionHelper.MainActivity
         toggle.syncState();
 
         TextView drawer_username = (TextView) drawer.findViewById(R.id.nav_header_username);
-//        drawer_username.setText("FUCK YOU");
+        //drawer_username.setText();
     }
 
     /* Fragments Handler */
@@ -167,7 +167,7 @@ public class MainActivity extends TransitionHelper.MainActivity
 
             case R.id.nav_dashboard:
 
-                if (homeFragment == null) homeFragment = new HomeFragment();
+                homeFragment = new HomeFragment();
                 transaction.replace(R.id.content_view, homeFragment);
                 presentFragment = 0;
                 break;
@@ -282,7 +282,7 @@ public class MainActivity extends TransitionHelper.MainActivity
 
                                     if(periods.size()!=oldPeriods.size()) break;
 
-                                    for(int j=0;j< periods.size();j++) {
+                                    for(int j=0; j < periods.size(); j++) {
                                         Collection<AssignmentItem> newAssignmentListCollection = periods.get(j).getAssignmentItemArrayList();
                                         Collection<AssignmentItem> oldAssignmentListCollection = oldPeriods.get(j).getAssignmentItemArrayList();
                                         for (AssignmentItem item : newAssignmentListCollection) {
@@ -300,6 +300,7 @@ public class MainActivity extends TransitionHelper.MainActivity
                             }
 
                             homeFragment.refreshAdapter(dataList);
+                            if(oldMainItemList.size()==0) setDefaultFragment();
                         }
 
                     }
