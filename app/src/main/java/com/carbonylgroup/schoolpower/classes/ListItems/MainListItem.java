@@ -10,92 +10,63 @@ import java.util.ArrayList;
 
 public class MainListItem implements Serializable {
 
-    private String letterGrade;
-    private String percentageGrade;
-    private String subjectTitle;
-    private String teacherName;
-    private String blockLetter;
-    private String roomNumber;
-    private String termNumber;
+    private final String subjectTitle;
+    private final String teacherName;
+    private final String blockLetter;
+    private final String roomNumber;
     private ArrayList<PeriodGradeItem> periodGradeItemArrayList;
-    private ArrayList<AssignmentItem> assignmentItemArrayList;
 
+    public MainListItem(String _subjectTitle, String _teacherName, String _blockLetter,
+                        String _roomNumber, ArrayList<PeriodGradeItem> _periodGradeItemArrayList) {
 
-    public MainListItem(String _letterGrade, String _percentageGrade, String _subjectTitle, String _teacherName,
-                        String _blockLetter, String _roomNumber, String _termNumber, ArrayList _periodGradeItemArrayList, ArrayList _assignmentItemArrayList) {
-
-        this.letterGrade = _letterGrade;
-        this.percentageGrade = _percentageGrade;
         this.subjectTitle = _subjectTitle;
         this.teacherName = _teacherName;
         this.blockLetter = _blockLetter;
         this.roomNumber = _roomNumber;
-        this.termNumber = _termNumber;
         this.periodGradeItemArrayList = _periodGradeItemArrayList;
-        this.assignmentItemArrayList = _assignmentItemArrayList;
+
     }
 
     public String getLetterGrade() {
-        return letterGrade;
-    }
-
-    public void setLetterGrade(String _letterGrade) {
-        this.letterGrade = _letterGrade;
+        // Use the grade of the last available term.
+        return periodGradeItemArrayList.get(periodGradeItemArrayList.size()-1).getTermLetterGrade();
     }
 
     public String getPercentageGrade() {
-        return percentageGrade;
-    }
-
-    public void setPercentageGrade(String _percentageGrade) {
-        this.percentageGrade = _percentageGrade;
+        // Use the grade of the last available term.
+        return periodGradeItemArrayList.get(periodGradeItemArrayList.size()-1).getTermPercentageGrade();
     }
 
     public String getSubjectTitle() {
         return subjectTitle;
     }
 
-    public void setSubjectTitle(String _subjectTitle) {
-        this.subjectTitle = _subjectTitle;
-    }
-
     public String getTeacherName() {
         return teacherName;
-    }
-
-    public void setTeacherName(String _teacherName) {
-        this.teacherName = _teacherName;
     }
 
     public String getBlockLetter() {
         return blockLetter;
     }
 
-    public void setBlockLetter(String _blockLetter) {
-        this.blockLetter = _blockLetter;
-    }
-
     public String getRoomNumber() {
         return roomNumber;
-    }
-
-    public String getTermNumber() {
-        return termNumber;
     }
 
     public ArrayList<PeriodGradeItem> getPeriodGradeItemArrayList() {
         return periodGradeItemArrayList;
     }
 
-    public void setPeriodGradeItemArrayList(ArrayList<PeriodGradeItem> _periodGradeItemArrayList) {
-        this.periodGradeItemArrayList = _periodGradeItemArrayList;
+    public ArrayList<AssignmentItem> getAssignmentItemArrayList(String term) {
+        for (PeriodGradeItem periodGradeItem : periodGradeItemArrayList) {
+            if(term.equals(periodGradeItem.getTermIndicator())){
+                return periodGradeItem.getAssignmentItemArrayList();
+            }
+        }
+        return null;
     }
 
-    public ArrayList<AssignmentItem> getAssignmentItemArrayList() {
-        return assignmentItemArrayList;
-    }
-
-    public void setAssignmentItemArrayList(ArrayList<AssignmentItem> _assignmentItemArrayList) {
-        this.assignmentItemArrayList = _assignmentItemArrayList;
+    public void addPeriodGradeItem(PeriodGradeItem pgi) {
+        periodGradeItemArrayList.add(pgi);
     }
 }
