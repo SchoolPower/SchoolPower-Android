@@ -206,44 +206,41 @@ public class Utils {
 
                 JSONObject termObj = jsonData.getJSONObject(i);
 
-                PeriodGradeItem periodGradeItem = new PeriodGradeItem(termObj.getString("term"),
-                        termObj.getString("grade").equals("") ? "--" : termObj.getString("grade"), termObj.getString("mark"));
-
+                // Turns assignments into an ArrayList
                 ArrayList<AssignmentItem> assignmentList = new ArrayList<>();
                 JSONArray asmArray = termObj.getJSONArray("assignments");
                 for (int j = 0; j < asmArray.length(); j++) {
                     JSONObject asmObj = asmArray.getJSONObject(j);
                     String[] dates = asmObj.getString("date").split("/");
                     String date = dates[2] + "/" + dates[0] + "/" + dates[1];
-                    AssignmentItem assignmentItem = new AssignmentItem(asmObj.getString("assignment"),
-
+                    assignmentList.add(new AssignmentItem(asmObj.getString("assignment"),
                             date, asmObj.getString("grade").equals("") ? "--" : asmObj.getString("percent"),
                             asmObj.getString("score").endsWith("d") ? context.getString(R.string.unpublished) : asmObj.getString("score"),
-                            asmObj.getString("grade").equals("") ? "--" : asmObj.getString("grade"), asmObj.getString("category"), termObj.getString("term"));
-                    assignmentList.add(assignmentItem);
+                            asmObj.getString("grade").equals("") ? "--" : asmObj.getString("grade"), asmObj.getString("category"), termObj.getString("term")));
                 }
 
-                if (dataMap.get(termObj.getString("name")) == null) {
+                PeriodGradeItem periodGradeItem = new PeriodGradeItem(termObj.getString("term"),
+                        termObj.getString("grade").equals("") ? "--" : termObj.getString("grade"), termObj.getString("mark"), assignmentList);
+
+                // Put the term data into the course data, either already exists or be going to be created.
+                if (dataMap.get(termObj.getString("name")) == null) { // The course data does not exist yet.
 
                     ArrayList<PeriodGradeItem> periodGradeList = new ArrayList<>();
                     periodGradeList.add(periodGradeItem);
 
-                    MainListItem mainListItem = new MainListItem(termObj.getString("grade").equals("") ? "--" : termObj.getString("grade"),
-                            termObj.getString("mark"), termObj.getString("name"), termObj.getString("teacher"),
-                            termObj.getString("block"), termObj.getString("room"), termObj.getString("term"), periodGradeList, assignmentList);
-                    dataMap.put(termObj.getString("name"), mainListItem);
+                    dataMap.put(termObj.getString("name"),
+                            new MainListItem(termObj.getString("name"), termObj.getString("teacher"),
+                            termObj.getString("block"), termObj.getString("room"), periodGradeList));
 
-                } else {
+                } else { // Already exist. Just insert into it.
 
                     MainListItem mainListItem = dataMap.get(termObj.getString("name"));
-                    ArrayList<PeriodGradeItem> periodGradeList = mainListItem.getPeriodGradeItemArrayList();
-                    periodGradeList.add(periodGradeItem);
+                    mainListItem.addPeriodGradeItem(periodGradeItem);
 
-                    mainListItem.setPeriodGradeItemArrayList(periodGradeList);
-                    mainListItem.setAssignmentItemArrayList(assignmentList);
-                    dataMap.put(termObj.getString("name"), mainListItem);
                 }
             }
+
+            // Convert from HashMap to ArrayList
             ArrayList<MainListItem> dataList = new ArrayList<>();
             dataList.addAll(dataMap.values());
             Collections.sort(dataList, new Comparator<MainListItem>() {

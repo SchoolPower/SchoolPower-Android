@@ -101,16 +101,6 @@
                                 android:textColor="@color/text_primary_black"
                                 android:textSize="13sp" />
 
-                            <TextView
-                                android:id="@+id/detail_header_term_tv"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="15dp"
-                                android:layout_toRightOf="@id/detail_header_room_tv"
-                                android:text="Term S1"
-                                android:textColor="@color/text_primary_black"
-                                android:textSize="13sp" />
-
                         </RelativeLayout>
 
                     </RelativeLayout>

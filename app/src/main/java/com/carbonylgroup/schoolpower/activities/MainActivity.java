@@ -35,6 +35,7 @@ import java.util.Objects;
 
 import com.carbonylgroup.schoolpower.R;
 import com.carbonylgroup.schoolpower.classes.ListItems.AssignmentItem;
+import com.carbonylgroup.schoolpower.classes.ListItems.PeriodGradeItem;
 import com.carbonylgroup.schoolpower.classes.Transition.DetailsTransition;
 import com.carbonylgroup.schoolpower.classes.ListItems.MainListItem;
 import com.carbonylgroup.schoolpower.classes.Transition.TransitionHelper;
@@ -274,18 +275,26 @@ public class MainActivity extends TransitionHelper.MainActivity
                             }
                             dataList = utils.parseJsonResult(jsonStr);
 
-                            if (oldMainItemList.size() != 0) {
+                            if (dataList.size()==oldMainItemList.size()) {
                                 for (int i = 0; i < dataList.size(); i++) {
-                                    Collection<AssignmentItem> newAssignmentListCollection = dataList.get(i).getAssignmentItemArrayList();
-                                    Collection<AssignmentItem> oldAssignmentListCollection = oldMainItemList.get(i).getAssignmentItemArrayList();
-                                    for (AssignmentItem item : newAssignmentListCollection) {
-                                        boolean found=false;
-                                        for (AssignmentItem item2 : oldAssignmentListCollection) {
-                                            if(Objects.equals(item2.getAssignmentTitle(), item.getAssignmentTitle())&&
-                                                    Objects.equals(item2.getAssignmentDividedScore(), item.getAssignmentDividedScore()))
-                                                found=true;
+                                    ArrayList<PeriodGradeItem> periods=dataList.get(i).getPeriodGradeItemArrayList();
+                                    ArrayList<PeriodGradeItem> oldPeriods=oldMainItemList.get(i).getPeriodGradeItemArrayList();
+
+                                    if(periods.size()!=oldPeriods.size()) break;
+
+                                    for(int j=0;j< periods.size();j++) {
+                                        Collection<AssignmentItem> newAssignmentListCollection = periods.get(j).getAssignmentItemArrayList();
+                                        Collection<AssignmentItem> oldAssignmentListCollection = oldPeriods.get(j).getAssignmentItemArrayList();
+                                        for (AssignmentItem item : newAssignmentListCollection) {
+                                            boolean found = false;
+                                            for (AssignmentItem item2 : oldAssignmentListCollection) {
+                                                if (Objects.equals(item2.getAssignmentTitle(), item.getAssignmentTitle()) &&
+                                                        Objects.equals(item2.getAssignmentDividedScore(), item.getAssignmentDividedScore()) &&
+                                                        Objects.equals(item2.getAssignmentDate(), item.getAssignmentDate()))
+                                                    found = true;
+                                            }
+                                            if (!found) item.setAsNewItem(true);
                                         }
-                                        if(!found) item.setAsNewItem(true);
                                     }
                                 }
                             }

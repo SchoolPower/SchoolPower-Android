@@ -89,7 +89,6 @@ public class CourseDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 normalViewHolder.detail_assignment_date_tv.setText(assignmentItem.getAssignmentDate());
                 normalViewHolder.detail_assignment_percentage_tv.setText(assignmentItem.getAssignmentPercentage());
                 normalViewHolder.detail_assignment_dividing_score_tv.setText(assignmentItem.getAssignmentDividedScore());
-                Log.d("[][][", String.valueOf(assignmentItem.isNew()));
                 if(assignmentItem.isNew()) normalViewHolder.detail_assignment_grade_background.setBackgroundColor(context.getResources().getColor(R.color.accent));
                 else normalViewHolder.detail_assignment_grade_background.setBackgroundColor(utils.getColorByLetterGrade(context, assignmentItem.getAssignmentGrade()));
 
@@ -103,7 +102,6 @@ public class CourseDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 headerViewHolder.detail_header_teacher_name_tv.setText(item.getTeacherName());
                 headerViewHolder.detail_header_block_tv.setText(context.getString(R.string.block) + " " + item.getBlockLetter());
                 headerViewHolder.detail_header_room_tv.setText(context.getString(R.string.room) + " " + item.getRoomNumber());
-                headerViewHolder.detail_header_term_tv.setText(context.getString(R.string.term) + " " + item.getTermNumber());
                 headerViewHolder.detail_header_grade_background.setBackgroundColor(utils.getColorByLetterGrade(context, item.getLetterGrade()));
                 headerViewHolder.detail_term_select_spinner.setAdapter(termAdapter);
                 headerViewHolder.detail_term_select_spinner.setSelection(presentingTermPos);
@@ -116,7 +114,7 @@ public class CourseDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                             presentingTermPos = position;
                             if (selectItem.equals(context.getString(R.string.all_terms)))
                                 setAllTerms(termsList);
-                            else setTerm(selectItem, false);
+                            else setTerm(selectItem);
                             refreshAdapter();
                         }
                     }
@@ -173,7 +171,6 @@ public class CourseDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         @BindView(R2.id.detail_header_teacher_name_tv) TextView detail_header_teacher_name_tv;
         @BindView(R2.id.detail_header_block_tv) TextView detail_header_block_tv;
         @BindView(R2.id.detail_header_room_tv) TextView detail_header_room_tv;
-        @BindView(R2.id.detail_header_term_tv) TextView detail_header_term_tv;
         @BindView(R2.id.detail_header_grade_background) RelativeLayout detail_header_grade_background;
         @BindView(R2.id.detail_term_select_spinner) Spinner detail_term_select_spinner;
 
@@ -218,29 +215,14 @@ public class CourseDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         this.notifyDataSetChanged();
     }
 
-    private void setTerm(String term, boolean twoTerms) {
-
-        assignmentItemList = new ArrayList<>();
-        ArrayList<AssignmentItem> allAssignments = item.getAssignmentItemArrayList();
-
-        if (twoTerms) {
-            String[] terms = term.split("&");
-            for (int i = 0; i < allAssignments.size(); i++) {
-                if (allAssignments.get(i).getAssignmentTerm().equals(terms[0]) || allAssignments.get(i).getAssignmentTerm().equals(terms[1]))
-                    assignmentItemList.add(allAssignments.get(i));
-            }
-
-        } else for (int i = 0; i < allAssignments.size(); i++)
-            if (allAssignments.get(i).getAssignmentTerm().equals(term))
-                assignmentItemList.add(allAssignments.get(i));
-
+    private void setTerm(String term) {
+        assignmentItemList = item.getAssignmentItemArrayList(term);
     }
 
     private void setAllTerms(ArrayList termsList) {
-        if (termsList.contains("Y1")) setTerm("Y1", false);
-        else if (termsList.contains("S1") && termsList.contains("S2")) setTerm("S1&S2", true);
-        else if (termsList.contains("S1")) setTerm("S1", false);
-        else if (termsList.contains("S2")) setTerm("S2", false);
-        else setTerm(termsList.get(1).toString(), false);
+        if (termsList.contains("Y1")) setTerm("Y1");
+        else if (termsList.contains("S1")) setTerm("S1");
+        else if (termsList.contains("S2")) setTerm("S2");
+        else setTerm(termsList.get(1).toString());
     }
 }
