@@ -12,7 +12,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.design.widget.Snackbar;
-import android.widget.Toast;
+import android.view.View;
 
 import carbonylgroup.com.schoolpower.R;
 import carbonylgroup.com.schoolpower.classes.Utils.postData;
@@ -31,7 +31,14 @@ public class LoginActivity extends Activity {
 
         setContentView(R.layout.login_content);
 
-        Snackbar.make(findViewById(R.id.login_coordinate_layout), "EHH", Snackbar.LENGTH_SHORT).show();
+        findViewById(R.id.login_fab).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showSnackBar("pppop");
+            }
+        });
+
+
     }
 
     public void loginAction(final String username, final String password) {
@@ -45,7 +52,7 @@ public class LoginActivity extends Activity {
 
                         switch (msg.obj.toString().replace("\n", "").charAt(0)) {
                             case '0':
-                                showToast("WRONG PASSWORD");
+                                showSnackBar("WRONG PASSWORD");
                                 break;
                             case '1':
                                 SharedPreferences.Editor spEditor = getSharedPreferences("accountData", Activity.MODE_PRIVATE).edit();
@@ -56,7 +63,7 @@ public class LoginActivity extends Activity {
                                 startMainActivity();
                                 break;
                             default:
-                                showToast("NO CONNECTION");
+                                showSnackBar("NO CONNECTION");
                                 break;
                         }
                     }
@@ -69,7 +76,11 @@ public class LoginActivity extends Activity {
         LoginActivity.this.finish();
     }
 
-    private void showToast(String msg) {
-        Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
+    private void showSnackBar(String msg) {
+
+        Snackbar snackbar = Snackbar.make(findViewById(R.id.login_coordinate_layout), msg, Snackbar.LENGTH_SHORT);
+        snackbar.setActionTextColor(getResources().getColor(R.color.white));
+        snackbar.getView().setBackgroundColor(getResources().getColor(R.color.accent));
+        snackbar.show();
     }
 }
