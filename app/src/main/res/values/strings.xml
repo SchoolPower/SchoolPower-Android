@@ -1,9 +1,12 @@
 <resources>
     <string name="app_name">SchoolPower</string>
-    <string name="action_settings">Settings</string>
+    <string name="action_refreshing">Refresh</string>
 
     <string name="dashboard">Dashboard</string>
     <string name="course_detail">Course Detail</string>
+    <string name="preference">Preference</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="settings">Settings</string>
 
     <string name="username">Username</string>
     <string name="password">Password</string>
@@ -16,17 +19,28 @@
     <string name="term">Term</string>
     <string name="assignments">Assignments</string>
     <string name="all_terms">ALL TERMS</string>
-
     <string name="unpublished">Unpublished</string>
+    <string name="data_updated">Data Updated</string>
+    <string name="authenticating">Authenticating&#8230;</string>
+    <string name="wrong_password">Wrong Username or Password</string>
+    <string name="no_connection">Cannot connect to server</string>
 
     <string name="shared_element_course_header">SHARE://COURSE_HEADER</string>
     <string name="shared_element_course_fab">SHARE://COURSE_FAB</string>
     <string name="shared_element_course_subject_title">SHARE://COURSE_SUBJECT_TITLE</string>
     <string name="shared_element_course_card">SHARE://COURSE_CARD</string>
-    <string name="title_activity_main2">Main2Activity</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="accountData">accountData</string>
+    <string name="loggedIn">loggedIn</string>
+    <string name="token">token</string>
+    <string name="student_name">student_name</string>
+
+    <string name="token_equals">token=</string>
+    <string name="error_wrong_password">{"error":1,"</string>
+    <string name="json_begin">[{"</string>
 
     <string name="postURL">http://schoolpower.studio:8080/api/ps.php</string>
     <string name="dataFileName">dataMap.json</string>
