@@ -7,4 +7,10 @@
         android:orderInCategory="100"
         android:title="@string/action_refreshing"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/action_new"
+        android:orderInCategory="100"
+        android:icon="@drawable/ic_new"
+        android:title="@string/action_new_assignments"
+        app:showAsAction="ifRoom" />
 </menu>

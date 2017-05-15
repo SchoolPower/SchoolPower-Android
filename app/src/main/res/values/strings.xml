@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">SchoolPower</string>
     <string name="action_refreshing">Refresh</string>
+    <string name="action_new_assignments">New Assignments</string>
 
     <string name="dashboard">Dashboard</string>
     <string name="course_detail">Course Detail</string>

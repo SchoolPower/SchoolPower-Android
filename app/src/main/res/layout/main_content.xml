@@ -2,11 +2,12 @@
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_coordinate_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    android:id="@+id/main_coordinate_layout"
-    tools:context="com.carbonylgroup.schoolpower.activities.MainActivity">
+    tools:context="com.carbonylgroup.schoolpower.activities.MainActivity"
+    tools:menu="@menu/menu_main">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/main_app_bar"
@@ -27,7 +28,6 @@
                 android:layout_height="match_parent"
                 android:layout_marginStart="5dp"
                 android:fontFamily="sans-serif-light"
-                android:text="@string/app_name"
                 android:textAppearance="@android:style/TextAppearance.Material.Title"
                 android:textColor="@color/white"
                 android:textSize="@dimen/app_name_size" />

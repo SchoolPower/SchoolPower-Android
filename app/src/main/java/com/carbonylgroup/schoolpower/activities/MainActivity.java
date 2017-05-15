@@ -22,6 +22,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.graphics.drawable.DrawerArrowDrawable;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
 import android.view.View;
 import android.view.MenuItem;
 import android.view.Window;
@@ -91,6 +92,13 @@ public class MainActivity extends TransitionHelper.MainActivity
         outState.putInt("presentFragment", presentFragment);
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
     public void onBackPressed() {
 
         switch (presentFragment) {
@@ -113,6 +121,8 @@ public class MainActivity extends TransitionHelper.MainActivity
         mainToolBar = (Toolbar) findViewById(R.id.main_toolbar);
         mainAppBar = (AppBarLayout) findViewById(R.id.main_app_bar);
         toggleIcon = new DrawerArrowDrawable(this);
+        setSupportActionBar(mainToolBar);
+        getSupportActionBar().setTitle("");
 
         try {
             ArrayList<MainListItem> input = utils.readDataArrayList();

@@ -4,13 +4,13 @@
 
     <style name="Theme.Design" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="actionMenuTextColor">#fff</item>
-        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">true</item>
         <item name="android:windowBackground">@color/primary_light</item>
-        <item name="android:windowNoTitle">true</item>
         <item name="android:windowTranslucentNavigation">false</item>
-        <item name="android:windowActionBarOverlay">true</item>
         <item name="android:windowTranslucentStatus">false</item>
         <item name="android:navigationBarColor">@color/primary</item>
+        <item name="android:actionOverflowButtonStyle">@style/Theme.Design.OverFlow</item>
     </style>
 
     <style name="Theme.Panzer" parent="Theme.Design">
@@ -18,15 +18,17 @@
         <item name="colorPrimaryDark">@color/primary_dark</item>
         <item name="colorAccent">@color/accent</item>
         <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
+        <item name="android:navigationBarColor">@color/primary</item>
+    </style>
+
+    <style name="Theme.Design.OverFlow">
+        <item name="android:src">@drawable/ic_more_vert</item>
+        <item name="android:paddingEnd">5dp</item>
     </style>
 
     <style name="DrawerArrowStyle" parent="@style/Widget.AppCompat.DrawerArrowToggle">
         <item name="spinBars">true</item>
         <item name="color">@android:color/white</item>
     </style>
-
-    <style name="Theme.Panzer.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-
-    <style name="Theme.Panzer.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
 </resources>
