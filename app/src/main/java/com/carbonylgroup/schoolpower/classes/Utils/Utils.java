@@ -163,7 +163,7 @@ public class Utils {
     /**
      * @param url    url
      * @param params name1=value1&name2=value2
-     * @return result
+     * @return  result
      */
     static String sendPost(String url, String params) {
 
@@ -236,7 +236,6 @@ public class Utils {
 
                     MainListItem mainListItem = dataMap.get(termObj.getString("name"));
                     mainListItem.addPeriodGradeItem(periodGradeItem);
-
                 }
             }
 

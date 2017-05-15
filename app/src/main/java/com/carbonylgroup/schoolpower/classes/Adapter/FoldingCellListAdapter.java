@@ -39,6 +39,7 @@ public class FoldingCellListAdapter extends ArrayAdapter<MainListItem> {
     private HashSet<Integer> unfoldedIndexes;
     private ArrayList<MainListItem> mainListItems;
     private View.OnClickListener defaultRequestBtnClickListener;
+    private View.OnClickListener periodGradeItemClickListener;
 
 
     public FoldingCellListAdapter(Context context, ArrayList<MainListItem> _mainListItems, HashSet<Integer> indexes, int _transformedPosition) {
@@ -168,6 +169,11 @@ public class FoldingCellListAdapter extends ArrayAdapter<MainListItem> {
     public void setDefaultRequestBtnClickListener(View.OnClickListener defaultRequestBtnClickListener) {
 
         this.defaultRequestBtnClickListener = defaultRequestBtnClickListener;
+    }
+
+    public void setPeriodGradeItemClickListener(View.OnClickListener periodGradeItemClickListener) {
+
+        this.periodGradeItemClickListener = periodGradeItemClickListener;
     }
 
     private static class ViewHolder {
