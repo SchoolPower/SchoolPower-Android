@@ -25,7 +25,7 @@
         <item name="color">@android:color/white</item>
     </style>
 
-    <style name="Theme.Panzer.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="Theme.Panzer.AppBarOverlay" parent="ThemeOverlay.AppCompat.ActionBar" />
 
     <style name="Theme.Panzer.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 

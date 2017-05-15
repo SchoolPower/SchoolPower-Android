@@ -61,9 +61,17 @@ public class LoginActivity extends Activity {
             @Override
             public void onClick(View view) {
 
+                saveUserId(input_username.getText().toString());
                 loginAction(input_username.getText().toString(), input_password.getText().toString());
             }
         });
+    }
+
+    private void saveUserId(String stringId) {
+
+        SharedPreferences.Editor spEditor = getSharedPreferences(getString(R.string.accountData), Activity.MODE_PRIVATE).edit();
+        spEditor.putString(getString(R.string.user_id), stringId);
+        spEditor.apply();
     }
 
     public void loginAction(final String username, final String password) {

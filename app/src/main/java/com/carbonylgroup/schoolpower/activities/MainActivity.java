@@ -8,6 +8,7 @@ import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
@@ -19,30 +20,30 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.graphics.drawable.DrawerArrowDrawable;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.View;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Objects;
-
 import com.carbonylgroup.schoolpower.R;
 import com.carbonylgroup.schoolpower.classes.ListItems.AssignmentItem;
+import com.carbonylgroup.schoolpower.classes.ListItems.MainListItem;
 import com.carbonylgroup.schoolpower.classes.ListItems.PeriodGradeItem;
 import com.carbonylgroup.schoolpower.classes.Transition.DetailsTransition;
-import com.carbonylgroup.schoolpower.classes.ListItems.MainListItem;
 import com.carbonylgroup.schoolpower.classes.Transition.TransitionHelper;
 import com.carbonylgroup.schoolpower.classes.Utils.Utils;
 import com.carbonylgroup.schoolpower.classes.Utils.postData;
 import com.carbonylgroup.schoolpower.fragments.CourseDetailFragment;
 import com.carbonylgroup.schoolpower.fragments.HomeFragment;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Objects;
 
 
 public class MainActivity extends TransitionHelper.MainActivity
@@ -153,8 +154,8 @@ public class MainActivity extends TransitionHelper.MainActivity
         toggle.setHomeAsUpIndicator(toggleIcon);
         toggle.syncState();
 
-        TextView drawer_username = (TextView) drawer.findViewById(R.id.nav_header_username);
-        //drawer_username.setText();
+        ((TextView) navigationView.getHeaderView(0).findViewById(R.id.nav_header_username)).setText(getUsername());
+        ((TextView) navigationView.getHeaderView(0).findViewById(R.id.nav_header_id)).setText(getUserID());
     }
 
     /* Fragments Handler */
@@ -179,9 +180,14 @@ public class MainActivity extends TransitionHelper.MainActivity
                 presentFragment = 1;
                 break;
 
+            case R.id.nav_settings:
+
+//                startActivity(new Intent(getApplication(), SettingsActivity.class));
+                break;
+
             case R.id.nav_sign_out:
 
-                SignOut();
+                confirmSignOut();
                 break;
 
             case R.id.action_refresh:
@@ -275,14 +281,14 @@ public class MainActivity extends TransitionHelper.MainActivity
                             }
                             dataList = utils.parseJsonResult(jsonStr);
 
-                            if (dataList.size()==oldMainItemList.size()) {
+                            if (dataList.size() == oldMainItemList.size()) {
                                 for (int i = 0; i < dataList.size(); i++) {
-                                    ArrayList<PeriodGradeItem> periods=dataList.get(i).getPeriodGradeItemArrayList();
-                                    ArrayList<PeriodGradeItem> oldPeriods=oldMainItemList.get(i).getPeriodGradeItemArrayList();
+                                    ArrayList<PeriodGradeItem> periods = dataList.get(i).getPeriodGradeItemArrayList();
+                                    ArrayList<PeriodGradeItem> oldPeriods = oldMainItemList.get(i).getPeriodGradeItemArrayList();
 
-                                    if(periods.size()!=oldPeriods.size()) break;
+                                    if (periods.size() != oldPeriods.size()) break;
 
-                                    for(int j=0; j < periods.size(); j++) {
+                                    for (int j = 0; j < periods.size(); j++) {
                                         Collection<AssignmentItem> newAssignmentListCollection = periods.get(j).getAssignmentItemArrayList();
                                         Collection<AssignmentItem> oldAssignmentListCollection = oldPeriods.get(j).getAssignmentItemArrayList();
                                         for (AssignmentItem item : newAssignmentListCollection) {
@@ -300,14 +306,47 @@ public class MainActivity extends TransitionHelper.MainActivity
                             }
 
                             homeFragment.refreshAdapter(dataList);
-                            if(oldMainItemList.size()==0) setDefaultFragment();
+                            if (oldMainItemList.size() == 0) setDefaultFragment();
                         }
 
                     }
                 })).start();
     }
 
-    private void SignOut() {
+    private String getUsername() {
+
+        SharedPreferences sharedPreferences = getSharedPreferences(getString(R.string.accountData), Activity.MODE_PRIVATE);
+        String name = sharedPreferences.getString(getString(R.string.student_name), "");
+        if (!name.equals("")){
+            String[] fullName = name.split(" ");
+            return fullName[1] + " " + fullName[2];
+        }
+        return getString(R.string.no_username);
+    }
+
+    private String getUserID() {
+
+        SharedPreferences sharedPreferences = getSharedPreferences(getString(R.string.accountData), Activity.MODE_PRIVATE);
+        return getString(R.string.user_id_indicator) + " " + sharedPreferences.getString(getString(R.string.user_id), "");
+    }
+
+    private void confirmSignOut() {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setIcon(getDrawable(R.drawable.ic_exit_dark));
+        builder.setTitle("Signing Out");
+        builder.setMessage("Are you sure to sign out?");
+        builder.setPositiveButton("Sign Out", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                 signOut();
+            }
+        });
+        builder.setNegativeButton("Cancel", null);
+        builder.show();
+    }
+
+    private void signOut() {
 
         SharedPreferences.Editor spEditor = getSharedPreferences(getString(R.string.accountData), Activity.MODE_PRIVATE).edit();
         spEditor.putString(getString(R.string.token), "");
