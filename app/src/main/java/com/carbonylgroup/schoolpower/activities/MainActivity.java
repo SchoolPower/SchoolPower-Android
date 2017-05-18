@@ -17,6 +17,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -24,6 +25,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.graphics.drawable.DrawerArrowDrawable;
 import android.support.v7.widget.Toolbar;
 
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.MenuItem;
@@ -51,17 +53,17 @@ import java.util.Objects;
 public class MainActivity extends TransitionHelper.MainActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    private boolean menuOpenDrawer = true;
     private int presentFragment;
+    private boolean menuOpenDrawer = true;
 
     private Utils utils;
-    private MainListItem mainListItemTransporter;
-    private ArrayList<MainListItem> dataList;
     private Toolbar mainToolBar;
-    private AppBarLayout mainAppBar;
     private DrawerLayout drawer;
-    private DrawerArrowDrawable toggleIcon;
+    private AppBarLayout mainAppBar;
     private ActionBarDrawerToggle toggle;
+    private DrawerArrowDrawable toggleIcon;
+    private ArrayList<MainListItem> dataList;
+    private MainListItem mainListItemTransporter;
 
     /* Fragments */
     private HomeFragment homeFragment;
@@ -96,9 +98,29 @@ public class MainActivity extends TransitionHelper.MainActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+
+            case R.id.action_refresh:
+                initDataJson();
+                homeFragment.setRefreshing(true);
+                break;
+
+            case R.id.action_new:
+                //TODO NEW ASSIGNMENTS
+                break;
+
+            default:
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     public void onBackPressed() {
@@ -178,32 +200,23 @@ public class MainActivity extends TransitionHelper.MainActivity
         switch (id) {
 
             case R.id.nav_dashboard:
-
                 homeFragment = new HomeFragment();
                 transaction.replace(R.id.content_view, homeFragment);
                 presentFragment = 0;
                 break;
 
             case R.id.course_detail_background:
-
                 if (courseDetailFragment == null) courseDetailFragment = new CourseDetailFragment();
                 transaction.replace(R.id.content_view, courseDetailFragment);
                 presentFragment = 1;
                 break;
 
             case R.id.nav_settings:
-
-//                startActivity(new Intent(getApplication(), SettingsActivity.class));
+                //TODO SETTING
                 break;
 
             case R.id.nav_sign_out:
-
                 confirmSignOut();
-                break;
-
-            case R.id.action_refresh:
-
-                initDataJson();
                 break;
 
             default:
@@ -269,7 +282,8 @@ public class MainActivity extends TransitionHelper.MainActivity
     public void initDataJson() {
 
         final ArrayList<MainListItem> oldMainItemList = new ArrayList<>();
-        oldMainItemList.addAll(dataList);
+        if (dataList != null) oldMainItemList.addAll(dataList);
+
         String token = getSharedPreferences("accountData", Activity.MODE_PRIVATE).getString("token", "");
 
         new Thread(new postData(
@@ -277,6 +291,7 @@ public class MainActivity extends TransitionHelper.MainActivity
                 new Handler() {
                     @Override
                     public void handleMessage(Message msg) {
+
                         String[] messages = msg.obj.toString().split("\n");
 
                         SharedPreferences.Editor spEditor = getSharedPreferences(getString(R.string.accountData), Activity.MODE_PRIVATE).edit();
@@ -328,7 +343,7 @@ public class MainActivity extends TransitionHelper.MainActivity
 
         SharedPreferences sharedPreferences = getSharedPreferences(getString(R.string.accountData), Activity.MODE_PRIVATE);
         String name = sharedPreferences.getString(getString(R.string.student_name), "");
-        if (!name.equals("")){
+        if (!name.equals("")) {
             String[] fullName = name.split(" ");
             return fullName[1] + " " + fullName[2];
         }
@@ -344,16 +359,16 @@ public class MainActivity extends TransitionHelper.MainActivity
     private void confirmSignOut() {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setIcon(getDrawable(R.drawable.ic_exit_dark));
-        builder.setTitle("Signing Out");
-        builder.setMessage("Are you sure to sign out?");
-        builder.setPositiveButton("Sign Out", new DialogInterface.OnClickListener() {
+        builder.setIcon(getDrawable(R.drawable.ic_exit_accent));
+        builder.setTitle(getString(R.string.signing_out_dialog_title));
+        builder.setMessage(getString(R.string.signing_out_dialog_message));
+        builder.setPositiveButton(getString(R.string.signing_out_dialog_positive), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                 signOut();
+                signOut();
             }
         });
-        builder.setNegativeButton("Cancel", null);
+        builder.setNegativeButton(getString(R.string.signing_out_dialog_negative), null);
         builder.show();
     }
 

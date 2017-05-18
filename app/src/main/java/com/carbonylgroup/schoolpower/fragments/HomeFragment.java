@@ -4,9 +4,11 @@
 
 package com.carbonylgroup.schoolpower.fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -69,6 +71,7 @@ public class HomeFragment extends TransitionHelper.BaseFragment {
 
         utils = new Utils(getActivity());
         dataList = MainActivity.of(getActivity()).getDataList();
+
         MainActivity.of(getActivity()).setPresentFragment(0);
         MainActivity.of(getActivity()).setToolBarElevation(utils.dpToPx(4));
         MainActivity.of(getActivity()).setToolBarTitle(getString(R.string.dashboard));
@@ -81,15 +84,14 @@ public class HomeFragment extends TransitionHelper.BaseFragment {
                 MainActivity.of(getActivity()).initDataJson();
             }
         });
+
         initAdapter();
     }
 
     private void initAdapter() {
 
         final ListView theListView = (ListView) view.findViewById(R.id.mainListView);
-
         adapter = new FoldingCellListAdapter(getActivity(), dataList, unfoldedIndexesBackUp, transformedPosition);
-
         adapter.setDefaultRequestBtnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -122,7 +124,12 @@ public class HomeFragment extends TransitionHelper.BaseFragment {
             }
         });
 
-        theListView.setAdapter(adapter);
+        if (dataList != null) theListView.setAdapter(adapter);
+    }
+
+    public void setRefreshing(boolean isRefreshing) {
+
+        home_swipe_refresh_layout.setRefreshing(isRefreshing);
     }
 
     public void refreshAdapter(ArrayList<MainListItem> newDataList) {
@@ -130,7 +137,7 @@ public class HomeFragment extends TransitionHelper.BaseFragment {
         adapter.setMainListItems(newDataList);
         adapter.notifyDataSetChanged();
         showSnackBar(getActivity().getString(R.string.data_updated));
-        home_swipe_refresh_layout.setRefreshing(false);
+        setRefreshing(false);
     }
 
     private View getItemViewByPosition(int position, ListView listView) {
