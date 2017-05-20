@@ -49,6 +49,6 @@ class PeriodGradeAdapter(private val context: Context, objects: ArrayList<Period
         val period_indicator: TextView by bindView(R2.id.period_indicator)
         val period_latter_grade: TextView by bindView(R2.id.period_latter_grade)
         val period_percentage_grade: TextView by bindView(R2.id.period_percentage_grade)
-        val period_grade_background: TextView by bindView(R2.id.period_grade_background)
+        val period_grade_background: LinearLayout by bindView(R2.id.period_grade_background)
     }
 }

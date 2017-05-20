@@ -33,7 +33,7 @@ class CourseDetailFragment : TransitionHelper.BaseFragment() {
     private var course_detail_recycler: RecyclerView? = null
     private var dataList: ArrayList<MainListItem>? = null
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         view_private = inflater.inflate(R.layout.course_detail_view_content, container, false)
 

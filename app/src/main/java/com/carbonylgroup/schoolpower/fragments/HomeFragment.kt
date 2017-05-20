@@ -45,7 +45,7 @@ class HomeFragment : TransitionHelper.BaseFragment() {
     private var adapter: FoldingCellListAdapter? = null
     private var utils: Utils? = null
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         view_private = inflater.inflate(R.layout.home_view_content, container, false)
 
