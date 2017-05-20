@@ -240,7 +240,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
         val token = getSharedPreferences("accountData", Activity.MODE_PRIVATE).getString("token", "")
 
         Thread(postData(
-                getString(R.string.postURL), getString(R.string.token_equals) + token + "&filter=T4,S2",
+                getString(R.string.postURL), getString(R.string.token_equals) + token,
                 object : Handler() {
                     override fun handleMessage(msg: Message) {
                         val messages = msg.obj.toString().split("\n".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
@@ -271,7 +271,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                                         val oldAssignmentListCollection = oldPeriods[j].assignmentItemArrayList
                                         for (item in newAssignmentListCollection) {
                                             val found = oldAssignmentListCollection.any { it.assignmentTitle == item.assignmentTitle && it.assignmentDividedScore == item.assignmentDividedScore && it.assignmentDate == item.assignmentDate && !it.isNew }
-                                            if (!found) item.setAsNewItem(true)
+                                            if (!found) item.isNew=true
                                         }
                                     }
                                 }

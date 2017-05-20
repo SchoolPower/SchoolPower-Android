@@ -7,6 +7,7 @@ package com.carbonylgroup.schoolpower.classes.Utils
 import android.app.Activity
 import android.content.Context
 import android.content.SharedPreferences
+import android.support.v4.content.ContextCompat
 import android.util.Base64
 import android.util.DisplayMetrics
 import android.util.Log
@@ -53,41 +54,27 @@ class Utils(private val context: Context) {
     private val gradeColorIdsPlain = intArrayOf(R.color.A_score_green, R.color.B_score_green, R.color.Cp_score_yellow, R.color.C_score_orange, R.color.Cm_score_red, R.color.primary_dark, R.color.primary)
     private val gradeDarkColorIdsPlain = intArrayOf(R.color.A_score_green_dark, R.color.B_score_green_dark, R.color.Cp_score_yellow_dark, R.color.C_score_orange_dark, R.color.Cm_score_red_dark, R.color.primary_darker, R.color.primary_dark)
 
-    private fun indexOfString(searchString: String, domain: Array<String>): Int {
+    private fun indexOfString(searchString: String, domain: Array<String>): Int =
+            domain.indices.firstOrNull { searchString == domain[it] } ?: -1
 
-        for (i in domain.indices)
-            if (searchString == domain[i]) return i
-
-        return -1
-    }
-
-    fun dpToPx(dp: Int): Int {
-        val displayMetrics = context.resources.displayMetrics
-        return Math.round(dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT))
-    }
+    fun dpToPx(dp: Int) = Math.round(dp * (context.resources.displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT))
 
     /* Color Handler */
     fun getColorByLetterGrade(context: Context, letterGrade: String): Int {
 
         val letterGrades = arrayOf("A", "B", "C+", "C", "C-", "F", "I", "--")
-        return context.resources.getColor(gradeColorIds[indexOfString(letterGrade, letterGrades)])
+        return ContextCompat.getColor(context, gradeColorIds[indexOfString(letterGrade, letterGrades)])
     }
 
-    fun getColorByPeriodItem(context: Context, item: PeriodGradeItem): Int {
+    fun getColorByPeriodItem(context: Context, item: PeriodGradeItem) = getColorByLetterGrade(context, item.termLetterGrade)
 
-        val letterGrades = arrayOf("A", "B", "C+", "C", "C-", "F", "I", "--")
-        return context.resources.getColor(gradeColorIds[indexOfString(item.termLetterGrade, letterGrades)])
-    }
+    fun getDarkColorByPrimary(originalPrimary: Int): Int {
 
-    fun getDarkColorByPrimary(_originalPrimary: Int): Int {
+        val count = gradeColorIdsPlain
+                .takeWhile { originalPrimary != ContextCompat.getColor(context, it) }
+                .count()
 
-        var flag = 0
-        for (i in gradeColorIdsPlain) {
-            if (_originalPrimary == context.resources.getColor(i)) break
-            flag++
-        }
-
-        return context.resources.getColor(gradeDarkColorIdsPlain[flag])
+        return ContextCompat.getColor(context, gradeDarkColorIdsPlain[count])
     }
 
     @Throws(IOException::class)
@@ -97,7 +84,7 @@ class Utils(private val context: Context) {
         val isr = InputStreamReader(inputStream)
         val buffReader = BufferedReader(isr)
 
-        var readString: String? = buffReader.readLine()
+        var readString = buffReader.readLine()
         while (readString != null) {
             data.append(readString)
             readString = buffReader.readLine()
@@ -131,7 +118,7 @@ class Utils(private val context: Context) {
                 val asmArray = termObj.getJSONArray("assignments")
                 for (j in 0..asmArray.length() - 1) {
                     val asmObj = asmArray.getJSONObject(j)
-                    val dates = asmObj.getString("date").split("/".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+                    val dates = asmObj.getString("date").split("/")
                     val date = dates[2] + "/" + dates[0] + "/" + dates[1]
                     assignmentList.add(AssignmentItem(asmObj.getString("assignment"),
                             date, if (asmObj.getString("grade") == "") "--" else asmObj.getString("percent"),
@@ -143,7 +130,8 @@ class Utils(private val context: Context) {
                         if (termObj.getString("grade") == "") "--" else termObj.getString("grade"), termObj.getString("mark"), assignmentList)
 
                 // Put the term data into the course data, either already exists or be going to be created.
-                if (dataMap[termObj.getString("name")] == null) { // The course data does not exist yet.
+                val mainListItem = dataMap[termObj.getString("name")]
+                if (mainListItem == null) { // The course data does not exist yet.
 
                     val periodGradeList = ArrayList<PeriodGradeItem>()
                     periodGradeList.add(periodGradeItem)
@@ -154,8 +142,7 @@ class Utils(private val context: Context) {
 
                 } else { // Already exist. Just insert into it.
 
-                    val mainListItem = dataMap[termObj.getString("name")]
-                    mainListItem!!.addPeriodGradeItem(periodGradeItem)
+                    mainListItem.addPeriodGradeItem(periodGradeItem)
 
                 }
             }
