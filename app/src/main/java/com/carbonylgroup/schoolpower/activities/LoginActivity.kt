@@ -8,15 +8,11 @@ package com.carbonylgroup.schoolpower.activities
 import android.app.Activity
 import android.app.ProgressDialog
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.Handler
 import android.os.Message
 import android.support.design.widget.Snackbar
-import android.view.View
 import android.widget.EditText
-
-import java.security.PublicKey
 
 import com.carbonylgroup.schoolpower.R
 import com.carbonylgroup.schoolpower.classes.Utils.Utils
@@ -28,7 +24,7 @@ class LoginActivity : Activity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
-        setTheme(R.style.Theme_Panzer)
+        setTheme(R.style.Design)
         super.onCreate(savedInstanceState)
         checkIfLoggedIn()
         setContentView(R.layout.login_content)

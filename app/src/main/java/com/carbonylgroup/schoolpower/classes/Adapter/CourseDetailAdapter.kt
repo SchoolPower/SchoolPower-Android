@@ -7,28 +7,17 @@ package com.carbonylgroup.schoolpower.classes.Adapter
 import android.content.Context
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.Button
-import android.widget.RelativeLayout
-import android.widget.Spinner
-import android.widget.TextView
-
-import java.util.ArrayList
-import java.util.Collections
-import java.util.Comparator
-
+import android.widget.*
 import com.carbonylgroup.schoolpower.R
 import com.carbonylgroup.schoolpower.R2
 import com.carbonylgroup.schoolpower.classes.ListItems.AssignmentItem
 import com.carbonylgroup.schoolpower.classes.ListItems.MainListItem
-import com.carbonylgroup.schoolpower.classes.ListItems.PeriodGradeItem
 import com.carbonylgroup.schoolpower.classes.Utils.Utils
 import kotterknife.bindView
+import java.util.*
 
 class CourseDetailAdapter(private val context: Context, private val item: MainListItem) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private var presentingTermPos = 0
@@ -97,8 +86,8 @@ class CourseDetailAdapter(private val context: Context, private val item: MainLi
                 headerViewHolder.detail_letter_grade_tv.text = item.letterGrade
                 headerViewHolder.detail_percentage_grade_tv.text = item.percentageGrade
                 headerViewHolder.detail_header_teacher_name_tv.text = item.teacherName
-                headerViewHolder.detail_header_block_tv.text = context.getString(R.string.block, item.blockLetter)
-                headerViewHolder.detail_header_room_tv.text = context.getString(R.string.room, item.roomNumber)
+                headerViewHolder.detail_header_block_tv.text = context.getString(R.string.block) + item.blockLetter
+                headerViewHolder.detail_header_room_tv.text = context.getString(R.string.room) + item.roomNumber
                 headerViewHolder.detail_header_grade_background.setBackgroundColor(utils.getColorByLetterGrade(context, item.letterGrade))
                 headerViewHolder.detail_term_select_spinner.adapter = termAdapter
                 headerViewHolder.detail_term_select_spinner.setSelection(presentingTermPos)
@@ -152,6 +141,7 @@ class CourseDetailAdapter(private val context: Context, private val item: MainLi
         val detail_header_grade_background: RelativeLayout by bindView(R2.id.detail_header_grade_background)
         val detail_term_select_spinner: Spinner by bindView(R2.id.detail_term_select_spinner)
     }
+
     inner class FooterViewHolder(itemView: View) : ViewHolder(itemView)
     inner class NormalViewHolder(itemView: View) : ViewHolder(itemView) {
         val detail_assignment_name_tv: TextView by bindView(R2.id.detail_assignment_name_tv)
@@ -171,14 +161,10 @@ class CourseDetailAdapter(private val context: Context, private val item: MainLi
     }
 
     private fun setAllTerms(termsList: ArrayList<*>) {
-        if (termsList.contains("Y1"))
-            setTerm("Y1")
-        else if (termsList.contains("S1"))
-            setTerm("S1")
-        else if (termsList.contains("S2"))
-            setTerm("S2")
-        else
-            setTerm(termsList[1].toString())
+        if (termsList.contains("Y1")) setTerm("Y1")
+        else if (termsList.contains("S1")) setTerm("S1")
+        else if (termsList.contains("S2")) setTerm("S2")
+        else setTerm(termsList[1].toString())
     }
 
     companion object {

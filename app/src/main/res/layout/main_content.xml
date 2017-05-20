@@ -13,24 +13,17 @@
         android:id="@+id/main_app_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:elevation="0dp">
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/main_toolbar"
+            app:titleTextAppearance="@style/Design.TitleTextStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="?android:attr/colorPrimary"
-            app:layout_scrollFlags="scroll|enterAlways">
-
-            <TextView
-                android:id="@+id/toolbar_title_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginStart="5dp"
-                android:fontFamily="sans-serif-light"
-                android:textAppearance="@android:style/TextAppearance.Material.Title"
-                android:textColor="@color/white"
-                android:textSize="@dimen/app_name_size" />
+            app:layout_scrollFlags="scroll|enterAlways"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
         </android.support.v7.widget.Toolbar>
 

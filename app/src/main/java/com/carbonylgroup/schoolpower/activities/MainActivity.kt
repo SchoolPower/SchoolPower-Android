@@ -40,28 +40,23 @@ import java.util.*
 
 class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigationItemSelectedListener {
 
-    private var menuOpenDrawer = true
     var presentFragment: Int = 0
-
-    private var utils: Utils = Utils(this)
-
-    var mainListItemTransporter: MainListItem? = null
-    /* Other Method */
     var dataList: ArrayList<MainListItem>? = null
-        private set
-
+    var mainListItemTransporter: MainListItem? = null
+    private var menuOpenDrawer = true
+    private var utils: Utils = Utils(this)
     private val mainToolBar: Toolbar by bindView(R.id.main_toolbar)
-    private val mainAppBar: AppBarLayout by bindView(R.id.main_app_bar)
     private val drawer: DrawerLayout by bindView(R.id.drawer_layout)
-    private lateinit var toggleIcon: DrawerArrowDrawable
+    private val mainAppBar: AppBarLayout by bindView(R.id.main_app_bar)
     private lateinit var toggle: ActionBarDrawerToggle
+    private lateinit var toggleIcon: DrawerArrowDrawable
 
     /* Fragments */
     private var homeFragment: HomeFragment? = null
     private var courseDetailFragment: CourseDetailFragment? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        setTheme(R.style.Theme_Panzer)
+        setTheme(R.style.Design)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.nav_drawer)
 
@@ -116,9 +111,11 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
 
     /* Initializer */
     private fun initValue() {
+
+        setSupportActionBar(mainToolBar)
         toggleIcon = DrawerArrowDrawable(this)
-        toggle = ActionBarDrawerToggle(
-                this, drawer, mainToolBar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
+        toggle = ActionBarDrawerToggle(this, drawer, mainToolBar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
+
         try {
             val input = utils.readDataArrayList()
             if (input != null) dataList = input
@@ -234,6 +231,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
         transaction.commit()
     }
 
+    /* Other Method */
     fun initDataJson() {
 
         val oldMainItemList = ArrayList<MainListItem>()
@@ -310,7 +308,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
         builder.setIcon(getDrawable(R.drawable.ic_exit_accent))
         builder.setTitle(getString(R.string.signing_out_dialog_title))
         builder.setMessage(getString(R.string.signing_out_dialog_message))
-        builder.setPositiveButton(getString(R.string.signing_out_dialog_positive)) { _, _ -> signOut()}
+        builder.setPositiveButton(getString(R.string.signing_out_dialog_positive)) { _, _ -> signOut() }
         builder.setNegativeButton(getString(R.string.signing_out_dialog_negative), null)
         builder.show()
     }
@@ -345,7 +343,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
 
         anim.addUpdateListener { valueAnimator ->
             val slideOffset = valueAnimator.animatedValue as Float
-            toggleIcon!!.progress = slideOffset
+            toggleIcon.progress = slideOffset
             if (!toArrow && slideOffset == 0f) toggle.isDrawerIndicatorEnabled = true
         }
         anim.interpolator = DecelerateInterpolator()
@@ -366,7 +364,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
     }
 
     fun setToolBarTitle(barTitle: String) {
-        (findViewById(R.id.toolbar_title_tv) as TextView).text = barTitle
+        supportActionBar!!.title = barTitle
     }
 
     fun setToolBarElevation(toolBarElevation: Int) {

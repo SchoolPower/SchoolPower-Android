@@ -2,7 +2,6 @@
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -59,9 +58,7 @@
                     android:id="@+id/detail_header_profile_outer_view"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:paddingEnd="15dp"
-                    android:paddingStart="15dp"
-                    android:paddingTop="15dp">
+                    android:padding="15dp">
 
                     <RelativeLayout
                         android:id="@+id/detail_header_profile_inner_view"
@@ -82,26 +79,20 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@id/detail_header_teacher_name_tv"
-                            android:layout_marginTop="2dp"
+                            android:layout_marginTop="5dp"
                             android:text="Block A(1)"
                             android:textColor="@color/text_secondary_black"
                             android:textSize="13sp" />
 
-                        <RelativeLayout
+                        <TextView
+                            android:id="@+id/detail_header_room_tv"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@id/detail_header_block_tv"
-                            android:layout_marginTop="7dp">
-
-                            <TextView
-                                android:id="@+id/detail_header_room_tv"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Room 311"
-                                android:textColor="@color/text_primary_black"
-                                android:textSize="13sp" />
-
-                        </RelativeLayout>
+                            android:layout_marginTop="2dp"
+                            android:text="Room 311"
+                            android:textColor="@color/text_primary_black"
+                            android:textSize="13sp" />
 
                     </RelativeLayout>
 
