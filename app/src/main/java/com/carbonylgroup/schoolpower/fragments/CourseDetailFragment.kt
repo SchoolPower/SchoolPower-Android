@@ -26,47 +26,41 @@ import com.carbonylgroup.schoolpower.classes.Utils.Utils
 
 class CourseDetailFragment : TransitionHelper.BaseFragment() {
 
-    private var view_private: View? = null
-    private var utils: Utils? = null
-    private var itemToPresent: MainListItem? = null
+    private lateinit var utils: Utils
     private var offset_up_from_bottom: Animation? = null
-    private var course_detail_recycler: RecyclerView? = null
     private var dataList: ArrayList<MainListItem>? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
-        view_private = inflater.inflate(R.layout.course_detail_view_content, container, false)
+        val view = inflater.inflate(R.layout.course_detail_view_content, container, false)
 
-        initValue()
+        initValue(view)
         initAnim()
 
-        return view_private
+        return view
     }
 
-    private fun initValue() {
-
+    private fun initValue(view: View) {
         utils = Utils(activity)
 
         MainActivity.of(activity).presentFragment = 1
         MainActivity.of(activity).setToolBarTitle("")
         MainActivity.of(activity).expandToolBar(true, true)
 
-        val bundle = this.arguments
-        val transformedPosition = bundle.getInt("transformedPosition", -1)
+        val transformedPosition = this.arguments.getInt("transformedPosition", -1)
 
         if (transformedPosition != -1) {
 
-            itemToPresent = MainActivity.of(activity).mainListItemTransporter
-            view_private!!.findViewById(R.id.detail_view_header).setBackgroundColor(utils!!.getColorByLetterGrade(activity, itemToPresent!!.letterGrade))
-            (view_private!!.findViewById(R.id.detail_subject_title_tv) as TextView).text = itemToPresent!!.subjectTitle
-            MainActivity.of(activity).setToolBarColor(utils!!.getColorByLetterGrade(activity, itemToPresent!!.letterGrade), true)
+            val itemToPresent = MainActivity.of(activity).mainListItemTransporter
+            view.findViewById(R.id.detail_view_header).setBackgroundColor(utils.getColorByLetterGrade(activity, itemToPresent!!.letterGrade))
+            (view.findViewById(R.id.detail_subject_title_tv) as TextView).text = itemToPresent.subjectTitle
+            MainActivity.of(activity).setToolBarColor(utils.getColorByLetterGrade(activity, itemToPresent.letterGrade), true)
 
-            course_detail_recycler = view_private!!.findViewById(R.id.course_detail_recycler) as RecyclerView
             dataList = MainActivity.of(activity).dataList
-            val layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
-            val adapter = CourseDetailAdapter(activity, dataList!![transformedPosition])
-            course_detail_recycler!!.layoutManager = layoutManager
-            course_detail_recycler!!.adapter = adapter
+
+            val course_detail_recycler = view.findViewById(R.id.course_detail_recycler) as RecyclerView
+            course_detail_recycler.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
+            course_detail_recycler.adapter = CourseDetailAdapter(activity, dataList!![transformedPosition])
         }
     }
 

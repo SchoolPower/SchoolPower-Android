@@ -173,9 +173,9 @@ class HomeFragment : TransitionHelper.BaseFragment() {
     }
 
     private fun showSnackBar(msg: String) {
-        val snackbar = Snackbar.make(activity.findViewById(R.id.main_coordinate_layout), msg, Snackbar.LENGTH_SHORT)
-        snackbar.view.setBackgroundColor(resources.getColor(R.color.accent))
-        snackbar.show()
+        val snackBar = Snackbar.make(activity.findViewById(R.id.main_coordinate_layout), msg, Snackbar.LENGTH_SHORT)
+        snackBar.view.setBackgroundColor(resources.getColor(R.color.accent))
+        snackBar.show()
     }
 
     override fun onAfterEnter() {

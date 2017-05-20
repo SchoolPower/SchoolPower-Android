@@ -273,7 +273,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                                         val oldAssignmentListCollection = oldPeriods[j].assignmentItemArrayList
                                         for (item in newAssignmentListCollection) {
                                             val found = oldAssignmentListCollection.any { it.assignmentTitle == item.assignmentTitle && it.assignmentDividedScore == item.assignmentDividedScore && it.assignmentDate == item.assignmentDate && !it.isNew }
-                                            if (!found) item.setAsNewItem(true)
+                                            if (!found) item.isNew=true
                                         }
                                     }
                                 }

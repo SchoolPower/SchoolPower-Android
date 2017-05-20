@@ -13,9 +13,4 @@ class AssignmentItem(var assignmentTitle: String,
                      val assignmentPercentage: String, val assignmentDividedScore: String,
                      val assignmentGrade: String, val assignmentCategory: String, val assignmentTerm: String) : Serializable {
     var isNew = false
-        private set
-
-    fun setAsNewItem(_newItem: Boolean) {
-        this.isNew = _newItem
-    }
 }
