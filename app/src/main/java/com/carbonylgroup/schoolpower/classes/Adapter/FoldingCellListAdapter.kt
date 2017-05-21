@@ -5,7 +5,6 @@ import android.content.Context
 import android.support.design.widget.FloatingActionButton
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,7 +20,6 @@ import com.carbonylgroup.schoolpower.classes.ListItems.PeriodGradeItem
 import com.carbonylgroup.schoolpower.classes.Utils.Utils
 import com.ramotion.foldingcell.FoldingCell
 import java.util.*
-import kotlin.collections.ArrayList
 
 /**
  * Simple example of ListAdapter for using with Folding Cell
@@ -29,10 +27,9 @@ import kotlin.collections.ArrayList
  */
 class FoldingCellListAdapter(context: Context, private var mainListItems: ArrayList<MainListItem>?, val unfoldedIndexes: HashSet<Int>, private val transformedPosition: Int) : ArrayAdapter<MainListItem>(context, 0, mainListItems) {
 
-    private val utils: Utils = Utils(getContext())
     private var fab_in: Animation? = null
+    private var utils: Utils = Utils(getContext())
     private var defaultRequestBtnClickListener: View.OnClickListener? = null
-    val periodGradeItemClickListener: View.OnClickListener? = null
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
 
@@ -98,10 +95,10 @@ class FoldingCellListAdapter(context: Context, private var mainListItems: ArrayL
         viewHolder.fold_subject_title_tv!!.text = item.subjectTitle
         viewHolder.unfold_teacher_name_tv!!.text = item.teacherName
         viewHolder.unfold_subject_title_tv!!.text = item.subjectTitle
-        viewHolder.fold_percentage_grade_tv!!.text = item.getPercentageGrade(periodGradeItem)
-        viewHolder.unfold_percentage_grade_tv!!.text = item.getPercentageGrade(periodGradeItem)
         viewHolder.unfolded_grade_recycler_view!!.layoutManager = layoutManager
+        viewHolder.fold_percentage_grade_tv!!.text = item.getPercentageGrade(periodGradeItem)
         viewHolder.floating_action_button!!.setOnClickListener(defaultRequestBtnClickListener)
+        viewHolder.unfold_percentage_grade_tv!!.text = item.getPercentageGrade(periodGradeItem)
         viewHolder.unfold_header_view!!.setBackgroundColor(utils.getColorByLetterGrade(context, item.getLetterGrade(periodGradeItem)))
         viewHolder.fold_grade_background!!.setBackgroundColor(utils.getColorByLetterGrade(context, item.getLetterGrade(periodGradeItem)))
 
@@ -151,10 +148,8 @@ class FoldingCellListAdapter(context: Context, private var mainListItems: ArrayL
 
     fun registerToggle(position: Int) {
 
-        if (unfoldedIndexes.contains(position))
-            registerFold(position)
-        else
-            registerUnfold(position)
+        if (unfoldedIndexes.contains(position)) registerFold(position)
+        else registerUnfold(position)
     }
 
     private fun registerFold(position: Int) {
@@ -166,7 +161,6 @@ class FoldingCellListAdapter(context: Context, private var mainListItems: ArrayL
     }
 
     fun setDefaultRequestBtnClickListener(defaultRequestBtnClickListener: View.OnClickListener) {
-
         this.defaultRequestBtnClickListener = defaultRequestBtnClickListener
     }
 

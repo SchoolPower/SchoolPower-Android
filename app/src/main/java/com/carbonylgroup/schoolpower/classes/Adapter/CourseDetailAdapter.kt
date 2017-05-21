@@ -21,6 +21,7 @@ import kotterknife.bindView
 import java.util.*
 
 class CourseDetailAdapter(private val context: Context, private val item: MainListItem) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
     private var presentingTermPos = 0
     private val utils: Utils = Utils(context)
     private var termsList: ArrayList<String> = ArrayList()
@@ -42,25 +43,13 @@ class CourseDetailAdapter(private val context: Context, private val item: MainLi
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
 
-        val view: View
-
-        if (viewType == HEADER_VIEW) {
-            view = LayoutInflater.from(parent.context).inflate(R.layout.course_detail_header, parent, false)
-            return HeaderViewHolder(view)
-        }
-
-        if (viewType == FOOTER_VIEW) {
-            view = LayoutInflater.from(parent.context).inflate(R.layout.course_detail_footer, parent, false)
-            return FooterViewHolder(view)
-        }
-
-        view = LayoutInflater.from(parent.context).inflate(R.layout.course_detail_assignment_item, parent, false)
-        return NormalViewHolder(view)
+        if (viewType == HEADER_VIEW) return HeaderViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.course_detail_header, parent, false))
+        if (viewType == FOOTER_VIEW) return FooterViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.course_detail_footer, parent, false))
+        return NormalViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.course_detail_assignment_item, parent, false))
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
 
-        try {
             if (holder is NormalViewHolder) {
 
                 val normalViewHolder = holder
@@ -95,25 +84,17 @@ class CourseDetailAdapter(private val context: Context, private val item: MainLi
                 headerViewHolder.detail_term_select_spinner.setSelection(presentingTermPos)
                 headerViewHolder.detail_term_select_spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                     override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
-
                         val selectItem = termsList[position]
                         if (position != presentingTermPos) {
                             presentingTermPos = position
-                            if (selectItem == context.getString(R.string.all_terms))
-                                setAllTerms(termsList)
-                            else
-                                setTerm(selectItem)
+                            if (selectItem == context.getString(R.string.all_terms)) setAllTerms(termsList)
+                            else setTerm(selectItem)
                             refreshAdapter()
                         }
                     }
-
                     override fun onNothingSelected(parent: AdapterView<*>) {}
                 }
             }
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-
     }
 
     override fun getItemCount(): Int {
@@ -131,10 +112,8 @@ class CourseDetailAdapter(private val context: Context, private val item: MainLi
     }
 
     open inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
-
+    inner class FooterViewHolder(itemView: View) : ViewHolder(itemView)
     inner class HeaderViewHolder(itemView: View) : ViewHolder(itemView) {
-        val detail_header_grades_bt: Button by bindView(R2.id.detail_header_grades_bt)
-        val detail_header_attendance_bt: Button by bindView(R2.id.detail_header_attendance_bt)
         val detail_letter_grade_tv: TextView by bindView(R2.id.detail_letter_grade_tv)
         val detail_percentage_grade_tv: TextView by bindView(R2.id.detail_percentage_grade_tv)
         val detail_header_teacher_name_tv: TextView by bindView(R2.id.detail_header_teacher_name_tv)
@@ -143,8 +122,6 @@ class CourseDetailAdapter(private val context: Context, private val item: MainLi
         val detail_header_grade_background: RelativeLayout by bindView(R2.id.detail_header_grade_background)
         val detail_term_select_spinner: Spinner by bindView(R2.id.detail_term_select_spinner)
     }
-
-    inner class FooterViewHolder(itemView: View) : ViewHolder(itemView)
     inner class NormalViewHolder(itemView: View) : ViewHolder(itemView) {
         val detail_assignment_name_tv: TextView by bindView(R2.id.detail_assignment_name_tv)
         val detail_assignment_date_tv: TextView by bindView(R2.id.detail_assignment_date_tv)
@@ -163,6 +140,7 @@ class CourseDetailAdapter(private val context: Context, private val item: MainLi
     }
 
     private fun setAllTerms(termsList: ArrayList<*>) {
+
         if (termsList.contains("Y1")) setTerm("Y1")
         else if (termsList.contains("S1")) setTerm("S1")
         else if (termsList.contains("S2")) setTerm("S2")

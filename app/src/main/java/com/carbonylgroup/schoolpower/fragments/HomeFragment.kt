@@ -27,24 +27,22 @@ import java.util.*
 
 class HomeFragment : TransitionHelper.BaseFragment() {
 
+    private var utils: Utils? = null
     private var transformedPosition = -1
     private var view_private: View? = null
-    private var fab_out: ScaleAnimation? = null
     private var fab_in: ScaleAnimation? = null
+    private var fab_out: ScaleAnimation? = null
+    private var unfoldedIndexesBackUp = HashSet<Int>()
+    private var adapter: FoldingCellListAdapter? = null
+    private var dataList: ArrayList<MainListItem>? = null
     private var courseDetailFragment: CourseDetailFragment? = null
     private var home_swipe_refresh_layout: SwipeRefreshLayout? = null
-    private var unfoldedIndexesBackUp = HashSet<Int>()
-    private var dataList: ArrayList<MainListItem>? = null
-    private var adapter: FoldingCellListAdapter? = null
-    private var utils: Utils? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         view_private = inflater.inflate(R.layout.home_view_content, container, false)
-
         initAnim()
         initValue()
-
         return view_private
     }
 
@@ -86,33 +84,26 @@ class HomeFragment : TransitionHelper.BaseFragment() {
     private fun initAdapter() {
 
         val theListView = view_private!!.findViewById(R.id.mainListView) as ListView
-
         adapter = FoldingCellListAdapter(activity, dataList, unfoldedIndexesBackUp, transformedPosition)
-
         adapter!!.setDefaultRequestBtnClickListener(View.OnClickListener { v ->
             MainActivity.of(activity).mainListItemTransporter = dataList!![theListView.getPositionForView(v)]
-
             if (transformedPosition != -1) {
-
                 val itemView = getItemViewByPosition(transformedPosition, theListView)
                 itemView.findViewById(R.id.unfold_header_view).transitionName = ""
                 itemView.findViewById(R.id.detail_subject_title_tv).transitionName = ""
             }
-
             transformedPosition = theListView.getPositionForView(v)
             val itemView = getItemViewByPosition(theListView.getPositionForView(v), theListView)
             itemView.findViewById(R.id.floating_action_button).startAnimation(fab_out)
             itemView.findViewById(R.id.floating_action_button).visibility = View.GONE
             gotoCourseDetail(itemView.findViewById(R.id.unfold_header_view), itemView.findViewById(R.id.detail_subject_title_tv), transformedPosition)
         })
-
         theListView.onItemClickListener = AdapterView.OnItemClickListener { _, view, pos, _ ->
             adapter!!.registerToggle(pos)
             (view as FoldingCell).toggle(false)
             adapter!!.refreshPeriodRecycler(view, pos)
             unfoldedIndexesBackUp = adapter!!.unfoldedIndexes
         }
-
         theListView.adapter = adapter
     }
 
@@ -123,14 +114,13 @@ class HomeFragment : TransitionHelper.BaseFragment() {
     fun refreshAdapter(newDataList: ArrayList<MainListItem>) {
 
         dataList = newDataList
-
         if (adapter == null) initValue()
         adapter!!.setMainListItems(newDataList)
         adapter!!.notifyDataSetChanged()
         setRefreshing(false)
     }
 
-    fun notifyAdapter(){
+    fun notifyAdapter() {
         adapter!!.notifyDataSetChanged()
     }
 
@@ -138,7 +128,6 @@ class HomeFragment : TransitionHelper.BaseFragment() {
 
         val firstItemPos = listView.firstVisiblePosition
         val lastItemPos = listView.lastVisiblePosition
-
         if (position < firstItemPos || position > lastItemPos) return listView.adapter.getView(position, null, listView)
         else return listView.getChildAt(position - firstItemPos)
     }
@@ -148,10 +137,8 @@ class HomeFragment : TransitionHelper.BaseFragment() {
         courseDetailFragment = CourseDetailFragment()
         courseDetailFragment!!.sharedElementEnterTransition = DetailsTransition()
         courseDetailFragment!!.sharedElementReturnTransition = DetailsTransition()
-
         _header.transitionName = getString(R.string.shared_element_course_header)
         _subject_title.transitionName = getString(R.string.shared_element_course_subject_title)
-
         val bundle = Bundle()
         bundle.putInt("transformedPosition", transformedPosition)
         courseDetailFragment!!.arguments = bundle
@@ -172,16 +159,11 @@ class HomeFragment : TransitionHelper.BaseFragment() {
 
     private fun preRenderUnfoldCells() {
 
-        val theListView = view_private!!.findViewById(R.id.mainListView) as ListView
-        for (i in 0..9) {
-
-            val itemView = getItemViewByPosition(transformedPosition, theListView)
-            (itemView as FoldingCell).toggle(false)
-            itemView.toggle(false)
-        }
+        for (i in 0..9) (getItemViewByPosition(transformedPosition, (view_private!!.findViewById(R.id.mainListView) as ListView)) as FoldingCell).toggle(false)
     }
 
     override fun onAfterEnter() {
+
         super.onAfterEnter()
         preRenderUnfoldCells()
     }

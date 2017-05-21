@@ -10,7 +10,6 @@ import android.support.design.widget.Snackbar
 import android.support.v4.content.ContextCompat
 import android.util.Base64
 import android.util.DisplayMetrics
-import android.util.Log
 import android.view.View
 import com.carbonylgroup.schoolpower.R
 import com.carbonylgroup.schoolpower.classes.ListItems.AssignmentItem
@@ -35,29 +34,17 @@ class Utils(private val context: Context) {
     private val gradeColorIds = intArrayOf(R.color.A_score_green, R.color.B_score_green, R.color.Cp_score_yellow, R.color.C_score_orange, R.color.Cm_score_red, R.color.primary_dark, R.color.primary, R.color.primary)
     private val gradeColorIdsPlain = intArrayOf(R.color.A_score_green, R.color.B_score_green, R.color.Cp_score_yellow, R.color.C_score_orange, R.color.Cm_score_red, R.color.primary_dark, R.color.primary)
     private val gradeDarkColorIdsPlain = intArrayOf(R.color.A_score_green_dark, R.color.B_score_green_dark, R.color.Cp_score_yellow_dark, R.color.C_score_orange_dark, R.color.Cm_score_red_dark, R.color.primary_darker, R.color.primary_dark)
-
-    private fun indexOfString(searchString: String, domain: Array<String>): Int =
-            domain.indices.firstOrNull { searchString == domain[it] } ?: -1
-
-    fun dpToPx(dp: Int) = Math.round(dp * (context.resources.displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT))
+    private fun indexOfString(searchString: String, domain: Array<String>): Int = domain.indices.firstOrNull { searchString == domain[it] } ?: -1
 
     /* Color Handler */
-    fun getColorByLetterGrade(context: Context, letterGrade: String): Int {
-
-        val letterGrades = arrayOf("A", "B", "C+", "C", "C-", "F", "I", "--")
-        return ContextCompat.getColor(context, gradeColorIds[indexOfString(letterGrade, letterGrades)])
-    }
+    fun getColorByLetterGrade(context: Context, letterGrade: String) = ContextCompat.getColor(context, gradeColorIds[indexOfString(letterGrade, arrayOf("A", "B", "C+", "C", "C-", "F", "I", "--"))])
 
     fun getColorByPeriodItem(context: Context, item: PeriodGradeItem) = getColorByLetterGrade(context, item.termLetterGrade)
 
-    fun getDarkColorByPrimary(originalPrimary: Int): Int {
+    fun getDarkColorByPrimary(originalPrimary: Int) = ContextCompat.getColor(context, gradeDarkColorIdsPlain[gradeColorIdsPlain.takeWhile { originalPrimary != ContextCompat.getColor(context, it) }.count()])
 
-        val count = gradeColorIdsPlain
-                .takeWhile { originalPrimary != ContextCompat.getColor(context, it) }
-                .count()
-
-        return ContextCompat.getColor(context, gradeDarkColorIdsPlain[count])
-    }
+    /* Others */
+    fun dpToPx(dp: Int) = Math.round(dp * (context.resources.displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT))
 
     fun getLatestItem(item: MainListItem): PeriodGradeItem? {
 
@@ -66,8 +53,9 @@ class Utils(private val context: Context) {
         val periodGradeItemList = item.periodGradeItemArrayList
         val termsList: ArrayList<String> = ArrayList()
         termsList.add(context.getString(R.string.all_terms))
+
         if (getSettingsPreference(context.getString(R.string.list_preference_dashboard_display)) == "1") forLatestSemester = true
-        for (i in periodGradeItemList.indices) termsList.add(periodGradeItemList[i].termIndicator)
+        periodGradeItemList.indices.forEach { termsList.add(periodGradeItemList[it].termIndicator) }
 
         if (forLatestSemester)
             if (termsList.contains("S2")) latestTerm = "S2"
@@ -82,59 +70,16 @@ class Utils(private val context: Context) {
             else if (termsList.contains("T2")) latestTerm = "T2"
             else latestTerm = "T1"
 
-        if (item.roomNumber == "306") Log.d("[][][", getSettingsPreference(context.getString(R.string.list_preference_dashboard_display)))
-
-        for (i in periodGradeItemList) if (i.termIndicator == latestTerm) return i
-
+        periodGradeItemList.forEach { if (it.termIndicator == latestTerm) return it }
         return null
-    }
-
-    fun getSettingsPreference(key: String): String {
-
-        val sharedPreferences = context.getSharedPreferences(context.getString(R.string.settings), Activity.MODE_PRIVATE)
-        return sharedPreferences.getString(key, "0")
     }
 
     fun showSnackBar(context: Context, view: View, msg: String, colorRed: Boolean) {
 
-        val snackbar = Snackbar.make(view, msg, Snackbar.LENGTH_SHORT)
-        if (colorRed)
-            snackbar.view.setBackgroundColor(context.resources.getColor(R.color.Cm_score_red_dark))
-        else
-            snackbar.view.setBackgroundColor(context.resources.getColor(R.color.accent))
-        snackbar.show()
-    }
-
-    @Throws(IOException::class)
-    fun readDataArrayList(): ArrayList<MainListItem>? {
-        try {
-            val data = StringBuilder("")
-            val inputStream = context.openFileInput(context.getString(R.string.dataFileName))
-            val isr = InputStreamReader(inputStream)
-            val buffReader = BufferedReader(isr)
-
-            var readString = buffReader.readLine()
-            while (readString != null) {
-                data.append(readString)
-                readString = buffReader.readLine()
-            }
-
-            isr.close()
-            inputStream.close()
-            return parseJsonResult(data.toString())
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-        return null
-    }
-
-    @Throws(IOException::class)
-    fun saveDataJson(jsonStr: String) {
-
-        val outputStream = context.openFileOutput(context.getString(R.string.dataFileName), Context.MODE_PRIVATE)
-        outputStream.write(jsonStr.toByteArray())
-        outputStream.close()
-
+        val snackBar = Snackbar.make(view, msg, Snackbar.LENGTH_SHORT)
+        if (colorRed) snackBar.view.setBackgroundColor(context.resources.getColor(R.color.Cm_score_red_dark))
+        else snackBar.view.setBackgroundColor(context.resources.getColor(R.color.accent))
+        snackBar.show()
     }
 
     fun parseJsonResult(jsonStr: String): ArrayList<MainListItem>? {
@@ -195,6 +140,41 @@ class Utils(private val context: Context) {
         }
 
         return null
+    }
+
+    /* IO */
+    fun getSettingsPreference(key: String) = context.getSharedPreferences(context.getString(R.string.settings), Activity.MODE_PRIVATE).getString(key, "0")!!
+
+    @Throws(IOException::class)
+    fun readDataArrayList(): ArrayList<MainListItem>? {
+        try {
+            val data = StringBuilder("")
+            val inputStream = context.openFileInput(context.getString(R.string.dataFileName))
+            val isr = InputStreamReader(inputStream)
+            val buffReader = BufferedReader(isr)
+
+            var readString = buffReader.readLine()
+            while (readString != null) {
+                data.append(readString)
+                readString = buffReader.readLine()
+            }
+
+            isr.close()
+            inputStream.close()
+            return parseJsonResult(data.toString())
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        return null
+    }
+
+    @Throws(IOException::class)
+    fun saveDataJson(jsonStr: String) {
+
+        val outputStream = context.openFileOutput(context.getString(R.string.dataFileName), Context.MODE_PRIVATE)
+        outputStream.write(jsonStr.toByteArray())
+        outputStream.close()
+
     }
 
     companion object {

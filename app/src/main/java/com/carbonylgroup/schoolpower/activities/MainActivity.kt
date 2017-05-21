@@ -59,7 +59,6 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
         setTheme(R.style.Design)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.nav_drawer)
-
         initValue()
         initUI()
         initOnClick()
@@ -240,7 +239,6 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
 
         animateDrawerToggle(false)
         hideToolBarItems(false)
-        settingsFragment!!.onDestroy()
         homeFragment!!.notifyAdapter()
     }
 
@@ -354,7 +352,6 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
         menuOpenDrawer = !toArrow
         enableDrawer(!toArrow)
         if (toArrow) {
-
             anim = ValueAnimator.ofFloat(0.0f, 1.0f)
             toggle.isDrawerIndicatorEnabled = false
         } else anim = ValueAnimator.ofFloat(1.0f, 0.0f)
