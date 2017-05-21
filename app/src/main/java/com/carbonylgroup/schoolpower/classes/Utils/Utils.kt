@@ -6,46 +6,28 @@ package com.carbonylgroup.schoolpower.classes.Utils
 
 import android.app.Activity
 import android.content.Context
-import android.content.SharedPreferences
+import android.support.design.widget.Snackbar
 import android.support.v4.content.ContextCompat
 import android.util.Base64
 import android.util.DisplayMetrics
 import android.util.Log
-
-import org.apache.commons.io.output.ByteArrayOutputStream
-import org.json.JSONArray
-import org.json.JSONException
-import org.json.JSONObject
-
-import java.io.BufferedReader
-import java.io.FileInputStream
-import java.io.FileNotFoundException
-import java.io.FileOutputStream
-import java.io.IOException
-import java.io.InputStreamReader
-import java.io.PrintWriter
-import java.net.URL
-import java.net.URLConnection
-import java.security.InvalidKeyException
-import java.security.KeyFactory
-import java.security.NoSuchAlgorithmException
-import java.security.PublicKey
-import java.security.spec.InvalidKeySpecException
-import java.security.spec.X509EncodedKeySpec
-import java.util.ArrayList
-import java.util.Collections
-import java.util.Comparator
-import java.util.HashMap
-
-import javax.crypto.BadPaddingException
-import javax.crypto.Cipher
-import javax.crypto.IllegalBlockSizeException
-import javax.crypto.NoSuchPaddingException
-
+import android.view.View
 import com.carbonylgroup.schoolpower.R
 import com.carbonylgroup.schoolpower.classes.ListItems.AssignmentItem
 import com.carbonylgroup.schoolpower.classes.ListItems.MainListItem
 import com.carbonylgroup.schoolpower.classes.ListItems.PeriodGradeItem
+import org.json.JSONArray
+import org.json.JSONException
+import java.io.BufferedReader
+import java.io.IOException
+import java.io.InputStreamReader
+import java.io.PrintWriter
+import java.net.URL
+import java.security.KeyFactory
+import java.security.PublicKey
+import java.security.spec.X509EncodedKeySpec
+import java.util.*
+import javax.crypto.Cipher
 
 
 class Utils(private val context: Context) {
@@ -77,22 +59,73 @@ class Utils(private val context: Context) {
         return ContextCompat.getColor(context, gradeDarkColorIdsPlain[count])
     }
 
+    fun getLatestItem(item: MainListItem): PeriodGradeItem? {
+
+        var forLatestSemester = false
+        val latestTerm: String
+        val periodGradeItemList = item.periodGradeItemArrayList
+        val termsList: ArrayList<String> = ArrayList()
+        termsList.add(context.getString(R.string.all_terms))
+        if (getSettingsPreference(context.getString(R.string.list_preference_dashboard_display)) == "1") forLatestSemester = true
+        for (i in periodGradeItemList.indices) termsList.add(periodGradeItemList[i].termIndicator)
+
+        if (forLatestSemester)
+            if (termsList.contains("S2")) latestTerm = "S2"
+            else if (termsList.contains("S1")) latestTerm = "S1"
+            else if (termsList.contains("T4")) latestTerm = "T4"
+            else if (termsList.contains("T3")) latestTerm = "T3"
+            else if (termsList.contains("T2")) latestTerm = "T2"
+            else latestTerm = "T1"
+        else
+            if (termsList.contains("T4")) latestTerm = "T4"
+            else if (termsList.contains("T3")) latestTerm = "T3"
+            else if (termsList.contains("T2")) latestTerm = "T2"
+            else latestTerm = "T1"
+
+        if (item.roomNumber == "306") Log.d("[][][", getSettingsPreference(context.getString(R.string.list_preference_dashboard_display)))
+
+        for (i in periodGradeItemList) if (i.termIndicator == latestTerm) return i
+
+        return null
+    }
+
+    fun getSettingsPreference(key: String): String {
+
+        val sharedPreferences = context.getSharedPreferences(context.getString(R.string.settings), Activity.MODE_PRIVATE)
+        return sharedPreferences.getString(key, "0")
+    }
+
+    fun showSnackBar(context: Context, view: View, msg: String, colorRed: Boolean) {
+
+        val snackbar = Snackbar.make(view, msg, Snackbar.LENGTH_SHORT)
+        if (colorRed)
+            snackbar.view.setBackgroundColor(context.resources.getColor(R.color.Cm_score_red_dark))
+        else
+            snackbar.view.setBackgroundColor(context.resources.getColor(R.color.accent))
+        snackbar.show()
+    }
+
     @Throws(IOException::class)
     fun readDataArrayList(): ArrayList<MainListItem>? {
-        val data = StringBuilder("")
-        val inputStream = context.openFileInput(context.getString(R.string.dataFileName))
-        val isr = InputStreamReader(inputStream)
-        val buffReader = BufferedReader(isr)
+        try {
+            val data = StringBuilder("")
+            val inputStream = context.openFileInput(context.getString(R.string.dataFileName))
+            val isr = InputStreamReader(inputStream)
+            val buffReader = BufferedReader(isr)
 
-        var readString = buffReader.readLine()
-        while (readString != null) {
-            data.append(readString)
-            readString = buffReader.readLine()
+            var readString = buffReader.readLine()
+            while (readString != null) {
+                data.append(readString)
+                readString = buffReader.readLine()
+            }
+
+            isr.close()
+            inputStream.close()
+            return parseJsonResult(data.toString())
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
-
-        isr.close()
-        inputStream.close()
-        return parseJsonResult(data.toString())
+        return null
     }
 
     @Throws(IOException::class)
@@ -174,9 +207,9 @@ class Utils(private val context: Context) {
 
         fun RSAEncode(key: PublicKey, plainText: String): String {
 
-                val cipher = Cipher.getInstance(ALGORITHM)
-                cipher.init(Cipher.ENCRYPT_MODE, key)
-                return Base64.encodeToString(cipher.doFinal(plainText.toByteArray()), Base64.URL_SAFE)
+            val cipher = Cipher.getInstance(ALGORITHM)
+            cipher.init(Cipher.ENCRYPT_MODE, key)
+            return Base64.encodeToString(cipher.doFinal(plainText.toByteArray()), Base64.URL_SAFE)
 
         }
 
@@ -204,9 +237,9 @@ class Utils(private val context: Context) {
                 out.flush()
                 `in` = BufferedReader(InputStreamReader(conn.getInputStream()))
                 var line: String
-                while (true){
+                while (true) {
                     line = `in`.readLine()
-                    if(line==null) break
+                    if (line == null) break
                     result += "\n" + line
                 }
 

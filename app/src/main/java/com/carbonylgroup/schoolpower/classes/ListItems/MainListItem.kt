@@ -5,16 +5,22 @@
 package com.carbonylgroup.schoolpower.classes.ListItems
 
 import java.io.Serializable
-import java.util.ArrayList
+import java.util.*
 
 class MainListItem(val subjectTitle: String, val teacherName: String, val blockLetter: String,
                    val roomNumber: String, val periodGradeItemArrayList: ArrayList<PeriodGradeItem>) : Serializable {
 
-    val letterGrade: String
-        get() = periodGradeItemArrayList[0].termLetterGrade
+    fun getLetterGrade(requiredTerm: PeriodGradeItem?): String {
 
-    val percentageGrade: String
-        get() = periodGradeItemArrayList[0].termPercentageGrade
+        if (requiredTerm!=null) return periodGradeItemArrayList[periodGradeItemArrayList.indexOf(requiredTerm)].termLetterGrade
+        else return periodGradeItemArrayList[0].termLetterGrade
+    }
+
+    fun getPercentageGrade(requiredTerm: PeriodGradeItem?): String {
+
+        if (requiredTerm!=null) return periodGradeItemArrayList[periodGradeItemArrayList.indexOf(requiredTerm)].termPercentageGrade
+        else return periodGradeItemArrayList[0].termPercentageGrade
+    }
 
     fun getAssignmentItemArrayList(term: String): ArrayList<AssignmentItem>? {
         return periodGradeItemArrayList

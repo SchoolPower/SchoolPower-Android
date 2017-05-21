@@ -20,10 +20,7 @@ import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.graphics.drawable.DrawerArrowDrawable
 import android.support.v7.widget.Toolbar
-import android.view.Menu
-import android.view.MenuItem
-import android.view.View
-import android.view.WindowManager
+import android.view.*
 import android.view.animation.DecelerateInterpolator
 import android.widget.TextView
 import com.carbonylgroup.schoolpower.R
@@ -32,8 +29,8 @@ import com.carbonylgroup.schoolpower.classes.Transition.DetailsTransition
 import com.carbonylgroup.schoolpower.classes.Transition.TransitionHelper
 import com.carbonylgroup.schoolpower.classes.Utils.Utils
 import com.carbonylgroup.schoolpower.classes.Utils.postData
-import com.carbonylgroup.schoolpower.fragments.CourseDetailFragment
 import com.carbonylgroup.schoolpower.fragments.HomeFragment
+import com.carbonylgroup.schoolpower.fragments.SettingsFragment
 import kotterknife.bindView
 import java.util.*
 
@@ -44,6 +41,8 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
     var dataList: ArrayList<MainListItem>? = null
     var mainListItemTransporter: MainListItem? = null
     private var menuOpenDrawer = true
+    private var noConnection = false
+    private var hideToolBarItemFlag = false
     private var utils: Utils = Utils(this)
     private val mainToolBar: Toolbar by bindView(R.id.main_toolbar)
     private val drawer: DrawerLayout by bindView(R.id.drawer_layout)
@@ -53,9 +52,10 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
 
     /* Fragments */
     private var homeFragment: HomeFragment? = null
-    private var courseDetailFragment: CourseDetailFragment? = null
+    private var settingsFragment: SettingsFragment? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
         setTheme(R.style.Design)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.nav_drawer)
@@ -66,7 +66,10 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
+
         menuInflater.inflate(R.menu.menu_main, menu)
+        menu.findItem(R.id.action_new).isVisible = !hideToolBarItemFlag
+        menu.findItem(R.id.action_refresh).isVisible = !hideToolBarItemFlag
         return true
     }
 
@@ -102,9 +105,8 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
     override fun onBackPressed() {
 
         when (presentFragment) {
-
-            1 -> returnToHome()
-
+            1 -> returnFromDetail()
+            2 -> returnFromSettings()
             else -> super.onBackPressed()
         }
     }
@@ -116,14 +118,19 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
         toggleIcon = DrawerArrowDrawable(this)
         toggle = ActionBarDrawerToggle(this, drawer, mainToolBar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
 
-        try {
-            val input = utils.readDataArrayList()
-            if (input != null) dataList = input
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-
+        val input = utils.readDataArrayList()
+        if (input != null) dataList = input
         initDataJson()
+
+        //Start refreshing animation on startup refreshing data
+        //Don't when there is no connection
+        mainAppBar.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+            override fun onGlobalLayout() {
+                mainAppBar.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                if (!noConnection) homeFragment!!.setRefreshing(true)
+                else noConnection = false
+            }
+        })
     }
 
     private fun initUI() {
@@ -135,10 +142,9 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
     private fun initOnClick() {
 
         toggle.toolbarNavigationClickListener = View.OnClickListener {
-            if (menuOpenDrawer)
-                drawer.openDrawer(GravityCompat.START)
-            else
-                returnToHome()
+            if (menuOpenDrawer) drawer.openDrawer(GravityCompat.START)
+            else if (presentFragment == 1) returnFromDetail()
+            else returnFromSettings()
         }
     }
 
@@ -163,23 +169,21 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
         val transaction = fm.beginTransaction()
 
         when (id) {
-
             R.id.nav_dashboard -> {
-
                 homeFragment = HomeFragment()
                 transaction.replace(R.id.content_view, homeFragment)
+                hideToolBarItems(false)
                 presentFragment = 0
             }
 
-            R.id.course_detail_background -> {
-
-                if (courseDetailFragment == null) courseDetailFragment = CourseDetailFragment()
-                transaction.replace(R.id.content_view, courseDetailFragment)
-                presentFragment = 1
-            }
-
             R.id.nav_settings -> {
-                //TODO SETTING
+                settingsFragment = SettingsFragment()
+                transaction.setCustomAnimations(R.animator.slide_from_right_in, R.animator.slide_to_left_out)
+                        .replace(R.id.content_view, settingsFragment)
+                setToolBarTitle(getString(R.string.settings))
+                animateDrawerToggle(true)
+                hideToolBarItems(true)
+                presentFragment = 2
             }
 
             R.id.nav_sign_out -> confirmSignOut()
@@ -194,14 +198,13 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
 
         val id = item.itemId
-        gotoFragmentWithMenuItemId(id)
-
         val drawer = findViewById(R.id.drawer_layout) as DrawerLayout
+        gotoFragmentWithMenuItemId(id)
         drawer.closeDrawer(GravityCompat.START)
         return true
     }
 
-    fun returnToHome() {
+    fun returnFromDetail() {
 
         expandToolBar(true, true)
 
@@ -220,7 +223,25 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
 
         MainActivity.of(this).setToolBarColor(ContextCompat.getColor(this, R.color.primary), true)
         animateDrawerToggle(false)
+        hideToolBarItems(false)
         setToolBarElevation(0)
+    }
+
+    fun returnFromSettings() {
+
+        if (homeFragment == null) homeFragment = HomeFragment()
+
+        fragmentManager
+                .beginTransaction()
+                .setCustomAnimations(R.animator.slide_to_right_in, R.animator.slide_from_left_out)
+                .replace(R.id.content_view, homeFragment)
+                .addToBackStack(null)
+                .commit()
+
+        animateDrawerToggle(false)
+        hideToolBarItems(false)
+        settingsFragment!!.onDestroy()
+        homeFragment!!.notifyAdapter()
     }
 
     private fun setDefaultFragment() {
@@ -235,9 +256,8 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
     fun initDataJson() {
 
         val oldMainItemList = ArrayList<MainListItem>()
-        if (dataList != null) oldMainItemList.addAll(dataList!!)
-
         val token = getSharedPreferences("accountData", Activity.MODE_PRIVATE).getString("token", "")
+        if (dataList != null) oldMainItemList.addAll(dataList!!)
 
         Thread(postData(
                 getString(R.string.postURL), getString(R.string.token_equals) + token,
@@ -245,42 +265,44 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                     override fun handleMessage(msg: Message) {
                         val messages = msg.obj.toString().split("\n".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
 
-                        val spEditor = getSharedPreferences(getString(R.string.accountData), Activity.MODE_PRIVATE).edit()
-                        spEditor.putString(getString(R.string.student_name), messages[1])
-                        spEditor.apply()
+                        if (msg.obj.toString().contains(getString(R.string.error_wrong_password))) {
+                            utils.showSnackBar(this@MainActivity, findViewById(R.id.main_coordinate_layout), getString(R.string.wrong_password), true)
+                            signOut()
+                        } else if (msg.obj.toString().contains(getString(R.string.json_begin))) {
 
-                        if (messages.size == 3 && !messages[2].isEmpty()) {
-                            val jsonStr = messages[2]
-                            try {
+                            val spEditor = getSharedPreferences(getString(R.string.accountData), Activity.MODE_PRIVATE).edit()
+                            spEditor.putString(getString(R.string.student_name), messages[1])
+                            spEditor.apply()
+
+                            if (messages.size == 3 && !messages[2].isEmpty()) {
+                                val jsonStr = messages[2]
                                 utils.saveDataJson(jsonStr)
-                            } catch (e: Exception) {
-                                e.printStackTrace()
-                            }
+                                dataList = utils.parseJsonResult(jsonStr)
 
-                            dataList = utils.parseJsonResult(jsonStr)
-
-                            if (dataList!!.size == oldMainItemList.size) {
-                                for (i in dataList!!.indices) {
-                                    val periods = dataList!![i].periodGradeItemArrayList
-                                    val oldPeriods = oldMainItemList[i].periodGradeItemArrayList
-
-                                    if (periods.size != oldPeriods.size) break
-
-                                    for (j in periods.indices) {
-                                        val newAssignmentListCollection = periods[j].assignmentItemArrayList
-                                        val oldAssignmentListCollection = oldPeriods[j].assignmentItemArrayList
-                                        for (item in newAssignmentListCollection) {
-                                            val found = oldAssignmentListCollection.any { it.assignmentTitle == item.assignmentTitle && it.assignmentDividedScore == item.assignmentDividedScore && it.assignmentDate == item.assignmentDate && !it.isNew }
-                                            if (!found) item.isNew=true
+                                //Diff
+                                if (dataList!!.size == oldMainItemList.size) {
+                                    for (i in dataList!!.indices) {
+                                        val periods = dataList!![i].periodGradeItemArrayList
+                                        val oldPeriods = oldMainItemList[i].periodGradeItemArrayList
+                                        if (periods.size != oldPeriods.size) break
+                                        for (j in periods.indices) {
+                                            val newAssignmentListCollection = periods[j].assignmentItemArrayList
+                                            val oldAssignmentListCollection = oldPeriods[j].assignmentItemArrayList
+                                            for (item in newAssignmentListCollection) {
+                                                val found = oldAssignmentListCollection.any { it.assignmentTitle == item.assignmentTitle && it.assignmentDividedScore == item.assignmentDividedScore && it.assignmentDate == item.assignmentDate && !it.isNew }
+                                                if (!found) item.isNew = true
+                                            }
                                         }
                                     }
                                 }
+                                homeFragment!!.refreshAdapter(dataList!!)
+                                utils.showSnackBar(this@MainActivity, findViewById(R.id.main_coordinate_layout), getString(R.string.data_updated), false)
                             }
-
-                            homeFragment!!.refreshAdapter(dataList!!)
-                            if (oldMainItemList.size == 0) setDefaultFragment()
+                        } else {
+                            utils.showSnackBar(this@MainActivity, findViewById(R.id.main_coordinate_layout), getString(R.string.no_connection), true)
+                            homeFragment!!.setRefreshing(false)
+                            noConnection = true
                         }
-
                     }
                 })).start()
     }
@@ -289,10 +311,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
 
         val sharedPreferences = getSharedPreferences(getString(R.string.accountData), Activity.MODE_PRIVATE)
         val name = sharedPreferences.getString(getString(R.string.student_name), "")
-        if (name != "") {
-            val fullName = name.split(" ")
-            return fullName[1] + " " + fullName[2]
-        }
+        if (name != "") return name.split(" ")[1] + " " + name.split(" ")[2]
         return getString(R.string.no_username)
     }
 
@@ -319,6 +338,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
         spEditor.putString(getString(R.string.token), "")
         spEditor.putBoolean(getString(R.string.loggedIn), false)
         spEditor.apply()
+        utils.saveDataJson("")
         startLoginActivity()
     }
 
@@ -329,18 +349,15 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
     }
 
     fun animateDrawerToggle(toArrow: Boolean) {
-        val anim: ValueAnimator
 
+        val anim: ValueAnimator
         menuOpenDrawer = !toArrow
         enableDrawer(!toArrow)
-
         if (toArrow) {
 
             anim = ValueAnimator.ofFloat(0.0f, 1.0f)
             toggle.isDrawerIndicatorEnabled = false
-        } else
-            anim = ValueAnimator.ofFloat(1.0f, 0.0f)
-
+        } else anim = ValueAnimator.ofFloat(1.0f, 0.0f)
         anim.addUpdateListener { valueAnimator ->
             val slideOffset = valueAnimator.animatedValue as Float
             toggleIcon.progress = slideOffset
@@ -353,14 +370,18 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
 
     fun enableDrawer(enable: Boolean) {
 
-        if (enable)
-            drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
-        else
-            drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+        if (enable) drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
+        else drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
     }
 
     fun expandToolBar(expand: Boolean, animated: Boolean) {
         mainAppBar.setExpanded(expand, animated)
+    }
+
+    fun hideToolBarItems(hide: Boolean) {
+
+        hideToolBarItemFlag = hide
+        invalidateOptionsMenu()
     }
 
     fun setToolBarTitle(barTitle: String) {
@@ -399,7 +420,6 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
     }
 
     companion object {
-
         fun of(activity: Activity): MainActivity {
             return activity as MainActivity
         }

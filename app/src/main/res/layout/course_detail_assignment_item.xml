@@ -4,6 +4,8 @@
     android:id="@+id/heading_card"
     android:layout_width="match_parent"
     android:layout_height="80dp"
+    android:layout_marginStart="10dp"
+    android:layout_marginEnd="10dp"
     android:visibility="visible"
     app:cardUseCompatPadding="true">
 

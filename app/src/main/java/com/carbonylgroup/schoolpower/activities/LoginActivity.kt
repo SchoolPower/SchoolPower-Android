@@ -4,7 +4,6 @@
 
 package com.carbonylgroup.schoolpower.activities
 
-
 import android.app.Activity
 import android.app.ProgressDialog
 import android.content.Intent
@@ -12,11 +11,13 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Message
 import android.support.design.widget.Snackbar
+import android.util.Log
 import android.widget.EditText
 
 import com.carbonylgroup.schoolpower.R
 import com.carbonylgroup.schoolpower.classes.Utils.Utils
 import com.carbonylgroup.schoolpower.classes.Utils.postData
+
 
 class LoginActivity : Activity() {
 
@@ -77,27 +78,22 @@ class LoginActivity : Activity() {
                     override fun handleMessage(msg: Message) {
 
                         progressDialog.dismiss()
-                        val srcMessage = msg.obj.toString()
-                        val messages = srcMessage.split("\n".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+                        val strMessage = msg.obj.toString()
+                        val messages = strMessage.split("\n".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
 
-                        if (srcMessage.contains(getString(R.string.error_wrong_password)))
-                            showSnackBar(getString(R.string.wrong_password), true)
-                        else if (srcMessage.contains("[]")) {
-                            val json = messages[2]
+                        if (strMessage.contains(getString(R.string.error_wrong_password)))
+                            utils!!.showSnackBar(this@LoginActivity, findViewById(R.id.login_coordinate_layout), getString(R.string.wrong_password), true)
+                        else if (strMessage.contains("[]")) {
+
                             val spEditor = getSharedPreferences(getString(R.string.accountData), Activity.MODE_PRIVATE).edit()
                             spEditor.putString(getString(R.string.token), encryptedArgument)
                             spEditor.putBoolean(getString(R.string.loggedIn), true)
+                            spEditor.putString(getString(R.string.student_name), messages[1])
                             spEditor.apply()
-                            try {
-                                utils!!.saveDataJson(json)
-                            } catch (e: Exception) {
-                                e.printStackTrace()
-                            }
 
                             startMainActivity()
 
-                        } else
-                            showSnackBar(getString(R.string.no_connection), true)
+                        } else utils!!.showSnackBar(this@LoginActivity, findViewById(R.id.login_coordinate_layout), getString(R.string.no_connection), true)
                     }
                 })).start()
 
@@ -107,16 +103,6 @@ class LoginActivity : Activity() {
 
         startActivity(Intent(application, MainActivity::class.java))
         this@LoginActivity.finish()
-    }
-
-    private fun showSnackBar(msg: String, colorRed: Boolean) {
-
-        val snackbar = Snackbar.make(findViewById(R.id.login_coordinate_layout), msg, Snackbar.LENGTH_SHORT)
-        if (colorRed)
-            snackbar.view.setBackgroundColor(resources.getColor(R.color.Cm_score_red_dark))
-        else
-            snackbar.view.setBackgroundColor(resources.getColor(R.color.accent))
-        snackbar.show()
     }
 
     companion object {

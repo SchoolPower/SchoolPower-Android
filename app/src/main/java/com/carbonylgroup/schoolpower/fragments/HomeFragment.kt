@@ -5,8 +5,6 @@
 package com.carbonylgroup.schoolpower.fragments
 
 import android.os.Bundle
-import android.support.design.widget.Snackbar
-import android.support.v4.content.ContextCompat
 import android.support.v4.widget.SwipeRefreshLayout
 import android.view.LayoutInflater
 import android.view.View
@@ -16,28 +14,23 @@ import android.view.animation.DecelerateInterpolator
 import android.view.animation.ScaleAnimation
 import android.widget.AdapterView
 import android.widget.ListView
-
-import com.ramotion.foldingcell.FoldingCell
-
-import java.util.ArrayList
-import java.util.HashSet
-
 import com.carbonylgroup.schoolpower.R
 import com.carbonylgroup.schoolpower.activities.MainActivity
-import com.carbonylgroup.schoolpower.classes.Transition.DetailsTransition
 import com.carbonylgroup.schoolpower.classes.Adapter.FoldingCellListAdapter
 import com.carbonylgroup.schoolpower.classes.ListItems.MainListItem
+import com.carbonylgroup.schoolpower.classes.Transition.DetailsTransition
 import com.carbonylgroup.schoolpower.classes.Transition.TransitionHelper
 import com.carbonylgroup.schoolpower.classes.Utils.Utils
+import com.ramotion.foldingcell.FoldingCell
+import java.util.*
+
 
 class HomeFragment : TransitionHelper.BaseFragment() {
 
     private var transformedPosition = -1
-
     private var view_private: View? = null
-
-    private var fab_out: Animation? = null
-    private var fab_in: Animation? = null
+    private var fab_out: ScaleAnimation? = null
+    private var fab_in: ScaleAnimation? = null
     private var courseDetailFragment: CourseDetailFragment? = null
     private var home_swipe_refresh_layout: SwipeRefreshLayout? = null
     private var unfoldedIndexesBackUp = HashSet<Int>()
@@ -55,6 +48,17 @@ class HomeFragment : TransitionHelper.BaseFragment() {
         return view_private
     }
 
+    override fun onPause() {
+
+        super.onPause()
+        //To prevent freezing during fragment transaction
+        if (home_swipe_refresh_layout != null) {
+            home_swipe_refresh_layout!!.isRefreshing = false
+            home_swipe_refresh_layout!!.destroyDrawingCache()
+            home_swipe_refresh_layout!!.clearAnimation()
+        }
+    }
+
     private fun initAnim() {
 
         fab_in = ScaleAnimation(0.0f, 1.0f, 0.0f, 1.0f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f)
@@ -70,13 +74,13 @@ class HomeFragment : TransitionHelper.BaseFragment() {
         utils = Utils(activity)
         dataList = MainActivity.of(activity).dataList
         MainActivity.of(activity).presentFragment = 0
-        MainActivity.of(activity).setToolBarElevation(utils!!.dpToPx(4))
+        MainActivity.of(activity).setToolBarElevation(utils!!.dpToPx(10))
         MainActivity.of(activity).setToolBarTitle(getString(R.string.dashboard))
         home_swipe_refresh_layout = view_private!!.findViewById(R.id.home_swipe_refresh_layout) as SwipeRefreshLayout
         home_swipe_refresh_layout!!.setColorSchemeResources(R.color.accent, R.color.A_score_green, R.color.B_score_green,
                 R.color.Cp_score_yellow, R.color.C_score_orange, R.color.Cm_score_red, R.color.primary)
         home_swipe_refresh_layout!!.setOnRefreshListener { MainActivity.of(activity).initDataJson() }
-        initAdapter()
+        if (dataList != null) initAdapter()
     }
 
     private fun initAdapter() {
@@ -85,7 +89,7 @@ class HomeFragment : TransitionHelper.BaseFragment() {
 
         adapter = FoldingCellListAdapter(activity, dataList, unfoldedIndexesBackUp, transformedPosition)
 
-        adapter!!.setDefaultRequestBtnClickListener (View.OnClickListener { v ->
+        adapter!!.setDefaultRequestBtnClickListener(View.OnClickListener { v ->
             MainActivity.of(activity).mainListItemTransporter = dataList!![theListView.getPositionForView(v)]
 
             if (transformedPosition != -1) {
@@ -102,25 +106,32 @@ class HomeFragment : TransitionHelper.BaseFragment() {
             gotoCourseDetail(itemView.findViewById(R.id.unfold_header_view), itemView.findViewById(R.id.detail_subject_title_tv), transformedPosition)
         })
 
-        theListView.onItemClickListener = AdapterView.OnItemClickListener { adapterView, view, pos, l ->
+        theListView.onItemClickListener = AdapterView.OnItemClickListener { _, view, pos, _ ->
             adapter!!.registerToggle(pos)
             (view as FoldingCell).toggle(false)
             adapter!!.refreshPeriodRecycler(view, pos)
             unfoldedIndexesBackUp = adapter!!.unfoldedIndexes
         }
 
-        if (dataList != null) theListView.adapter = adapter
+        theListView.adapter = adapter
     }
 
-    fun setRefreshing(isRefreshing : Boolean) {
+    fun setRefreshing(isRefreshing: Boolean) {
         home_swipe_refresh_layout!!.isRefreshing = isRefreshing
     }
+
     fun refreshAdapter(newDataList: ArrayList<MainListItem>) {
 
+        dataList = newDataList
+
+        if (adapter == null) initValue()
         adapter!!.setMainListItems(newDataList)
         adapter!!.notifyDataSetChanged()
-        showSnackBar(activity.getString(R.string.data_updated))
         setRefreshing(false)
+    }
+
+    fun notifyAdapter(){
+        adapter!!.notifyDataSetChanged()
     }
 
     private fun getItemViewByPosition(position: Int, listView: ListView): View {
@@ -128,10 +139,8 @@ class HomeFragment : TransitionHelper.BaseFragment() {
         val firstItemPos = listView.firstVisiblePosition
         val lastItemPos = listView.lastVisiblePosition
 
-        if (position < firstItemPos || position > lastItemPos)
-            return listView.adapter.getView(position, null, listView)
-        else
-            return listView.getChildAt(position - firstItemPos)
+        if (position < firstItemPos || position > lastItemPos) return listView.adapter.getView(position, null, listView)
+        else return listView.getChildAt(position - firstItemPos)
     }
 
     private fun gotoCourseDetail(_header: View, _subject_title: View, transformedPosition: Int) {
@@ -170,12 +179,6 @@ class HomeFragment : TransitionHelper.BaseFragment() {
             (itemView as FoldingCell).toggle(false)
             itemView.toggle(false)
         }
-    }
-
-    private fun showSnackBar(msg: String) {
-        val snackBar = Snackbar.make(activity.findViewById(R.id.main_coordinate_layout), msg, Snackbar.LENGTH_SHORT)
-        snackBar.view.setBackgroundColor(resources.getColor(R.color.accent))
-        snackBar.show()
     }
 
     override fun onAfterEnter() {

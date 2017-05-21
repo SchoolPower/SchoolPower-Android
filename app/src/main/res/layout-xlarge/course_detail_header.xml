@@ -3,9 +3,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginEnd="10dp"
-    android:layout_marginStart="10dp">
+    android:layout_height="wrap_content">
 
     <android.support.v7.widget.CardView
         android:id="@+id/heading_card"
@@ -41,25 +39,26 @@
                         android:text="A"
                         android:textAlignment="center"
                         android:textColor="@color/white"
-                        android:textSize="25sp" />
+                        android:textSize="30sp" />
 
                     <TextView
                         android:id="@+id/detail_percentage_grade_tv"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/detail_letter_grade_tv"
+                        android:layout_marginTop="5dp"
                         android:text="100"
                         android:textAlignment="center"
                         android:textColor="@color/white"
-                        android:textSize="25sp" />
+                        android:textSize="30sp" />
 
                 </RelativeLayout>
 
                 <RelativeLayout
                     android:id="@+id/detail_header_profile_outer_view"
                     android:layout_width="0dp"
-                    android:layout_height="match_parent"
                     android:layout_weight="2"
+                    android:layout_height="match_parent"
                     android:padding="15dp">
 
                     <RelativeLayout
@@ -81,7 +80,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@id/detail_header_teacher_name_tv"
-                            android:layout_marginTop="10dp"
+                            android:layout_marginTop="5dp"
                             android:text="Block A(1)"
                             android:textColor="@color/text_secondary_black"
                             android:textSize="13sp" />
@@ -90,12 +89,40 @@
                             android:id="@+id/detail_header_room_tv"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_alignTop="@id/detail_header_block_tv"
-                            android:layout_marginStart="15dp"
                             android:layout_toRightOf="@id/detail_header_block_tv"
+                            android:layout_alignTop="@id/detail_header_block_tv"
+                            android:layout_marginStart="10dp"
                             android:text="Room 311"
                             android:textColor="@color/text_primary_black"
                             android:textSize="13sp" />
+
+                    </RelativeLayout>
+
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignStart="@id/detail_header_profile_inner_view"
+                        android:layout_below="@+id/detail_header_profile_inner_view"
+                        android:layout_marginTop="5dp">
+
+                        <Button
+                            android:id="@+id/detail_header_grades_bt"
+                            style="@style/Base.Widget.AppCompat.Button.Colored"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/grades"
+                            android:textColor="@color/white" />
+
+                        <Button
+                            android:id="@+id/detail_header_attendance_bt"
+                            style="@style/Base.Widget.AppCompat.Button.Colored"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="5dp"
+                            android:layout_toEndOf="@+id/detail_header_grades_bt"
+                            android:text="@string/attendance"
+                            android:textColor="@color/white" />
 
                     </RelativeLayout>
 

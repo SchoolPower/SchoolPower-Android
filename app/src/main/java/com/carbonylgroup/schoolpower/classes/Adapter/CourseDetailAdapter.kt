@@ -15,6 +15,7 @@ import com.carbonylgroup.schoolpower.R
 import com.carbonylgroup.schoolpower.R2
 import com.carbonylgroup.schoolpower.classes.ListItems.AssignmentItem
 import com.carbonylgroup.schoolpower.classes.ListItems.MainListItem
+import com.carbonylgroup.schoolpower.classes.ListItems.PeriodGradeItem
 import com.carbonylgroup.schoolpower.classes.Utils.Utils
 import kotterknife.bindView
 import java.util.*
@@ -82,13 +83,14 @@ class CourseDetailAdapter(private val context: Context, private val item: MainLi
 
                 val headerViewHolder = holder
                 val termAdapter = ArrayAdapter(context, R.layout.term_selection_spinner, termsList)
+                val periodGradeItem: PeriodGradeItem? = utils.getLatestItem(item)
 
-                headerViewHolder.detail_letter_grade_tv.text = item.letterGrade
-                headerViewHolder.detail_percentage_grade_tv.text = item.percentageGrade
+                headerViewHolder.detail_letter_grade_tv.text = item.getLetterGrade(periodGradeItem)
+                headerViewHolder.detail_percentage_grade_tv.text = item.getPercentageGrade(periodGradeItem)
                 headerViewHolder.detail_header_teacher_name_tv.text = item.teacherName
-                headerViewHolder.detail_header_block_tv.text = context.getString(R.string.block) + item.blockLetter
-                headerViewHolder.detail_header_room_tv.text = context.getString(R.string.room) + item.roomNumber
-                headerViewHolder.detail_header_grade_background.setBackgroundColor(utils.getColorByLetterGrade(context, item.letterGrade))
+                headerViewHolder.detail_header_block_tv.text = context.getString(R.string.block) + " " + item.blockLetter
+                headerViewHolder.detail_header_room_tv.text = context.getString(R.string.room) + " " + item.roomNumber
+                headerViewHolder.detail_header_grade_background.setBackgroundColor(utils.getColorByLetterGrade(context, item.getLetterGrade(periodGradeItem)))
                 headerViewHolder.detail_term_select_spinner.adapter = termAdapter
                 headerViewHolder.detail_term_select_spinner.setSelection(presentingTermPos)
                 headerViewHolder.detail_term_select_spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
