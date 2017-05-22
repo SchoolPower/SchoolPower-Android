@@ -23,7 +23,7 @@
     <string name="unpublished">Unpublished</string>
     <string name="data_updated">Data Updated</string>
     <string name="authenticating">Authenticating&#8230;</string>
-    <string name="wrong_password">Wrong Username or Password</string>
+    <string name="wrong_password">Invalid Username or Password</string>
     <string name="no_connection">Cannot connect to server</string>
 
     <string name="shared_element_course_header">SHARE://COURSE_HEADER</string>
@@ -48,82 +48,36 @@
     <string name="signing_out_dialog_negative">Don\'t</string>
 
     <string name="token_equals">token=</string>
-    <string name="error_wrong_password">{"error":1,"</string>
+    <string name="error_wrong_password">{\"error\":1,\"</string>
     <string name="json_begin">[{"</string>
 
     <string name="postURL">http://schoolpower.studio:8080/api/ps.php</string>
     <string name="dataFileName">dataMap.json</string>
     <string name="title_activity_settings">Settings</string>
 
-    <!-- Strings related to Settings -->
+    <string name="dashboard_display_preference_summary_prefix">The score of</string>
+    <string name="dashboard_display_preference_summary_suffix"> </string>
+    <string name="list_preference_dashboard_display">list_preference_dashboard_display</string>
 
-    <!-- Example General settings -->
-    <string name="pref_header_general">General</string>
-
-    <string name="pref_title_social_recommendations">Enable social recommendations</string>
-    <string name="pref_description_social_recommendations">Recommendations for people to contact
-        based on your message history
-    </string>
-
-    <string name="pref_title_display_name">Display name</string>
-    <string name="pref_default_display_name">John Smith</string>
-
-    <string name="pref_title_add_friends_to_messages">Add friends to messages</string>
-    <string-array name="pref_example_list_titles">
-        <item>Always</item>
-        <item>When possible</item>
-        <item>Never</item>
+    <string-array name="list_preference_display_types_entries">
+        <item>This term</item>
+        <item>This semester</item>
     </string-array>
-    <string-array name="pref_example_list_values">
-        <item>1</item>
+
+    <string-array name="list_preference_display_types_values">
         <item>0</item>
-        <item>-1</item>
+        <item>1</item>
     </string-array>
 
-    <!-- Example settings for Data & Sync -->
-    <string name="pref_header_data_sync">Data &amp; sync</string>
-
-    <string name="pref_title_sync_frequency">Sync frequency</string>
-    <string-array name="pref_sync_frequency_titles">
-        <item>15 minutes</item>
-        <item>30 minutes</item>
-        <item>1 hour</item>
-        <item>3 hours</item>
-        <item>6 hours</item>
-        <item>Never</item>
-    </string-array>
-    <string-array name="pref_sync_frequency_values">
-        <item>15</item>
-        <item>30</item>
-        <item>60</item>
-        <item>180</item>
-        <item>360</item>
-        <item>-1</item>
+    <string-array name="list_preference_language_entries">
+        <item>System Default</item>
+        <item>English</item>
+        <item>Chinese</item>
     </string-array>
 
-    <string-array name="list_preference_entries">
-        <item>Entry 1</item>
-        <item>Entry 2</item>
-        <item>Entry 3</item>
-    </string-array>
-
-    <string-array name="list_preference_entry_values">
+    <string-array name="list_preference_language_values">
+        <item>0</item>
         <item>1</item>
         <item>2</item>
-        <item>3</item>
     </string-array>
-
-    <string-array name="multi_select_list_preference_default_value" />
-
-    <string name="pref_title_system_sync_settings">System sync settings</string>
-
-    <!-- Example settings for Notifications -->
-    <string name="pref_header_notifications">Notifications</string>
-
-    <string name="pref_title_new_message_notifications">New message notifications</string>
-
-    <string name="pref_title_ringtone">Ringtone</string>
-    <string name="pref_ringtone_silent">Silent</string>
-
-    <string name="pref_title_vibrate">Vibrate</string>
 </resources>
