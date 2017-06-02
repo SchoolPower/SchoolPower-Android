@@ -1,14 +1,11 @@
-SchoolPower
-============
-
 ![](app/src/main/res/drawable-xxxhdpi/icon.png)
 
-[![license](https://img.shields.io/github/license/HITGIF/SchoolPower.svg)]()
-[![Travis branch](https://img.shields.io/travis/HITGIF/SchoolPower/master.svg)]()
+[![Travis branch](https://img.shields.io/travis/HITGIF/SchoolPower/master.svg)](https://travis-ci.org/HITGIF/SchoolPower)
+[![license](https://img.shields.io/github/license/HITGIF/SchoolPower.svg)](https://github.com/HITGIF/SchoolPower)
 
-Ê²Ã´ÊÇSchoolPower
+ä»€ä¹ˆæ˜¯SchoolPower
 -------
-SchoolPowerÊÇÊ¹ÓÃKotlin±àĞ´µÄ¿ªÔ´¡¢ÏÖ´ú»¯µÄ[PowerSchool](https://www.powerschool.com/)Ìæ´úÆ·£¬Ô­ÀíÊÇÊ¹ÓÃÅÀ³æ»ñÈ¡PowerSchoolÉÏµÄĞÅÏ¢¡£
+SchoolPoweræ˜¯ä½¿ç”¨Kotlinç¼–å†™çš„å¼€æºã€ç°ä»£åŒ–çš„[PowerSchool](https://www.powerschool.com/)æ›¿ä»£å“ï¼ŒåŸç†æ˜¯ä½¿ç”¨çˆ¬è™«è·å–PowerSchoolä¸Šçš„ä¿¡æ¯ã€‚
 
 License
 -------
