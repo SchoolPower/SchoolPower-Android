@@ -1,7 +1,7 @@
 ![](app/src/main/res/drawable-xxxhdpi/icon.png)
 
 [![Travis branch](https://img.shields.io/travis/HITGIF/SchoolPower/master.svg)](https://travis-ci.org/HITGIF/SchoolPower)
-[![license](https://img.shields.io/github/license/HITGIF/SchoolPower.svg)](https://github.com/HITGIF/SchoolPower)
+[![license](https://img.shields.io/github/license/HITGIF/SchoolPower.svg)](https://github.com/HITGIF/SchoolPower/blob/master/LICENSE.txt)
 
 什么是SchoolPower
 -------
