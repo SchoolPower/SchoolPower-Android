@@ -10,6 +10,7 @@ import android.support.design.widget.Snackbar
 import android.support.v4.content.ContextCompat
 import android.util.Base64
 import android.util.DisplayMetrics
+import android.util.Log
 import android.view.View
 import com.carbonylgroup.schoolpower.R
 import com.carbonylgroup.schoolpower.classes.ListItems.AssignmentItem
@@ -90,9 +91,9 @@ class Utils(private val context: Context) {
             for (i in 0..jsonData.length() - 1) {
 
                 val termObj = jsonData.getJSONObject(i)
-
                 // Turns assignments into an ArrayList
                 val assignmentList = ArrayList<AssignmentItem>()
+                if(!termObj.has("assignments")) continue;
                 val asmArray = termObj.getJSONArray("assignments")
                 for (j in 0..asmArray.length() - 1) {
                     val asmObj = asmArray.getJSONObject(j)
@@ -170,7 +171,6 @@ class Utils(private val context: Context) {
 
     @Throws(IOException::class)
     fun saveDataJson(jsonStr: String) {
-
         val outputStream = context.openFileOutput(context.getString(R.string.dataFileName), Context.MODE_PRIVATE)
         outputStream.write(jsonStr.toByteArray())
         outputStream.close()
@@ -216,7 +216,7 @@ class Utils(private val context: Context) {
                 out.print(params)
                 out.flush()
                 `in` = BufferedReader(InputStreamReader(conn.getInputStream()))
-                var line: String
+                var line: String?
                 while (true) {
                     line = `in`.readLine()
                     if (line == null) break

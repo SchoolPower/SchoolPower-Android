@@ -80,7 +80,19 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                 homeFragment!!.setRefreshing(true)
             }
             R.id.action_new -> {
-                //TODO NEW ASSIGNMENTS
+                var sum_gpa=0.0
+                var num=0
+                for (i in dataList!!.indices) {
+                    val periods = dataList!![i]
+                    sum_gpa+=periods.getPercentageGrade(utils.getLatestItem(periods)).replace("%","").toDouble()
+                    num+=1
+                }
+                val builder = AlertDialog.Builder(this)
+                builder.setMessage("Your GPA is " + sum_gpa/num)
+                builder.setTitle("GPA")
+                builder.setPositiveButton("OK", null)
+                builder.setNegativeButton("Cancel", null)
+                builder.create().show()
             }
         }
 
@@ -282,13 +294,14 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                                     for (i in dataList!!.indices) {
                                         val periods = dataList!![i].periodGradeItemArrayList
                                         val oldPeriods = oldMainItemList[i].periodGradeItemArrayList
-                                        if (periods.size != oldPeriods.size) break
+                                        if (periods.size != oldPeriods.size) continue
                                         for (j in periods.indices) {
                                             val newAssignmentListCollection = periods[j].assignmentItemArrayList
                                             val oldAssignmentListCollection = oldPeriods[j].assignmentItemArrayList
                                             for (item in newAssignmentListCollection) {
                                                 val found = oldAssignmentListCollection.any { it.assignmentTitle == item.assignmentTitle && it.assignmentDividedScore == item.assignmentDividedScore && it.assignmentDate == item.assignmentDate && !it.isNew }
-                                                if (!found) item.isNew = true
+                                                if (!found)
+                                                    item.isNew = true
                                             }
                                         }
                                     }

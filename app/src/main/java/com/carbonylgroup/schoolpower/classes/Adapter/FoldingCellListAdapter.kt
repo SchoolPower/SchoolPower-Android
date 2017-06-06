@@ -3,6 +3,7 @@ package com.carbonylgroup.schoolpower.classes.Adapter
 
 import android.content.Context
 import android.support.design.widget.FloatingActionButton
+import android.support.v4.content.ContextCompat
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -102,21 +103,27 @@ class FoldingCellListAdapter(context: Context, private var mainListItems: ArrayL
         viewHolder.unfold_header_view!!.setBackgroundColor(utils.getColorByLetterGrade(context, item.getLetterGrade(periodGradeItem)))
         viewHolder.fold_grade_background!!.setBackgroundColor(utils.getColorByLetterGrade(context, item.getLetterGrade(periodGradeItem)))
 
-//        var anyNew = false
-//        if (item.getAssignmentItemArrayList("T4") != null) {
-//            for (t4 in item.getAssignmentItemArrayList("T4")!!) {
-//                if (t4.isNew) {
-//                    anyNew = true
-//                    break
-//                }
-//            }
-//        }
-//        if (anyNew) {
-//            viewHolder.fold_subject_title_tv!!.setTextColor(ContextCompat.getColor(context, R.color.white))
-//            viewHolder.fold_teacher_name_tv!!.setTextColor(ContextCompat.getColor(context, R.color.white_0_5))
-//            viewHolder.fold_block_letter_tv!!.setTextColor(ContextCompat.getColor(context, R.color.white_0_5))
-//            viewHolder.fold_background!!.setBackgroundColor(ContextCompat.getColor(context, R.color.accent))
-//        }
+        var anyNew = false
+        val lastTerm = utils.getLatestItem(item)
+        if (lastTerm != null) {
+            for (item in lastTerm.assignmentItemArrayList) {
+                if (item.isNew) {
+                    anyNew = true
+                    break
+                }
+            }
+        }
+        if (anyNew) {
+            viewHolder.fold_subject_title_tv!!.setTextColor(ContextCompat.getColor(context, R.color.white))
+            viewHolder.fold_teacher_name_tv!!.setTextColor(ContextCompat.getColor(context, R.color.white_0_5))
+            viewHolder.fold_block_letter_tv!!.setTextColor(ContextCompat.getColor(context, R.color.white_0_5))
+            viewHolder.fold_background!!.setBackgroundColor(ContextCompat.getColor(context, R.color.accent))
+        }else{
+            viewHolder.fold_subject_title_tv!!.setTextColor(ContextCompat.getColor(context, R.color.text_primary_black))
+            viewHolder.fold_teacher_name_tv!!.setTextColor(ContextCompat.getColor(context, R.color.text_tertiary_black))
+            viewHolder.fold_block_letter_tv!!.setTextColor(ContextCompat.getColor(context, R.color.text_tertiary_black))
+            viewHolder.fold_background!!.setBackgroundColor(ContextCompat.getColor(context, R.color.white))
+        }
 
         return cell
     }

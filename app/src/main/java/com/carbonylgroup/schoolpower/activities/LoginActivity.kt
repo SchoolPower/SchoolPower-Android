@@ -91,6 +91,8 @@ class LoginActivity : Activity() {
                             spEditor.putString(getString(R.string.student_name), messages[1])
                             spEditor.apply()
 
+                            utils!!.saveDataJson(messages[2])
+
                             startMainActivity()
 
                         } else utils!!.showSnackBar(this@LoginActivity, findViewById(R.id.login_coordinate_layout), getString(R.string.no_connection), true)
