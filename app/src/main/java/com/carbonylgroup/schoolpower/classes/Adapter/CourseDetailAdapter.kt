@@ -66,6 +66,10 @@ class CourseDetailAdapter(private val context: Context, private val item: MainLi
                     normalViewHolder.detail_header_background.setBackgroundColor(ContextCompat.getColor(context, R.color.accent))
                     normalViewHolder.detail_assignment_name_tv.setTextColor(ContextCompat.getColor(context, R.color.white))
                     normalViewHolder.detail_assignment_date_tv.setTextColor(ContextCompat.getColor(context, R.color.white_0_5))
+                }else{
+                    normalViewHolder.detail_header_background.setBackgroundColor(ContextCompat.getColor(context, R.color.white))
+                    normalViewHolder.detail_assignment_name_tv.setTextColor(ContextCompat.getColor(context, R.color.text_primary_black))
+                    normalViewHolder.detail_assignment_date_tv.setTextColor(ContextCompat.getColor(context, R.color.text_tertiary_black))
                 }
 
             } else if (holder is HeaderViewHolder) {
