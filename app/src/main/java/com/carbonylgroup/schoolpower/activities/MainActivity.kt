@@ -67,7 +67,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
 
         menuInflater.inflate(R.menu.menu_main, menu)
-        menu.findItem(R.id.action_new).isVisible = !hideToolBarItemFlag
+        menu.findItem(R.id.action_average).isVisible = !hideToolBarItemFlag
         menu.findItem(R.id.action_refresh).isVisible = !hideToolBarItemFlag
         return true
     }
@@ -79,7 +79,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                 initDataJson()
                 homeFragment!!.setRefreshing(true)
             }
-            R.id.action_new -> {
+            R.id.action_average -> {
                 var sum_gpa=0.0
                 var num=0
                 for (i in dataList!!.indices) {
