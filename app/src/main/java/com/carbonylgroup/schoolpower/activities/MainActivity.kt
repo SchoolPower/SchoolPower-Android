@@ -81,14 +81,22 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
             }
             R.id.action_average -> {
                 var sum_gpa=0.0
+                var gpa_except_hr=0.0
+                var gpa_except_hr_me=0.0
                 var num=0
                 for (i in dataList!!.indices) {
                     val periods = dataList!![i]
-                    sum_gpa+=periods.getPercentageGrade(utils.getLatestItem(periods)).replace("%","").toDouble()
+                    val grade = periods.getPercentageGrade(utils.getLatestItem(periods)).replace("%","").toDouble()
+
+                    sum_gpa+=grade
                     num+=1
+                    if(periods.subjectTitle.contains("Homeroom")) continue
+                    gpa_except_hr+=grade
+                    if(periods.subjectTitle.contains("Moral Education")) continue
+                    gpa_except_hr_me+=grade
                 }
                 val builder = AlertDialog.Builder(this)
-                builder.setMessage("Your GPA is " + sum_gpa/num)
+                builder.setMessage(String.format("Your GPA for %s is %.3f\n%.3f (except HR)\n%.3f (except HR & ME)", utils.getLatestItem(dataList!![0])!!.termIndicator, sum_gpa/num, gpa_except_hr/(num-1), gpa_except_hr_me/(num-2)))
                 builder.setTitle("GPA")
                 builder.setPositiveButton("OK", null)
                 builder.setNegativeButton("Cancel", null)
