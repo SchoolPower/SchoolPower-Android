@@ -10,14 +10,14 @@ import android.support.design.widget.Snackbar
 import android.support.v4.content.ContextCompat
 import android.util.Base64
 import android.util.DisplayMetrics
-import android.util.Log
 import android.view.View
 import com.carbonylgroup.schoolpower.R
 import com.carbonylgroup.schoolpower.classes.ListItems.AssignmentItem
-import com.carbonylgroup.schoolpower.classes.ListItems.MainListItem
-import com.carbonylgroup.schoolpower.classes.ListItems.PeriodGradeItem
+import com.carbonylgroup.schoolpower.classes.ListItems.Subject
+import com.carbonylgroup.schoolpower.classes.ListItems.Period
 import org.json.JSONArray
 import org.json.JSONException
+import org.json.JSONObject
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader
@@ -26,6 +26,7 @@ import java.net.URL
 import java.security.KeyFactory
 import java.security.PublicKey
 import java.security.spec.X509EncodedKeySpec
+import java.text.SimpleDateFormat
 import java.util.*
 import javax.crypto.Cipher
 
@@ -40,18 +41,18 @@ class Utils(private val context: Context) {
     /* Color Handler */
     fun getColorByLetterGrade(context: Context, letterGrade: String) = ContextCompat.getColor(context, gradeColorIds[indexOfString(letterGrade, arrayOf("A", "B", "C+", "C", "C-", "F", "I", "--"))])
 
-    fun getColorByPeriodItem(context: Context, item: PeriodGradeItem) = getColorByLetterGrade(context, item.termLetterGrade)
+    fun getColorByPeriodItem(context: Context, item: Period) = getColorByLetterGrade(context, item.termLetterGrade)
 
     fun getDarkColorByPrimary(originalPrimary: Int) = ContextCompat.getColor(context, gradeDarkColorIdsPlain[gradeColorIdsPlain.takeWhile { originalPrimary != ContextCompat.getColor(context, it) }.count()])
 
     /* Others */
     fun dpToPx(dp: Int) = Math.round(dp * (context.resources.displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT))
 
-    fun getLatestItem(item: MainListItem): PeriodGradeItem? {
+    fun getLatestItem(item: Subject): Period? {
 
         var forLatestSemester = false
         val latestTerm: String
-        val periodGradeItemList = item.periodGradeItemArrayList
+        val periodGradeItemList = item.periodArrayList
         val termsList: ArrayList<String> = ArrayList()
         termsList.add(context.getString(R.string.all_terms))
 
@@ -83,10 +84,10 @@ class Utils(private val context: Context) {
         snackBar.show()
     }
 
-    fun parseJsonResult(jsonStr: String): ArrayList<MainListItem>? {
+    fun parseJsonResult(jsonStr: String): ArrayList<Subject>? {
         try {
             val jsonData = JSONArray(jsonStr)
-            val dataMap = HashMap<String, MainListItem>()
+            val dataMap = HashMap<String, Subject>()
 
             for (i in 0..jsonData.length() - 1) {
 
@@ -105,31 +106,29 @@ class Utils(private val context: Context) {
                             if (asmObj.getString("grade") == "") "--" else asmObj.getString("grade"), asmObj.getString("category"), termObj.getString("term")))
                 }
 
-                val periodGradeItem = PeriodGradeItem(termObj.getString("term"),
+                val periodGradeItem = Period(termObj.getString("term"),
                         if (termObj.getString("grade") == "") "--" else termObj.getString("grade"), termObj.getString("mark"), assignmentList)
 
                 // Put the term data into the course data, either already exists or be going to be created.
                 val mainListItem = dataMap[termObj.getString("name")]
                 if (mainListItem == null) { // The course data does not exist yet.
 
-                    val periodGradeList = ArrayList<PeriodGradeItem>()
+                    val periodGradeList = ArrayList<Period>()
                     periodGradeList.add(periodGradeItem)
 
                     dataMap.put(termObj.getString("name"),
-                            MainListItem(termObj.getString("name"), termObj.getString("teacher"),
+                            Subject(termObj.getString("name"), termObj.getString("teacher"),
                                     termObj.getString("block"), termObj.getString("room"), periodGradeList))
 
                 } else { // Already exist. Just insert into it.
-
                     mainListItem.addPeriodGradeItem(periodGradeItem)
-
                 }
             }
 
             // Convert from HashMap to ArrayList
-            val dataList = ArrayList<MainListItem>()
+            val dataList = ArrayList<Subject>()
             dataList.addAll(dataMap.values)
-            Collections.sort(dataList, Comparator<MainListItem> { o1, o2 ->
+            Collections.sort(dataList, Comparator<Subject> { o1, o2 ->
                 if (o1.blockLetter == "HR(1)") return@Comparator -1
                 if (o2.blockLetter == "HR(1)") return@Comparator 1
                 o1.blockLetter.compareTo(o2.blockLetter)
@@ -146,11 +145,10 @@ class Utils(private val context: Context) {
     /* IO */
     fun getSettingsPreference(key: String) = context.getSharedPreferences(context.getString(R.string.settings), Activity.MODE_PRIVATE).getString(key, "0")!!
 
-    @Throws(IOException::class)
-    fun readDataArrayList(): ArrayList<MainListItem>? {
+    fun readFileToString(fileName : String) : String?{
         try {
             val data = StringBuilder("")
-            val inputStream = context.openFileInput(context.getString(R.string.dataFileName))
+            val inputStream = context.openFileInput(fileName)
             val isr = InputStreamReader(inputStream)
             val buffReader = BufferedReader(isr)
 
@@ -162,25 +160,88 @@ class Utils(private val context: Context) {
 
             isr.close()
             inputStream.close()
-            return parseJsonResult(data.toString())
-        } catch (e: Exception) {
+            return data.toString()
+        }catch(e: Exception){
             e.printStackTrace()
+            return null
         }
-        return null
+
+    }
+    @Throws(IOException::class)
+    fun saveStringToFile(fileName:String, data: String) {
+        val outputStream = context.openFileOutput(fileName, Context.MODE_PRIVATE)
+        outputStream.write(data.toByteArray())
+        outputStream.close()
     }
 
     @Throws(IOException::class)
-    fun saveDataJson(jsonStr: String) {
-        val outputStream = context.openFileOutput(context.getString(R.string.dataFileName), Context.MODE_PRIVATE)
-        outputStream.write(jsonStr.toByteArray())
-        outputStream.close()
+    fun readDataArrayList(): ArrayList<Subject>?
+            = parseJsonResult(readFileToString(context.getString(R.string.dataFileName))!!)
 
+    @Throws(IOException::class)
+    fun saveDataJson(jsonStr: String)
+            = saveStringToFile(context.getString(R.string.dataFileName),jsonStr)
+
+    // 1. read data into brief info
+    // 2. calculate gpa
+    // 3. read history grade from file
+    // 4. update history grade
+    // 5. save history grade
+    fun saveHistoryGrade(data: ArrayList<Subject>){
+        // 1. read data into brief info
+        var pointSum = 0
+        var count = 0
+        val gradeInfo = JSONArray() // [{"name":"...","grade":80.0}, ...]
+        for(subject in data){
+            val subInfo = JSONObject()
+            val leastPeriod = getLatestItem(subject) ?: continue
+            subInfo.put("name", subject.subjectTitle)
+            subInfo.put("grade", leastPeriod.termPercentageGrade.toDouble())
+            if(!subject.subjectTitle.contains("Homeroom")) {
+                pointSum += leastPeriod.termPercentageGrade.toInt()
+                count += 1
+            }
+            gradeInfo.put(subInfo)
+        }
+
+        // 2. calculate gpa
+        val gpaInfo = JSONObject()
+        gpaInfo.put("name", "GPA")
+        gpaInfo.put("grade", pointSum/count.toDouble())
+        gradeInfo.put(gpaInfo)
+
+        // 3. read history grade from file
+        val historyData = JSONObject(readFileToString("history.json")?:"{}")
+        // {"2017-06-20": [{"name":"...","grade":"80"}, ...], ...}
+
+        // 4. update history grade
+        val date = SimpleDateFormat("yyyy-MM-dd", Locale.CHINA).format(Date())
+        historyData.put(date, gradeInfo)
+
+        // 5. save history grade
+        saveStringToFile("history.json", historyData.toString())
     }
+
+    fun readHistoryGrade() = JSONObject(readFileToString("history.json")?:"{}")
 
     companion object {
 
         private val ALGORITHM = "RSA/ECB/PKCS1Padding"
         private val RSA = "RSA"
+
+        fun getShortName(subjectTitle:String) : String{
+            val shorts= mapOf("Homeroom" to "HR", "Planning" to "PL", "Mandarin" to "CN",
+                    "Chinese" to "CSS", "Foundations" to "Maths", "Physical" to "PE",
+                    "English" to "EN", "Moral" to "ME")
+            val short=shorts[subjectTitle.split(" ")[0]]
+            if(short!=null) return short
+
+            var ret=""
+            for(c in subjectTitle){
+                if(c.isUpperCase()||c.isDigit()) ret+=c
+            }
+            return ret
+        }
 
         fun restorePublicKey(key: String): PublicKey =
                 KeyFactory.getInstance(RSA).generatePublic(X509EncodedKeySpec(Base64.decode(key, Base64.DEFAULT)))

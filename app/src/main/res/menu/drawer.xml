@@ -8,6 +8,10 @@
             android:icon="@drawable/ic_dashboard"
             android:title="@string/dashboard"
             android:checked="true"/>
+        <item
+            android:id="@+id/nav_charts"
+            android:icon="@drawable/ic_chart"
+            android:title="@string/charts" />
     </group>
 
     <item android:title="@string/preference">

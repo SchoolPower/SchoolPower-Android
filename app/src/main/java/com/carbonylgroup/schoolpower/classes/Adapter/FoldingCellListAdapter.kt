@@ -16,8 +16,8 @@ import android.widget.ArrayAdapter
 import android.widget.RelativeLayout
 import android.widget.TextView
 import com.carbonylgroup.schoolpower.R
-import com.carbonylgroup.schoolpower.classes.ListItems.MainListItem
-import com.carbonylgroup.schoolpower.classes.ListItems.PeriodGradeItem
+import com.carbonylgroup.schoolpower.classes.ListItems.Subject
+import com.carbonylgroup.schoolpower.classes.ListItems.Period
 import com.carbonylgroup.schoolpower.classes.Utils.Utils
 import com.ramotion.foldingcell.FoldingCell
 import java.util.*
@@ -26,7 +26,7 @@ import java.util.*
  * Simple example of ListAdapter for using with Folding Cell
  * Adapter holds indexes of unfolded elements for correct work with default reusable views behavior
  */
-class FoldingCellListAdapter(context: Context, private var mainListItems: ArrayList<MainListItem>?, val unfoldedIndexes: HashSet<Int>, private val transformedPosition: Int) : ArrayAdapter<MainListItem>(context, 0, mainListItems) {
+class FoldingCellListAdapter(context: Context, private var subjects: ArrayList<Subject>?, val unfoldedIndexes: HashSet<Int>, private val transformedPosition: Int) : ArrayAdapter<Subject>(context, 0, subjects) {
 
     private var fab_in: Animation? = null
     private var utils: Utils = Utils(getContext())
@@ -34,7 +34,7 @@ class FoldingCellListAdapter(context: Context, private var mainListItems: ArrayL
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
 
-        val item = mainListItems!![position]
+        val item = subjects!![position]
         var cell = convertView as FoldingCell?
         val viewHolder: ViewHolder
 
@@ -84,12 +84,12 @@ class FoldingCellListAdapter(context: Context, private var mainListItems: ArrayL
             viewHolder = cell.tag as ViewHolder
         }
 
-        val items = item.periodGradeItemArrayList
+        val items = item.periodArrayList
         val adapter = PeriodGradeAdapter(context, items)
         val layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        val periodGradeItem: PeriodGradeItem? = utils.getLatestItem(item)
+        val period: Period? = utils.getLatestItem(item)
 
-        viewHolder.fold_letter_grade_tv!!.text = item.getLetterGrade(periodGradeItem)
+        viewHolder.fold_letter_grade_tv!!.text = item.getLetterGrade(period)
         viewHolder.fold_teacher_name_tv!!.text = item.teacherName
         viewHolder.fold_block_letter_tv!!.text = item.blockLetter
         viewHolder.unfolded_grade_recycler_view!!.adapter = adapter
@@ -97,11 +97,11 @@ class FoldingCellListAdapter(context: Context, private var mainListItems: ArrayL
         viewHolder.unfold_teacher_name_tv!!.text = item.teacherName
         viewHolder.unfold_subject_title_tv!!.text = item.subjectTitle
         viewHolder.unfolded_grade_recycler_view!!.layoutManager = layoutManager
-        viewHolder.fold_percentage_grade_tv!!.text = item.getPercentageGrade(periodGradeItem)
+        viewHolder.fold_percentage_grade_tv!!.text = item.getPercentageGrade(period)
         viewHolder.floating_action_button!!.setOnClickListener(defaultRequestBtnClickListener)
-        viewHolder.unfold_percentage_grade_tv!!.text = item.getPercentageGrade(periodGradeItem)
-        viewHolder.unfold_header_view!!.setBackgroundColor(utils.getColorByLetterGrade(context, item.getLetterGrade(periodGradeItem)))
-        viewHolder.fold_grade_background!!.setBackgroundColor(utils.getColorByLetterGrade(context, item.getLetterGrade(periodGradeItem)))
+        viewHolder.unfold_percentage_grade_tv!!.text = item.getPercentageGrade(period)
+        viewHolder.unfold_header_view!!.setBackgroundColor(utils.getColorByLetterGrade(context, item.getLetterGrade(period)))
+        viewHolder.fold_grade_background!!.setBackgroundColor(utils.getColorByLetterGrade(context, item.getLetterGrade(period)))
 
         var anyNew = false
         val lastTerm = utils.getLatestItem(item)
@@ -138,13 +138,13 @@ class FoldingCellListAdapter(context: Context, private var mainListItems: ArrayL
 
     fun refreshPeriodRecycler(_cell: FoldingCell, transformedPosition: Int) {
 
-        val items = mainListItems!![transformedPosition].periodGradeItemArrayList
+        val items = subjects!![transformedPosition].periodArrayList
         val adapter = PeriodGradeAdapter(context, items)
         (_cell.findViewById(R.id.unfolded_grade_recycler_view) as RecyclerView).adapter = adapter
     }
 
-    fun setMainListItems(_mainListItems: ArrayList<MainListItem>) {
-        mainListItems = _mainListItems
+    fun setMainListItems(_subjects: ArrayList<Subject>) {
+        subjects = _subjects
     }
 
     private fun popUpFAB(_cell: FoldingCell, _delay: Int) {

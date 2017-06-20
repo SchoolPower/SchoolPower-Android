@@ -10,7 +10,7 @@
     <item
         android:id="@+id/action_average"
         android:orderInCategory="100"
-        android:icon="@drawable/ic_new"
+        android:icon="@drawable/ic_action_grade"
         android:title="@string/action_new_assignments"
         app:showAsAction="ifRoom" />
 </menu>

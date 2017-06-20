@@ -14,13 +14,13 @@ import android.widget.*
 import com.carbonylgroup.schoolpower.R
 import com.carbonylgroup.schoolpower.R2
 import com.carbonylgroup.schoolpower.classes.ListItems.AssignmentItem
-import com.carbonylgroup.schoolpower.classes.ListItems.MainListItem
-import com.carbonylgroup.schoolpower.classes.ListItems.PeriodGradeItem
+import com.carbonylgroup.schoolpower.classes.ListItems.Subject
+import com.carbonylgroup.schoolpower.classes.ListItems.Period
 import com.carbonylgroup.schoolpower.classes.Utils.Utils
 import kotterknife.bindView
 import java.util.*
 
-class CourseDetailAdapter(private val context: Context, private val item: MainListItem) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class CourseDetailAdapter(private val context: Context, private val item: Subject) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var presentingTermPos = 0
     private val utils: Utils = Utils(context)
@@ -34,7 +34,7 @@ class CourseDetailAdapter(private val context: Context, private val item: MainLi
 
     private fun initTermList() {
 
-        val periodGradeItemList = item.periodGradeItemArrayList
+        val periodGradeItemList = item.periodArrayList
         termsList.add(context.getString(R.string.all_terms))
         for (i in periodGradeItemList.indices)
             termsList.add(periodGradeItemList[i].termIndicator)
@@ -76,14 +76,14 @@ class CourseDetailAdapter(private val context: Context, private val item: MainLi
 
                 val headerViewHolder = holder
                 val termAdapter = ArrayAdapter(context, R.layout.term_selection_spinner, termsList)
-                val periodGradeItem: PeriodGradeItem? = utils.getLatestItem(item)
+                val period: Period? = utils.getLatestItem(item)
 
-                headerViewHolder.detail_letter_grade_tv.text = item.getLetterGrade(periodGradeItem)
-                headerViewHolder.detail_percentage_grade_tv.text = item.getPercentageGrade(periodGradeItem)
+                headerViewHolder.detail_letter_grade_tv.text = item.getLetterGrade(period)
+                headerViewHolder.detail_percentage_grade_tv.text = item.getPercentageGrade(period)
                 headerViewHolder.detail_header_teacher_name_tv.text = item.teacherName
                 headerViewHolder.detail_header_block_tv.text = context.getString(R.string.block) + " " + item.blockLetter
                 headerViewHolder.detail_header_room_tv.text = context.getString(R.string.room) + " " + item.roomNumber
-                headerViewHolder.detail_header_grade_background.setBackgroundColor(utils.getColorByLetterGrade(context, item.getLetterGrade(periodGradeItem)))
+                headerViewHolder.detail_header_grade_background.setBackgroundColor(utils.getColorByLetterGrade(context, item.getLetterGrade(period)))
                 headerViewHolder.detail_term_select_spinner.adapter = termAdapter
                 headerViewHolder.detail_term_select_spinner.setSelection(presentingTermPos)
                 headerViewHolder.detail_term_select_spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {

@@ -26,4 +26,8 @@
         <item name="android:textAppearance">@android:style/TextAppearance.Material.Title</item>
     </style>
 
+    <style name="Design.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="Design.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
 </resources>
