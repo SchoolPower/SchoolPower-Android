@@ -64,6 +64,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
         initValue()
         initUI()
         initOnClick()
+        utils.checkUpdate()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

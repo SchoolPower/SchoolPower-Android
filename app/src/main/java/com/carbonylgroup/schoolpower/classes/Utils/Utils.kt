@@ -5,12 +5,21 @@
 package com.carbonylgroup.schoolpower.classes.Utils
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Context
+import android.content.DialogInterface
+import android.content.Intent
+import android.net.Uri
+import android.os.Handler
+import android.os.Message
 import android.support.design.widget.Snackbar
 import android.support.v4.content.ContextCompat
+import android.support.v4.content.ContextCompat.startActivity
 import android.util.Base64
 import android.util.DisplayMetrics
+import android.view.LayoutInflater
 import android.view.View
+import android.widget.ProgressBar
 import com.carbonylgroup.schoolpower.R
 import com.carbonylgroup.schoolpower.classes.ListItems.AssignmentItem
 import com.carbonylgroup.schoolpower.classes.ListItems.Subject
@@ -29,6 +38,7 @@ import java.security.spec.X509EncodedKeySpec
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.crypto.Cipher
+import kotlin.jvm.internal.Ref
 
 
 class Utils(private val context: Context) {
@@ -223,6 +233,31 @@ class Utils(private val context: Context) {
     }
 
     fun readHistoryGrade() = JSONObject(readFileToString("history.json")?:"{}")
+
+    fun checkUpdate() {
+        Thread(postData(context.getString(R.string.updateURL), "", object : Handler() {
+            override fun handleMessage(msg: Message) {
+                val message = msg.obj.toString()
+                if (!message.contains("{")) return;
+                val updateJSON = JSONObject(message)
+                if (updateJSON.getString("version") != context.packageManager.getPackageInfo("com.carbonylgroup.schoolpower", 0).versionName) {
+                    val builder = AlertDialog.Builder(context);
+                    builder.setTitle("New upgrade is available!")
+                    builder.setMessage(updateJSON.getString("description"))
+                    builder.setPositiveButton("Upgrade") {
+                        dialog, _ ->
+                        run {
+                            dialog.dismiss()
+                            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(updateJSON.getString("url")))
+                            context.startActivity(intent)
+                        }
+                    }
+                    builder.setNegativeButton("Later", null)
+                    builder.create().show()
+                }
+            }
+        })).start()
+    }
 
     companion object {
 

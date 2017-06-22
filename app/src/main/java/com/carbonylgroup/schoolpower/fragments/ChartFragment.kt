@@ -67,7 +67,17 @@ class ChartFragment : Fragment() {
                 }
             }
 
-            val colorList = intArrayOf(Color.BLUE,Color.CYAN,Color.RED,Color.GREEN,Color.LTGRAY,Color.MAGENTA,Color.YELLOW,Color.DKGRAY,Color.GRAY)
+            val colorList = intArrayOf(
+                    Color.parseColor("#065143"),
+                    Color.parseColor("#00072D"),
+                    Color.parseColor("#996888"),
+                    Color.parseColor("#802392"),
+                    Color.parseColor("#5762D5"),
+                    Color.parseColor("#DD6E42"),
+                    Color.parseColor("#FFD166"),
+                    Color.parseColor("#D81159"),
+                    Color.parseColor("#A23E48")
+            )
             for ((count, subjectName) in organizedData.keys.withIndex()){
                 val dataSet = LineDataSet(organizedData[subjectName], subjectName)
                 dataSet.color = colorList[count]
@@ -99,6 +109,7 @@ class ChartFragment : Fragment() {
             yAxis.enableGridDashedLine(10f, 10f, 0f)
             lineChart.axisRight.enableGridDashedLine(10f, 10f, 0f)
             lineChart.legend.form = Legend.LegendForm.LINE
+
         }
         run {
 
@@ -131,8 +142,8 @@ class ChartFragment : Fragment() {
             yAxis.setDrawLabels(false)
 
             val set = RadarDataSet(entries, "Grades")
-            set.color = ContextCompat.getColor(activity, R.color.A_score_green)
-            set.fillColor = ContextCompat.getColor(activity, R.color.A_score_green)
+            set.color = Color.parseColor("#345995")
+            set.fillColor = Color.parseColor("#345995")
             set.setDrawFilled(true)
             set.fillAlpha = 180
             set.lineWidth = 2f
@@ -146,6 +157,8 @@ class ChartFragment : Fragment() {
             radarData.setValueTextSize(8f)
             radarData.setDrawValues(true)
             radarData.setValueTextColor(ContextCompat.getColor(activity, R.color.primary))
+
+            radarChart.legend.isEnabled=false
 
             radarChart.data = radarData
             //radarChart.invalidate()
