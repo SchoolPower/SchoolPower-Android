@@ -122,7 +122,6 @@ class Utils(private val context: Context) {
                 } else { // Already exist. Just insert into it.
 
                     mainListItem.addPeriodGradeItem(periodGradeItem)
-
                 }
             }
 

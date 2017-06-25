@@ -186,6 +186,5 @@ class FoldingCellListAdapter(context: Context, private var mainListItems: ArrayL
         internal var fold_grade_background: RelativeLayout? = null
         internal var unfolded_grade_recycler_view: RecyclerView? = null
         internal var floating_action_button: FloatingActionButton? = null
-
     }
 }

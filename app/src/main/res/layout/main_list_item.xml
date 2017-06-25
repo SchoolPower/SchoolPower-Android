@@ -85,7 +85,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_marginTop="112dp"
                 android:layout_marginEnd="20dp"
-                android:src="@drawable/ic_more_white_48dp"
+                android:src="@drawable/ic_keyboard_arrow_right_white_48dp"
                 app:rippleColor="@color/white" />
 
 
@@ -116,6 +116,7 @@
                     android:id="@+id/fold_letter_grade_tv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    tool:text="A"
                     android:textAlignment="center"
                     android:textColor="@color/white"
                     android:textSize="25sp" />
@@ -126,6 +127,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/fold_letter_grade_tv"
                     android:layout_marginTop="5dp"
+                    tool:text="100"
                     android:textAlignment="center"
                     android:textColor="@color/white"
                     android:textSize="30sp" />
@@ -133,10 +135,10 @@
             </RelativeLayout>
 
             <RelativeLayout
+                android:id="@+id/fold_background"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="3"
-                android:id="@+id/fold_background"
                 android:background="@color/white">
 
                 <TextView
@@ -148,10 +150,10 @@
                     android:layout_marginTop="15dp"
                     android:fontFamily="sans-serif-light"
                     android:maxLines="1"
-                    tool:text="Science 10"
                     android:textAppearance="@android:style/TextAppearance.Material.Title"
                     android:textColor="@color/text_primary_black"
-                    android:textSize="20sp" />
+                    android:textSize="20sp"
+                    tool:text="Science 10" />
 
                 <TextView
                     android:id="@+id/fold_teacher_name_tv"
