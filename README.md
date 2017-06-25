@@ -3,9 +3,9 @@
 [![Travis branch](https://img.shields.io/travis/HITGIF/SchoolPower/master.svg)](https://travis-ci.org/HITGIF/SchoolPower)
 [![license](https://img.shields.io/github/license/HITGIF/SchoolPower.svg)](https://github.com/HITGIF/SchoolPower/blob/master/LICENSE.txt)
 
-什么是SchoolPower
+什么是 SchoolPower
 -------
-SchoolPower是使用Kotlin编写的开源、现代化的[PowerSchool](https://www.powerschool.com/)替代品，原理是使用爬虫获取PowerSchool上的信息。
+SchoolPower 是使用 Kotlin 编写的开源、现代化的 [PowerSchool](https://www.powerschool.com/) Android 客户端替代品，原理是使用爬虫获取 PowerSchool 上的信息。
 
 License
 -------
