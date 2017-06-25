@@ -52,6 +52,7 @@
     <string name="json_begin">[{"</string>
 
     <string name="postURL">http://schoolpower.studio:8080/api/ps.php</string>
+    <string name="updateURL">http://schoolpower.studio:8080/api/update.json</string>
     <string name="dataFileName">dataMap.json</string>
     <string name="title_activity_settings">Settings</string>
 
@@ -80,4 +81,6 @@
         <item>1</item>
         <item>2</item>
     </string-array>
+    <string name="title_activity_chart">chart</string>
+    <string name="charts">Charts</string>
 </resources>

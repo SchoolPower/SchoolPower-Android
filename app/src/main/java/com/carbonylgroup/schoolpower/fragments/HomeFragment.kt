@@ -17,7 +17,7 @@ import android.widget.ListView
 import com.carbonylgroup.schoolpower.R
 import com.carbonylgroup.schoolpower.activities.MainActivity
 import com.carbonylgroup.schoolpower.classes.Adapter.FoldingCellListAdapter
-import com.carbonylgroup.schoolpower.classes.ListItems.MainListItem
+import com.carbonylgroup.schoolpower.classes.ListItems.Subject
 import com.carbonylgroup.schoolpower.classes.Transition.DetailsTransition
 import com.carbonylgroup.schoolpower.classes.Transition.TransitionHelper
 import com.carbonylgroup.schoolpower.classes.Utils.Utils
@@ -34,7 +34,7 @@ class HomeFragment : TransitionHelper.BaseFragment() {
     private var fab_out: ScaleAnimation? = null
     private var unfoldedIndexesBackUp = HashSet<Int>()
     private var adapter: FoldingCellListAdapter? = null
-    private var dataList: ArrayList<MainListItem>? = null
+    private var dataList: ArrayList<Subject>? = null
     private var courseDetailFragment: CourseDetailFragment? = null
     private var home_swipe_refresh_layout: SwipeRefreshLayout? = null
 
@@ -86,7 +86,7 @@ class HomeFragment : TransitionHelper.BaseFragment() {
         val theListView = view_private!!.findViewById(R.id.mainListView) as ListView
         adapter = FoldingCellListAdapter(activity, dataList, unfoldedIndexesBackUp, transformedPosition)
         adapter!!.setDefaultRequestBtnClickListener(View.OnClickListener { v ->
-            MainActivity.of(activity).mainListItemTransporter = dataList!![theListView.getPositionForView(v)]
+            MainActivity.of(activity).subjectTransporter = dataList!![theListView.getPositionForView(v)]
             if (transformedPosition != -1) {
                 val itemView = getItemViewByPosition(transformedPosition, theListView)
                 itemView.findViewById(R.id.unfold_header_view).transitionName = ""
@@ -111,7 +111,7 @@ class HomeFragment : TransitionHelper.BaseFragment() {
         home_swipe_refresh_layout!!.isRefreshing = isRefreshing
     }
 
-    fun refreshAdapter(newDataList: ArrayList<MainListItem>) {
+    fun refreshAdapter(newDataList: ArrayList<Subject>) {
 
         dataList = newDataList
         if (adapter == null) initValue()

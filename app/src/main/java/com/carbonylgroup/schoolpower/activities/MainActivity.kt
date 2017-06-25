@@ -24,11 +24,12 @@ import android.view.*
 import android.view.animation.DecelerateInterpolator
 import android.widget.TextView
 import com.carbonylgroup.schoolpower.R
-import com.carbonylgroup.schoolpower.classes.ListItems.MainListItem
+import com.carbonylgroup.schoolpower.classes.ListItems.Subject
 import com.carbonylgroup.schoolpower.classes.Transition.DetailsTransition
 import com.carbonylgroup.schoolpower.classes.Transition.TransitionHelper
 import com.carbonylgroup.schoolpower.classes.Utils.Utils
 import com.carbonylgroup.schoolpower.classes.Utils.postData
+import com.carbonylgroup.schoolpower.fragments.ChartFragment
 import com.carbonylgroup.schoolpower.fragments.HomeFragment
 import com.carbonylgroup.schoolpower.fragments.SettingsFragment
 import kotterknife.bindView
@@ -38,8 +39,8 @@ import java.util.*
 class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     var presentFragment: Int = 0
-    var dataList: ArrayList<MainListItem>? = null
-    var mainListItemTransporter: MainListItem? = null
+    var dataList: ArrayList<Subject>? = null
+    var subjectTransporter: Subject? = null
     private var menuOpenDrawer = true
     private var noConnection = false
     private var hideToolBarItemFlag = false
@@ -53,6 +54,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
     /* Fragments */
     private var homeFragment: HomeFragment? = null
     private var settingsFragment: SettingsFragment? = null
+    private var chartFragment: ChartFragment? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -62,12 +64,13 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
         initValue()
         initUI()
         initOnClick()
+        utils.checkUpdate()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
 
         menuInflater.inflate(R.menu.menu_main, menu)
-        menu.findItem(R.id.action_new).isVisible = !hideToolBarItemFlag
+        menu.findItem(R.id.action_average).isVisible = !hideToolBarItemFlag
         menu.findItem(R.id.action_refresh).isVisible = !hideToolBarItemFlag
         return true
     }
@@ -79,16 +82,24 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                 initDataJson()
                 homeFragment!!.setRefreshing(true)
             }
-            R.id.action_new -> {
+            R.id.action_average -> {
                 var sum_gpa=0.0
+                var gpa_except_hr=0.0
+                var gpa_except_hr_me=0.0
                 var num=0
                 for (i in dataList!!.indices) {
                     val periods = dataList!![i]
-                    sum_gpa+=periods.getPercentageGrade(utils.getLatestItem(periods)).replace("%","").toDouble()
+                    val grade = periods.getPercentageGrade(utils.getLatestItem(periods)).replace("%","").toDouble()
+
+                    sum_gpa+=grade
                     num+=1
+                    if(periods.subjectTitle.contains("Homeroom")) continue
+                    gpa_except_hr+=grade
+                    if(periods.subjectTitle.contains("Moral Education")) continue
+                    gpa_except_hr_me+=grade
                 }
                 val builder = AlertDialog.Builder(this)
-                builder.setMessage("Your GPA is " + sum_gpa/num)
+                builder.setMessage(String.format("Your GPA for %s is %.3f\n%.3f (except HR)\n%.3f (except HR & ME)", utils.getLatestItem(dataList!![0])!!.termIndicator, sum_gpa/num, gpa_except_hr/(num-1), gpa_except_hr_me/(num-2)))
                 builder.setTitle("GPA")
                 builder.setPositiveButton("OK", null)
                 builder.setNegativeButton("Cancel", null)
@@ -117,7 +128,8 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
 
         when (presentFragment) {
             1 -> returnFromDetail()
-            2 -> returnFromSettings()
+            2 -> returnFromFragments()
+            3 -> returnFromFragments()
             else -> super.onBackPressed()
         }
     }
@@ -155,7 +167,8 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
         toggle.toolbarNavigationClickListener = View.OnClickListener {
             if (menuOpenDrawer) drawer.openDrawer(GravityCompat.START)
             else if (presentFragment == 1) returnFromDetail()
-            else returnFromSettings()
+            else if (presentFragment == 2) returnFromFragments()
+            else returnFromFragments()
         }
     }
 
@@ -195,6 +208,15 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                 animateDrawerToggle(true)
                 hideToolBarItems(true)
                 presentFragment = 2
+            }
+            R.id.nav_charts -> {
+                chartFragment = ChartFragment()
+                transaction.setCustomAnimations(R.animator.slide_from_right_in, R.animator.slide_to_left_out)
+                        .replace(R.id.content_view, chartFragment)
+                setToolBarTitle(getString(R.string.charts))
+                animateDrawerToggle(true)
+                hideToolBarItems(true)
+                presentFragment = 3
             }
 
             R.id.nav_sign_out -> confirmSignOut()
@@ -238,7 +260,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
         setToolBarElevation(0)
     }
 
-    fun returnFromSettings() {
+    fun returnFromFragments() {
 
         if (homeFragment == null) homeFragment = HomeFragment()
 
@@ -265,7 +287,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
     /* Other Method */
     fun initDataJson() {
 
-        val oldMainItemList = ArrayList<MainListItem>()
+        val oldMainItemList = ArrayList<Subject>()
         val token = getSharedPreferences("accountData", Activity.MODE_PRIVATE).getString("token", "")
         if (dataList != null) oldMainItemList.addAll(dataList!!)
 
@@ -288,12 +310,13 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                                 val jsonStr = messages[2]
                                 utils.saveDataJson(jsonStr)
                                 dataList = utils.parseJsonResult(jsonStr)
+                                utils.saveHistoryGrade(dataList!!)
 
                                 //Diff
                                 if (dataList!!.size == oldMainItemList.size) {
                                     for (i in dataList!!.indices) {
-                                        val periods = dataList!![i].periodGradeItemArrayList
-                                        val oldPeriods = oldMainItemList[i].periodGradeItemArrayList
+                                        val periods = dataList!![i].periodArrayList
+                                        val oldPeriods = oldMainItemList[i].periodArrayList
                                         if (periods.size != oldPeriods.size) continue
                                         for (j in periods.indices) {
                                             val newAssignmentListCollection = periods[j].assignmentItemArrayList

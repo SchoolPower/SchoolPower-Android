@@ -19,8 +19,8 @@ import java.util.ArrayList
 import com.carbonylgroup.schoolpower.R
 import com.carbonylgroup.schoolpower.activities.MainActivity
 import com.carbonylgroup.schoolpower.classes.Adapter.CourseDetailAdapter
-import com.carbonylgroup.schoolpower.classes.ListItems.MainListItem
-import com.carbonylgroup.schoolpower.classes.ListItems.PeriodGradeItem
+import com.carbonylgroup.schoolpower.classes.ListItems.Subject
+import com.carbonylgroup.schoolpower.classes.ListItems.Period
 import com.carbonylgroup.schoolpower.classes.Transition.TransitionHelper
 import com.carbonylgroup.schoolpower.classes.Utils.Utils
 
@@ -29,7 +29,7 @@ class CourseDetailFragment : TransitionHelper.BaseFragment() {
 
     private lateinit var utils: Utils
     private var offset_up_from_bottom: Animation? = null
-    private var dataList: ArrayList<MainListItem>? = null
+    private var dataList: ArrayList<Subject>? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
@@ -49,12 +49,12 @@ class CourseDetailFragment : TransitionHelper.BaseFragment() {
         val transformedPosition = this.arguments.getInt("transformedPosition", -1)
 
         if (transformedPosition != -1) {
-            val itemToPresent = MainActivity.of(activity).mainListItemTransporter
+            val itemToPresent = MainActivity.of(activity).subjectTransporter
             val course_detail_recycler = view.findViewById(R.id.course_detail_recycler) as RecyclerView
-            val periodGradeItem: PeriodGradeItem? = utils.getLatestItem(itemToPresent!!)
+            val period: Period? = utils.getLatestItem(itemToPresent!!)
             dataList = MainActivity.of(activity).dataList
-            MainActivity.of(activity).setToolBarColor(utils.getColorByLetterGrade(activity, itemToPresent.getLetterGrade(periodGradeItem)), true)
-            view.findViewById(R.id.detail_view_header).setBackgroundColor(utils.getColorByLetterGrade(activity, itemToPresent.getLetterGrade(periodGradeItem)))
+            MainActivity.of(activity).setToolBarColor(utils.getColorByLetterGrade(activity, itemToPresent.getLetterGrade(period)), true)
+            view.findViewById(R.id.detail_view_header).setBackgroundColor(utils.getColorByLetterGrade(activity, itemToPresent.getLetterGrade(period)))
             view.findViewById(R.id.detail_view_header).setOnClickListener {
                 MainActivity.of(activity).expandToolBar(true, true)
                 course_detail_recycler.smoothScrollToPosition(0)

@@ -16,14 +16,14 @@ import java.util.ArrayList
 
 import com.carbonylgroup.schoolpower.R
 import com.carbonylgroup.schoolpower.R2
-import com.carbonylgroup.schoolpower.classes.ListItems.PeriodGradeItem
+import com.carbonylgroup.schoolpower.classes.ListItems.Period
 import com.carbonylgroup.schoolpower.classes.Utils.Utils
 import kotterknife.bindView
 
-class PeriodGradeAdapter(private val context: Context, objects: ArrayList<PeriodGradeItem>) : RecyclerView.Adapter<PeriodGradeAdapter.PeriodGradeViewHolder>() {
+class PeriodGradeAdapter(private val context: Context, objects: ArrayList<Period>) : RecyclerView.Adapter<PeriodGradeAdapter.PeriodGradeViewHolder>() {
 
     private val inflater: LayoutInflater = LayoutInflater.from(context)
-    private val list: List<PeriodGradeItem> = objects
+    private val list: List<Period> = objects
     private val utils: Utils = Utils(context)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PeriodGradeViewHolder {
