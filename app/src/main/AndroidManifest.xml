@@ -12,6 +12,7 @@
         android:theme="@style/Design">
         <activity
             android:name=".activities.LoginActivity"
+            android:configChanges="locale|orientation"
             android:screenOrientation="portrait"
             android:theme="@style/Design">
             <intent-filter>
@@ -22,6 +23,7 @@
         </activity>
         <activity
             android:name=".activities.MainActivity"
+            android:configChanges="locale|orientation"
             android:screenOrientation="portrait"
             android:theme="@style/Design">
             <intent-filter>

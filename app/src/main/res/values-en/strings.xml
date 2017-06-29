@@ -1,6 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!-- DO TRANSLATE THESE -->
     <string name="app_name">SchoolPower</string>
     <string name="action_refreshing">Refresh</string>
     <string name="action_gpa">GPA</string>
@@ -51,48 +51,6 @@
         <item>English</item>
         <item>正體中文</item>
         <item>简体中文</item>
-    </string-array>
-
-
-    <!-- KEYS DO NOT TRANSLATE -->
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
-
-    <string name="accountData">accountData</string>
-    <string name="loggedIn">loggedIn</string>
-    <string name="usernameKEY">Username</string>
-    <string name="passwordKEY">Password</string>
-    <string name="student_name">student_name</string>
-    <string name="user_id">user_id</string>
-
-    <string name="shared_element_course_header">SHARE://COURSE_HEADER</string>
-    <string name="shared_element_course_fab">SHARE://COURSE_FAB</string>
-    <string name="shared_element_course_subject_title">SHARE://COURSE_SUBJECT_TITLE</string>
-    <string name="shared_element_course_card">SHARE://COURSE_CARD</string>
-
-    <string name="username_equals">username=</string>
-    <string name="password_equals">password=</string>
-    <string name="error_wrong_password">{\"error\":1,\"</string>
-    <string name="json_begin">[{\"</string>
-
-    <string name="postURL">https://schoolpower.studio:8443/api/ps.php</string>
-    <string name="updateURL">https://schoolpower.studio:8443/api/update.json</string>
-    <string name="dataFileName">dataMap.json</string>
-    <string name="title_activity_settings">Settings</string>
-
-    <string name="list_preference_dashboard_display">list_preference_dashboard_display</string>
-    <string name="list_preference_language">list_preference_language</string>
-
-    <string-array name="list_preference_display_types_values">
-        <item>0</item>
-        <item>1</item>
-    </string-array>
-
-    <string-array name="list_preference_language_values">
-        <item>0</item>
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
     </string-array>
 
 </resources>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <PreferenceCategory android:title="Display">
+    <PreferenceCategory android:title="@string/display">
 
         <ListPreference
             android:defaultValue="0"
@@ -10,7 +10,7 @@
             android:icon="@drawable/ic_language_accent"
             android:key="list_preference_language"
             android:summary="%s"
-            android:title="Language" />
+            android:title="@string/language" />
 
         <ListPreference
             android:defaultValue="0"
@@ -19,7 +19,7 @@
             android:icon="@drawable/ic_dashboard_display"
             android:key="@string/list_preference_dashboard_display"
             android:summary="%s"
-            android:title="Dashboard displays" />
+            android:title="@string/dashboard_displays" />
 
     </PreferenceCategory>
 

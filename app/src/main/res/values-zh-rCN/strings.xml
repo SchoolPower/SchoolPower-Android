@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">SchoolPower</string>
+    <string name="action_refreshing">刷新</string>
+    <string name="action_gpa">New Assignments</string>
+
+    <string name="dashboard">仪表盘</string>
+    <string name="charts">图表</string> 
+    <string name="course_detail">课程明细</string> 
+    <string name="preference">偏好</string> 
+    <string name="sign_out">登出</string> 
+    <string name="settings">设置</string>
+
+    <string name="username">用户名</string>
+    <string name="password">密码</string>
+    <string name="copyright">版权所有 © 2017 SchoolPower 工作室</string> 
+
+    <string name="grades">成绩</string> 
+    <string name="block">Block</string> 
+    <string name="room">教室</string> 
+    <string name="term">学期</string> 
+    <string name="assignments">作业</string> 
+    <string name="all_terms">所有学期</string> 
+    <string name="unpublished">未公开</string> 
+    <string name="data_updated">数据已更新</string> 
+    <string name="authenticating">验证中&#8230;</string> 
+    <string name="wrong_password">用户名或密码错误</string> 
+    <string name="no_connection">无法连接到服务器</string> 
+    <string name="user_id_indicator">用户 ID:</string> 
+    <string name="no_username">用户名不可用</string>
+
+    <string name="signing_out_dialog_title">正在登出</string> 
+    <string name="signing_out_dialog_message">你确定要登出吗？</string> 
+    <string name="signing_out_dialog_positive">对</string> 
+    <string name="signing_out_dialog_negative">别</string> 
+
+    <string name="display">显示</string>
+    <string name="dashboard_displays">仪表盘显示</string>
+    <string name="language">语言</string>
+    <string name="dashboard_display_preference_summary_prefix">\0</string> 
+    <string name="dashboard_display_preference_summary_suffix">&#160;的分数</string>  
+
+    <string-array name="list_preference_display_types_entries"> 
+        <item>这个 Term</item> 
+        <item>这个 Semester</item> 
+    </string-array>
+
+    <string-array name="list_preference_language_entries">
+        <item>系统默认</item>
+        <item>English</item>
+        <item>正體中文</item>
+        <item>简体中文</item>
+    </string-array>
+
+</resources>

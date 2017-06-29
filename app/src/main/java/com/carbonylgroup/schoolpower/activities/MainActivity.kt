@@ -34,6 +34,9 @@ import com.carbonylgroup.schoolpower.fragments.HomeFragment
 import com.carbonylgroup.schoolpower.fragments.SettingsFragment
 import kotterknife.bindView
 import java.util.*
+import android.util.DisplayMetrics
+
+
 
 
 class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -58,7 +61,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
-        setTheme(R.style.Design)
+        initBase()
         super.onCreate(savedInstanceState)
         setContentView(R.layout.nav_drawer)
         initValue()
@@ -135,6 +138,12 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
     }
 
     /* Initializer */
+    private fun initBase() {
+
+        setTheme(R.style.Design)
+        setLanguage(utils.getLocaleWithIndex(utils.getSettingsPreference(getString(R.string.list_preference_language)).toInt()))
+    }
+
     private fun initValue() {
 
         setSupportActionBar(mainToolBar)
@@ -285,6 +294,14 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
     }
 
     /* Other Method */
+    private fun setLanguage(language: Locale) {
+
+        val displayMetrics = resources.displayMetrics
+        val configuration = resources.configuration
+        configuration.locale = language
+        resources.updateConfiguration(configuration, displayMetrics)
+    }
+
     fun initDataJson() {
 
         val oldMainItemList = ArrayList<Subject>()
