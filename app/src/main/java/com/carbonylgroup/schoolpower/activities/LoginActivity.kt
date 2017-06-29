@@ -67,13 +67,9 @@ class LoginActivity : Activity() {
         progressDialog.setMessage(getString(R.string.authenticating))
         progressDialog.show()
 
-        val publicKey = Utils.restorePublicKey(publicKeyString)
-
-        val encryptedArgument = Utils.RSAEncode(publicKey, username + ";" + password)
-
         Thread(postData(
                 getString(R.string.postURL),
-                getString(R.string.token_equals) + encryptedArgument + "&filter=",
+                getString(R.string.username_equals) + username + "&" + getString(R.string.password_equals) + password,
                 object : Handler() {
                     override fun handleMessage(msg: Message) {
 
@@ -83,10 +79,11 @@ class LoginActivity : Activity() {
 
                         if (strMessage.contains(getString(R.string.error_wrong_password)))
                             utils!!.showSnackBar(this@LoginActivity, findViewById(R.id.login_coordinate_layout), getString(R.string.wrong_password), true)
-                        else if (strMessage.contains("[]")) {
+                        else if (strMessage.contains(getString(R.string.json_begin))) {
 
                             val spEditor = getSharedPreferences(getString(R.string.accountData), Activity.MODE_PRIVATE).edit()
-                            spEditor.putString(getString(R.string.token), encryptedArgument)
+                            spEditor.putString(getString(R.string.usernameKEY), username)
+                            spEditor.putString(getString(R.string.passwordKEY), password)
                             spEditor.putBoolean(getString(R.string.loggedIn), true)
                             spEditor.putString(getString(R.string.student_name), messages[1])
                             spEditor.apply()

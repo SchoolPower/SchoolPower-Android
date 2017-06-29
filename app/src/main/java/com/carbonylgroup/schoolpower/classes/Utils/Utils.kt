@@ -7,19 +7,15 @@ package com.carbonylgroup.schoolpower.classes.Utils
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
 import android.net.Uri
 import android.os.Handler
 import android.os.Message
 import android.support.design.widget.Snackbar
 import android.support.v4.content.ContextCompat
-import android.support.v4.content.ContextCompat.startActivity
 import android.util.Base64
 import android.util.DisplayMetrics
-import android.view.LayoutInflater
 import android.view.View
-import android.widget.ProgressBar
 import com.carbonylgroup.schoolpower.R
 import com.carbonylgroup.schoolpower.classes.ListItems.AssignmentItem
 import com.carbonylgroup.schoolpower.classes.ListItems.Subject
@@ -38,7 +34,6 @@ import java.security.spec.X509EncodedKeySpec
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.crypto.Cipher
-import kotlin.jvm.internal.Ref
 
 
 class Utils(private val context: Context) {
@@ -155,7 +150,7 @@ class Utils(private val context: Context) {
     /* IO */
     fun getSettingsPreference(key: String) = context.getSharedPreferences(context.getString(R.string.settings), Activity.MODE_PRIVATE).getString(key, "0")!!
 
-    fun readFileToString(fileName : String) : String?{
+    fun readFileFromString(fileName : String) : String?{
         try {
             val data = StringBuilder("")
             val inputStream = context.openFileInput(fileName)
@@ -186,7 +181,7 @@ class Utils(private val context: Context) {
 
     @Throws(IOException::class)
     fun readDataArrayList(): ArrayList<Subject>?
-            = parseJsonResult(readFileToString(context.getString(R.string.dataFileName))!!)
+            = parseJsonResult(readFileFromString(context.getString(R.string.dataFileName))!!)
 
     @Throws(IOException::class)
     fun saveDataJson(jsonStr: String)
@@ -221,7 +216,7 @@ class Utils(private val context: Context) {
         gradeInfo.put(gpaInfo)
 
         // 3. read history grade from file
-        val historyData = JSONObject(readFileToString("history.json")?:"{}")
+        val historyData = JSONObject(readFileFromString("history.json")?:"{}")
         // {"2017-06-20": [{"name":"...","grade":"80"}, ...], ...}
 
         // 4. update history grade
@@ -232,7 +227,7 @@ class Utils(private val context: Context) {
         saveStringToFile("history.json", historyData.toString())
     }
 
-    fun readHistoryGrade() = JSONObject(readFileToString("history.json")?:"{}")
+    fun readHistoryGrade() = JSONObject(readFileFromString("history.json")?:"{}")
 
     fun checkUpdate() {
         Thread(postData(context.getString(R.string.updateURL), "", object : Handler() {

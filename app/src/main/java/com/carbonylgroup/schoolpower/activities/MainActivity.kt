@@ -288,11 +288,13 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
     fun initDataJson() {
 
         val oldMainItemList = ArrayList<Subject>()
-        val token = getSharedPreferences("accountData", Activity.MODE_PRIVATE).getString("token", "")
+        val username = getSharedPreferences("accountData", Activity.MODE_PRIVATE).getString(getString(R.string.usernameKEY), "")
+        val password = getSharedPreferences("accountData", Activity.MODE_PRIVATE).getString(getString(R.string.passwordKEY), "")
         if (dataList != null) oldMainItemList.addAll(dataList!!)
 
         Thread(postData(
-                getString(R.string.postURL), getString(R.string.token_equals) + token,
+                getString(R.string.postURL),
+                getString(R.string.username_equals) + username + "&" + getString(R.string.password_equals) + password,
                 object : Handler() {
                     override fun handleMessage(msg: Message) {
                         val messages = msg.obj.toString().split("\n".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
@@ -369,7 +371,8 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
     private fun signOut() {
 
         val spEditor = getSharedPreferences(getString(R.string.accountData), Activity.MODE_PRIVATE).edit()
-        spEditor.putString(getString(R.string.token), "")
+        spEditor.putString(getString(R.string.usernameKEY), "")
+        spEditor.putString(getString(R.string.passwordKEY), "")
         spEditor.putBoolean(getString(R.string.loggedIn), false)
         spEditor.apply()
         utils.saveDataJson("")
