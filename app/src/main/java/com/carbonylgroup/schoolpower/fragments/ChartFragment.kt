@@ -26,6 +26,7 @@ import com.github.mikephil.charting.formatter.IAxisValueFormatter
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.components.YAxis
 import org.json.JSONArray
+import java.lang.Math.abs
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -53,6 +54,7 @@ class ChartFragment : Fragment() {
 
             // Map<SubjectName, Array<Entry<Date, Grade>>>
             val organizedData = HashMap<String, ArrayList<Entry>>()
+            val lastData = HashMap<String, Entry>()
 
             val lineData = LineData()
             for (date in historyData.keys()){
@@ -61,10 +63,18 @@ class ChartFragment : Fragment() {
                 for (i in 0..subjects.length() - 1){
                     val subjectNow = subjects.getJSONObject(i)
                     val subjectName = Utils.getShortName(subjectNow.getString("name"))
-                    val subjectGrade = subjectNow.getDouble("grade")
+                    val subjectGrade = subjectNow.getDouble("grade").toFloat()
+                    val entry = Entry(floatDate, subjectGrade)
                     if(organizedData[subjectName]==null) organizedData.put(subjectName,ArrayList<Entry>())
-                    organizedData[subjectName]!!.add(Entry(floatDate, subjectGrade.toFloat()))
+                    if(lastData[subjectName]==null) lastData.put(subjectName, Entry(floatDate, subjectGrade))
+                    else lastData[subjectName]=entry
+                    val subjectItem = organizedData[subjectName]!!
+                    if(subjectItem.size!=0 && abs(subjectGrade-subjectItem.last().y)<1e-5) continue
+                    subjectItem.add(entry)
                 }
+            }
+            for((name, grade) in lastData){
+                organizedData[name]!!.add(grade)
             }
 
             val colorList = intArrayOf(
