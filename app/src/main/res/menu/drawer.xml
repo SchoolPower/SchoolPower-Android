@@ -10,6 +10,7 @@
             android:checked="true"/>
         <item
             android:id="@+id/nav_charts"
+            android:checkable="true"
             android:icon="@drawable/ic_chart"
             android:title="@string/charts" />
     </group>

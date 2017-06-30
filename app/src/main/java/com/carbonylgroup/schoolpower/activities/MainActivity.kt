@@ -219,10 +219,8 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
             }
             R.id.nav_charts -> {
                 chartFragment = ChartFragment()
-                transaction.setCustomAnimations(R.animator.slide_from_right_in, R.animator.slide_to_left_out)
-                        .replace(R.id.content_view, chartFragment)
+                transaction.replace(R.id.content_view, chartFragment)
                 setToolBarTitle(getString(R.string.charts))
-                animateDrawerToggle(true)
                 hideToolBarItems(true)
                 presentFragment = 3
             }
