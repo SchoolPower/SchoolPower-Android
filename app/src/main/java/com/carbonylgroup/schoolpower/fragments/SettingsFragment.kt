@@ -13,11 +13,8 @@ import android.preference.PreferenceFragment
 import com.carbonylgroup.schoolpower.R
 import com.carbonylgroup.schoolpower.activities.MainActivity
 import android.content.Intent
-import java.util.Locale
 
 class SettingsFragment : PreferenceFragment(), OnSharedPreferenceChangeListener {
-
-    private val localeSet = arrayListOf(Locale.getDefault(), Locale.ENGLISH, Locale.TRADITIONAL_CHINESE, Locale.SIMPLIFIED_CHINESE)
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -55,18 +52,12 @@ class SettingsFragment : PreferenceFragment(), OnSharedPreferenceChangeListener 
             val spEditor = activity.getSharedPreferences(getString(R.string.settings), Activity.MODE_PRIVATE).edit()
             spEditor.putString(getString(R.string.list_preference_language), selected.toString())
             spEditor.apply()
-            setLocale(selected)
+            restart()
         }
     }
 
-    private fun setLocale(index: Int) {
+    private fun restart() {
 
-        val newLocale = localeSet[index]
-        val res = resources
-        val dm = res.displayMetrics
-        val conf = res.configuration
-        conf.locale = newLocale
-        res.updateConfiguration(conf, dm)
         val refresh = Intent(activity, activity.javaClass)
         startActivity(refresh)
         activity.finish()

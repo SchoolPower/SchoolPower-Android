@@ -34,7 +34,6 @@ import com.carbonylgroup.schoolpower.fragments.HomeFragment
 import com.carbonylgroup.schoolpower.fragments.SettingsFragment
 import kotterknife.bindView
 import java.util.*
-import android.util.DisplayMetrics
 
 
 
