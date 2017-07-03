@@ -47,6 +47,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
     private val mainToolBar: Toolbar by bindView(R.id.main_toolbar)
     private val drawer: DrawerLayout by bindView(R.id.drawer_layout)
     private val mainAppBar: AppBarLayout by bindView(R.id.main_app_bar)
+    private lateinit var navigationView: NavigationView
     private lateinit var toggle: ActionBarDrawerToggle
     private lateinit var toggleIcon: DrawerArrowDrawable
 
@@ -82,23 +83,23 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                 homeFragment!!.setRefreshing(true)
             }
             R.id.action_average -> {
-                var sum_gpa=0.0
-                var gpa_except_hr=0.0
-                var gpa_except_hr_me=0.0
-                var num=0
+                var sum_gpa = 0.0
+                var gpa_except_hr = 0.0
+                var gpa_except_hr_me = 0.0
+                var num = 0
                 for (i in dataList!!.indices) {
                     val periods = dataList!![i]
                     val grade = utils.getLatestItem(periods)!!.termPercentageGrade.toDouble()
 
-                    sum_gpa+=grade
-                    num+=1
-                    if(periods.subjectTitle.contains("Homeroom")) continue
-                    gpa_except_hr+=grade
-                    if(periods.subjectTitle.contains("Moral Education")) continue
-                    gpa_except_hr_me+=grade
+                    sum_gpa += grade
+                    num += 1
+                    if (periods.subjectTitle.contains("Homeroom")) continue
+                    gpa_except_hr += grade
+                    if (periods.subjectTitle.contains("Moral Education")) continue
+                    gpa_except_hr_me += grade
                 }
                 val builder = AlertDialog.Builder(this)
-                builder.setMessage(String.format("Your GPA for %s is %.3f\n%.3f (except HR)\n%.3f (except HR & ME)", utils.getLatestItem(dataList!![0])!!.termIndicator, sum_gpa/num, gpa_except_hr/(num-1), gpa_except_hr_me/(num-2)))
+                builder.setMessage(String.format("Your GPA for %s is %.3f\n%.3f (except HR)\n%.3f (except HR & ME)", utils.getLatestItem(dataList!![0])!!.termIndicator, sum_gpa / num, gpa_except_hr / (num - 1), gpa_except_hr_me / (num - 2)))
                 builder.setTitle("GPA")
                 builder.setPositiveButton("OK", null)
                 builder.setNegativeButton("Cancel", null)
@@ -127,8 +128,8 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
 
         when (presentFragment) {
             1 -> returnFromDetail()
-            2 -> returnFromFragments()
-            3 -> returnFromFragments()
+            2 -> returnFromSecondaryFragments()
+            3 -> returnFromPrimaryFragments(1)
             else -> super.onBackPressed()
         }
     }
@@ -172,14 +173,14 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
         toggle.toolbarNavigationClickListener = View.OnClickListener {
             if (menuOpenDrawer) drawer.openDrawer(GravityCompat.START)
             else if (presentFragment == 1) returnFromDetail()
-            else if (presentFragment == 2) returnFromFragments()
-            else returnFromFragments()
+            else if (presentFragment == 2) returnFromSecondaryFragments()
+            else returnFromSecondaryFragments()
         }
     }
 
     private fun initDrawer() {
 
-        val navigationView = findViewById(R.id.nav_view) as NavigationView
+        navigationView = findViewById(R.id.nav_view) as NavigationView
         navigationView.setNavigationItemSelectedListener(this)
 
         toggle.isDrawerIndicatorEnabled = false
@@ -221,7 +222,6 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                 hideToolBarItems(true)
                 presentFragment = 3
             }
-
             R.id.nav_sign_out -> confirmSignOut()
 
             else -> {
@@ -263,7 +263,9 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
         setToolBarElevation(0)
     }
 
-    fun returnFromFragments() {
+    fun returnFromSecondaryFragments() {
+
+        expandToolBar(true, true)
 
         if (homeFragment == null) homeFragment = HomeFragment()
 
@@ -277,6 +279,27 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
         animateDrawerToggle(false)
         hideToolBarItems(false)
         homeFragment!!.notifyAdapter()
+    }
+
+    /**
+     * @param   index:   The position of the primary fragment, Dashboard is 0, so starts from 1
+     */
+    fun returnFromPrimaryFragments(index: Int) {
+
+        expandToolBar(true, true)
+
+        if (homeFragment == null) homeFragment = HomeFragment()
+
+        fragmentManager
+                .beginTransaction()
+                .replace(R.id.content_view, homeFragment)
+                .addToBackStack(null)
+                .commit()
+
+        hideToolBarItems(false)
+        homeFragment!!.notifyAdapter()
+        navigationView.menu.getItem(index).isChecked = false
+        navigationView.menu.getItem(0).isChecked = true
     }
 
     private fun setDefaultFragment() {
