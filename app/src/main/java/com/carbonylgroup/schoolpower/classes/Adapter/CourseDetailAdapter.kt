@@ -7,6 +7,7 @@ package com.carbonylgroup.schoolpower.classes.Adapter
 import android.content.Context
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -76,21 +77,21 @@ class CourseDetailAdapter(private val context: Context, private val item: Subjec
 
                 val headerViewHolder = holder
                 val termAdapter = ArrayAdapter(context, R.layout.term_selection_spinner, termsList)
-                val period: Period? = utils.getLatestItem(item)
+                val period: Period = utils.getLatestItem(item)!!
 
-                headerViewHolder.detail_letter_grade_tv.text = item.getLetterGrade(period)
-                headerViewHolder.detail_percentage_grade_tv.text = item.getPercentageGrade(period)
+                headerViewHolder.detail_letter_grade_tv.text = period.termLetterGrade
+                headerViewHolder.detail_percentage_grade_tv.text = period.termPercentageGrade
                 headerViewHolder.detail_header_teacher_name_tv.text = item.teacherName
                 headerViewHolder.detail_header_block_tv.text = context.getString(R.string.block) + " " + item.blockLetter
                 headerViewHolder.detail_header_room_tv.text = context.getString(R.string.room) + " " + item.roomNumber
-                headerViewHolder.detail_header_grade_background.setBackgroundColor(utils.getColorByLetterGrade(context, item.getLetterGrade(period)))
+                headerViewHolder.detail_header_grade_background.setBackgroundColor(utils.getColorByLetterGrade(context, period.termLetterGrade))
                 headerViewHolder.detail_term_select_spinner.adapter = termAdapter
                 headerViewHolder.detail_term_select_spinner.setSelection(presentingTermPos)
                 headerViewHolder.detail_term_select_spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                    override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
-                        val selectItem = termsList[position]
-                        if (position != presentingTermPos) {
-                            presentingTermPos = position
+                    override fun onItemSelected(parent: AdapterView<*>, view: View, pos: Int, id: Long) {
+                        val selectItem = termsList[pos]
+                        if (pos != presentingTermPos) {
+                            presentingTermPos = pos
                             if (selectItem == context.getString(R.string.all_terms)) setAllTerms(termsList)
                             else setTerm(selectItem)
                             refreshAdapter()
@@ -140,7 +141,7 @@ class CourseDetailAdapter(private val context: Context, private val item: Subjec
     }
 
     private fun setTerm(term: String) {
-        list = item.getAssignmentItemArrayList(term)
+        list = item.getPeriodGradeItem(term)!!.assignmentItemArrayList
     }
 
     private fun setAllTerms(termsList: ArrayList<*>) {

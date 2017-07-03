@@ -1,21 +1,16 @@
 package com.carbonylgroup.schoolpower.classes.Transition
 
-import android.animation.Animator
 import android.app.Activity
 import android.app.Fragment
 import android.os.Build
 import android.os.Bundle
 import android.support.v4.app.ActivityCompat
-import android.support.v4.app.ActivityOptionsCompat
-import android.support.v4.util.Pair
-import android.support.v7.app.ActionBarActivity
+import android.support.v7.app.AppCompatActivity
 import android.transition.Transition
 import android.view.View
 import android.view.ViewTreeObserver
-import android.view.Window
 
 import java.util.ArrayList
-import java.util.Arrays
 
 /**
  * Provides extra lifecycle events and shims for shared element transitions
@@ -170,7 +165,7 @@ class TransitionHelper private constructor(internal val activity: Activity, save
         })
     }
 
-    open class MainActivity : ActionBarActivity(), TransitionHelper.Source, TransitionHelper.Listener {
+    open class MainActivity : AppCompatActivity(), TransitionHelper.Source, TransitionHelper.Listener {
         override var transitionHelper: TransitionHelper? = null
 
         override fun onCreate(savedInstanceState: Bundle?) {
@@ -237,14 +232,6 @@ class TransitionHelper private constructor(internal val activity: Activity, save
     }
 
     companion object {
-
-        fun excludeEnterTarget(activity: Activity, targetId: Int, exclude: Boolean) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                activity.window.enterTransition.excludeTarget(targetId, exclude)
-            }
-        }
-
-
         //STATICS:
         /**
          * Get the TransitionHelper object for an Activity
@@ -264,57 +251,6 @@ class TransitionHelper private constructor(internal val activity: Activity, save
          */
         fun init(source: Source, savedInstanceState: Bundle?) {
             source.transitionHelper = TransitionHelper(source as Activity, savedInstanceState)
-        }
-
-        fun makeOptionsCompat(fromActivity: Activity, vararg sharedElements: Pair<View, String>): ActivityOptionsCompat {
-            var sharedElements = sharedElements
-            val list = ArrayList(Arrays.asList(*sharedElements))
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                list.add(Pair.create(fromActivity.findViewById(android.R.id.statusBarBackground), Window.STATUS_BAR_BACKGROUND_TRANSITION_NAME))
-                list.add(Pair.create(fromActivity.findViewById(android.R.id.navigationBarBackground), Window.NAVIGATION_BAR_BACKGROUND_TRANSITION_NAME))
-            }
-
-            //remove any views that are null
-            val iter = list.listIterator()
-            while (iter.hasNext()) {
-                val pair = iter.next()
-                if (pair.first == null) iter.remove()
-            }
-
-            sharedElements = list.toTypedArray<Pair<View, String>>()
-            return ActivityOptionsCompat.makeSceneTransitionAnimation(
-                    fromActivity,
-                    *sharedElements
-            )
-        }
-
-        fun fadeThenFinish(v: View?, a: Activity) {
-            if (v != null) {
-                v.animate()  //fade out the view before finishing the activity (for cleaner L transition)
-                        .alpha(0f)
-                        .setDuration(100)
-                        .setListener(
-                                object : Animator.AnimatorListener {
-                                    override fun onAnimationStart(animation: Animator) {
-
-                                    }
-
-                                    override fun onAnimationEnd(animation: Animator) {
-                                        ActivityCompat.finishAfterTransition(a)
-                                    }
-
-                                    override fun onAnimationCancel(animation: Animator) {
-
-                                    }
-
-                                    override fun onAnimationRepeat(animation: Animator) {
-
-                                    }
-                                }
-                        )
-                        .start()
-            }
         }
     }
 

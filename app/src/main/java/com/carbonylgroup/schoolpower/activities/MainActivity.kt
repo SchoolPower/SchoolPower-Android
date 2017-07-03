@@ -35,9 +35,6 @@ import com.carbonylgroup.schoolpower.fragments.SettingsFragment
 import kotterknife.bindView
 import java.util.*
 
-
-
-
 class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     var presentFragment: Int = 0
@@ -91,7 +88,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                 var num=0
                 for (i in dataList!!.indices) {
                     val periods = dataList!![i]
-                    val grade = periods.getPercentageGrade(utils.getLatestItem(periods)).replace("%","").toDouble()
+                    val grade = utils.getLatestItem(periods)!!.termPercentageGrade.toDouble()
 
                     sum_gpa+=grade
                     num+=1

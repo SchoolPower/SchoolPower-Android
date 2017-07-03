@@ -87,9 +87,9 @@ class FoldingCellListAdapter(context: Context, private var subjects: ArrayList<S
         val items = item.periodArrayList
         val adapter = PeriodGradeAdapter(context, items)
         val layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        val period: Period? = utils.getLatestItem(item)
+        val period: Period = utils.getLatestItem(item)!!
 
-        viewHolder.fold_letter_grade_tv!!.text = item.getLetterGrade(period)
+        viewHolder.fold_letter_grade_tv!!.text = period.termLetterGrade
         viewHolder.fold_teacher_name_tv!!.text = item.teacherName
         viewHolder.fold_block_letter_tv!!.text = item.blockLetter
         viewHolder.unfolded_grade_recycler_view!!.adapter = adapter
@@ -97,17 +97,17 @@ class FoldingCellListAdapter(context: Context, private var subjects: ArrayList<S
         viewHolder.unfold_teacher_name_tv!!.text = item.teacherName
         viewHolder.unfold_subject_title_tv!!.text = item.subjectTitle
         viewHolder.unfolded_grade_recycler_view!!.layoutManager = layoutManager
-        viewHolder.fold_percentage_grade_tv!!.text = item.getPercentageGrade(period)
+        viewHolder.fold_percentage_grade_tv!!.text = period.termPercentageGrade
         viewHolder.floating_action_button!!.setOnClickListener(defaultRequestBtnClickListener)
-        viewHolder.unfold_percentage_grade_tv!!.text = item.getPercentageGrade(period)
-        viewHolder.unfold_header_view!!.setBackgroundColor(utils.getColorByLetterGrade(context, item.getLetterGrade(period)))
-        viewHolder.fold_grade_background!!.setBackgroundColor(utils.getColorByLetterGrade(context, item.getLetterGrade(period)))
+        viewHolder.unfold_percentage_grade_tv!!.text = period.termPercentageGrade
+        viewHolder.unfold_header_view!!.setBackgroundColor(utils.getColorByLetterGrade(context, period.termLetterGrade))
+        viewHolder.fold_grade_background!!.setBackgroundColor(utils.getColorByLetterGrade(context, period.termLetterGrade))
 
         var anyNew = false
         val lastTerm = utils.getLatestItem(item)
         if (lastTerm != null) {
-            for (item in lastTerm.assignmentItemArrayList) {
-                if (item.isNew) {
+            for (it in lastTerm.assignmentItemArrayList) {
+                if (it.isNew) {
                     anyNew = true
                     break
                 }

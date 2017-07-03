@@ -86,8 +86,8 @@ class Utils(private val context: Context) {
     fun showSnackBar(context: Context, view: View, msg: String, colorRed: Boolean) {
 
         val snackBar = Snackbar.make(view, msg, Snackbar.LENGTH_SHORT)
-        if (colorRed) snackBar.view.setBackgroundColor(context.resources.getColor(R.color.Cm_score_red_dark))
-        else snackBar.view.setBackgroundColor(context.resources.getColor(R.color.accent))
+        if (colorRed) snackBar.view.setBackgroundColor(ContextCompat.getColor(context, R.color.Cm_score_red_dark))
+        else snackBar.view.setBackgroundColor(ContextCompat.getColor(context, R.color.accent))
         snackBar.show()
     }
 
@@ -101,16 +101,17 @@ class Utils(private val context: Context) {
                 val termObj = jsonData.getJSONObject(i)
                 // Turns assignments into an ArrayList
                 val assignmentList = ArrayList<AssignmentItem>()
-                if(!termObj.has("assignments")) continue;
+                if(!termObj.has("assignments")) continue
                 val asmArray = termObj.getJSONArray("assignments")
                 for (j in 0..asmArray.length() - 1) {
                     val asmObj = asmArray.getJSONObject(j)
                     val dates = asmObj.getString("date").split("/")
+                    val score = asmObj.getString("score")
+                    val grade = asmObj.getString("grade")
                     val date = dates[2] + "/" + dates[0] + "/" + dates[1]
                     assignmentList.add(AssignmentItem(asmObj.getString("assignment"),
-                            date, if (asmObj.getString("grade") == "") "--" else asmObj.getString("percent"),
-                            if (asmObj.getString("score").endsWith("d")) context.getString(R.string.unpublished) else asmObj.getString("score"),
-                            if (asmObj.getString("grade") == "") "--" else asmObj.getString("grade"), asmObj.getString("category"), termObj.getString("term")))
+                            date, if (grade == "") "--" else asmObj.getString("percent"), if (score.endsWith("d")) context.getString(R.string.unpublished) else score,
+                            if (grade == "") "--" else grade, asmObj.getString("category"), termObj.getString("term")))
                 }
 
                 val periodGradeItem = Period(termObj.getString("term"),
@@ -261,9 +262,6 @@ class Utils(private val context: Context) {
 
     companion object {
 
-        private val ALGORITHM = "RSA/ECB/PKCS1Padding"
-        private val RSA = "RSA"
-
         fun getShortName(subjectTitle:String) : String{
             val shorts= mapOf("Homeroom" to "HR", "Planning" to "PL", "Mandarin" to "CN",
                     "Chinese" to "CSS", "Foundations" to "Maths", "Physical" to "PE",
@@ -276,17 +274,6 @@ class Utils(private val context: Context) {
                 if(c.isUpperCase()||c.isDigit()) ret+=c
             }
             return ret
-        }
-
-        fun restorePublicKey(key: String): PublicKey =
-                KeyFactory.getInstance(RSA).generatePublic(X509EncodedKeySpec(Base64.decode(key, Base64.DEFAULT)))
-
-        fun RSAEncode(key: PublicKey, plainText: String): String {
-
-            val cipher = Cipher.getInstance(ALGORITHM)
-            cipher.init(Cipher.ENCRYPT_MODE, key)
-            return Base64.encodeToString(cipher.doFinal(plainText.toByteArray()), Base64.URL_SAFE)
-
         }
 
         /**

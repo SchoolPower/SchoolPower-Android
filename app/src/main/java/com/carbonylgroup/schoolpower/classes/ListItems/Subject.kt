@@ -11,9 +11,7 @@ import java.util.*
 class Subject(val subjectTitle: String, val teacherName: String, val blockLetter: String,
               val roomNumber: String, val periodArrayList: ArrayList<Period>) : Serializable {
 
-    fun getLetterGrade(requiredTerm: Period?) = periodArrayList[periodArrayList.indexOf(requiredTerm)].termLetterGrade
-    fun getPercentageGrade(requiredTerm: Period?) = periodArrayList[periodArrayList.indexOf(requiredTerm)].termPercentageGrade
-    fun getAssignmentItemArrayList(term: String) = periodArrayList.firstOrNull { term == it.termIndicator }?.assignmentItemArrayList
+    fun getPeriodGradeItem(term: String) = periodArrayList.firstOrNull { term == it.termIndicator }
 
     fun getShortName() = Utils.getShortName(subjectTitle)
 
