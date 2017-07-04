@@ -243,9 +243,9 @@ class Utils(private val context: Context) {
                 val updateJSON = JSONObject(message)
                 if (updateJSON.getString("version") != context.packageManager.getPackageInfo("com.carbonylgroup.schoolpower", 0).versionName) {
                     val builder = AlertDialog.Builder(context);
-                    builder.setTitle("New upgrade is available!")
+                    builder.setTitle(context.getString(R.string.upgrade_title))
                     builder.setMessage(updateJSON.getString("description"))
-                    builder.setPositiveButton("Upgrade") {
+                    builder.setPositiveButton(context.getString(R.string.upgrade_pos)) {
                         dialog, _ ->
                         run {
                             dialog.dismiss()
@@ -253,7 +253,7 @@ class Utils(private val context: Context) {
                             context.startActivity(intent)
                         }
                     }
-                    builder.setNegativeButton("Later", null)
+                    builder.setNegativeButton(context.getString(R.string.upgrade_neg), null)
                     builder.create().show()
                 }
             }

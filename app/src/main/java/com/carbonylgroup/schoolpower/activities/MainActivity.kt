@@ -32,6 +32,7 @@ import com.carbonylgroup.schoolpower.classes.Utils.postData
 import com.carbonylgroup.schoolpower.fragments.ChartFragment
 import com.carbonylgroup.schoolpower.fragments.HomeFragment
 import com.carbonylgroup.schoolpower.fragments.SettingsFragment
+import com.mikepenz.aboutlibraries.LibsBuilder
 import kotterknife.bindView
 import java.util.*
 
@@ -53,8 +54,8 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
 
     /* Fragments */
     private var homeFragment: HomeFragment? = null
-    private var settingsFragment: SettingsFragment? = null
     private var chartFragment: ChartFragment? = null
+    private var settingsFragment: SettingsFragment? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -99,7 +100,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                     gpa_except_hr_me += grade
                 }
                 val builder = AlertDialog.Builder(this)
-                builder.setMessage(String.format("Your GPA for %s is %.3f\n%.3f (except HR)\n%.3f (except HR & ME)", utils.getLatestItem(dataList!![0])!!.termIndicator, sum_gpa / num, gpa_except_hr / (num - 1), gpa_except_hr_me / (num - 2)))
+                builder.setMessage(String.format(getString(R.string.your_gpa), utils.getLatestItem(dataList!![0])!!.termIndicator, sum_gpa / num, gpa_except_hr / (num - 1), gpa_except_hr_me / (num - 2)))
                 builder.setTitle("GPA")
                 builder.setPositiveButton("OK", null)
                 builder.setNegativeButton("Cancel", null)
@@ -128,8 +129,9 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
 
         when (presentFragment) {
             1 -> returnFromDetail()
-            2 -> returnFromSecondaryFragments()
-            3 -> returnFromPrimaryFragments(1)
+            2 -> returnFromPrimaryFragments(1)
+            3 -> returnFromSecondaryFragments()
+            4 -> returnFromSecondaryFragments()
             else -> super.onBackPressed()
         }
     }
@@ -173,7 +175,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
         toggle.toolbarNavigationClickListener = View.OnClickListener {
             if (menuOpenDrawer) drawer.openDrawer(GravityCompat.START)
             else if (presentFragment == 1) returnFromDetail()
-            else if (presentFragment == 2) returnFromSecondaryFragments()
+            else if (presentFragment == 2) returnFromPrimaryFragments(1)
             else returnFromSecondaryFragments()
         }
     }
@@ -205,7 +207,13 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                 hideToolBarItems(false)
                 presentFragment = 0
             }
-
+            R.id.nav_charts -> {
+                chartFragment = ChartFragment()
+                transaction.replace(R.id.content_view, chartFragment)
+                setToolBarTitle(getString(R.string.charts))
+                hideToolBarItems(true)
+                presentFragment = 2
+            }
             R.id.nav_settings -> {
                 settingsFragment = SettingsFragment()
                 transaction.setCustomAnimations(R.animator.slide_from_right_in, R.animator.slide_to_left_out)
@@ -213,14 +221,20 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                 setToolBarTitle(getString(R.string.settings))
                 animateDrawerToggle(true)
                 hideToolBarItems(true)
-                presentFragment = 2
-            }
-            R.id.nav_charts -> {
-                chartFragment = ChartFragment()
-                transaction.replace(R.id.content_view, chartFragment)
-                setToolBarTitle(getString(R.string.charts))
-                hideToolBarItems(true)
                 presentFragment = 3
+            }
+            R.id.nav_about -> {
+                val aboutFragment = LibsBuilder()
+                        .withAboutIconShown(true)
+                        .withAboutVersionShown(true)
+                        .withAboutDescription(getString(R.string.i_love_open_source))
+                        .fragment()
+                transaction.setCustomAnimations(R.animator.slide_from_right_in, R.animator.slide_to_left_out)
+                        .replace(R.id.content_view, aboutFragment)
+                setToolBarTitle(getString(R.string.about))
+                animateDrawerToggle(true)
+                hideToolBarItems(true)
+                presentFragment = 4
             }
             R.id.nav_sign_out -> confirmSignOut()
 

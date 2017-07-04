@@ -9,6 +9,7 @@
     <string name="charts">圖表</string> 
     <string name="course_detail">課程明細</string> 
     <string name="preference">偏好</string> 
+    <string name="about">關於</string>
     <string name="sign_out">登出</string> 
     <string name="settings">設置</string>
 
@@ -29,6 +30,15 @@
     <string name="no_connection">無法連結到服務器</string> 
     <string name="user_id_indicator">用戶 ID:</string> 
     <string name="no_username">用戶名不可用</string>
+
+    <string name="your_gpa" formatted="false">你 %s 的 GPA 是 %.3f\n%.3f (除去 HR)\n%.3f (除去 HR &amp; ME)</string>
+    <string name="ok">嗯</string>
+
+    <string name="upgrade_title">有新版本啦！</string>
+    <string name="upgrade_pos">更新</string>
+    <string name="upgrade_neg">等會</string>
+
+    <string name="i_love_open_source">我愛開源軟件。</string>
 
     <string name="signing_out_dialog_title">正在登出</string> 
     <string name="signing_out_dialog_message">你確定要登出嗎？</string> 
