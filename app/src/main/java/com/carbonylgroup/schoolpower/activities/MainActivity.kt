@@ -32,11 +32,16 @@ import com.carbonylgroup.schoolpower.classes.Utils.postData
 import com.carbonylgroup.schoolpower.fragments.ChartFragment
 import com.carbonylgroup.schoolpower.fragments.HomeFragment
 import com.carbonylgroup.schoolpower.fragments.SettingsFragment
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdView
+import com.google.android.gms.ads.MobileAds
 import com.mikepenz.aboutlibraries.LibsBuilder
 import kotterknife.bindView
 import java.util.*
 
 class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigationItemSelectedListener {
+
+    private var mAdView: AdView? = null
 
     var presentFragment: Int = 0
     var dataList: ArrayList<Subject>? = null
@@ -144,6 +149,11 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
     }
 
     private fun initValue() {
+
+        MobileAds.initialize(this, getString(R.string.adMob_app_id))
+        mAdView = findViewById(R.id.adView) as AdView
+        val adRequest = AdRequest.Builder().build()
+        mAdView?.loadAd(adRequest)
 
         setSupportActionBar(mainToolBar)
         toggleIcon = DrawerArrowDrawable(this)

@@ -43,6 +43,7 @@ dependencies {
     compile 'com.android.support:support-v4:25.3.1'
     compile 'com.github.PhilJay:MPAndroidChart:v3.0.2'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    compile 'com.google.android.gms:play-services-ads:11.0.2'
     compile ('com.mikepenz:aboutlibraries:5.9.6@aar') { transitive = true}
     testCompile 'junit:junit:4.12'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'

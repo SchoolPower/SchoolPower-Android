@@ -30,6 +30,7 @@
     <string name="no_connection">Cannot connect to server</string>
     <string name="user_id_indicator">User ID:</string>
     <string name="no_username">No Username</string>
+    <string name="the_end">THIS IS THE END</string>
 
     <string name="your_gpa" formatted="false">Your GPA for %s is %.3f\n%.3f (except HR)\n%.3f (except HR &amp; ME)</string>
     <string name="ok">OK</string>
@@ -65,6 +66,11 @@
 
 
     <!-- KEYS DO NOT TRANSLATE -->
+    <string name="adMob_app_id">ca-app-pub-9841217337381410~1214844685</string>
+    <!--TEST ID-->
+    <!--<string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>-->
+    <string name="banner_ad_unit_id">ca-app-pub-9841217337381410/7121777483</string>
+
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 

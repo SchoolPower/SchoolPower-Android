@@ -30,6 +30,7 @@
     <string name="no_connection">無法連結到服務器</string> 
     <string name="user_id_indicator">用戶 ID:</string> 
     <string name="no_username">用戶名不可用</string>
+    <string name="the_end">下面沒了</string>
 
     <string name="your_gpa" formatted="false">你 %s 的 GPA 是 %.3f\n%.3f (除去 HR)\n%.3f (除去 HR &amp; ME)</string>
     <string name="ok">嗯</string>

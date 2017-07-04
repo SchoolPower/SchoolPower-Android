@@ -30,6 +30,7 @@
     <string name="no_connection">Cannot connect to server</string>
     <string name="user_id_indicator">User ID:</string>
     <string name="no_username">No Username</string>
+    <string name="the_end">THIS IS THE END</string>
 
     <string name="your_gpa" formatted="false">Your GPA for %s is %.3f\n%.3f (except HR)\n%.3f (except HR &amp; ME)</string>
     <string name="ok">OK</string>
