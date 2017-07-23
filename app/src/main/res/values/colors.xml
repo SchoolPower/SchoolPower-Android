@@ -36,7 +36,5 @@
     <color name="text_primary_black">#383838</color>
     <color name="text_secondary_black">#787878</color>
     <color name="text_tertiary_black">#909090</color>
-    <color name="foreground_material_dark">#eeeeee</color>
-    <color name="foreground_material_light">#eeeeee</color>
 
 </resources>

@@ -94,6 +94,7 @@
     <string name="postURL">https://api.schoolpower.studio:8443/api/ps.php</string>
     <string name="updateURL">https://api.schoolpower.studio:8443/api/update.json</string>
     <string name="dataFileName">dataMap.json</string>
+    <string name="langFileName">lang.file</string>
     <string name="title_activity_settings">Settings</string>
 
     <string name="list_preference_dashboard_display">list_preference_dashboard_display</string>

@@ -8,13 +8,11 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
-import android.content.res.Resources
 import android.net.Uri
 import android.os.Handler
 import android.os.Message
 import android.support.design.widget.Snackbar
 import android.support.v4.content.ContextCompat
-import android.util.Base64
 import android.util.DisplayMetrics
 import android.view.View
 import com.carbonylgroup.schoolpower.R
@@ -29,12 +27,8 @@ import java.io.IOException
 import java.io.InputStreamReader
 import java.io.PrintWriter
 import java.net.URL
-import java.security.KeyFactory
-import java.security.PublicKey
-import java.security.spec.X509EncodedKeySpec
 import java.text.SimpleDateFormat
 import java.util.*
-import javax.crypto.Cipher
 
 
 class Utils(private val context: Context) {
@@ -42,7 +36,6 @@ class Utils(private val context: Context) {
     private val gradeColorIds = intArrayOf(R.color.A_score_green, R.color.B_score_green, R.color.Cp_score_yellow, R.color.C_score_orange, R.color.Cm_score_red, R.color.primary_dark, R.color.primary, R.color.primary)
     private val gradeColorIdsPlain = intArrayOf(R.color.A_score_green, R.color.B_score_green, R.color.Cp_score_yellow, R.color.C_score_orange, R.color.Cm_score_red, R.color.primary_dark, R.color.primary)
     private val gradeDarkColorIdsPlain = intArrayOf(R.color.A_score_green_dark, R.color.B_score_green_dark, R.color.Cp_score_yellow_dark, R.color.C_score_orange_dark, R.color.Cm_score_red_dark, R.color.primary_darker, R.color.primary_dark)
-    private val localeSet = arrayListOf(Resources.getSystem().configuration.locale, Locale.ENGLISH, Locale.TRADITIONAL_CHINESE, Locale.SIMPLIFIED_CHINESE)
     private fun indexOfString(searchString: String, domain: Array<String>): Int = domain.indices.firstOrNull { searchString == domain[it] } ?: -1
 
     /* Color Handler */
@@ -63,7 +56,7 @@ class Utils(private val context: Context) {
         val termsList: ArrayList<String> = ArrayList()
         termsList.add(context.getString(R.string.all_terms))
 
-        if (getSettingsPreference(context.getString(R.string.list_preference_dashboard_display)) == "1") forLatestSemester = true
+        if (getSettingsPreference(context.getString(R.string.list_preference_dashboard_display)) == 1) forLatestSemester = true
         periodGradeItemList.indices.forEach { termsList.add(periodGradeItemList[it].termIndicator) }
 
         if (forLatestSemester)
@@ -101,7 +94,7 @@ class Utils(private val context: Context) {
                 val termObj = jsonData.getJSONObject(i)
                 // Turns assignments into an ArrayList
                 val assignmentList = ArrayList<AssignmentItem>()
-                if(!termObj.has("assignments")) continue
+                if (!termObj.has("assignments")) continue
                 val asmArray = termObj.getJSONArray("assignments")
                 for (j in 0..asmArray.length() - 1) {
                     val asmObj = asmArray.getJSONObject(j)
@@ -151,9 +144,16 @@ class Utils(private val context: Context) {
     }
 
     /* IO */
-    fun getSettingsPreference(key: String) = context.getSharedPreferences(context.getString(R.string.settings), Activity.MODE_PRIVATE).getString(key, "0")!!
+    fun getSettingsPreference(key: String) = context.getSharedPreferences(context.getString(R.string.settings), Activity.MODE_PRIVATE).getInt(key, 0)
 
-    fun readFileFromString(fileName : String) : String?{
+    fun setSettingsPreferenceInt(key: String, value: Int) {
+
+        val spEditor = context.getSharedPreferences(context.getString(R.string.settings), Activity.MODE_PRIVATE).edit()
+        spEditor.putInt(key, value)
+        spEditor.apply()
+    }
+
+    fun readStringFromFile(fileName: String): String? {
         try {
             val data = StringBuilder("")
             val inputStream = context.openFileInput(fileName)
@@ -169,17 +169,15 @@ class Utils(private val context: Context) {
             isr.close()
             inputStream.close()
             return data.toString()
-        }catch(e: Exception){
+        } catch(e: Exception) {
             e.printStackTrace()
             return null
         }
 
     }
 
-    fun getLocaleWithIndex(index: Int): Locale = localeSet[index]
-
     @Throws(IOException::class)
-    fun saveStringToFile(fileName:String, data: String) {
+    fun saveStringToFile(fileName: String, data: String) {
         val outputStream = context.openFileOutput(fileName, Context.MODE_PRIVATE)
         outputStream.write(data.toByteArray())
         outputStream.close()
@@ -187,28 +185,32 @@ class Utils(private val context: Context) {
 
     @Throws(IOException::class)
     fun readDataArrayList(): ArrayList<Subject>?
-            = parseJsonResult(readFileFromString(context.getString(R.string.dataFileName))!!)
+            = parseJsonResult(readStringFromFile(context.getString(R.string.dataFileName))!!)
 
     @Throws(IOException::class)
-    fun saveDataJson(jsonStr: String)
-            = saveStringToFile(context.getString(R.string.dataFileName),jsonStr)
+    fun saveDataJson(jsonStr: String) = saveStringToFile(context.getString(R.string.dataFileName), jsonStr)
+
+    @Throws(IOException::class)
+    fun saveLangPref(langStr: String) = saveStringToFile(context.getString(R.string.langFileName), langStr)
+
+    fun readLangPref() = readStringFromFile(context.getString(R.string.langFileName))?.toInt()
 
     // 1. read data into brief info
     // 2. calculate gpa
     // 3. read history grade from file
     // 4. update history grade
     // 5. save history grade
-    fun saveHistoryGrade(data: ArrayList<Subject>){
+    fun saveHistoryGrade(data: ArrayList<Subject>) {
         // 1. read data into brief info
         var pointSum = 0
         var count = 0
         val gradeInfo = JSONArray() // [{"name":"...","grade":80.0}, ...]
-        for(subject in data){
+        for (subject in data) {
             val subInfo = JSONObject()
             val leastPeriod = getLatestItem(subject) ?: continue
             subInfo.put("name", subject.subjectTitle)
             subInfo.put("grade", leastPeriod.termPercentageGrade.toDouble())
-            if(!subject.subjectTitle.contains("Homeroom")) {
+            if (!subject.subjectTitle.contains("Homeroom")) {
                 pointSum += leastPeriod.termPercentageGrade.toInt()
                 count += 1
             }
@@ -218,11 +220,11 @@ class Utils(private val context: Context) {
         // 2. calculate gpa
         val gpaInfo = JSONObject()
         gpaInfo.put("name", "GPA")
-        gpaInfo.put("grade", pointSum/count.toDouble())
+        gpaInfo.put("grade", pointSum / count.toDouble())
         gradeInfo.put(gpaInfo)
 
         // 3. read history grade from file
-        val historyData = JSONObject(readFileFromString("history.json")?:"{}")
+        val historyData = JSONObject(readStringFromFile("history.json") ?: "{}")
         // {"2017-06-20": [{"name":"...","grade":"80"}, ...], ...}
 
         // 4. update history grade
@@ -233,7 +235,7 @@ class Utils(private val context: Context) {
         saveStringToFile("history.json", historyData.toString())
     }
 
-    fun readHistoryGrade() = JSONObject(readFileFromString("history.json")?:"{}")
+    fun readHistoryGrade() = JSONObject(readStringFromFile("history.json") ?: "{}")
 
     fun checkUpdate() {
         Thread(postData(context.getString(R.string.updateURL), "", object : Handler() {
@@ -262,16 +264,16 @@ class Utils(private val context: Context) {
 
     companion object {
 
-        fun getShortName(subjectTitle:String) : String{
-            val shorts= mapOf("Homeroom" to "HR", "Planning" to "PL", "Mandarin" to "CN",
+        fun getShortName(subjectTitle: String): String {
+            val shorts = mapOf("Homeroom" to "HR", "Planning" to "PL", "Mandarin" to "CN",
                     "Chinese" to "CSS", "Foundations" to "Maths", "Physical" to "PE",
                     "English" to "EN", "Moral" to "ME")
-            val short=shorts[subjectTitle.split(" ")[0]]
-            if(short!=null) return short
+            val short = shorts[subjectTitle.split(" ")[0]]
+            if (short != null) return short
 
-            var ret=""
-            for(c in subjectTitle){
-                if(c.isUpperCase()||c.isDigit()) ret+=c
+            var ret = ""
+            for (c in subjectTitle) {
+                if (c.isUpperCase() || c.isDigit()) ret += c
             }
             return ret
         }

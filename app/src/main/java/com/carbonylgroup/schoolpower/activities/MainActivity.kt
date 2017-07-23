@@ -7,7 +7,9 @@ package com.carbonylgroup.schoolpower.activities
 import android.animation.ValueAnimator
 import android.app.Activity
 import android.app.AlertDialog
+import android.content.Context
 import android.content.Intent
+import android.content.res.Resources
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.os.Handler
@@ -20,6 +22,7 @@ import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.graphics.drawable.DrawerArrowDrawable
 import android.support.v7.widget.Toolbar
+import android.util.Log
 import android.view.*
 import android.view.animation.DecelerateInterpolator
 import android.widget.TextView
@@ -27,6 +30,7 @@ import com.carbonylgroup.schoolpower.R
 import com.carbonylgroup.schoolpower.classes.ListItems.Subject
 import com.carbonylgroup.schoolpower.classes.Transition.DetailsTransition
 import com.carbonylgroup.schoolpower.classes.Transition.TransitionHelper
+import com.carbonylgroup.schoolpower.classes.Utils.ContextWrapper
 import com.carbonylgroup.schoolpower.classes.Utils.Utils
 import com.carbonylgroup.schoolpower.classes.Utils.postData
 import com.carbonylgroup.schoolpower.fragments.ChartFragment
@@ -56,11 +60,22 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
     private lateinit var navigationView: NavigationView
     private lateinit var toggle: ActionBarDrawerToggle
     private lateinit var toggleIcon: DrawerArrowDrawable
+    private val localeSet = arrayListOf(Resources.getSystem().configuration.locale, Locale.ENGLISH, Locale.TRADITIONAL_CHINESE, Locale.SIMPLIFIED_CHINESE)
+
 
     /* Fragments */
     private var homeFragment: HomeFragment? = null
     private var chartFragment: ChartFragment? = null
     private var settingsFragment: SettingsFragment? = null
+
+    override fun attachBaseContext(newBase: Context) {
+
+        utils = Utils(newBase)
+        var newLocale = utils.readLangPref()
+        if (newLocale == null) newLocale = 0
+        val context = ContextWrapper.wrap(newBase, localeSet[newLocale])
+        super.attachBaseContext(context)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -107,8 +122,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                 val builder = AlertDialog.Builder(this)
                 builder.setMessage(String.format(getString(R.string.your_gpa), utils.getLatestItem(dataList!![0])!!.termIndicator, sum_gpa / num, gpa_except_hr / (num - 1), gpa_except_hr_me / (num - 2)))
                 builder.setTitle("GPA")
-                builder.setPositiveButton("OK", null)
-                builder.setNegativeButton("Cancel", null)
+                builder.setPositiveButton("SWEET", null)
                 builder.create().show()
             }
         }
@@ -145,7 +159,6 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
     private fun initBase() {
 
         setTheme(R.style.Design)
-        setLanguage(utils.getLocaleWithIndex(utils.getSettingsPreference(getString(R.string.list_preference_language)).toInt()))
     }
 
     private fun initValue() {
@@ -335,14 +348,6 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
     }
 
     /* Other Method */
-    private fun setLanguage(language: Locale) {
-
-        val displayMetrics = resources.displayMetrics
-        val configuration = resources.configuration
-        configuration.locale = language
-        resources.updateConfiguration(configuration, displayMetrics)
-    }
-
     fun initDataJson() {
 
         val oldMainItemList = ArrayList<Subject>()

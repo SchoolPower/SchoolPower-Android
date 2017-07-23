@@ -4,7 +4,6 @@
 
 package com.carbonylgroup.schoolpower.fragments
 
-import android.app.Activity
 import android.content.SharedPreferences
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener
 import android.os.Bundle
@@ -13,8 +12,11 @@ import android.preference.PreferenceFragment
 import com.carbonylgroup.schoolpower.R
 import com.carbonylgroup.schoolpower.activities.MainActivity
 import android.content.Intent
+import com.carbonylgroup.schoolpower.classes.Utils.Utils
 
 class SettingsFragment : PreferenceFragment(), OnSharedPreferenceChangeListener {
+
+    private var utils: Utils? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -22,6 +24,7 @@ class SettingsFragment : PreferenceFragment(), OnSharedPreferenceChangeListener 
         MainActivity.of(activity).expandToolBar(true, true)
         addPreferencesFromResource(R.xml.preferences_content)
         preferenceManager.sharedPreferences.registerOnSharedPreferenceChangeListener(this)
+        utils = Utils(activity)
         initPreferences()
     }
 
@@ -41,17 +44,13 @@ class SettingsFragment : PreferenceFragment(), OnSharedPreferenceChangeListener 
 
             val dashboard_display = (findPreference(getString(R.string.list_preference_dashboard_display)) as ListPreference)
             dashboard_display.summary = getString(R.string.dashboard_display_preference_summary_prefix) + " " + dashboard_display.entry + activity.getString(R.string.dashboard_display_preference_summary_suffix)
-            val spEditor = activity.getSharedPreferences(getString(R.string.settings), Activity.MODE_PRIVATE).edit()
-            spEditor.putString(getString(R.string.list_preference_dashboard_display), sharedPreferences!!.getString(key, "0"))
-            spEditor.apply()
+            utils!!.setSettingsPreferenceInt(key!!, sharedPreferences!!.getString(key, "0").toInt())
+
         }
 
         if (key == getString(R.string.list_preference_language)) {
 
-            val selected = sharedPreferences!!.getString(key, "0").toInt()
-            val spEditor = activity.getSharedPreferences(getString(R.string.settings), Activity.MODE_PRIVATE).edit()
-            spEditor.putString(getString(R.string.list_preference_language), selected.toString())
-            spEditor.apply()
+            utils!!.saveLangPref(sharedPreferences!!.getString(key, "0"))
             restart()
         }
     }
