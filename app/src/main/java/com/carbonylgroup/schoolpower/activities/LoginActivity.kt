@@ -5,13 +5,12 @@
 package com.carbonylgroup.schoolpower.activities
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Message
-import android.support.design.widget.Snackbar
-import android.util.Log
 import android.widget.EditText
 
 import com.carbonylgroup.schoolpower.R
@@ -30,6 +29,7 @@ class LoginActivity : Activity() {
         checkIfLoggedIn()
         setContentView(R.layout.login_content)
 
+        initDialog()
         initValue()
     }
 
@@ -38,6 +38,15 @@ class LoginActivity : Activity() {
         val sharedPreferences = getSharedPreferences(getString(R.string.accountData), Activity.MODE_PRIVATE)
         if (sharedPreferences.getBoolean(getString(R.string.loggedIn), false))
             startMainActivity()
+    }
+
+    private fun initDialog() {
+        
+        val builder = AlertDialog.Builder(this)
+        builder.setMessage(getString(R.string.only_alert))
+        builder.setTitle(getString(R.string.notification))
+        builder.setPositiveButton(getString(R.string.i_understand), null)
+        builder.create().show()
     }
 
     private fun initValue() {
@@ -102,14 +111,5 @@ class LoginActivity : Activity() {
 
         startActivity(Intent(application, MainActivity::class.java))
         this@LoginActivity.finish()
-    }
-
-    companion object {
-
-        private val publicKeyString = "" +
-                "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDtILvI2l7yH/9yn/qKmpbqGqSi" +
-                "sawP42X1Js4zykHgGdqSyQ4PsKEbEEWh8KLOdaCeBkxMRzqhKS3WLI78oKijNgg7" +
-                "6z0/jHJoCrOEJmCeWA2ugcgUOrw5i2siFHo/ogHQhtCf0fa1a+6PUjwOvhhaU4yW" +
-                "EXfsfWVY0iJA4qO58wIDAQAB"
     }
 }

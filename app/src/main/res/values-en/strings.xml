@@ -52,6 +52,10 @@
     <string name="dashboard_display_preference_summary_prefix">The score of&#160;</string>
     <string name="dashboard_display_preference_summary_suffix"> </string>
 
+    <string name="notification">Notification</string>
+    <string name="only_alert">SchoolPower is currently ONLY available for the students in Maple Leaf Education System (MLES) in China.</string>
+    <string name="i_understand">I Understand</string>
+
     <string-array name="list_preference_display_types_entries">
         <item>This term</item>
         <item>This semester</item>

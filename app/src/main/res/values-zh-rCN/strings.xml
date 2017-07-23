@@ -52,6 +52,10 @@
     <string name="dashboard_display_preference_summary_prefix">\0</string> 
     <string name="dashboard_display_preference_summary_suffix">&#160;的分数</string>  
 
+    <string name="notification">提示</string>
+    <string name="only_alert">SchoolPower 目前只支持就读于中国枫叶教育集团枫叶国际学校的学生的使用。</string>
+    <string name="i_understand">I Understand</string>
+
     <string-array name="list_preference_display_types_entries"> 
         <item>这个 Term</item> 
         <item>这个 Semester</item> 

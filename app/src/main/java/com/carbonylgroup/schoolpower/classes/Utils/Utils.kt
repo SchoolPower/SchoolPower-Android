@@ -241,10 +241,10 @@ class Utils(private val context: Context) {
         Thread(postData(context.getString(R.string.updateURL), "", object : Handler() {
             override fun handleMessage(msg: Message) {
                 val message = msg.obj.toString()
-                if (!message.contains("{")) return;
+                if (!message.contains("{")) return
                 val updateJSON = JSONObject(message)
                 if (updateJSON.getString("version") != context.packageManager.getPackageInfo("com.carbonylgroup.schoolpower", 0).versionName) {
-                    val builder = AlertDialog.Builder(context);
+                    val builder = AlertDialog.Builder(context)
                     builder.setTitle(context.getString(R.string.upgrade_title))
                     builder.setMessage(updateJSON.getString("description"))
                     builder.setPositiveButton(context.getString(R.string.upgrade_pos)) {
