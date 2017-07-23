@@ -41,7 +41,7 @@ class LoginActivity : Activity() {
     }
 
     private fun initDialog() {
-        
+
         val builder = AlertDialog.Builder(this)
         builder.setMessage(getString(R.string.only_alert))
         builder.setTitle(getString(R.string.notification))
