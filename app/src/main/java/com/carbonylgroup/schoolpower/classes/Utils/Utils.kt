@@ -59,7 +59,7 @@ class Utils(private val context: Context) {
         val termsList: ArrayList<String> = ArrayList()
         termsList.add(context.getString(R.string.all_terms))
 
-        if (getSettingsPreference(context.getString(R.string.list_preference_dashboard_display)) == 1) forLatestSemester = true
+        if (getSettingsPreference(context.getString(R.string.list_preference_dashboard_display)) == "1") forLatestSemester = true
         periodGradeItemList.indices.forEach { termsList.add(periodGradeItemList[it].termIndicator) }
 
         if (forLatestSemester)
@@ -158,15 +158,17 @@ class Utils(private val context: Context) {
     }
 
     /* IO */
-    fun getSettingsPreference(key: String) = context.getSharedPreferences(context.getString(R.string.settings), Activity.MODE_PRIVATE).getInt(key, 0)
+    fun getSettingsPreference(key: String): String =
+            context.getSharedPreferences(context.getString(R.string.settings), Activity.MODE_PRIVATE).getString(key, "0")
 
-    fun setSettingsPreferenceInt(key: String, value: Int) {
+    fun setSettingsPreference(key: String, value: String) {
 
         val spEditor = context.getSharedPreferences(context.getString(R.string.settings), Activity.MODE_PRIVATE).edit()
-        spEditor.putInt(key, value)
+        spEditor.putString(key, value)
         spEditor.apply()
     }
 
+    @Throws(IOException::class)
     fun readStringFromFile(fileName: String): String? {
         try {
             val data = StringBuilder("")
