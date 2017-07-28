@@ -86,6 +86,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
+        utils = Utils(this)
         initBase()
         super.onCreate(savedInstanceState)
         setContentView(R.layout.nav_drawer)

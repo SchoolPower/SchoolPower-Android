@@ -15,6 +15,7 @@ import android.os.Message
 import android.support.design.widget.Snackbar
 import android.support.v4.content.ContextCompat
 import android.util.DisplayMetrics
+import android.util.Log
 import android.view.View
 import com.carbonylgroup.schoolpower.R
 import com.carbonylgroup.schoolpower.classes.ListItems.AssignmentItem
@@ -251,11 +252,16 @@ class Utils(private val context: Context) {
     fun readHistoryGrade() = JSONObject(readStringFromFile("history.json") ?: "{}")
 
     fun checkUpdate() {
+
         Thread(postData(context.getString(R.string.updateURL), "", object : Handler() {
             override fun handleMessage(msg: Message) {
                 val message = msg.obj.toString()
                 if (!message.contains("{")) return
                 val updateJSON = JSONObject(message)
+
+                Log.d("[][][", updateJSON.getString("version"))
+                Log.d("[][][", updateJSON.getString("description"))
+                Log.d("[][][", updateJSON.getString("url"))
                 if (updateJSON.getString("version") != context.packageManager.getPackageInfo("com.carbonylgroup.schoolpower", 0).versionName) {
                     val builder = AlertDialog.Builder(context)
                     builder.setTitle(context.getString(R.string.upgrade_title))
@@ -278,9 +284,14 @@ class Utils(private val context: Context) {
     companion object {
 
         fun getShortName(subjectTitle: String): String {
-            val shorts = mapOf("Homeroom" to "HR", "Planning" to "PL", "Mandarin" to "CN",
-                    "Chinese" to "CSS", "Foundations" to "Maths", "Physical" to "PE",
-                    "English" to "EN", "Moral" to "ME")
+            val shorts = mapOf("Homeroom" to "HR",
+                    "Planning" to "PL",
+                    "Mandarin" to "CN",
+                    "Chinese" to "CSS",
+                    "Foundations" to "Maths",
+                    "Physical" to "PE",
+                    "English" to "EN",
+                    "Moral" to "ME")
             val short = shorts[subjectTitle.split(" ")[0]]
             if (short != null) return short
 
