@@ -22,6 +22,7 @@ import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.graphics.drawable.DrawerArrowDrawable
 import android.support.v7.widget.Toolbar
+import android.util.Log
 import android.view.*
 import android.view.animation.DecelerateInterpolator
 import android.widget.TextView
@@ -498,13 +499,13 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
         val waveLightColor = utils.getColorByLetterGrade(this, utils.getLetterGradeByPercentageGrade(endValue))
         val waveDarkColor = utils.getDarkColorByPrimary(waveLightColor)
 
-        gpa_dialog_percentage_front.setStartValue(startValue)
+        gpa_dialog_percentage_front.setStartValue(startValue * 100)
         gpa_dialog_percentage_front.setEndValue(endValue)
-        gpa_dialog_percentage_front.setIncrement((endValue - startValue) / 25f) // the amount the number increments at each time interval
+        gpa_dialog_percentage_front.setIncrement((endValue - startValue * 100) / 25f) // the amount the number increments at each time interval
         gpa_dialog_percentage_front.setTimeInterval(2) // the time interval (ms) at which the text changes
-        gpa_dialog_percentage_back.setStartValue(startValue)
+        gpa_dialog_percentage_back.setStartValue(startValue * 100)
         gpa_dialog_percentage_back.setEndValue(endValue)
-        gpa_dialog_percentage_back.setIncrement((endValue - startValue) / 25f) // the amount the number increments at each time interval
+        gpa_dialog_percentage_back.setIncrement((endValue - startValue * 100) / 25f) // the amount the number increments at each time interval
         gpa_dialog_percentage_back.setTimeInterval(2) // the time interval (ms) at which the text changes
         gpa_dialog_percentage_front.start()
         gpa_dialog_percentage_back.start()
