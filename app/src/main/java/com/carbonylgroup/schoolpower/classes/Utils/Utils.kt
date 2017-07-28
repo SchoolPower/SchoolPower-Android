@@ -259,9 +259,6 @@ class Utils(private val context: Context) {
                 if (!message.contains("{")) return
                 val updateJSON = JSONObject(message)
 
-                Log.d("[][][", updateJSON.getString("version"))
-                Log.d("[][][", updateJSON.getString("description"))
-                Log.d("[][][", updateJSON.getString("url"))
                 if (updateJSON.getString("version") != context.packageManager.getPackageInfo("com.carbonylgroup.schoolpower", 0).versionName) {
                     val builder = AlertDialog.Builder(context)
                     builder.setTitle(context.getString(R.string.upgrade_title))
