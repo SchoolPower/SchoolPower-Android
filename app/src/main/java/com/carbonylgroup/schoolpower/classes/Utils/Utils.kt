@@ -4,6 +4,7 @@
 
 package com.carbonylgroup.schoolpower.classes.Utils
 
+import android.animation.AnimatorSet
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
@@ -19,6 +20,7 @@ import com.carbonylgroup.schoolpower.R
 import com.carbonylgroup.schoolpower.classes.ListItems.AssignmentItem
 import com.carbonylgroup.schoolpower.classes.ListItems.Subject
 import com.carbonylgroup.schoolpower.classes.ListItems.Period
+import com.gelitenight.waveview.library.WaveView
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
@@ -74,6 +76,17 @@ class Utils(private val context: Context) {
 
         periodGradeItemList.forEach { if (it.termIndicator == latestTerm) return it }
         return null
+    }
+
+    fun getLetterGradeByPercentageGrade(percentageGrade: Float): String {
+
+        val letterGrades = arrayOf("A", "B", "C+", "C", "C-", "F", "I", "--")
+        if (percentageGrade >= 86) return letterGrades[0]
+        else if (percentageGrade >= 73) return letterGrades[1]
+        else if (percentageGrade >= 67) return letterGrades[2]
+        else if (percentageGrade >= 60) return letterGrades[3]
+        else if (percentageGrade >= 50) return letterGrades[4]
+        else return letterGrades[5]
     }
 
     fun showSnackBar(context: Context, view: View, msg: String, colorRed: Boolean) {

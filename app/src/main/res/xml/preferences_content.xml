@@ -7,7 +7,6 @@
             android:defaultValue="0"
             android:entries="@array/list_preference_language_entries"
             android:entryValues="@array/list_preference_language_values"
-            android:icon="@drawable/ic_language_accent"
             android:key="list_preference_language"
             android:summary="%s"
             android:title="@string/language" />
@@ -16,7 +15,6 @@
             android:defaultValue="0"
             android:entries="@array/list_preference_display_types_entries"
             android:entryValues="@array/list_preference_display_types_values"
-            android:icon="@drawable/ic_dashboard_display"
             android:key="@string/list_preference_dashboard_display"
             android:summary="%s"
             android:title="@string/dashboard_displays" />

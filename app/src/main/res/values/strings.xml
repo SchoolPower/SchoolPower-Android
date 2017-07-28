@@ -32,8 +32,9 @@
     <string name="no_username">No Username</string>
     <string name="the_end">THIS IS THE END</string>
 
-    <string name="your_gpa" formatted="false">Your GPA for %s is %.3f\n%.3f (except HR)\n%.3f (except HR &amp; ME)</string>
-    <string name="ok">OK</string>
+    <string name="your_gpa" formatted="false">Your GPA for %s is</string>
+    <string name="gpa_segments_all">All</string>
+    <string name="sweet">SWEET</string>
 
     <string name="upgrade_title">New upgrade available!</string>
     <string name="upgrade_pos">UPGRADE</string>
@@ -103,6 +104,9 @@
 
     <string name="list_preference_dashboard_display">list_preference_dashboard_display</string>
     <string name="list_preference_language">list_preference_language</string>
+
+    <string name="gpa_segments_exhr">⊉ {HR}</string>
+    <string name="gpa_segments_exhrme">⊉ {HR, ME}</string>
 
     <string-array name="list_preference_display_types_values">
         <item>0</item>

@@ -8,9 +8,9 @@
         android:title="@string/action_refreshing"
         app:showAsAction="never" />
     <item
-        android:id="@+id/action_average"
+        android:id="@+id/action_gpa"
         android:orderInCategory="100"
-        android:icon="@drawable/ic_action_grade"
+        android:icon="@drawable/ic_grade_white_24dp"
         android:title="@string/action_gpa"
         app:showAsAction="ifRoom" />
 </menu>

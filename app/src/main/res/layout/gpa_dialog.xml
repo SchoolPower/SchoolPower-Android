@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/gpa_dialog_rootView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_alignParentStart="true"
+    android:layout_centerVertical="true"
+    android:paddingEnd="24dp"
+    android:paddingStart="24dp">
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="10dp">
+
+        <android.support.percent.PercentFrameLayout
+            android:id="@+id/gpa_dialog_frame"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginEnd="24dp"
+            android:layout_marginStart="24dp">
+
+            <com.github.premnirmal.textcounter.CounterView
+                android:id="@+id/gpa_dialog_percentage_back"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:textColor="@color/black"
+                android:textSize="30sp" />
+
+            <com.gelitenight.waveview.library.WaveView
+                android:id="@+id/gpa_Dialog_wave_view"
+                app:layout_aspectRatio="100%"
+                app:layout_widthPercent="100%" />
+
+            <com.github.premnirmal.textcounter.CounterView
+                android:id="@+id/gpa_dialog_percentage_front"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:textColor="@color/white_0_15"
+                android:textSize="30sp" />
+
+        </android.support.percent.PercentFrameLayout>
+
+        <co.ceryle.segmentedbutton.SegmentedButtonGroup
+            android:id="@+id/gpa_dialog_segmented"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@id/gpa_dialog_frame"
+            android:layout_alignStart="@id/gpa_dialog_frame"
+            android:layout_below="@id/gpa_dialog_frame"
+            android:layout_marginTop="24dp"
+            app:sbg_animateSelector="decelerate"
+            app:sbg_animateSelectorDuration="200"
+            app:sbg_backgroundColor="@color/white"
+            app:sbg_dividerSize="0dp"
+            app:sbg_position="1"
+            app:sbg_radius="2dp"
+            app:sbg_ripple="true"
+            app:sbg_rippleColor="@color/primary"
+            app:sbg_selectorColor="@color/primary"
+            app:sbg_selectorTextColor="@color/white"
+            app:sbg_shadow="true"
+            app:sbg_shadowElevation="1dp"
+            app:sbg_shadowMargin="1dp">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minHeight="10dp"
+                android:text="@string/gpa_segments_all"
+                android:textAllCaps="false" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minHeight="10dp"
+                android:text="@string/gpa_segments_exhr"
+                android:textAllCaps="false" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minHeight="10dp"
+                android:text="@string/gpa_segments_exhrme"
+                android:textAllCaps="false" />
+
+        </co.ceryle.segmentedbutton.SegmentedButtonGroup>
+
+    </RelativeLayout>
+
+</RelativeLayout>

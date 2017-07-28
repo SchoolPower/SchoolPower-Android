@@ -43,7 +43,7 @@ class SettingsFragment : PreferenceFragment(), OnSharedPreferenceChangeListener 
         if (key == getString(R.string.list_preference_dashboard_display)) {
 
             val dashboard_display = (findPreference(getString(R.string.list_preference_dashboard_display)) as ListPreference)
-            dashboard_display.summary = getString(R.string.dashboard_display_preference_summary_prefix) + " " + dashboard_display.entry + activity.getString(R.string.dashboard_display_preference_summary_suffix)
+            dashboard_display.summary = getString(R.string.dashboard_display_preference_summary_prefix) + dashboard_display.entry + activity.getString(R.string.dashboard_display_preference_summary_suffix)
             utils!!.setSettingsPreferenceInt(key!!, sharedPreferences!!.getString(key, "0").toInt())
 
         }
