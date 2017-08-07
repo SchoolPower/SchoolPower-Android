@@ -11,6 +11,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Message
+import android.util.Log
 import android.widget.EditText
 
 import com.carbonylgroup.schoolpower.R
@@ -31,6 +32,8 @@ class LoginActivity : Activity() {
 
         initDialog()
         initValue()
+
+        utils!!.checkUpdate()
     }
 
     private fun checkIfLoggedIn() {
@@ -85,9 +88,9 @@ class LoginActivity : Activity() {
                         progressDialog.dismiss()
                         val strMessage = msg.obj.toString()
                         val messages = strMessage.split("\n".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
-
                         if (strMessage.contains(getString(R.string.error_wrong_password)))
                             utils!!.showSnackBar(this@LoginActivity, findViewById(R.id.login_coordinate_layout), getString(R.string.wrong_password), true)
+
                         else if (strMessage.contains(getString(R.string.json_begin))) {
 
                             val spEditor = getSharedPreferences(getString(R.string.accountData), Activity.MODE_PRIVATE).edit()
@@ -98,6 +101,19 @@ class LoginActivity : Activity() {
                             spEditor.apply()
 
                             utils!!.saveDataJson(messages[2])
+
+                            startMainActivity()
+
+                        } else if (messages[2] == "[]") {
+
+                            val spEditor = getSharedPreferences(getString(R.string.accountData), Activity.MODE_PRIVATE).edit()
+                            spEditor.putString(getString(R.string.usernameKEY), username)
+                            spEditor.putString(getString(R.string.passwordKEY), password)
+                            spEditor.putBoolean(getString(R.string.loggedIn), true)
+                            spEditor.putString(getString(R.string.student_name), messages[1])
+                            spEditor.apply()
+
+                            utils!!.saveDataJson(null)
 
                             startMainActivity()
 

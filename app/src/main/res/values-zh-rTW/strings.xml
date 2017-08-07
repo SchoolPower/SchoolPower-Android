@@ -31,10 +31,14 @@
     <string name="user_id_indicator">用戶 ID:</string> 
     <string name="no_username">用戶名不可用</string>
     <string name="the_end">下面沒了</string>
+    <string name="nothing_here">沒東西。</string>
 
     <string name="your_gpa" formatted="false">你 %s 的 GPA 是</string>
     <string name="gpa_segments_all">所有</string>
     <string name="sweet">不錯</string>
+    <string name="gpa_not_available">GPA 不可用</string>
+    <string name="gpa_not_available_because">並沒有數據，所以你的 GPA 目前不可用。</string>
+    <string name="alright">吼啊</string>
 
     <string name="upgrade_title">有新版本啦！</string>
     <string name="upgrade_pos">更新</string>

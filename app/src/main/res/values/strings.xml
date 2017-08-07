@@ -28,13 +28,18 @@
     <string name="authenticating">Authenticating&#8230;</string>
     <string name="wrong_password">Invalid Username or Password</string>
     <string name="no_connection">Cannot connect to server</string>
+    <string name="no_data_to_present">No data to present.</string>
     <string name="user_id_indicator">User ID:</string>
     <string name="no_username">No Username</string>
     <string name="the_end">THIS IS THE END</string>
+    <string name="nothing_here">Nothing Here.</string>
 
     <string name="your_gpa" formatted="false">Your GPA for %s is</string>
     <string name="gpa_segments_all">All</string>
     <string name="sweet">SWEET</string>
+    <string name="gpa_not_available">GPA not available</string>
+    <string name="gpa_not_available_because">Your GPA is currently not available because there is no data.</string>
+    <string name="alright">Alright</string>
 
     <string name="upgrade_title">New upgrade available!</string>
     <string name="upgrade_pos">UPGRADE</string>

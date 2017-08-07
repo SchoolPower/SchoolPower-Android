@@ -113,65 +113,76 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
             }
             R.id.action_gpa -> {
 
-                var sum_gpa = 0.0
-                var gpa_except_hr = 0.0
-                var gpa_except_hr_me = 0.0
-                var num = 0
-                for (i in dataList!!.indices) {
+                if (dataList == null){
 
-                    val periods = dataList!![i]
-                    val grade = utils.getLatestItem(periods)!!.termPercentageGrade.toDouble()
-                    sum_gpa += grade
-                    num += 1
-                    if (periods.subjectTitle.contains("Homeroom")) continue
-                    gpa_except_hr += grade
-                    if (periods.subjectTitle.contains("Moral Education")) continue
-                    gpa_except_hr_me += grade
-                }
+                    val builder = AlertDialog.Builder(this)
+                    builder.setMessage(getString(R.string.gpa_not_available_because))
+                    builder.setTitle(getString(R.string.gpa_not_available))
+                    builder.setPositiveButton(getString(R.string.alright), null)
+                    builder.create().show()
 
-                val gpaDialog = layoutInflater.inflate(R.layout.gpa_dialog, null)
-                val gpaDialogView = gpaDialog.findViewById(R.id.gpa_dialog_rootView)
-                val gpaDialogBuilder = AlertDialog.Builder(this)
-                val gpa_dialog_segmented = gpaDialogView.findViewById(R.id.gpa_dialog_segmented) as SegmentedButtonGroup
-                val percentage_all = (sum_gpa / num).toFloat()
-                val percentage_exhr = (gpa_except_hr / (num - 1)).toFloat()
-                val percentage_exhrme = (gpa_except_hr_me / (num - 2)).toFloat()
-                val waveLightColor = utils.getColorByLetterGrade(this, utils.getLetterGradeByPercentageGrade(percentage_all))
-                val waveDarkColor = utils.getDarkColorByPrimary(waveLightColor)
+                } else {
 
-                gpa_dialog_percentage_front = gpaDialogView.findViewById(R.id.gpa_dialog_percentage_front) as CounterView
-                gpa_dialog_percentage_back = gpaDialogView.findViewById(R.id.gpa_dialog_percentage_back) as CounterView
-                gpa_dialog_percentage_front.setFormatter({ prefix, suffix, value -> String.format("%.3f", value) + suffix })
-                gpa_dialog_percentage_back.setFormatter({ prefix, suffix, value -> String.format("%.3f", value) + suffix })
-                gpa_dialog_percentage_front.setAutoStart(false)
-                gpa_dialog_percentage_front.setPrefix("")
-                gpa_dialog_percentage_front.setSuffix("%")
-                gpa_dialog_percentage_back.setAutoStart(false)
-                gpa_dialog_percentage_back.setPrefix("")
-                gpa_dialog_percentage_back.setSuffix("%")
-                waveView = gpaDialogView.findViewById(R.id.gpa_Dialog_wave_view) as WaveView
-                waveView.setShapeType(WaveView.ShapeType.CIRCLE)
+                    var sum_gpa = 0.0
+                    var gpa_except_hr = 0.0
+                    var gpa_except_hr_me = 0.0
+                    var num = 0
+                    for (i in dataList!!.indices) {
 
-                gpa_dialog_segmented.rippleColor = waveDarkColor
-                gpa_dialog_segmented.selectorColor = waveDarkColor
-                gpa_dialog_segmented.setPosition(0, 0)
-                gpa_dialog_segmented.setOnClickedButtonPosition({
-                    position: Int ->
-                    when (position) {
-                        0 -> animateWaveAndText(waveView.waterLevelRatio, percentage_all)
-                        1 -> animateWaveAndText(waveView.waterLevelRatio, percentage_exhr)
-                        2 -> animateWaveAndText(waveView.waterLevelRatio, percentage_exhrme)
+                        val periods = dataList!![i]
+                        val grade = utils.getLatestItem(periods)!!.termPercentageGrade.toDouble()
+                        sum_gpa += grade
+                        num += 1
+                        if (periods.subjectTitle.contains("Homeroom")) continue
+                        gpa_except_hr += grade
+                        if (periods.subjectTitle.contains("Moral Education")) continue
+                        gpa_except_hr_me += grade
                     }
-                })
 
-                gpaDialogBuilder.setView(gpaDialogView)
-                gpaDialogBuilder.setTitle("GPA")
-                gpaDialogBuilder.setMessage(String.format(getString(R.string.your_gpa), utils.getLatestItem(dataList!![0])!!.termIndicator))
-                gpaDialogBuilder.setPositiveButton(getString(R.string.sweet), null)
-                gpaDialogBuilder.create().setCanceledOnTouchOutside(true)
-                gpaDialogBuilder.create().show()
+                    val gpaDialog = layoutInflater.inflate(R.layout.gpa_dialog, null)
+                    val gpaDialogView = gpaDialog.findViewById(R.id.gpa_dialog_rootView)
+                    val gpaDialogBuilder = AlertDialog.Builder(this)
+                    val gpa_dialog_segmented = gpaDialogView.findViewById(R.id.gpa_dialog_segmented) as SegmentedButtonGroup
+                    val percentage_all = (sum_gpa / num).toFloat()
+                    val percentage_exhr = (gpa_except_hr / (num - 1)).toFloat()
+                    val percentage_exhrme = (gpa_except_hr_me / (num - 2)).toFloat()
+                    val waveLightColor = utils.getColorByLetterGrade(this, utils.getLetterGradeByPercentageGrade(percentage_all))
+                    val waveDarkColor = utils.getDarkColorByPrimary(waveLightColor)
 
-                animateWaveAndText(0f, percentage_all)
+                    gpa_dialog_percentage_front = gpaDialogView.findViewById(R.id.gpa_dialog_percentage_front) as CounterView
+                    gpa_dialog_percentage_back = gpaDialogView.findViewById(R.id.gpa_dialog_percentage_back) as CounterView
+                    gpa_dialog_percentage_front.setFormatter({ prefix, suffix, value -> String.format("%.3f", value) + suffix })
+                    gpa_dialog_percentage_back.setFormatter({ prefix, suffix, value -> String.format("%.3f", value) + suffix })
+                    gpa_dialog_percentage_front.setAutoStart(false)
+                    gpa_dialog_percentage_front.setPrefix("")
+                    gpa_dialog_percentage_front.setSuffix("%")
+                    gpa_dialog_percentage_back.setAutoStart(false)
+                    gpa_dialog_percentage_back.setPrefix("")
+                    gpa_dialog_percentage_back.setSuffix("%")
+                    waveView = gpaDialogView.findViewById(R.id.gpa_Dialog_wave_view) as WaveView
+                    waveView.setShapeType(WaveView.ShapeType.CIRCLE)
+
+                    gpa_dialog_segmented.rippleColor = waveDarkColor
+                    gpa_dialog_segmented.selectorColor = waveDarkColor
+                    gpa_dialog_segmented.setPosition(0, 0)
+                    gpa_dialog_segmented.setOnClickedButtonPosition({
+                        position: Int ->
+                        when (position) {
+                            0 -> animateWaveAndText(waveView.waterLevelRatio, percentage_all)
+                            1 -> animateWaveAndText(waveView.waterLevelRatio, percentage_exhr)
+                            2 -> animateWaveAndText(waveView.waterLevelRatio, percentage_exhrme)
+                        }
+                    })
+
+                    gpaDialogBuilder.setView(gpaDialogView)
+                    gpaDialogBuilder.setTitle("GPA")
+                    gpaDialogBuilder.setMessage(String.format(getString(R.string.your_gpa), utils.getLatestItem(dataList!![0])!!.termIndicator))
+                    gpaDialogBuilder.setPositiveButton(getString(R.string.sweet), null)
+                    gpaDialogBuilder.create().setCanceledOnTouchOutside(true)
+                    gpaDialogBuilder.create().show()
+
+                    animateWaveAndText(0f, percentage_all)
+                }
             }
         }
         return super.onOptionsItemSelected(item)
@@ -213,7 +224,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
         MobileAds.initialize(this, getString(R.string.adMob_app_id))
         mAdView = findViewById(R.id.adView) as AdView
         val adRequest = AdRequest.Builder().build()
-        mAdView?.loadAd(adRequest)
+        mAdView.loadAd(adRequest)
 
         setSupportActionBar(mainToolBar)
         toggleIcon = DrawerArrowDrawable(this)
@@ -362,7 +373,11 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
 
         animateDrawerToggle(false)
         hideToolBarItems(false)
-        homeFragment!!.notifyAdapter()
+        if (dataList != null) homeFragment!!.notifyAdapter()
+
+        //TODO Bugs might occur when adding new menu items QAQ
+        navigationView.menu.getItem(1).isChecked = false
+        navigationView.menu.getItem(0).isChecked = true
     }
 
     /**
@@ -381,7 +396,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                 .commit()
 
         hideToolBarItems(false)
-        homeFragment!!.notifyAdapter()
+        if (dataList != null) homeFragment!!.notifyAdapter()
         navigationView.menu.getItem(index).isChecked = false
         navigationView.menu.getItem(0).isChecked = true
     }
@@ -410,8 +425,10 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                         val messages = msg.obj.toString().split("\n".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
 
                         if (msg.obj.toString().contains(getString(R.string.error_wrong_password))) {
+
                             utils.showSnackBar(this@MainActivity, findViewById(R.id.main_coordinate_layout), getString(R.string.wrong_password), true)
                             signOut()
+
                         } else if (msg.obj.toString().contains(getString(R.string.json_begin))) {
 
                             val spEditor = getSharedPreferences(getString(R.string.accountData), Activity.MODE_PRIVATE).edit()
@@ -444,7 +461,16 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                                 homeFragment!!.refreshAdapter(dataList!!)
                                 utils.showSnackBar(this@MainActivity, findViewById(R.id.main_coordinate_layout), getString(R.string.data_updated), false)
                             }
+
+                        } else if (messages.size == 3 && messages[2] == "[]") {
+
+                            utils.saveDataJson(null)
+                            dataList = null
+                            homeFragment!!.refreshAdapterToEmpty()
+                            utils.showSnackBar(this@MainActivity, findViewById(R.id.main_coordinate_layout), getString(R.string.data_updated), false)
+
                         } else {
+
                             utils.showSnackBar(this@MainActivity, findViewById(R.id.main_coordinate_layout), getString(R.string.no_connection), true)
                             homeFragment!!.setRefreshing(false)
                             noConnection = true

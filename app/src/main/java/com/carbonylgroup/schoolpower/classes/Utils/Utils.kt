@@ -54,7 +54,7 @@ class Utils(private val context: Context) {
     fun getLatestItem(item: Subject): Period? {
 
         var forLatestSemester = false
-        val latestTerm: String
+        var latestTerm: String = ""
         val periodGradeItemList = item.periodArrayList
         val termsList: ArrayList<String> = ArrayList()
         termsList.add(context.getString(R.string.all_terms))
@@ -68,14 +68,17 @@ class Utils(private val context: Context) {
             else if (termsList.contains("T4")) latestTerm = "T4"
             else if (termsList.contains("T3")) latestTerm = "T3"
             else if (termsList.contains("T2")) latestTerm = "T2"
-            else latestTerm = "T1"
-        else
-            if (termsList.contains("T4")) latestTerm = "T4"
+            else if (termsList.contains("T1")) latestTerm = "T1"
+            else if (termsList.contains("T4")) latestTerm = "T4"
             else if (termsList.contains("T3")) latestTerm = "T3"
             else if (termsList.contains("T2")) latestTerm = "T2"
-            else latestTerm = "T1"
+            else if (termsList.contains("T1")) latestTerm = "T1"
 
-        periodGradeItemList.forEach { if (it.termIndicator == latestTerm) return it }
+        try {
+            if (latestTerm == "") return periodGradeItemList[0]
+            else periodGradeItemList.forEach { if (it.termIndicator == latestTerm) return it }
+        } catch (e: Exception) {
+        }
         return null
     }
 
@@ -100,55 +103,59 @@ class Utils(private val context: Context) {
 
     fun parseJsonResult(jsonStr: String): ArrayList<Subject>? {
         try {
-            val jsonData = JSONArray(jsonStr)
-            val dataMap = HashMap<String, Subject>()
 
-            for (i in 0..jsonData.length() - 1) {
+            if (jsonStr == "null") return null
+            else {
+                val jsonData = JSONArray(jsonStr)
+                val dataMap = HashMap<String, Subject>()
 
-                val termObj = jsonData.getJSONObject(i)
-                // Turns assignments into an ArrayList
-                val assignmentList = ArrayList<AssignmentItem>()
-                if (!termObj.has("assignments")) continue
-                val asmArray = termObj.getJSONArray("assignments")
-                for (j in 0..asmArray.length() - 1) {
-                    val asmObj = asmArray.getJSONObject(j)
-                    val dates = asmObj.getString("date").split("/")
-                    val score = asmObj.getString("score")
-                    val grade = asmObj.getString("grade")
-                    val date = dates[2] + "/" + dates[0] + "/" + dates[1]
-                    assignmentList.add(AssignmentItem(asmObj.getString("assignment"),
-                            date, if (grade == "") "--" else asmObj.getString("percent"), if (score.endsWith("d")) context.getString(R.string.unpublished) else score,
-                            if (grade == "") "--" else grade, asmObj.getString("category"), termObj.getString("term")))
+                for (i in 0..jsonData.length() - 1) {
+
+                    val termObj = jsonData.getJSONObject(i)
+                    // Turns assignments into an ArrayList
+                    val assignmentList = ArrayList<AssignmentItem>()
+                    if (!termObj.has("assignments")) continue
+                    val asmArray = termObj.getJSONArray("assignments")
+                    for (j in 0..asmArray.length() - 1) {
+                        val asmObj = asmArray.getJSONObject(j)
+                        val dates = asmObj.getString("date").split("/")
+                        val score = asmObj.getString("score")
+                        val grade = asmObj.getString("grade")
+                        val date = dates[2] + "/" + dates[0] + "/" + dates[1]
+                        assignmentList.add(AssignmentItem(asmObj.getString("assignment"),
+                                date, if (grade == "") "--" else asmObj.getString("percent"), if (score.endsWith("d")) context.getString(R.string.unpublished) else score,
+                                if (grade == "") "--" else grade, asmObj.getString("category"), termObj.getString("term")))
+                    }
+
+                    val periodGradeItem = Period(termObj.getString("term"),
+                            if (termObj.getString("grade") == "") "--" else termObj.getString("grade"), termObj.getString("mark"), assignmentList)
+
+                    // Put the term data into the course data, either already exists or be going to be created.
+                    val mainListItem = dataMap[termObj.getString("name")]
+                    if (mainListItem == null) { // The course data does not exist yet.
+
+                        val periodGradeList = ArrayList<Period>()
+                        periodGradeList.add(periodGradeItem)
+
+                        dataMap.put(termObj.getString("name"),
+                                Subject(termObj.getString("name"), termObj.getString("teacher"),
+                                        termObj.getString("block"), termObj.getString("room"), periodGradeList))
+
+                    } else { // Already exist. Just insert into it.
+                        mainListItem.addPeriodGradeItem(periodGradeItem)
+                    }
                 }
 
-                val periodGradeItem = Period(termObj.getString("term"),
-                        if (termObj.getString("grade") == "") "--" else termObj.getString("grade"), termObj.getString("mark"), assignmentList)
-
-                // Put the term data into the course data, either already exists or be going to be created.
-                val mainListItem = dataMap[termObj.getString("name")]
-                if (mainListItem == null) { // The course data does not exist yet.
-
-                    val periodGradeList = ArrayList<Period>()
-                    periodGradeList.add(periodGradeItem)
-
-                    dataMap.put(termObj.getString("name"),
-                            Subject(termObj.getString("name"), termObj.getString("teacher"),
-                                    termObj.getString("block"), termObj.getString("room"), periodGradeList))
-
-                } else { // Already exist. Just insert into it.
-                    mainListItem.addPeriodGradeItem(periodGradeItem)
-                }
+                // Convert from HashMap to ArrayList
+                val dataList = ArrayList<Subject>()
+                dataList.addAll(dataMap.values)
+                Collections.sort(dataList, Comparator<Subject> { o1, o2 ->
+                    if (o1.blockLetter == "HR(1)") return@Comparator -1
+                    if (o2.blockLetter == "HR(1)") return@Comparator 1
+                    o1.blockLetter.compareTo(o2.blockLetter)
+                })
+                return dataList
             }
-
-            // Convert from HashMap to ArrayList
-            val dataList = ArrayList<Subject>()
-            dataList.addAll(dataMap.values)
-            Collections.sort(dataList, Comparator<Subject> { o1, o2 ->
-                if (o1.blockLetter == "HR(1)") return@Comparator -1
-                if (o2.blockLetter == "HR(1)") return@Comparator 1
-                o1.blockLetter.compareTo(o2.blockLetter)
-            })
-            return dataList
 
         } catch (e: JSONException) {
             e.printStackTrace()
@@ -184,7 +191,9 @@ class Utils(private val context: Context) {
 
             isr.close()
             inputStream.close()
+
             return data.toString()
+
         } catch(e: Exception) {
             e.printStackTrace()
             return null
@@ -193,9 +202,14 @@ class Utils(private val context: Context) {
     }
 
     @Throws(IOException::class)
-    fun saveStringToFile(fileName: String, data: String) {
+    fun saveStringToFile(fileName: String, data: String?) {
+
         val outputStream = context.openFileOutput(fileName, Context.MODE_PRIVATE)
-        outputStream.write(data.toByteArray())
+        if (data == null) {
+            outputStream.write("null".toByteArray())
+        } else {
+            outputStream.write(data.toByteArray())
+        }
         outputStream.close()
     }
 
@@ -204,7 +218,7 @@ class Utils(private val context: Context) {
             = parseJsonResult(readStringFromFile(context.getString(R.string.dataFileName))!!)
 
     @Throws(IOException::class)
-    fun saveDataJson(jsonStr: String) = saveStringToFile(context.getString(R.string.dataFileName), jsonStr)
+    fun saveDataJson(jsonStr: String?) = saveStringToFile(context.getString(R.string.dataFileName), jsonStr)
 
     @Throws(IOException::class)
     fun saveLangPref(langStr: String) = saveStringToFile(context.getString(R.string.langFileName), langStr)

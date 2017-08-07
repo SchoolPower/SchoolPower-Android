@@ -4,8 +4,12 @@
 
 package com.carbonylgroup.schoolpower.fragments
 
+import android.graphics.Color
+import android.opengl.Visibility
 import android.os.Bundle
+import android.support.v4.content.ContextCompat
 import android.support.v4.widget.SwipeRefreshLayout
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -32,11 +36,12 @@ class HomeFragment : TransitionHelper.BaseFragment() {
     private var view_private: View? = null
     private var fab_in: ScaleAnimation? = null
     private var fab_out: ScaleAnimation? = null
+    private var dataList: ArrayList<Subject>? = null
     private var unfoldedIndexesBackUp = HashSet<Int>()
     private var adapter: FoldingCellListAdapter? = null
-    private var dataList: ArrayList<Subject>? = null
     private var courseDetailFragment: CourseDetailFragment? = null
     private var home_swipe_refresh_layout: SwipeRefreshLayout? = null
+    private lateinit var theListView: ListView
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
@@ -74,16 +79,18 @@ class HomeFragment : TransitionHelper.BaseFragment() {
         MainActivity.of(activity).presentFragment = 0
         MainActivity.of(activity).setToolBarElevation(utils!!.dpToPx(10))
         MainActivity.of(activity).setToolBarTitle(getString(R.string.dashboard))
+        theListView = view_private!!.findViewById(R.id.mainListView) as ListView
         home_swipe_refresh_layout = view_private!!.findViewById(R.id.home_swipe_refresh_layout) as SwipeRefreshLayout
         home_swipe_refresh_layout!!.setColorSchemeResources(R.color.accent, R.color.A_score_green, R.color.B_score_green,
                 R.color.Cp_score_yellow, R.color.C_score_orange, R.color.Cm_score_red, R.color.primary)
         home_swipe_refresh_layout!!.setOnRefreshListener { MainActivity.of(activity).initDataJson() }
         if (dataList != null) initAdapter()
+        else refreshAdapterToEmpty()
     }
 
     private fun initAdapter() {
 
-        val theListView = view_private!!.findViewById(R.id.mainListView) as ListView
+        if (dataList != null) theListView.visibility = View.VISIBLE
         adapter = FoldingCellListAdapter(activity, dataList, unfoldedIndexesBackUp, transformedPosition)
         adapter!!.setDefaultRequestBtnClickListener(View.OnClickListener { v ->
             MainActivity.of(activity).subjectTransporter = dataList!![theListView.getPositionForView(v)]
@@ -107,8 +114,20 @@ class HomeFragment : TransitionHelper.BaseFragment() {
         theListView.adapter = adapter
     }
 
+    fun invisiblizeListView() {
+
+        theListView.visibility = View.GONE
+    }
+
     fun setRefreshing(isRefreshing: Boolean) {
         home_swipe_refresh_layout!!.isRefreshing = isRefreshing
+    }
+
+    fun refreshAdapterToEmpty() {
+
+        dataList = null
+        setRefreshing(false)
+        invisiblizeListView()
     }
 
     fun refreshAdapter(newDataList: ArrayList<Subject>) {
@@ -159,7 +178,7 @@ class HomeFragment : TransitionHelper.BaseFragment() {
 
     private fun preRenderUnfoldCells() {
 
-        for (i in 0..9) (getItemViewByPosition(transformedPosition, (view_private!!.findViewById(R.id.mainListView) as ListView)) as FoldingCell).toggle(false)
+        for (i in 0..9) (getItemViewByPosition(transformedPosition, theListView) as FoldingCell).toggle(false)
     }
 
     override fun onAfterEnter() {
