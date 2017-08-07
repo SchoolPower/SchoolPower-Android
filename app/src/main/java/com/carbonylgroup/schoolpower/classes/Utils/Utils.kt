@@ -69,10 +69,13 @@ class Utils(private val context: Context) {
             else if (termsList.contains("T3")) latestTerm = "T3"
             else if (termsList.contains("T2")) latestTerm = "T2"
             else if (termsList.contains("T1")) latestTerm = "T1"
-            else if (termsList.contains("T4")) latestTerm = "T4"
+            else latestTerm = ""
+        else
+            if (termsList.contains("T4")) latestTerm = "T4"
             else if (termsList.contains("T3")) latestTerm = "T3"
             else if (termsList.contains("T2")) latestTerm = "T2"
             else if (termsList.contains("T1")) latestTerm = "T1"
+            else latestTerm = ""
 
         try {
             if (latestTerm == "") return periodGradeItemList[0]
