@@ -84,13 +84,13 @@ class HomeFragment : TransitionHelper.BaseFragment() {
         home_swipe_refresh_layout!!.setColorSchemeResources(R.color.accent, R.color.A_score_green, R.color.B_score_green,
                 R.color.Cp_score_yellow, R.color.C_score_orange, R.color.Cm_score_red, R.color.primary)
         home_swipe_refresh_layout!!.setOnRefreshListener { MainActivity.of(activity).initDataJson() }
-        if (dataList != null) initAdapter()
-        else refreshAdapterToEmpty()
+        if (dataList == null || dataList!!.count() == 0) refreshAdapterToEmpty()
+        else initAdapter()
     }
 
     private fun initAdapter() {
 
-        if (dataList != null) theListView.visibility = View.VISIBLE
+        if (dataList != null && dataList!!.count() != 0) theListView.visibility = View.VISIBLE
         adapter = FoldingCellListAdapter(activity, dataList, unfoldedIndexesBackUp, transformedPosition)
         adapter!!.setDefaultRequestBtnClickListener(View.OnClickListener { v ->
             MainActivity.of(activity).subjectTransporter = dataList!![theListView.getPositionForView(v)]
@@ -115,7 +115,6 @@ class HomeFragment : TransitionHelper.BaseFragment() {
     }
 
     fun invisiblizeListView() {
-
         theListView.visibility = View.GONE
     }
 
@@ -125,7 +124,7 @@ class HomeFragment : TransitionHelper.BaseFragment() {
 
     fun refreshAdapterToEmpty() {
 
-        dataList = null
+        dataList = arrayListOf()
         setRefreshing(false)
         invisiblizeListView()
     }

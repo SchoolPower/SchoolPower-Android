@@ -64,7 +64,9 @@ class LoginActivity : Activity() {
             loginAction(input_username.text.toString(), input_password.text.toString())
         }
     }
-    private fun saveUserId(stringId:String) {
+
+    private fun saveUserId(stringId: String) {
+
         val spEditor = getSharedPreferences(getString(R.string.accountData), Activity.MODE_PRIVATE).edit()
         spEditor.putString(getString(R.string.user_id), stringId)
         spEditor.apply()
@@ -90,8 +92,7 @@ class LoginActivity : Activity() {
                         val messages = strMessage.split("\n".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
                         if (strMessage.contains(getString(R.string.error_wrong_password)))
                             utils!!.showSnackBar(this@LoginActivity, findViewById(R.id.login_coordinate_layout), getString(R.string.wrong_password), true)
-
-                        else if (strMessage.contains(getString(R.string.json_begin))) {
+                        else if (strMessage.contains(getString(R.string.json_begin)) || messages[2] == "[]") {
 
                             val spEditor = getSharedPreferences(getString(R.string.accountData), Activity.MODE_PRIVATE).edit()
                             spEditor.putString(getString(R.string.usernameKEY), username)
@@ -101,19 +102,7 @@ class LoginActivity : Activity() {
                             spEditor.apply()
 
                             utils!!.saveDataJson(messages[2])
-
-                            startMainActivity()
-
-                        } else if (messages[2] == "[]") {
-
-                            val spEditor = getSharedPreferences(getString(R.string.accountData), Activity.MODE_PRIVATE).edit()
-                            spEditor.putString(getString(R.string.usernameKEY), username)
-                            spEditor.putString(getString(R.string.passwordKEY), password)
-                            spEditor.putBoolean(getString(R.string.loggedIn), true)
-                            spEditor.putString(getString(R.string.student_name), messages[1])
-                            spEditor.apply()
-
-                            utils!!.saveDataJson(null)
+                            utils!!.saveHistoryGrade(utils!!.parseJsonResult(messages[2]))
 
                             startMainActivity()
 

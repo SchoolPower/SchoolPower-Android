@@ -46,10 +46,9 @@ class ChartFragment : Fragment() {
         MainActivity.of(activity).expandToolBar(true, true)
         utils = Utils(activity)
 
-        if (MainActivity.of(activity).dataList == null){
-
-        }
-        else {
+        if (MainActivity.of(activity).dataList == null || MainActivity.of(activity).dataList!!.count() == 0) {
+            //TODO Improve the charts display when there is nothing QVQ
+        } else {
 
             val data = MainActivity.of(activity).dataList!!
 

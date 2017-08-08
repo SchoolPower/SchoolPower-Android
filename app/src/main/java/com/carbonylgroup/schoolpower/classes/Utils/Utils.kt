@@ -107,7 +107,7 @@ class Utils(private val context: Context) {
     fun parseJsonResult(jsonStr: String): ArrayList<Subject>? {
         try {
 
-            if (jsonStr == "null") return null
+            if (jsonStr == "[]") return arrayListOf()
             else {
                 val jsonData = JSONArray(jsonStr)
                 val dataMap = HashMap<String, Subject>()
@@ -180,6 +180,7 @@ class Utils(private val context: Context) {
 
     @Throws(IOException::class)
     fun readStringFromFile(fileName: String): String? {
+
         try {
             val data = StringBuilder("")
             val inputStream = context.openFileInput(fileName)
@@ -199,20 +200,15 @@ class Utils(private val context: Context) {
 
         } catch(e: Exception) {
             e.printStackTrace()
-            return null
         }
-
+        return null
     }
 
     @Throws(IOException::class)
-    fun saveStringToFile(fileName: String, data: String?) {
+    fun saveStringToFile(fileName: String, data: String) {
 
         val outputStream = context.openFileOutput(fileName, Context.MODE_PRIVATE)
-        if (data == null) {
-            outputStream.write("null".toByteArray())
-        } else {
-            outputStream.write(data.toByteArray())
-        }
+        outputStream.write(data.toByteArray())
         outputStream.close()
     }
 
@@ -221,7 +217,7 @@ class Utils(private val context: Context) {
             = parseJsonResult(readStringFromFile(context.getString(R.string.dataFileName))!!)
 
     @Throws(IOException::class)
-    fun saveDataJson(jsonStr: String?) = saveStringToFile(context.getString(R.string.dataFileName), jsonStr)
+    fun saveDataJson(jsonStr: String) = saveStringToFile(context.getString(R.string.dataFileName), jsonStr)
 
     @Throws(IOException::class)
     fun saveLangPref(langStr: String) = saveStringToFile(context.getString(R.string.langFileName), langStr)
@@ -233,42 +229,48 @@ class Utils(private val context: Context) {
     // 3. read history grade from file
     // 4. update history grade
     // 5. save history grade
-    fun saveHistoryGrade(data: ArrayList<Subject>) {
-        // 1. read data into brief info
-        var pointSum = 0
-        var count = 0
-        val gradeInfo = JSONArray() // [{"name":"...","grade":80.0}, ...]
-        for (subject in data) {
-            val subInfo = JSONObject()
-            val leastPeriod = getLatestItem(subject) ?: continue
-            subInfo.put("name", subject.subjectTitle)
-            subInfo.put("grade", leastPeriod.termPercentageGrade.toDouble())
-            if (!subject.subjectTitle.contains("Homeroom")) {
-                pointSum += leastPeriod.termPercentageGrade.toInt()
-                count += 1
+    fun saveHistoryGrade(data: ArrayList<Subject>?) {
+
+        if (data == null) {
+            saveStringToFile("history.json", "{}")
+        } else {
+            // 1. read data into brief info
+            var pointSum = 0
+            var count = 0
+            val gradeInfo = JSONArray() // [{"name":"...","grade":80.0}, ...]
+            for (subject in data) {
+                val subInfo = JSONObject()
+                val leastPeriod = getLatestItem(subject) ?: continue
+                subInfo.put("name", subject.subjectTitle)
+                subInfo.put("grade", leastPeriod.termPercentageGrade.toDouble())
+                if (!subject.subjectTitle.contains("Homeroom")) {
+                    pointSum += leastPeriod.termPercentageGrade.toInt()
+                    count += 1
+                }
+                gradeInfo.put(subInfo)
             }
-            gradeInfo.put(subInfo)
+
+            // 2. calculate gpa
+            val gpaInfo = JSONObject()
+            gpaInfo.put("name", "GPA")
+            gpaInfo.put("grade", pointSum / count.toDouble())
+            gradeInfo.put(gpaInfo)
+
+            // 3. read history grade from file
+            val historyData = JSONObject(readStringFromFile("history.json") ?: "{}")
+            // {"2017-06-20": [{"name":"...","grade":"80"}, ...], ...}
+
+            // 4. update history grade
+            val date = SimpleDateFormat("yyyy-MM-dd", Locale.CHINA).format(Date())
+            historyData.put(date, gradeInfo)
+
+            // 5. save history grade
+            saveStringToFile("history.json", historyData.toString())
         }
-
-        // 2. calculate gpa
-        val gpaInfo = JSONObject()
-        gpaInfo.put("name", "GPA")
-        gpaInfo.put("grade", pointSum / count.toDouble())
-        gradeInfo.put(gpaInfo)
-
-        // 3. read history grade from file
-        val historyData = JSONObject(readStringFromFile("history.json") ?: "{}")
-        // {"2017-06-20": [{"name":"...","grade":"80"}, ...], ...}
-
-        // 4. update history grade
-        val date = SimpleDateFormat("yyyy-MM-dd", Locale.CHINA).format(Date())
-        historyData.put(date, gradeInfo)
-
-        // 5. save history grade
-        saveStringToFile("history.json", historyData.toString())
     }
 
     fun readHistoryGrade() = JSONObject(readStringFromFile("history.json") ?: "{}")
+
 
     fun checkUpdate() {
 

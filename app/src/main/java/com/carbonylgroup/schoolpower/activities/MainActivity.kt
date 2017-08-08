@@ -113,7 +113,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
             }
             R.id.action_gpa -> {
 
-                if (dataList == null){
+                if (dataList == null || dataList!!.count() == 0) {
 
                     val builder = AlertDialog.Builder(this)
                     builder.setMessage(getString(R.string.gpa_not_available_because))
@@ -126,6 +126,8 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                     var sum_gpa = 0.0
                     var gpa_except_hr = 0.0
                     var gpa_except_hr_me = 0.0
+                    var contain_hr = false
+                    var contain_me = false
                     var num = 0
                     for (i in dataList!!.indices) {
 
@@ -133,9 +135,15 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                         val grade = utils.getLatestItem(periods)!!.termPercentageGrade.toDouble()
                         sum_gpa += grade
                         num += 1
-                        if (periods.subjectTitle.contains("Homeroom")) continue
+                        if (periods.subjectTitle.contains("Homeroom")) {
+                            contain_hr = true
+                            continue
+                        }
                         gpa_except_hr += grade
-                        if (periods.subjectTitle.contains("Moral Education")) continue
+                        if (periods.subjectTitle.contains("Moral Education")) {
+                            contain_me = true
+                            continue
+                        }
                         gpa_except_hr_me += grade
                     }
 
@@ -143,9 +151,14 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                     val gpaDialogView = gpaDialog.findViewById(R.id.gpa_dialog_rootView)
                     val gpaDialogBuilder = AlertDialog.Builder(this)
                     val gpa_dialog_segmented = gpaDialogView.findViewById(R.id.gpa_dialog_segmented) as SegmentedButtonGroup
+
                     val percentage_all = (sum_gpa / num).toFloat()
-                    val percentage_exhr = (gpa_except_hr / (num - 1)).toFloat()
-                    val percentage_exhrme = (gpa_except_hr_me / (num - 2)).toFloat()
+                    var num_to_minus = 0
+                    if (contain_hr) num_to_minus++
+                    val percentage_exhr = (gpa_except_hr / (num - num_to_minus)).toFloat()
+                    if (contain_me) num_to_minus++
+                    val percentage_exhrme = (gpa_except_hr_me / (num - num_to_minus)).toFloat()
+
                     val waveLightColor = utils.getColorByLetterGrade(this, utils.getLetterGradeByPercentageGrade(percentage_all))
                     val waveDarkColor = utils.getDarkColorByPrimary(waveLightColor)
 
@@ -285,6 +298,8 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
             R.id.nav_dashboard -> {
                 homeFragment = HomeFragment()
                 transaction.replace(R.id.content_view, homeFragment)
+                setToolBarTitle(getString(R.string.dashboard))
+                expandToolBar(true, true)
                 hideToolBarItems(false)
                 presentFragment = 0
             }
@@ -292,6 +307,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                 chartFragment = ChartFragment()
                 transaction.replace(R.id.content_view, chartFragment)
                 setToolBarTitle(getString(R.string.charts))
+                expandToolBar(true, true)
                 hideToolBarItems(true)
                 presentFragment = 2
             }
@@ -373,7 +389,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
 
         animateDrawerToggle(false)
         hideToolBarItems(false)
-        if (dataList != null) homeFragment!!.notifyAdapter()
+        if (dataList != null && dataList!!.count() != 0) homeFragment!!.notifyAdapter()
 
         //TODO Bugs might occur when adding new menu items QAQ
         navigationView.menu.getItem(1).isChecked = false
@@ -396,7 +412,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                 .commit()
 
         hideToolBarItems(false)
-        if (dataList != null) homeFragment!!.notifyAdapter()
+        if (dataList != null && dataList!!.count() != 0) homeFragment!!.notifyAdapter()
         navigationView.menu.getItem(index).isChecked = false
         navigationView.menu.getItem(0).isChecked = true
     }
@@ -464,8 +480,8 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
 
                         } else if (messages.size == 3 && messages[2] == "[]") {
 
-                            utils.saveDataJson(null)
-                            dataList = null
+                            utils.saveDataJson(messages[2])
+                            dataList = arrayListOf()
                             homeFragment!!.refreshAdapterToEmpty()
                             utils.showSnackBar(this@MainActivity, findViewById(R.id.main_coordinate_layout), getString(R.string.data_updated), false)
 
@@ -496,7 +512,6 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
     private fun confirmSignOut() {
 
         val builder = AlertDialog.Builder(this)
-        builder.setIcon(getDrawable(R.drawable.ic_exit_accent))
         builder.setTitle(getString(R.string.signing_out_dialog_title))
         builder.setMessage(getString(R.string.signing_out_dialog_message))
         builder.setPositiveButton(getString(R.string.signing_out_dialog_positive)) { _, _ -> signOut() }
@@ -511,6 +526,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
         spEditor.putString(getString(R.string.passwordKEY), "")
         spEditor.putBoolean(getString(R.string.loggedIn), false)
         spEditor.apply()
+        utils.saveHistoryGrade(null)
         utils.saveDataJson("")
         startLoginActivity()
     }
