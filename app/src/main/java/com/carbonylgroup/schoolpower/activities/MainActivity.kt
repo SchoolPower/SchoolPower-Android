@@ -132,7 +132,9 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                     for (i in dataList!!.indices) {
 
                         val periods = dataList!![i]
-                        val grade = utils.getLatestItem(periods)!!.termPercentageGrade.toDouble()
+                        val gradeStr = utils.getLatestItem(periods)!!.termPercentageGrade
+                        if(gradeStr=="--") continue
+                        val grade = gradeStr.toDouble()
                         sum_gpa += grade
                         num += 1
                         if (periods.subjectTitle.contains("Homeroom")) {

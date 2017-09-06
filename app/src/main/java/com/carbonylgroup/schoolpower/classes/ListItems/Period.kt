@@ -10,5 +10,8 @@ import java.util.ArrayList
 
 class Period(val termIndicator: String, val termLetterGrade: String, val termPercentageGrade: String,
              val assignmentItemArrayList: ArrayList<AssignmentItem>) : Serializable{
-    fun getIntegerGrade() : Int = termPercentageGrade.toInt()
+    fun getIntegerGrade() : Int {
+        if(termPercentageGrade=="--") return 0
+        return termPercentageGrade.toInt()
+    }
 }
