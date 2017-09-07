@@ -153,8 +153,8 @@ class Utils(private val context: Context) {
                 val dataList = ArrayList<Subject>()
                 dataList.addAll(dataMap.values)
                 Collections.sort(dataList, Comparator<Subject> { o1, o2 ->
-                    if (o1.blockLetter == "HR(1)") return@Comparator -1
-                    if (o2.blockLetter == "HR(1)") return@Comparator 1
+                    if (o1.blockLetter == "HR(A-E)") return@Comparator -1
+                    if (o2.blockLetter == "HR(A-E)") return@Comparator 1
                     o1.blockLetter.compareTo(o2.blockLetter)
                 })
                 return dataList
@@ -241,6 +241,10 @@ class Utils(private val context: Context) {
             for (subject in data) {
                 val subInfo = JSONObject()
                 val leastPeriod = getLatestItem(subject) ?: continue
+                if (leastPeriod.termPercentageGrade == "--") {
+                    continue
+                }
+
                 subInfo.put("name", subject.subjectTitle)
                 subInfo.put("grade", leastPeriod.termPercentageGrade.toDouble())
                 if (!subject.subjectTitle.contains("Homeroom")) {
@@ -250,10 +254,14 @@ class Utils(private val context: Context) {
                 gradeInfo.put(subInfo)
             }
 
+
             // 2. calculate gpa
             val gpaInfo = JSONObject()
             gpaInfo.put("name", "GPA")
-            gpaInfo.put("grade", pointSum / count.toDouble())
+            if (count!=0)
+                gpaInfo.put("grade", pointSum / count.toDouble())
+            else
+                gpaInfo.put("grade", 0.0)
             gradeInfo.put(gpaInfo)
 
             // 3. read history grade from file
