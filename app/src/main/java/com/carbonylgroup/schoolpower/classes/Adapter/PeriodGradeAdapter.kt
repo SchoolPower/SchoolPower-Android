@@ -16,7 +16,7 @@ import java.util.ArrayList
 
 import com.carbonylgroup.schoolpower.R
 import com.carbonylgroup.schoolpower.R2
-import com.carbonylgroup.schoolpower.classes.ListItems.Period
+import com.carbonylgroup.schoolpower.classes.Data.Period
 import com.carbonylgroup.schoolpower.classes.Utils.Utils
 import kotterknife.bindView
 

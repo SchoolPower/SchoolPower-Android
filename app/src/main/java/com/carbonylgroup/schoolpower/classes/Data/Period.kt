@@ -2,7 +2,7 @@
  * Copyright (C) 2017 Gustav Wang
  */
 
-package com.carbonylgroup.schoolpower.classes.ListItems
+package com.carbonylgroup.schoolpower.classes.Data
 
 import java.io.Serializable
 import java.util.ArrayList

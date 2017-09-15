@@ -4,12 +4,8 @@
 
 package com.carbonylgroup.schoolpower.fragments
 
-import android.graphics.Color
-import android.opengl.Visibility
 import android.os.Bundle
-import android.support.v4.content.ContextCompat
 import android.support.v4.widget.SwipeRefreshLayout
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,7 +17,7 @@ import android.widget.ListView
 import com.carbonylgroup.schoolpower.R
 import com.carbonylgroup.schoolpower.activities.MainActivity
 import com.carbonylgroup.schoolpower.classes.Adapter.FoldingCellListAdapter
-import com.carbonylgroup.schoolpower.classes.ListItems.Subject
+import com.carbonylgroup.schoolpower.classes.Data.Subject
 import com.carbonylgroup.schoolpower.classes.Transition.DetailsTransition
 import com.carbonylgroup.schoolpower.classes.Transition.TransitionHelper
 import com.carbonylgroup.schoolpower.classes.Utils.Utils

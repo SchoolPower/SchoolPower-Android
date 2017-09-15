@@ -19,8 +19,8 @@ import java.util.ArrayList
 import com.carbonylgroup.schoolpower.R
 import com.carbonylgroup.schoolpower.activities.MainActivity
 import com.carbonylgroup.schoolpower.classes.Adapter.CourseDetailAdapter
-import com.carbonylgroup.schoolpower.classes.ListItems.Subject
-import com.carbonylgroup.schoolpower.classes.ListItems.Period
+import com.carbonylgroup.schoolpower.classes.Data.Subject
+import com.carbonylgroup.schoolpower.classes.Data.Period
 import com.carbonylgroup.schoolpower.classes.Transition.TransitionHelper
 import com.carbonylgroup.schoolpower.classes.Utils.Utils
 

@@ -6,7 +6,6 @@ import android.support.design.widget.FloatingActionButton
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,8 +16,8 @@ import android.widget.ArrayAdapter
 import android.widget.RelativeLayout
 import android.widget.TextView
 import com.carbonylgroup.schoolpower.R
-import com.carbonylgroup.schoolpower.classes.ListItems.Subject
-import com.carbonylgroup.schoolpower.classes.ListItems.Period
+import com.carbonylgroup.schoolpower.classes.Data.Subject
+import com.carbonylgroup.schoolpower.classes.Data.Period
 import com.carbonylgroup.schoolpower.classes.Utils.Utils
 import com.ramotion.foldingcell.FoldingCell
 import java.util.*

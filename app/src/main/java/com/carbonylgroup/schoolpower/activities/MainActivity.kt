@@ -22,13 +22,12 @@ import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.graphics.drawable.DrawerArrowDrawable
 import android.support.v7.widget.Toolbar
-import android.util.Log
 import android.view.*
 import android.view.animation.DecelerateInterpolator
 import android.widget.TextView
 import co.ceryle.segmentedbutton.SegmentedButtonGroup
 import com.carbonylgroup.schoolpower.R
-import com.carbonylgroup.schoolpower.classes.ListItems.Subject
+import com.carbonylgroup.schoolpower.classes.Data.Subject
 import com.carbonylgroup.schoolpower.classes.Transition.DetailsTransition
 import com.carbonylgroup.schoolpower.classes.Transition.TransitionHelper
 import com.carbonylgroup.schoolpower.classes.Utils.ContextWrapper
@@ -469,7 +468,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                                             val newAssignmentListCollection = periods[j].assignmentItemArrayList
                                             val oldAssignmentListCollection = oldPeriods[j].assignmentItemArrayList
                                             for (item in newAssignmentListCollection) {
-                                                val found = oldAssignmentListCollection.any { it.assignmentTitle == item.assignmentTitle && it.assignmentDividedScore == item.assignmentDividedScore && it.assignmentDate == item.assignmentDate && !it.isNew }
+                                                val found = oldAssignmentListCollection.any { it.title == item.title && it.dividedScore == item.dividedScore && it.date == item.date && !it.isNew }
                                                 if (!found)
                                                     item.isNew = true
                                             }

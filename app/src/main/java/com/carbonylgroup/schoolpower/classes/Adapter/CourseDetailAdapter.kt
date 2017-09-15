@@ -7,16 +7,15 @@ package com.carbonylgroup.schoolpower.classes.Adapter
 import android.content.Context
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import com.carbonylgroup.schoolpower.R
 import com.carbonylgroup.schoolpower.R2
-import com.carbonylgroup.schoolpower.classes.ListItems.AssignmentItem
-import com.carbonylgroup.schoolpower.classes.ListItems.Subject
-import com.carbonylgroup.schoolpower.classes.ListItems.Period
+import com.carbonylgroup.schoolpower.classes.Data.AssignmentItem
+import com.carbonylgroup.schoolpower.classes.Data.Subject
+import com.carbonylgroup.schoolpower.classes.Data.Period
 import com.carbonylgroup.schoolpower.classes.Utils.Utils
 import kotterknife.bindView
 import java.util.*
@@ -55,14 +54,14 @@ class CourseDetailAdapter(private val context: Context, private val item: Subjec
 
                 val normalViewHolder = holder
 
-                Collections.sort(list!!) { o1, o2 -> o2.assignmentDate.compareTo(o1.assignmentDate) }
+                Collections.sort(list!!) { o1, o2 -> o2.date.compareTo(o1.date) }
 
                 val assignmentItem = list!![position - 1]
-                normalViewHolder.detail_assignment_name_tv.text = assignmentItem.assignmentTitle
-                normalViewHolder.detail_assignment_date_tv.text = assignmentItem.assignmentDate
-                normalViewHolder.detail_assignment_percentage_tv.text = assignmentItem.assignmentPercentage
-                normalViewHolder.detail_assignment_dividing_score_tv.text = assignmentItem.assignmentDividedScore
-                normalViewHolder.detail_assignment_grade_background.setBackgroundColor(utils.getColorByLetterGrade(context, assignmentItem.assignmentGrade))
+                normalViewHolder.detail_assignment_name_tv.text = assignmentItem.title
+                normalViewHolder.detail_assignment_date_tv.text = assignmentItem.date
+                normalViewHolder.detail_assignment_percentage_tv.text = assignmentItem.percentage
+                normalViewHolder.detail_assignment_dividing_score_tv.text = assignmentItem.dividedScore
+                normalViewHolder.detail_assignment_grade_background.setBackgroundColor(utils.getColorByLetterGrade(context, assignmentItem.grade))
                 if (assignmentItem.isNew) {
                     normalViewHolder.detail_header_background.setBackgroundColor(ContextCompat.getColor(context, R.color.accent))
                     normalViewHolder.detail_assignment_name_tv.setTextColor(ContextCompat.getColor(context, R.color.white))

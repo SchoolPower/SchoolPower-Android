@@ -4,7 +4,6 @@
 
 package com.carbonylgroup.schoolpower.classes.Utils
 
-import android.animation.AnimatorSet
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
@@ -15,13 +14,12 @@ import android.os.Message
 import android.support.design.widget.Snackbar
 import android.support.v4.content.ContextCompat
 import android.util.DisplayMetrics
-import android.util.Log
 import android.view.View
 import com.carbonylgroup.schoolpower.R
-import com.carbonylgroup.schoolpower.classes.ListItems.AssignmentItem
-import com.carbonylgroup.schoolpower.classes.ListItems.Subject
-import com.carbonylgroup.schoolpower.classes.ListItems.Period
-import com.gelitenight.waveview.library.WaveView
+import com.carbonylgroup.schoolpower.classes.Data.AssignmentItem
+import com.carbonylgroup.schoolpower.classes.Data.Subject
+import com.carbonylgroup.schoolpower.classes.Data.Period
+import com.carbonylgroup.schoolpower.classes.Data.StudentInformation
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
@@ -104,11 +102,30 @@ class Utils(private val context: Context) {
         snackBar.show()
     }
 
+    // Parse the student data fetched.
+    // if succeed: return the subject data and the student information
+    // if not： return the error
     fun parseJsonResult(jsonStr: String): ArrayList<Subject>? {
+
+        // the format of the JSON: (Sample)
+        /*
+        {
+            "information": (StudentInformation),
+            "sections": [
+                (Subject)...
+            ]
+        }
+         */
+
         try {
 
-            if (jsonStr == "[]") return arrayListOf()
-            else {
+            val studentData = JSONObject(jsonStr)
+            if(!studentData.has("information")){ // not successful
+                return arrayListOf() // TODO: return the error
+            }
+            val studentInfo = StudentInformation(studentData.getJSONObject("information"))
+
+
                 val jsonData = JSONArray(jsonStr)
                 val dataMap = HashMap<String, Subject>()
 
@@ -158,7 +175,7 @@ class Utils(private val context: Context) {
                     o1.blockLetter.compareTo(o2.blockLetter)
                 })
                 return dataList
-            }
+
 
         } catch (e: JSONException) {
             e.printStackTrace()
