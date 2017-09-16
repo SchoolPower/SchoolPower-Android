@@ -149,9 +149,9 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                     }
 
                     val gpaDialog = layoutInflater.inflate(R.layout.gpa_dialog, null)
-                    val gpaDialogView = gpaDialog.findViewById(R.id.gpa_dialog_rootView)
+                    val gpaDialogView = gpaDialog.findViewById<View>(R.id.gpa_dialog_rootView)
                     val gpaDialogBuilder = AlertDialog.Builder(this)
-                    val gpa_dialog_segmented = gpaDialogView.findViewById(R.id.gpa_dialog_segmented) as SegmentedButtonGroup
+                    val gpa_dialog_segmented : SegmentedButtonGroup = gpaDialogView.findViewById(R.id.gpa_dialog_segmented)
 
                     val percentage_all = (sum_gpa / num).toFloat()
                     var num_to_minus = 0
@@ -163,8 +163,8 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                     val waveLightColor = utils.getColorByLetterGrade(this, utils.getLetterGradeByPercentageGrade(percentage_all))
                     val waveDarkColor = utils.getDarkColorByPrimary(waveLightColor)
 
-                    gpa_dialog_percentage_front = gpaDialogView.findViewById(R.id.gpa_dialog_percentage_front) as CounterView
-                    gpa_dialog_percentage_back = gpaDialogView.findViewById(R.id.gpa_dialog_percentage_back) as CounterView
+                    gpa_dialog_percentage_front = gpaDialogView.findViewById(R.id.gpa_dialog_percentage_front)
+                    gpa_dialog_percentage_back = gpaDialogView.findViewById(R.id.gpa_dialog_percentage_back)
                     gpa_dialog_percentage_front.setFormatter({ prefix, suffix, value -> String.format("%.3f", value) + suffix })
                     gpa_dialog_percentage_back.setFormatter({ prefix, suffix, value -> String.format("%.3f", value) + suffix })
                     gpa_dialog_percentage_front.setAutoStart(false)
@@ -173,7 +173,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                     gpa_dialog_percentage_back.setAutoStart(false)
                     gpa_dialog_percentage_back.setPrefix("")
                     gpa_dialog_percentage_back.setSuffix("%")
-                    waveView = gpaDialogView.findViewById(R.id.gpa_Dialog_wave_view) as WaveView
+                    waveView = gpaDialogView.findViewById(R.id.gpa_Dialog_wave_view)
                     waveView.setShapeType(WaveView.ShapeType.CIRCLE)
 
                     gpa_dialog_segmented.rippleColor = waveDarkColor
@@ -284,8 +284,8 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
         toggle.setHomeAsUpIndicator(toggleIcon)
         toggle.syncState()
 
-        (navigationView.getHeaderView(0).findViewById(R.id.nav_header_username) as TextView).text = getUsername()
-        (navigationView.getHeaderView(0).findViewById(R.id.nav_header_id) as TextView).text = getUserID()
+        navigationView.getHeaderView(0).findViewById<TextView>(R.id.nav_header_username).text = getUsername()
+        navigationView.getHeaderView(0).findViewById<TextView>(R.id.nav_header_id).text = getUserID()
 
     }
 

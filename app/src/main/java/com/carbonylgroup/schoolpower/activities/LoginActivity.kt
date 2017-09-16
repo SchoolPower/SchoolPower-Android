@@ -12,6 +12,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Message
 import android.util.Log
+import android.view.View
 import android.widget.EditText
 
 import com.carbonylgroup.schoolpower.R
@@ -56,10 +57,10 @@ class LoginActivity : Activity() {
 
         utils = Utils(this)
 
-        val input_username = findViewById(R.id.input_username) as EditText
-        val input_password = findViewById(R.id.input_password) as EditText
+        val input_username : EditText = findViewById(R.id.input_username)
+        val input_password : EditText = findViewById(R.id.input_password)
 
-        findViewById(R.id.login_fab).setOnClickListener {
+        findViewById<View>(R.id.login_fab).setOnClickListener {
             saveUserId(input_username.text.toString())
             loginAction(input_username.text.toString(), input_password.text.toString())
         }

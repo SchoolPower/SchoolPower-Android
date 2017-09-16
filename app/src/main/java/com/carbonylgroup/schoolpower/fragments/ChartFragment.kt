@@ -55,7 +55,7 @@ class ChartFragment : Fragment() {
             run {
                 val historyData = utils.readHistoryGrade()
 
-                val lineChart = view.findViewById(R.id.line_chart) as LineChart
+                val lineChart : LineChart = view.findViewById(R.id.line_chart)
                 lineChart.description.isEnabled = false
 
                 // Map<SubjectName, Array<Entry<Date, Grade>>>
@@ -129,7 +129,7 @@ class ChartFragment : Fragment() {
             }
             run {
 
-                val radarChart = view.findViewById(R.id.radar_chart) as RadarChart
+                val radarChart : RadarChart = view.findViewById(R.id.radar_chart)
                 val entries = ArrayList<RadarEntry>()
                 radarChart.description.isEnabled = false
                 val xAxis = radarChart.xAxis

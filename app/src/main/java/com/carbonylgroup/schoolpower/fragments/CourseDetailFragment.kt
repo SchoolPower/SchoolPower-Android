@@ -50,16 +50,16 @@ class CourseDetailFragment : TransitionHelper.BaseFragment() {
 
         if (transformedPosition != -1) {
             val itemToPresent = MainActivity.of(activity).subjectTransporter
-            val course_detail_recycler = view.findViewById(R.id.course_detail_recycler) as RecyclerView
+            val course_detail_recycler = view.findViewById<RecyclerView>(R.id.course_detail_recycler)
             val period: Period = utils.getLatestItem(itemToPresent!!)!!
             dataList = MainActivity.of(activity).dataList
             MainActivity.of(activity).setToolBarColor(utils.getColorByLetterGrade(activity, period.termLetterGrade), true)
-            view.findViewById(R.id.detail_view_header).setBackgroundColor(utils.getColorByLetterGrade(activity, period.termLetterGrade))
-            view.findViewById(R.id.detail_view_header).setOnClickListener {
+            view.findViewById<View>(R.id.detail_view_header).setBackgroundColor(utils.getColorByLetterGrade(activity, period.termLetterGrade))
+            view.findViewById<View>(R.id.detail_view_header).setOnClickListener {
                 MainActivity.of(activity).expandToolBar(true, true)
                 course_detail_recycler.smoothScrollToPosition(0)
             }
-            (view.findViewById(R.id.detail_subject_title_tv) as TextView).text = itemToPresent.subjectTitle
+            view.findViewById<TextView>(R.id.detail_subject_title_tv).text = itemToPresent.subjectTitle
             course_detail_recycler.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
             course_detail_recycler.adapter = CourseDetailAdapter(activity, dataList!![transformedPosition])
         }

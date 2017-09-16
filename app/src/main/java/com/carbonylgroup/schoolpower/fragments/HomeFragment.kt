@@ -75,8 +75,8 @@ class HomeFragment : TransitionHelper.BaseFragment() {
         MainActivity.of(activity).presentFragment = 0
         MainActivity.of(activity).setToolBarElevation(utils!!.dpToPx(10))
         MainActivity.of(activity).setToolBarTitle(getString(R.string.dashboard))
-        theListView = view_private!!.findViewById(R.id.mainListView) as ListView
-        home_swipe_refresh_layout = view_private!!.findViewById(R.id.home_swipe_refresh_layout) as SwipeRefreshLayout
+        theListView = view_private!!.findViewById(R.id.mainListView)
+        home_swipe_refresh_layout = view_private!!.findViewById(R.id.home_swipe_refresh_layout)
         home_swipe_refresh_layout!!.setColorSchemeResources(R.color.accent, R.color.A_score_green, R.color.B_score_green,
                 R.color.Cp_score_yellow, R.color.C_score_orange, R.color.Cm_score_red, R.color.primary)
         home_swipe_refresh_layout!!.setOnRefreshListener { MainActivity.of(activity).initDataJson() }
@@ -92,13 +92,13 @@ class HomeFragment : TransitionHelper.BaseFragment() {
             MainActivity.of(activity).subjectTransporter = dataList!![theListView.getPositionForView(v)]
             if (transformedPosition != -1) {
                 val itemView = getItemViewByPosition(transformedPosition, theListView)
-                itemView.findViewById(R.id.unfold_header_view).transitionName = ""
-                itemView.findViewById(R.id.detail_subject_title_tv).transitionName = ""
+                itemView.findViewById<View>(R.id.unfold_header_view).transitionName = ""
+                itemView.findViewById<View>(R.id.detail_subject_title_tv).transitionName = ""
             }
             transformedPosition = theListView.getPositionForView(v)
             val itemView = getItemViewByPosition(theListView.getPositionForView(v), theListView)
-            itemView.findViewById(R.id.floating_action_button).startAnimation(fab_out)
-            itemView.findViewById(R.id.floating_action_button).visibility = View.GONE
+            itemView.findViewById<View>(R.id.floating_action_button).startAnimation(fab_out)
+            itemView.findViewById<View>(R.id.floating_action_button).visibility = View.GONE
             gotoCourseDetail(itemView.findViewById(R.id.unfold_header_view), itemView.findViewById(R.id.detail_subject_title_tv), transformedPosition)
         })
         theListView.onItemClickListener = AdapterView.OnItemClickListener { _, view, pos, _ ->

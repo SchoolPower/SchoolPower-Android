@@ -44,19 +44,19 @@ class FoldingCellListAdapter(context: Context, private var subjects: ArrayList<S
             val vi = LayoutInflater.from(context)
             cell = vi.inflate(R.layout.main_list_item, parent, false) as FoldingCell
 
-            viewHolder.fold_background = cell.findViewById(R.id.fold_background) as RelativeLayout
-            viewHolder.fold_letter_grade_tv = cell.findViewById(R.id.fold_letter_grade_tv) as TextView
-            viewHolder.fold_teacher_name_tv = cell.findViewById(R.id.fold_teacher_name_tv) as TextView
-            viewHolder.fold_block_letter_tv = cell.findViewById(R.id.fold_block_letter_tv) as TextView
-            viewHolder.fold_subject_title_tv = cell.findViewById(R.id.fold_subject_title_tv) as TextView
-            viewHolder.unfold_header_view = cell.findViewById(R.id.unfold_header_view) as RelativeLayout
-            viewHolder.unfold_teacher_name_tv = cell.findViewById(R.id.unfold_teacher_name_tv) as TextView
-            viewHolder.unfold_subject_title_tv = cell.findViewById(R.id.detail_subject_title_tv) as TextView
-            viewHolder.fold_percentage_grade_tv = cell.findViewById(R.id.fold_percentage_grade_tv) as TextView
-            viewHolder.fold_grade_background = cell.findViewById(R.id.fold_grade_background) as RelativeLayout
-            viewHolder.unfold_percentage_grade_tv = cell.findViewById(R.id.unfold_percentage_grade_tv) as TextView
-            viewHolder.floating_action_button = cell.findViewById(R.id.floating_action_button) as FloatingActionButton
-            viewHolder.unfolded_grade_recycler_view = cell.findViewById(R.id.unfolded_grade_recycler_view) as RecyclerView
+            viewHolder.fold_background = cell.findViewById(R.id.fold_background)
+            viewHolder.fold_letter_grade_tv = cell.findViewById(R.id.fold_letter_grade_tv)
+            viewHolder.fold_teacher_name_tv = cell.findViewById(R.id.fold_teacher_name_tv)
+            viewHolder.fold_block_letter_tv = cell.findViewById(R.id.fold_block_letter_tv)
+            viewHolder.fold_subject_title_tv = cell.findViewById(R.id.fold_subject_title_tv)
+            viewHolder.unfold_header_view = cell.findViewById(R.id.unfold_header_view)
+            viewHolder.unfold_teacher_name_tv = cell.findViewById(R.id.unfold_teacher_name_tv)
+            viewHolder.unfold_subject_title_tv = cell.findViewById(R.id.detail_subject_title_tv)
+            viewHolder.fold_percentage_grade_tv = cell.findViewById(R.id.fold_percentage_grade_tv)
+            viewHolder.fold_grade_background = cell.findViewById(R.id.fold_grade_background)
+            viewHolder.unfold_percentage_grade_tv = cell.findViewById(R.id.unfold_percentage_grade_tv)
+            viewHolder.floating_action_button = cell.findViewById(R.id.floating_action_button)
+            viewHolder.unfolded_grade_recycler_view = cell.findViewById(R.id.unfolded_grade_recycler_view)
 
             if (transformedPosition != -1)
                 if (position == transformedPosition) {
@@ -140,7 +140,7 @@ class FoldingCellListAdapter(context: Context, private var subjects: ArrayList<S
 
         val items = subjects!![transformedPosition].periodArrayList
         val adapter = PeriodGradeAdapter(context, items)
-        (_cell.findViewById(R.id.unfolded_grade_recycler_view) as RecyclerView).adapter = adapter
+        (_cell.findViewById<RecyclerView>(R.id.unfolded_grade_recycler_view)).adapter = adapter
     }
 
     fun setMainListItems(_subjects: ArrayList<Subject>) {
@@ -150,7 +150,7 @@ class FoldingCellListAdapter(context: Context, private var subjects: ArrayList<S
     private fun popUpFAB(_cell: FoldingCell, _delay: Int) {
 
         initAnim(_delay)
-        _cell.findViewById(R.id.floating_action_button).startAnimation(fab_in)
+        _cell.findViewById<View>(R.id.floating_action_button).startAnimation(fab_in)
     }
 
     fun registerToggle(position: Int) {

@@ -36,7 +36,7 @@ class Subject(json: JSONObject) : Serializable {
     val periodArrayList: ArrayList<Period>
 
     init{
-        for()
+        
     }
 
     fun getPeriodGradeItem(term: String) = periodArrayList.firstOrNull { term == it.termIndicator }

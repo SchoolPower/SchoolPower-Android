@@ -78,7 +78,7 @@ class TransitionHelper private constructor(internal val activity: Activity, save
         if (isViewCreatedAlreadyCalled) return
         isViewCreatedAlreadyCalled = true
 
-        val contentView = activity.window.decorView.findViewById(android.R.id.content)
+        val contentView = activity.window.decorView.findViewById<View>(android.R.id.content)
         for (listener in listeners) listener.onBeforeViewShows(contentView)
         if (!isAfterEnter) {
             for (listener in listeners) listener.onBeforeEnter(contentView)
