@@ -1,36 +1,26 @@
 package com.carbonylgroup.schoolpower.fragments
 
-import android.os.Bundle
 import android.app.Fragment
 import android.graphics.Color
+import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
 import com.carbonylgroup.schoolpower.R
 import com.carbonylgroup.schoolpower.activities.MainActivity
 import com.carbonylgroup.schoolpower.classes.Utils.Utils
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.charts.RadarChart
-import com.github.mikephil.charting.data.Entry
-import com.github.mikephil.charting.data.LineData
-import com.github.mikephil.charting.data.LineDataSet
-import com.github.mikephil.charting.data.RadarData
-import com.github.mikephil.charting.interfaces.datasets.IRadarDataSet
-import com.github.mikephil.charting.data.RadarDataSet
-import com.github.mikephil.charting.data.RadarEntry
 import com.github.mikephil.charting.components.AxisBase
 import com.github.mikephil.charting.components.Legend
+import com.github.mikephil.charting.data.*
 import com.github.mikephil.charting.formatter.IAxisValueFormatter
-import com.github.mikephil.charting.components.XAxis
-import com.github.mikephil.charting.components.YAxis
-import org.json.JSONArray
+import com.github.mikephil.charting.interfaces.datasets.IRadarDataSet
 import java.lang.Math.abs
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
-import javax.xml.datatype.DatatypeConstants.HOURS
 
 class ChartFragment : Fragment() {
     private lateinit var utils: Utils
@@ -46,11 +36,11 @@ class ChartFragment : Fragment() {
         MainActivity.of(activity).expandToolBar(true, true)
         utils = Utils(activity)
 
-        if (MainActivity.of(activity).dataList == null || MainActivity.of(activity).dataList!!.count() == 0) {
+        if (MainActivity.of(activity).subjects == null || MainActivity.of(activity).subjects!!.count() == 0) {
             //TODO Improve the charts display when there is nothing QVQ
         } else {
 
-            val data = MainActivity.of(activity).dataList!!
+            val data = MainActivity.of(activity).subjects!!
 
             run {
                 val historyData = utils.readHistoryGrade()
@@ -149,7 +139,7 @@ class ChartFragment : Fragment() {
                 }
                 var minGrade = 100.0f
                 for (it in data) {
-                    val periodGrade = utils.getLatestItem(it)!!.getIntegerGrade().toFloat()
+                    val periodGrade = utils.getLatestPeriodGrade(it)!!.percentage.toFloat()
                     entries.add(RadarEntry(periodGrade))
                     if (periodGrade < minGrade) minGrade = periodGrade
                 }

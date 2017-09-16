@@ -14,12 +14,11 @@ import android.os.Message
 import android.support.design.widget.Snackbar
 import android.support.v4.content.ContextCompat
 import android.util.DisplayMetrics
+import android.util.Log
 import android.view.View
 import com.carbonylgroup.schoolpower.R
-import com.carbonylgroup.schoolpower.classes.Data.AssignmentItem
-import com.carbonylgroup.schoolpower.classes.Data.Subject
-import com.carbonylgroup.schoolpower.classes.Data.Period
 import com.carbonylgroup.schoolpower.classes.Data.StudentInformation
+import com.carbonylgroup.schoolpower.classes.Data.Subject
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
@@ -42,46 +41,34 @@ class Utils(private val context: Context) {
     /* Color Handler */
     fun getColorByLetterGrade(context: Context, letterGrade: String) = ContextCompat.getColor(context, gradeColorIds[indexOfString(letterGrade, arrayOf("A", "B", "C+", "C", "C-", "F", "I", "--"))])
 
-    fun getColorByPeriodItem(context: Context, item: Period) = getColorByLetterGrade(context, item.termLetterGrade)
-
     fun getDarkColorByPrimary(originalPrimary: Int) = ContextCompat.getColor(context, gradeDarkColorIdsPlain[gradeColorIdsPlain.takeWhile { originalPrimary != ContextCompat.getColor(context, it) }.count()])
 
     /* Others */
     fun dpToPx(dp: Int) = Math.round(dp * (context.resources.displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT))
 
-    fun getLatestItem(item: Subject): Period? {
+    fun getLatestPeriod(grades: Map<String, Subject.Grade>): String? {
 
-        var forLatestSemester = false
-        var latestTerm: String = ""
-        val periodGradeItemList = item.periodArrayList
-        val termsList: ArrayList<String> = ArrayList()
-        termsList.add(context.getString(R.string.all_terms))
+        val termsList = grades.keys
+        val forLatestSemester = getSettingsPreference(context.getString(R.string.list_preference_dashboard_display)) == "1"
 
-        if (getSettingsPreference(context.getString(R.string.list_preference_dashboard_display)) == "1") forLatestSemester = true
-        periodGradeItemList.indices.forEach { termsList.add(periodGradeItemList[it].termIndicator) }
-
-        if (forLatestSemester)
-            if (termsList.contains("S2")) latestTerm = "S2"
-            else if (termsList.contains("S1")) latestTerm = "S1"
-            else if (termsList.contains("T4")) latestTerm = "T4"
-            else if (termsList.contains("T3")) latestTerm = "T3"
-            else if (termsList.contains("T2")) latestTerm = "T2"
-            else if (termsList.contains("T1")) latestTerm = "T1"
-            else latestTerm = ""
-        else
-            if (termsList.contains("T4")) latestTerm = "T4"
-            else if (termsList.contains("T3")) latestTerm = "T3"
-            else if (termsList.contains("T2")) latestTerm = "T2"
-            else if (termsList.contains("T1")) latestTerm = "T1"
-            else latestTerm = ""
-
-        try {
-            if (latestTerm == "") return periodGradeItemList[0]
-            else periodGradeItemList.forEach { if (it.termIndicator == latestTerm) return it }
-        } catch (e: Exception) {
+        if (forLatestSemester) {
+            if (termsList.contains("S2") && grades["S2"]!!.letter != "--") return "S2"
+            else if (termsList.contains("S1") && grades["S1"]!!.letter != "--") return "S1"
+            else if (termsList.contains("T4") && grades["T4"]!!.letter != "--") return "T4"
+            else if (termsList.contains("T3") && grades["T3"]!!.letter != "--") return "T3"
+            else if (termsList.contains("T2") && grades["T2"]!!.letter != "--") return "T2"
+            else if (termsList.contains("T1")) return "T1"
+        } else {
+            if (termsList.contains("T4") && grades["T4"]!!.letter != "--") return "T4"
+            else if (termsList.contains("T3") && grades["T3"]!!.letter != "--") return "T3"
+            else if (termsList.contains("T2") && grades["T2"]!!.letter != "--") return "T2"
+            else if (termsList.contains("T1")) return "T1"
         }
-        return null
+
+        return ""
     }
+
+    fun getLatestPeriodGrade(subject: Subject) = subject.grades[getLatestPeriod(subject.grades)]
 
     fun getLetterGradeByPercentageGrade(percentageGrade: Float): String {
 
@@ -103,85 +90,35 @@ class Utils(private val context: Context) {
     }
 
     // Parse the student data fetched.
-    // if succeed: return the subject data and the student information
-    // if not： return the error
-    fun parseJsonResult(jsonStr: String): ArrayList<Subject>? {
+    // if succeed: return the subject data and the student information.
+    // if not：IllegalArgumentException or JSONException may be thrown.
+    // the format of the JSON: (Sample)
+    /*
+    {
+        "information": (StudentInformation),
+        "sections": [
+            (Subject)...
+        ]
+    }
+     */
+    @Throws(IllegalArgumentException::class, JSONException::class)
+    fun parseJsonResult(jsonStr: String): Pair<StudentInformation, List<Subject>> {
 
-        // the format of the JSON: (Sample)
-        /*
-        {
-            "information": (StudentInformation),
-            "sections": [
-                (Subject)...
-            ]
+        val studentData = JSONObject(jsonStr)
+        if (!studentData.has("information")) { // not successful
+            Log.e("Utils.parseJsonResult", studentData.toString())
+            throw IllegalArgumentException("JSON Format Error")
         }
-         */
+        val studentInfo = StudentInformation(studentData.getJSONObject("information"))
+        val sections = studentData.getJSONArray("sections")
+        val subjects = (0..sections.length() - 1).map { Subject(sections.getJSONObject(it)) }
 
-        try {
-
-            val studentData = JSONObject(jsonStr)
-            if(!studentData.has("information")){ // not successful
-                return arrayListOf() // TODO: return the error
-            }
-            val studentInfo = StudentInformation(studentData.getJSONObject("information"))
-
-
-                val jsonData = JSONArray(jsonStr)
-                val dataMap = HashMap<String, Subject>()
-
-                for (i in 0..jsonData.length() - 1) {
-
-                    val termObj = jsonData.getJSONObject(i)
-                    // Turns assignments into an ArrayList
-                    val assignmentList = ArrayList<AssignmentItem>()
-                    if (!termObj.has("assignments")) continue
-                    val asmArray = termObj.getJSONArray("assignments")
-                    for (j in 0..asmArray.length() - 1) {
-                        val asmObj = asmArray.getJSONObject(j)
-                        val dates = asmObj.getString("date").split("/")
-                        val score = asmObj.getString("score")
-                        val grade = asmObj.getString("grade")
-                        val date = dates[2] + "/" + dates[0] + "/" + dates[1]
-                        assignmentList.add(AssignmentItem(asmObj.getString("assignment"),
-                                date, if (grade == "") "--" else asmObj.getString("percent"), if (score.endsWith("d")) context.getString(R.string.unpublished) else score,
-                                if (grade == "") "--" else grade, asmObj.getString("category"), termObj.getString("term")))
-                    }
-
-                    val periodGradeItem = Period(termObj.getString("term"),
-                            if (termObj.getString("grade") == "") "--" else termObj.getString("grade"), termObj.getString("mark"), assignmentList)
-
-                    // Put the term data into the course data, either already exists or be going to be created.
-                    val mainListItem = dataMap[termObj.getString("name")]
-                    if (mainListItem == null) { // The course data does not exist yet.
-
-                        val periodGradeList = ArrayList<Period>()
-                        periodGradeList.add(periodGradeItem)
-
-                        dataMap.put(termObj.getString("name"),
-                                Subject(termObj.getString("name"), termObj.getString("teacher"),
-                                        termObj.getString("block"), termObj.getString("room"), periodGradeList))
-
-                    } else { // Already exist. Just insert into it.
-                        mainListItem.addPeriodGradeItem(periodGradeItem)
-                    }
-                }
-
-                // Convert from HashMap to ArrayList
-                val dataList = ArrayList<Subject>()
-                dataList.addAll(dataMap.values)
-                Collections.sort(dataList, Comparator<Subject> { o1, o2 ->
-                    if (o1.blockLetter == "HR(A-E)") return@Comparator -1
-                    if (o2.blockLetter == "HR(A-E)") return@Comparator 1
-                    o1.blockLetter.compareTo(o2.blockLetter)
-                })
-                return dataList
-
-
-        } catch (e: JSONException) {
-            e.printStackTrace()
-        }
-
-        return null
+        Collections.sort(subjects, Comparator<Subject> { o1, o2 ->
+            if (o1.blockLetter == "HR(A-E)") return@Comparator -1
+            if (o2.blockLetter == "HR(A-E)") return@Comparator 1
+            o1.blockLetter.compareTo(o2.blockLetter)
+        })
+        return Pair(studentInfo, subjects)
     }
 
     /* IO */
@@ -230,8 +167,7 @@ class Utils(private val context: Context) {
     }
 
     @Throws(IOException::class)
-    fun readDataArrayList(): ArrayList<Subject>?
-            = parseJsonResult(readStringFromFile(context.getString(R.string.dataFileName))!!)
+    fun readDataArrayList() = parseJsonResult(readStringFromFile(context.getString(R.string.dataFileName))!!)
 
     @Throws(IOException::class)
     fun saveDataJson(jsonStr: String) = saveStringToFile(context.getString(R.string.dataFileName), jsonStr)
@@ -246,31 +182,28 @@ class Utils(private val context: Context) {
     // 3. read history grade from file
     // 4. update history grade
     // 5. save history grade
-    fun saveHistoryGrade(data: ArrayList<Subject>?) {
+    fun saveHistoryGrade(data: List<Subject>?) {
 
         if (data == null) {
             saveStringToFile("history.json", "{}")
         } else {
             // 1. read data into brief info
-            var pointSum = 0
+            var pointSum = 0.0
             var count = 0
             val gradeInfo = JSONArray() // [{"name":"...","grade":80.0}, ...]
             for (subject in data) {
                 val subInfo = JSONObject()
-                val leastPeriod = getLatestItem(subject) ?: continue
-                if (leastPeriod.termPercentageGrade == "--") {
-                    continue
-                }
+                val leastPeriod = getLatestPeriodGrade(subject) ?: continue
+                if (leastPeriod.percentage == "--") continue
 
-                subInfo.put("name", subject.subjectTitle)
-                subInfo.put("grade", leastPeriod.termPercentageGrade.toDouble())
-                if (!subject.subjectTitle.contains("Homeroom")) {
-                    pointSum += leastPeriod.termPercentageGrade.toInt()
-                    count += 1
+                subInfo.put("name", subject.name)
+                subInfo.put("grade", leastPeriod.percentage.toDouble())
+                if (!subject.name.contains("Homeroom")) {
+                    pointSum += leastPeriod.percentage.toDouble()
+                    count++
                 }
                 gradeInfo.put(subInfo)
             }
-
 
             // 2. calculate gpa
             val gpaInfo = JSONObject()

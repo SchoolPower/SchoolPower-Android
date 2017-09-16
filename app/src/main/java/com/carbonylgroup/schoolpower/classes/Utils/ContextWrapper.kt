@@ -9,8 +9,8 @@ import java.util.*
 class ContextWrapper(base: Context) : android.content.ContextWrapper(base) {
     companion object {
 
-        fun wrap(context: Context, newLocale: Locale): ContextWrapper {
-            var context = context
+        fun wrap(_context: Context, newLocale: Locale): ContextWrapper {
+            var context = _context
 
             val res = context.resources
             val configuration = res.configuration

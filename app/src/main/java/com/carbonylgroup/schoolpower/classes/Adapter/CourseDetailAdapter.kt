@@ -15,16 +15,15 @@ import com.carbonylgroup.schoolpower.R
 import com.carbonylgroup.schoolpower.R2
 import com.carbonylgroup.schoolpower.classes.Data.AssignmentItem
 import com.carbonylgroup.schoolpower.classes.Data.Subject
-import com.carbonylgroup.schoolpower.classes.Data.Period
 import com.carbonylgroup.schoolpower.classes.Utils.Utils
 import kotterknife.bindView
 import java.util.*
 
-class CourseDetailAdapter(private val context: Context, private val item: Subject) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class CourseDetailAdapter(private val context: Context, private val subject: Subject) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var presentingTermPos = 0
     private val utils: Utils = Utils(context)
-    private var termsList: ArrayList<String> = ArrayList()
+    private val termsList: ArrayList<String> = ArrayList()
     private var list: List<AssignmentItem>? = null
 
     init {
@@ -34,11 +33,8 @@ class CourseDetailAdapter(private val context: Context, private val item: Subjec
 
     private fun initTermList() {
 
-        val periodGradeItemList = item.periodArrayList
         termsList.add(context.getString(R.string.all_terms))
-        for (i in periodGradeItemList.indices)
-            termsList.add(periodGradeItemList[i].termIndicator)
-
+        subject.grades.keys.mapTo(termsList) { it }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -60,8 +56,8 @@ class CourseDetailAdapter(private val context: Context, private val item: Subjec
                 normalViewHolder.detail_assignment_name_tv.text = assignmentItem.title
                 normalViewHolder.detail_assignment_date_tv.text = assignmentItem.date
                 normalViewHolder.detail_assignment_percentage_tv.text = assignmentItem.percentage
-                normalViewHolder.detail_assignment_dividing_score_tv.text = assignmentItem.dividedScore
-                normalViewHolder.detail_assignment_grade_background.setBackgroundColor(utils.getColorByLetterGrade(context, assignmentItem.grade))
+                normalViewHolder.detail_assignment_dividing_score_tv.text = assignmentItem.getDividedScore()
+                normalViewHolder.detail_assignment_grade_background.setBackgroundColor(utils.getColorByLetterGrade(context, assignmentItem.letterGrade))
                 if (assignmentItem.isNew) {
                     normalViewHolder.detail_header_background.setBackgroundColor(ContextCompat.getColor(context, R.color.accent))
                     normalViewHolder.detail_assignment_name_tv.setTextColor(ContextCompat.getColor(context, R.color.white))
@@ -76,14 +72,14 @@ class CourseDetailAdapter(private val context: Context, private val item: Subjec
 
                 val headerViewHolder = holder
                 val termAdapter = ArrayAdapter(context, R.layout.term_selection_spinner, termsList)
-                val period: Period = utils.getLatestItem(item)!!
+                val period = utils.getLatestPeriodGrade(subject) ?: Subject.Grade("--", "--")
 
-                headerViewHolder.detail_letter_grade_tv.text = period.termLetterGrade
-                headerViewHolder.detail_percentage_grade_tv.text = period.termPercentageGrade
-                headerViewHolder.detail_header_teacher_name_tv.text = item.teacherName
-                headerViewHolder.detail_header_block_tv.text = context.getString(R.string.block) + " " + item.blockLetter
-                headerViewHolder.detail_header_room_tv.text = context.getString(R.string.room) + " " + item.roomNumber
-                headerViewHolder.detail_header_grade_background.setBackgroundColor(utils.getColorByLetterGrade(context, period.termLetterGrade))
+                headerViewHolder.detail_letter_grade_tv.text = period.letter
+                headerViewHolder.detail_percentage_grade_tv.text = period.percentage
+                headerViewHolder.detail_header_teacher_name_tv.text = subject.teacherName
+                headerViewHolder.detail_header_block_tv.text = context.getString(R.string.block) + " " + subject.blockLetter
+                headerViewHolder.detail_header_room_tv.text = context.getString(R.string.room) + " " + subject.roomNumber
+                headerViewHolder.detail_header_grade_background.setBackgroundColor(utils.getColorByLetterGrade(context, period.letter))
                 headerViewHolder.detail_term_select_spinner.adapter = termAdapter
                 headerViewHolder.detail_term_select_spinner.setSelection(presentingTermPos)
                 headerViewHolder.detail_term_select_spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
@@ -103,8 +99,7 @@ class CourseDetailAdapter(private val context: Context, private val item: Subjec
 
     override fun getItemCount(): Int {
 
-        if (list == null) return 0
-        if (list!!.isEmpty()) return 2
+        if (list == null || list!!.isEmpty()) return 2
         return list!!.size + 2
     }
 
@@ -140,11 +135,13 @@ class CourseDetailAdapter(private val context: Context, private val item: Subjec
     }
 
     private fun setTerm(term: String) {
-        list = item.getPeriodGradeItem(term)!!.assignmentItemArrayList
+        //TODO: filter by term
+        list = subject.assignments
     }
 
     private fun setAllTerms(termsList: ArrayList<*>) {
 
+        if (termsList.size <= 1) return
         if (termsList.contains("Y1")) setTerm("Y1")
         else if (termsList.contains("S1")) setTerm("S1")
         else if (termsList.contains("S2")) setTerm("S2")

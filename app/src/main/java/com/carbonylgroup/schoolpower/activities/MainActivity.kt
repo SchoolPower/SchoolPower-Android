@@ -27,6 +27,7 @@ import android.view.animation.DecelerateInterpolator
 import android.widget.TextView
 import co.ceryle.segmentedbutton.SegmentedButtonGroup
 import com.carbonylgroup.schoolpower.R
+import com.carbonylgroup.schoolpower.classes.Data.StudentInformation
 import com.carbonylgroup.schoolpower.classes.Data.Subject
 import com.carbonylgroup.schoolpower.classes.Transition.DetailsTransition
 import com.carbonylgroup.schoolpower.classes.Transition.TransitionHelper
@@ -49,7 +50,8 @@ import java.util.*
 class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     var presentFragment: Int = 0
-    var dataList: ArrayList<Subject>? = null
+    var studentInformation: StudentInformation? = null
+    var subjects: List<Subject>? = null
     var subjectTransporter: Subject? = null
 
     private var noConnection = false
@@ -112,7 +114,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
             }
             R.id.action_gpa -> {
 
-                if (dataList == null || dataList!!.count() == 0) {
+                if (subjects == null || subjects!!.count() == 0) {
 
                     val builder = AlertDialog.Builder(this)
                     builder.setMessage(getString(R.string.gpa_not_available_because))
@@ -128,20 +130,20 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                     var contain_hr = false
                     var contain_me = false
                     var num = 0
-                    for (i in dataList!!.indices) {
+                    for (i in subjects!!.indices) {
 
-                        val periods = dataList!![i]
-                        val gradeStr = utils.getLatestItem(periods)!!.termPercentageGrade
-                        if(gradeStr=="--") continue
+                        val subject = subjects!![i]
+                        val gradeStr = utils.getLatestPeriodGrade(subject)!!.percentage
+                        if (gradeStr == "--") continue
                         val grade = gradeStr.toDouble()
                         sum_gpa += grade
                         num += 1
-                        if (periods.subjectTitle.contains("Homeroom")) {
+                        if (subject.name.contains("Homeroom")) {
                             contain_hr = true
                             continue
                         }
                         gpa_except_hr += grade
-                        if (periods.subjectTitle.contains("Moral Education")) {
+                        if (subject.name.contains("Moral Education")) {
                             contain_me = true
                             continue
                         }
@@ -165,8 +167,8 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
 
                     gpa_dialog_percentage_front = gpaDialogView.findViewById(R.id.gpa_dialog_percentage_front)
                     gpa_dialog_percentage_back = gpaDialogView.findViewById(R.id.gpa_dialog_percentage_back)
-                    gpa_dialog_percentage_front.setFormatter({ prefix, suffix, value -> String.format("%.3f", value) + suffix })
-                    gpa_dialog_percentage_back.setFormatter({ prefix, suffix, value -> String.format("%.3f", value) + suffix })
+                    gpa_dialog_percentage_front.setFormatter({ _, suffix, value -> String.format("%.3f", value) + suffix })
+                    gpa_dialog_percentage_back.setFormatter({ _, suffix, value -> String.format("%.3f", value) + suffix })
                     gpa_dialog_percentage_front.setAutoStart(false)
                     gpa_dialog_percentage_front.setPrefix("")
                     gpa_dialog_percentage_front.setSuffix("%")
@@ -190,7 +192,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
 
                     gpaDialogBuilder.setView(gpaDialogView)
                     gpaDialogBuilder.setTitle("GPA")
-                    gpaDialogBuilder.setMessage(String.format(getString(R.string.your_gpa), utils.getLatestItem(dataList!![0])!!.termIndicator))
+                    gpaDialogBuilder.setMessage(String.format(getString(R.string.your_gpa), utils.getLatestPeriod(subjects!![0].grades)))
                     gpaDialogBuilder.setPositiveButton(getString(R.string.sweet), null)
                     gpaDialogBuilder.create().setCanceledOnTouchOutside(true)
                     gpaDialogBuilder.create().show()
@@ -244,8 +246,13 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
         toggleIcon = DrawerArrowDrawable(this)
         toggle = ActionBarDrawerToggle(this, drawer, mainToolBar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
 
-        val input = utils.readDataArrayList()
-        if (input != null) dataList = input
+        try {
+            val input = utils.readDataArrayList()
+            studentInformation = input.first
+            subjects = input.second
+        } catch(e: Exception) {
+            e.printStackTrace()
+        }
         initDataJson()
 
         //Start refreshing animation on startup refreshing data
@@ -390,7 +397,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
 
         animateDrawerToggle(false)
         hideToolBarItems(false)
-        if (dataList != null && dataList!!.count() != 0) homeFragment!!.notifyAdapter()
+        if (subjects != null && subjects!!.count() != 0) homeFragment!!.notifyAdapter()
 
         //TODO Bugs might occur when adding new menu items QAQ
         navigationView.menu.getItem(1).isChecked = false
@@ -413,7 +420,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                 .commit()
 
         hideToolBarItems(false)
-        if (dataList != null && dataList!!.count() != 0) homeFragment!!.notifyAdapter()
+        if (subjects != null && subjects!!.count() != 0) homeFragment!!.notifyAdapter()
         navigationView.menu.getItem(index).isChecked = false
         navigationView.menu.getItem(0).isChecked = true
     }
@@ -429,62 +436,50 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
     /* Other Method */
     fun initDataJson() {
 
-        val oldMainItemList = ArrayList<Subject>()
+        val oldSubjects = ArrayList<Subject>()
         val username = getSharedPreferences("accountData", Activity.MODE_PRIVATE).getString(getString(R.string.usernameKEY), "")
         val password = getSharedPreferences("accountData", Activity.MODE_PRIVATE).getString(getString(R.string.passwordKEY), "")
-        if (dataList != null) oldMainItemList.addAll(dataList!!)
+        if (subjects != null) oldSubjects.addAll(subjects!!)
 
         Thread(postData(
                 getString(R.string.postURL),
                 getString(R.string.username_equals) + username + "&" + getString(R.string.password_equals) + password,
                 object : Handler() {
                     override fun handleMessage(msg: Message) {
-                        val messages = msg.obj.toString().split("\n".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+                        val strMessage = msg.obj.toString().replace("\n", "")
 
-                        if (msg.obj.toString().contains(getString(R.string.error_wrong_password))) {
+                        if (strMessage.contains("Something went wrong!")) {
 
                             utils.showSnackBar(this@MainActivity, findViewById(R.id.main_coordinate_layout), getString(R.string.wrong_password), true)
                             signOut()
 
-                        } else if (msg.obj.toString().contains(getString(R.string.json_begin))) {
+                        } else if (strMessage.contains(getString(R.string.json_begin))) {
 
-                            val spEditor = getSharedPreferences(getString(R.string.accountData), Activity.MODE_PRIVATE).edit()
-                            spEditor.putString(getString(R.string.student_name), messages[1])
-                            spEditor.apply()
+                            utils.saveDataJson(strMessage)
+                            val data = utils.parseJsonResult(strMessage)
+                            studentInformation = data.first
+                            subjects = data.second
+                            if (subjects!!.isEmpty()) {
+                                homeFragment!!.refreshAdapterToEmpty()
+                            }
+                            utils.saveHistoryGrade(subjects!!)
 
-                            if (messages.size == 3 && !messages[2].isEmpty()) {
-                                val jsonStr = messages[2]
-                                utils.saveDataJson(jsonStr)
-                                dataList = utils.parseJsonResult(jsonStr)
-                                utils.saveHistoryGrade(dataList!!)
-
-                                //Diff
-                                if (dataList!!.size == oldMainItemList.size) {
-                                    for (i in dataList!!.indices) {
-                                        val periods = dataList!![i].periodArrayList
-                                        val oldPeriods = oldMainItemList[i].periodArrayList
-                                        if (periods.size != oldPeriods.size) continue
-                                        for (j in periods.indices) {
-                                            val newAssignmentListCollection = periods[j].assignmentItemArrayList
-                                            val oldAssignmentListCollection = oldPeriods[j].assignmentItemArrayList
-                                            for (item in newAssignmentListCollection) {
-                                                val found = oldAssignmentListCollection.any { it.title == item.title && it.dividedScore == item.dividedScore && it.date == item.date && !it.isNew }
-                                                if (!found)
-                                                    item.isNew = true
-                                            }
-                                        }
+                            // Mark new or changed assignments
+                            if (subjects!!.size == oldSubjects.size) {
+                                for (i in subjects!!.indices) {
+                                    val newAssignmentListCollection = subjects!![i].assignments
+                                    val oldAssignmentListCollection = oldSubjects[i].assignments
+                                    for (item in newAssignmentListCollection) {
+                                        // if no item in oldAssignmentListCollection has the same title, score and date as those of the new one, then the assignment should be marked.
+                                        val found = oldAssignmentListCollection.any { it.title == item.title && it.score == item.score && it.date == item.date && !it.isNew }
+                                        if (!found) item.isNew = true
                                     }
                                 }
-                                homeFragment!!.refreshAdapter(dataList!!)
-                                utils.showSnackBar(this@MainActivity, findViewById(R.id.main_coordinate_layout), getString(R.string.data_updated), false)
                             }
 
-                        } else if (messages.size == 3 && messages[2] == "[]") {
-
-                            utils.saveDataJson(messages[2])
-                            dataList = arrayListOf()
-                            homeFragment!!.refreshAdapterToEmpty()
+                            homeFragment!!.refreshAdapter(subjects!!)
                             utils.showSnackBar(this@MainActivity, findViewById(R.id.main_coordinate_layout), getString(R.string.data_updated), false)
+
 
                         } else {
 

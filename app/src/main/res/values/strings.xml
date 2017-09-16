@@ -99,7 +99,7 @@
     <string name="username_equals">username=</string>
     <string name="password_equals">password=</string>
     <string name="error_wrong_password">{\"error\":1,\"</string>
-    <string name="json_begin">[{\"</string>
+    <string name="json_begin">{</string>
 
     <string name="postURL">https://api.schoolpower.studio:8443/api/2.0/get_data.php</string>
     <string name="updateURL">https://api.schoolpower.studio:8443/api/update.json</string>

@@ -32,7 +32,7 @@ class HomeFragment : TransitionHelper.BaseFragment() {
     private var view_private: View? = null
     private var fab_in: ScaleAnimation? = null
     private var fab_out: ScaleAnimation? = null
-    private var dataList: ArrayList<Subject>? = null
+    private var dataList: List<Subject>? = null
     private var unfoldedIndexesBackUp = HashSet<Int>()
     private var adapter: FoldingCellListAdapter? = null
     private var courseDetailFragment: CourseDetailFragment? = null
@@ -71,7 +71,7 @@ class HomeFragment : TransitionHelper.BaseFragment() {
     private fun initValue() {
 
         utils = Utils(activity)
-        dataList = MainActivity.of(activity).dataList
+        dataList = MainActivity.of(activity).subjects
         MainActivity.of(activity).presentFragment = 0
         MainActivity.of(activity).setToolBarElevation(utils!!.dpToPx(10))
         MainActivity.of(activity).setToolBarTitle(getString(R.string.dashboard))
@@ -125,7 +125,7 @@ class HomeFragment : TransitionHelper.BaseFragment() {
         invisiblizeListView()
     }
 
-    fun refreshAdapter(newDataList: ArrayList<Subject>) {
+    fun refreshAdapter(newDataList: List<Subject>) {
 
         dataList = newDataList
         if (adapter == null) initValue()

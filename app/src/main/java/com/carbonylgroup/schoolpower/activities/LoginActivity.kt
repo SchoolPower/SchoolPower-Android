@@ -11,10 +11,8 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Message
-import android.util.Log
 import android.view.View
 import android.widget.EditText
-
 import com.carbonylgroup.schoolpower.R
 import com.carbonylgroup.schoolpower.classes.Utils.Utils
 import com.carbonylgroup.schoolpower.classes.Utils.postData
@@ -22,7 +20,7 @@ import com.carbonylgroup.schoolpower.classes.Utils.postData
 
 class LoginActivity : Activity() {
 
-    private var utils: Utils? = null
+    private lateinit var utils: Utils
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -34,7 +32,7 @@ class LoginActivity : Activity() {
         initDialog()
         initValue()
 
-        utils!!.checkUpdate()
+        utils.checkUpdate()
     }
 
     private fun checkIfLoggedIn() {
@@ -89,25 +87,26 @@ class LoginActivity : Activity() {
                     override fun handleMessage(msg: Message) {
 
                         progressDialog.dismiss()
-                        val strMessage = msg.obj.toString()
-                        val messages = strMessage.split("\n".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
-                        if (strMessage.contains(getString(R.string.error_wrong_password)))
-                            utils!!.showSnackBar(this@LoginActivity, findViewById(R.id.login_coordinate_layout), getString(R.string.wrong_password), true)
-                        else if (strMessage.contains(getString(R.string.json_begin)) || messages[2] == "[]") {
+                        val strMessage = msg.obj.toString().replace("\n", "")
+                        if (strMessage.contains("Something went wrong!"))
+                            utils.showSnackBar(this@LoginActivity, findViewById(R.id.login_coordinate_layout), getString(R.string.wrong_password), true)
+                        else if (strMessage.contains(getString(R.string.json_begin))) {
+
+                            val data = utils.parseJsonResult(strMessage)
 
                             val spEditor = getSharedPreferences(getString(R.string.accountData), Activity.MODE_PRIVATE).edit()
                             spEditor.putString(getString(R.string.usernameKEY), username)
                             spEditor.putString(getString(R.string.passwordKEY), password)
                             spEditor.putBoolean(getString(R.string.loggedIn), true)
-                            spEditor.putString(getString(R.string.student_name), messages[1])
+                            spEditor.putString(getString(R.string.student_name), data.first.getFullName())
                             spEditor.apply()
 
-                            utils!!.saveDataJson(messages[2])
-                            utils!!.saveHistoryGrade(utils!!.parseJsonResult(messages[2]))
+                            utils.saveDataJson(strMessage)
+                            utils.saveHistoryGrade(data.second)
 
                             startMainActivity()
 
-                        } else utils!!.showSnackBar(this@LoginActivity, findViewById(R.id.login_coordinate_layout), getString(R.string.no_connection), true)
+                        } else utils.showSnackBar(this@LoginActivity, findViewById(R.id.login_coordinate_layout), getString(R.string.no_connection), true)
                     }
                 })).start()
 

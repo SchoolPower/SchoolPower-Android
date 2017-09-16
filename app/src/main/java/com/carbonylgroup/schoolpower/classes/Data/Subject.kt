@@ -16,7 +16,24 @@ import java.util.*
             (AssignmentItem)...
         ],
         "expression": "1(A-E)",
-        "finalGrades": [],
+        "finalGrades": {
+                "X1": {
+                    "percentage": "0.0",
+                    "letter": "--"
+                },
+                "T2": {
+                    "percentage": "0.0",
+                    "letter": "--"
+                },
+                "T1": {
+                    "percentage": "80.0",
+                    "letter": "B"
+                },
+                "S1": {
+                    "percentage": "80.0",
+                    "letter": "B"
+                }
+            ,
         "name": "Course Name",
         "roomName": "100",
         "teacher": {
@@ -29,21 +46,30 @@ import java.util.*
  */
 
 class Subject(json: JSONObject) : Serializable {
-    val subjectTitle: String
-    val teacherName: String
-    val blockLetter: String
-    val roomNumber: String
-    val periodArrayList: ArrayList<Period>
+    data class Grade(val percentage: String, val letter: String)
 
-    init{
-        
+    val name: String = json.getString("name")
+    val teacherName: String = json.getJSONObject("teacher").let { obj -> obj.getString("firstName") + " " + obj.getString("lastName") }
+    val blockLetter: String = json.getString("expression")
+    val roomNumber: String = json.getString("roomName")
+    val assignments: ArrayList<AssignmentItem> = arrayListOf()
+    val grades: HashMap<String, Grade> = hashMapOf()
+
+    init {
+        if (!json.isNull("assignments")) {
+            val jsonAssignments = json.getJSONArray("assignments")
+            (0..jsonAssignments.length() - 1).mapTo(assignments) { AssignmentItem(jsonAssignments.getJSONObject(it)) }
+        }
+
+        if (!json.isNull("finalGrades")) {
+            val finalGrades = json.getJSONObject("finalGrades")
+            for (key in finalGrades.keys()) {
+                val grade = finalGrades.getJSONObject(key)
+                grades[key] = Grade(grade.getString("percent").toDouble().toInt().toString(), grade.getString("letter"))
+            }
+        }
+
     }
 
-    fun getPeriodGradeItem(term: String) = periodArrayList.firstOrNull { term == it.termIndicator }
-
-    fun getShortName() = Utils.getShortName(subjectTitle)
-
-    fun addPeriodGradeItem(pgi: Period) {
-        periodArrayList.add(pgi)
-    }
+    fun getShortName() = Utils.getShortName(name)
 }

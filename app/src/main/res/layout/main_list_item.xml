@@ -15,9 +15,9 @@
         android:visibility="gone">
 
         <RelativeLayout
+            android:id="@+id/detail_header_background"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/detail_header_background"
             android:background="@color/white">
 
             <RelativeLayout
@@ -33,11 +33,11 @@
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentTop="true"
                     android:layout_marginEnd="15dp"
-                    tool:text="100"
                     android:fontFamily="sans-serif-light"
                     android:textAppearance="@android:style/TextAppearance.Material.Title"
                     android:textColor="@color/white"
-                    android:textSize="65sp" />
+                    android:textSize="65sp"
+                    tool:text="100" />
 
                 <TextView
                     android:id="@+id/detail_subject_title_tv"
@@ -70,10 +70,11 @@
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/unfolded_grade_recycler_view"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_alignParentBottom="true"
                 android:layout_below="@id/unfold_header_view"
-                android:layout_marginTop="30dp">
+                android:layout_marginTop="30dp"
+                android:minHeight="120dp">
 
             </android.support.v7.widget.RecyclerView>
 
@@ -81,10 +82,10 @@
                 android:id="@+id/floating_action_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
                 android:layout_alignParentEnd="true"
-                android:layout_marginTop="112dp"
+                android:layout_alignParentTop="true"
                 android:layout_marginEnd="20dp"
+                android:layout_marginTop="112dp"
                 android:src="@drawable/ic_keyboard_arrow_right_white_48dp"
                 app:rippleColor="@color/white" />
 
@@ -116,10 +117,10 @@
                     android:id="@+id/fold_letter_grade_tv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    tool:text="A"
                     android:textAlignment="center"
                     android:textColor="@color/white"
-                    android:textSize="25sp" />
+                    android:textSize="25sp"
+                    tool:text="A" />
 
                 <TextView
                     android:id="@+id/fold_percentage_grade_tv"
@@ -127,10 +128,10 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/fold_letter_grade_tv"
                     android:layout_marginTop="5dp"
-                    tool:text="100"
                     android:textAlignment="center"
                     android:textColor="@color/white"
-                    android:textSize="30sp" />
+                    android:textSize="30sp"
+                    tool:text="100" />
 
             </RelativeLayout>
 

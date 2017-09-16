@@ -12,19 +12,18 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
 
-import java.util.ArrayList
-
 import com.carbonylgroup.schoolpower.R
 import com.carbonylgroup.schoolpower.R2
-import com.carbonylgroup.schoolpower.classes.Data.Period
+import com.carbonylgroup.schoolpower.classes.Data.Subject
 import com.carbonylgroup.schoolpower.classes.Utils.Utils
 import kotterknife.bindView
 
-class PeriodGradeAdapter(private val context: Context, objects: ArrayList<Period>) : RecyclerView.Adapter<PeriodGradeAdapter.PeriodGradeViewHolder>() {
+class PeriodGradeAdapter(private val context: Context, objects: Map<String, Subject.Grade>) : RecyclerView.Adapter<PeriodGradeAdapter.PeriodGradeViewHolder>() {
 
     private val inflater: LayoutInflater = LayoutInflater.from(context)
-    private val list: List<Period> = objects
+    private val gradeMap: Map<String, Subject.Grade> = objects
     private val utils: Utils = Utils(context)
+    private val keys = objects.keys.toTypedArray()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PeriodGradeViewHolder {
 
@@ -34,15 +33,15 @@ class PeriodGradeAdapter(private val context: Context, objects: ArrayList<Period
 
     override fun onBindViewHolder(viewHolder: PeriodGradeViewHolder, position: Int) {
 
-        val item = list[position]
-        viewHolder.period_indicator.text = item.termIndicator
-        viewHolder.period_latter_grade.text = item.termLetterGrade
-        viewHolder.period_percentage_grade.text = item.termPercentageGrade
-        viewHolder.period_grade_background.setBackgroundColor(utils.getColorByPeriodItem(context, item))
+        val item = gradeMap[keys[position]]!!
+        viewHolder.period_indicator.text = keys[position]
+        viewHolder.period_latter_grade.text = item.letter
+        viewHolder.period_percentage_grade.text = item.percentage
+        viewHolder.period_grade_background.setBackgroundColor(utils.getColorByLetterGrade(context, item.letter))
     }
 
     override fun getItemCount(): Int {
-        return list.size
+        return gradeMap.size
     }
 
     class PeriodGradeViewHolder internal constructor(view: View) : RecyclerView.ViewHolder(view) {
