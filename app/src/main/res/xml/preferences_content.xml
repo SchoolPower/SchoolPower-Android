@@ -15,10 +15,15 @@
             android:defaultValue="0"
             android:entries="@array/list_preference_display_types_entries"
             android:entryValues="@array/list_preference_display_types_values"
-            android:key="@string/list_preference_dashboard_display"
+            android:key="list_preference_dashboard_display"
             android:summary="%s"
             android:title="@string/dashboard_displays" />
 
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="list_preference_dashboard_hide_inactive"
+            android:summary="@string/hide_inactive_summary"
+            android:title="@string/hide_inactive_title" />
     </PreferenceCategory>
 
 </PreferenceScreen>

@@ -126,7 +126,6 @@ class HomeFragment : TransitionHelper.BaseFragment() {
     }
 
     fun refreshAdapter(newDataList: List<Subject>) {
-
         dataList = newDataList
         if (adapter == null) initValue()
         adapter!!.setMainListItems(newDataList)
