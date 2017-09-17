@@ -238,7 +238,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
     private fun initValue() {
 
         MobileAds.initialize(this, getString(R.string.adMob_app_id))
-        mAdView = findViewById(R.id.adView) as AdView
+        mAdView = findViewById<AdView>(R.id.adView)
         val adRequest = AdRequest.Builder().build()
         mAdView.loadAd(adRequest)
 
@@ -284,7 +284,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
 
     private fun initDrawer() {
 
-        navigationView = findViewById(R.id.nav_view) as NavigationView
+        navigationView = findViewById<NavigationView>(R.id.nav_view)
         navigationView.setNavigationItemSelectedListener(this)
 
         toggle.isDrawerIndicatorEnabled = false
@@ -353,7 +353,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
 
         val id = item.itemId
-        val drawer = findViewById(R.id.drawer_layout) as DrawerLayout
+        val drawer = findViewById<DrawerLayout>(R.id.drawer_layout)
         gotoFragmentWithMenuItemId(id)
         drawer.closeDrawer(GravityCompat.START)
         return true
@@ -375,6 +375,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                 .replace(R.id.content_view, homeFragment)
                 .addToBackStack(null)
                 .commit()
+
 
         MainActivity.of(this).setToolBarColor(ContextCompat.getColor(this, R.color.primary), true)
         animateDrawerToggle(false)

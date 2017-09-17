@@ -2,7 +2,7 @@
 
 <resources>
 
-    <style name="Design" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="Design" parent="Base.Theme.AppCompat.Light.DarkActionBar">
         <item name="windowNoTitle">true</item>
         <item name="windowActionBar">false</item>
         <item name="android:windowTranslucentNavigation">false</item>
