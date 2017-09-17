@@ -139,7 +139,7 @@ class ChartFragment : Fragment() {
                 }
                 var minGrade = 100.0f
                 for (it in data) {
-                    val periodGrade = utils.getLatestPeriodGrade(it)!!.percentage.toFloat()
+                    val periodGrade = (utils.getLatestPeriodGrade(it) ?: continue).percentage.toFloat()
                     entries.add(RadarEntry(periodGrade))
                     if (periodGrade < minGrade) minGrade = periodGrade
                 }
