@@ -49,7 +49,7 @@ class Utils(private val context: Context) {
     fun getLatestPeriod(grades: Map<String, Subject.Grade>): String? {
 
         val termsList = grades.keys
-        val forLatestSemester = getSettingsPreference(context.getString(R.string.list_preference_dashboard_display)) == "1"
+        val forLatestSemester = getSettingsPreference("list_preference_dashboard_display") == "1"
 
         if (forLatestSemester) {
             if (termsList.contains("S2") && grades["S2"]!!.letter != "--") return "S2"

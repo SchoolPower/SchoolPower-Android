@@ -133,9 +133,9 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                     for (i in subjects!!.indices) {
 
                         val subject = subjects!![i]
-                        val gradeStr = utils.getLatestPeriodGrade(subject)!!.percentage
-                        if (gradeStr == "--") continue
-                        val grade = gradeStr.toDouble()
+                        val periodGrade = utils.getLatestPeriodGrade(subject) ?: continue
+                        if (periodGrade.percentage == "--" || periodGrade.letter == "--") continue
+                        val grade = periodGrade.percentage.toDouble()
                         sum_gpa += grade
                         num += 1
                         if (subject.name.contains("Homeroom")) {
