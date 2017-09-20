@@ -4,6 +4,8 @@
 
 package com.carbonylgroup.schoolpower.classes.Adapter
 
+import android.app.Activity
+import android.app.AlertDialog
 import android.content.Context
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.RecyclerView
@@ -66,6 +68,16 @@ class CourseDetailAdapter(private val context: Context, private val subject: Sub
                     normalViewHolder.detail_header_background.setBackgroundColor(ContextCompat.getColor(context, R.color.white))
                     normalViewHolder.detail_assignment_name_tv.setTextColor(ContextCompat.getColor(context, R.color.text_primary_black))
                     normalViewHolder.detail_assignment_date_tv.setTextColor(ContextCompat.getColor(context, R.color.text_tertiary_black))
+                }
+                normalViewHolder.detail_header_background.setOnLongClickListener {
+                    if(context.getSharedPreferences("other", Activity.MODE_PRIVATE).getBoolean("developer_mode", false)){
+                        val builder = AlertDialog.Builder(context)
+                        builder.setTitle("Developer Mode")
+                        builder.setMessage("Name: ${assignmentItem.title}\nWeight: ${assignmentItem.weight}\nInclude in final grade: ${assignmentItem.includeInFinalGrade}")
+                        builder.setPositiveButton("Okay", null)
+                        builder.show()
+                    }
+                    true
                 }
 
             } else if (holder is HeaderViewHolder) {

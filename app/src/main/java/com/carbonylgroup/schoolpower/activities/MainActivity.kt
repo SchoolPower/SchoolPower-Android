@@ -24,6 +24,7 @@ import android.support.v7.graphics.drawable.DrawerArrowDrawable
 import android.support.v7.widget.Toolbar
 import android.view.*
 import android.view.animation.DecelerateInterpolator
+import android.widget.ImageView
 import android.widget.TextView
 import co.ceryle.segmentedbutton.SegmentedButtonGroup
 import com.carbonylgroup.schoolpower.R
@@ -294,6 +295,14 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
         navigationView.getHeaderView(0).findViewById<TextView>(R.id.nav_header_username).text = getUsername()
         navigationView.getHeaderView(0).findViewById<TextView>(R.id.nav_header_id).text = getUserID()
 
+        navigationView.getHeaderView(0).findViewById<ImageView>(R.id.SchoolPowerLogo).setOnLongClickListener {
+            val pref = getSharedPreferences("other", Activity.MODE_PRIVATE)
+            val spEditor = pref.edit()
+            spEditor.putBoolean("developer_mode", !pref.getBoolean("developer_mode", false))
+            spEditor.apply()
+            utils.showSnackBar(this@MainActivity, findViewById(R.id.main_coordinate_layout), "Developer Mode: "+pref.getBoolean("developer_mode", false).toString(), false)
+            true
+        }
     }
 
     /* Fragments Handler */
@@ -334,6 +343,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                         .withAboutVersionShown(true)
                         .withAboutDescription(getString(R.string.i_love_open_source))
                         .fragment()
+
                 transaction.setCustomAnimations(R.animator.slide_from_right_in, R.animator.slide_to_left_out)
                         .replace(R.id.content_view, aboutFragment)
                 setToolBarTitle(getString(R.string.about))
