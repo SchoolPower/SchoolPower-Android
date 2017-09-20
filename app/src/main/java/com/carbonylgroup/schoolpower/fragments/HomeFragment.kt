@@ -5,6 +5,7 @@
 package com.carbonylgroup.schoolpower.fragments
 
 import android.os.Bundle
+import android.preference.PreferenceManager
 import android.support.v4.widget.SwipeRefreshLayout
 import android.view.LayoutInflater
 import android.view.View
@@ -24,7 +25,6 @@ import com.carbonylgroup.schoolpower.classes.Utils.Utils
 import com.ramotion.foldingcell.FoldingCell
 import java.util.*
 
-
 class HomeFragment : TransitionHelper.BaseFragment() {
 
     private var utils: Utils? = null
@@ -32,7 +32,7 @@ class HomeFragment : TransitionHelper.BaseFragment() {
     private var view_private: View? = null
     private var fab_in: ScaleAnimation? = null
     private var fab_out: ScaleAnimation? = null
-    private var dataList: List<Subject>? = null
+    private var subjects: List<Subject>? = null
     private var unfoldedIndexesBackUp = HashSet<Int>()
     private var adapter: FoldingCellListAdapter? = null
     private var courseDetailFragment: CourseDetailFragment? = null
@@ -71,7 +71,7 @@ class HomeFragment : TransitionHelper.BaseFragment() {
     private fun initValue() {
 
         utils = Utils(activity)
-        dataList = MainActivity.of(activity).subjects
+        subjects = MainActivity.of(activity).subjects
         MainActivity.of(activity).presentFragment = 0
         MainActivity.of(activity).setToolBarElevation(utils!!.dpToPx(10))
         MainActivity.of(activity).setToolBarTitle(getString(R.string.dashboard))
@@ -80,16 +80,31 @@ class HomeFragment : TransitionHelper.BaseFragment() {
         home_swipe_refresh_layout!!.setColorSchemeResources(R.color.accent, R.color.A_score_green, R.color.B_score_green,
                 R.color.Cp_score_yellow, R.color.C_score_orange, R.color.Cm_score_red, R.color.primary)
         home_swipe_refresh_layout!!.setOnRefreshListener { MainActivity.of(activity).initDataJson() }
-        if (dataList == null || dataList!!.count() == 0) refreshAdapterToEmpty()
+        if (subjects == null || subjects!!.count() == 0) refreshAdapterToEmpty()
         else initAdapter()
     }
 
+    private fun getFilteredSubjects(subjects: List<Subject>) : List<Subject>{
+        val filteredSubjects : List<Subject>
+        if (PreferenceManager.getDefaultSharedPreferences(activity).getBoolean("list_preference_dashboard_hide_inactive", false)) {
+
+            filteredSubjects = ArrayList<Subject>()
+            subjects
+                    .filter { it.assignments.size != 0 || it.grades.size != 0 }
+                    .forEach { filteredSubjects.add(it) }
+
+        }else{
+            filteredSubjects = subjects
+        }
+        return filteredSubjects
+    }
     private fun initAdapter() {
 
-        if (dataList != null && dataList!!.count() != 0) theListView.visibility = View.VISIBLE
-        adapter = FoldingCellListAdapter(activity, dataList, unfoldedIndexesBackUp, transformedPosition)
+        if (subjects != null && subjects!!.count() != 0) theListView.visibility = View.VISIBLE
+
+        adapter = FoldingCellListAdapter(activity, getFilteredSubjects(subjects!!), unfoldedIndexesBackUp, transformedPosition)
         adapter!!.setDefaultRequestBtnClickListener(View.OnClickListener { v ->
-            MainActivity.of(activity).subjectTransporter = dataList!![theListView.getPositionForView(v)]
+            MainActivity.of(activity).subjectTransporter = subjects!![theListView.getPositionForView(v)]
             if (transformedPosition != -1) {
                 val itemView = getItemViewByPosition(transformedPosition, theListView)
                 itemView.findViewById<View>(R.id.unfold_header_view).transitionName = ""
@@ -120,15 +135,15 @@ class HomeFragment : TransitionHelper.BaseFragment() {
 
     fun refreshAdapterToEmpty() {
 
-        dataList = arrayListOf()
+        subjects = arrayListOf()
         setRefreshing(false)
         invisiblizeListView()
     }
 
-    fun refreshAdapter(newDataList: List<Subject>) {
-        dataList = newDataList
+    fun refreshAdapter(newSubjects: List<Subject>) {
+        subjects = newSubjects
         if (adapter == null) initValue()
-        adapter!!.setMainListItems(newDataList)
+        adapter!!.setMainListItems(getFilteredSubjects(newSubjects))
         adapter!!.notifyDataSetChanged()
         setRefreshing(false)
     }

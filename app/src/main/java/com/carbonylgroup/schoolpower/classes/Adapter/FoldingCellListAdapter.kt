@@ -13,10 +13,7 @@ import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.DecelerateInterpolator
 import android.view.animation.ScaleAnimation
-import android.widget.ArrayAdapter
-import android.widget.Filterable
-import android.widget.RelativeLayout
-import android.widget.TextView
+import android.widget.*
 import com.carbonylgroup.schoolpower.R
 import com.carbonylgroup.schoolpower.classes.Data.Subject
 import com.carbonylgroup.schoolpower.classes.Utils.Utils
@@ -27,7 +24,8 @@ import java.util.*
  * Simple example of ListAdapter for using with Folding Cell
  * Adapter holds indexes of unfolded elements for correct work with default reusable views behavior
  */
-class FoldingCellListAdapter(context: Context, private var subjects: List<Subject>?, val unfoldedIndexes: HashSet<Int>, private val transformedPosition: Int) : ArrayAdapter<Subject>(context, 0, subjects), Filterable {
+// TODO: fix the folding problem when hiding inactive subjects
+class FoldingCellListAdapter(context: Context, private var subjects: List<Subject>?, val unfoldedIndexes: HashSet<Int>, private val transformedPosition: Int) : ArrayAdapter<Subject>(context, 0, subjects) {
 
     private var fab_in: Animation? = null
     private var utils: Utils = Utils(getContext())
@@ -158,16 +156,6 @@ class FoldingCellListAdapter(context: Context, private var subjects: List<Subjec
 
     fun setDefaultRequestBtnClickListener(defaultRequestBtnClickListener: View.OnClickListener) {
         this.defaultRequestBtnClickListener = defaultRequestBtnClickListener
-    }
-
-    fun perform() {
-        if (PreferenceManager.getDefaultSharedPreferences(context).getBoolean("list_preference_dashboard_hide_inactive", false)) {
-            val filteredSubjects = ArrayList<Subject>()
-            subjects!!
-                    .filter { it.assignments.size != 0 || it.grades.size != 0 }
-                    .forEach { filteredSubjects.add(it) }
-            subjects = filteredSubjects
-        }
     }
 
     private class ViewHolder {
