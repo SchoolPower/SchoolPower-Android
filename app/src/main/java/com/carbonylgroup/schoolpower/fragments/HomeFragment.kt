@@ -5,7 +5,6 @@
 package com.carbonylgroup.schoolpower.fragments
 
 import android.os.Bundle
-import android.preference.PreferenceManager
 import android.support.v4.widget.SwipeRefreshLayout
 import android.view.LayoutInflater
 import android.view.View
@@ -84,38 +83,26 @@ class HomeFragment : TransitionHelper.BaseFragment() {
         else initAdapter()
     }
 
-    private fun getFilteredSubjects(subjects: List<Subject>) : List<Subject>{
-        val filteredSubjects : List<Subject>
-        if (PreferenceManager.getDefaultSharedPreferences(activity).getBoolean("list_preference_dashboard_hide_inactive", false)) {
-
-            filteredSubjects = ArrayList<Subject>()
-            subjects
-                    .filter { it.assignments.size != 0 || it.grades.size != 0 }
-                    .forEach { filteredSubjects.add(it) }
-
-        }else{
-            filteredSubjects = subjects
+    private fun adaptrSetDefaultClickListener(adapter: FoldingCellListAdapter) = adapter.setDefaultRequestBtnClickListener(View.OnClickListener { v ->
+        MainActivity.of(activity).subjectTransporter = utils!!.getFilteredSubjects(subjects!!)[theListView.getPositionForView(v)]
+        if (transformedPosition != -1) {
+            val itemView = getItemViewByPosition(transformedPosition, theListView)
+            itemView.findViewById<View>(R.id.unfold_header_view).transitionName = ""
+            itemView.findViewById<View>(R.id.detail_subject_title_tv).transitionName = ""
         }
-        return filteredSubjects
-    }
+        transformedPosition = theListView.getPositionForView(v)
+        val itemView = getItemViewByPosition(theListView.getPositionForView(v), theListView)
+        itemView.findViewById<View>(R.id.floating_action_button).startAnimation(fab_out)
+        itemView.findViewById<View>(R.id.floating_action_button).visibility = View.GONE
+        gotoCourseDetail(itemView.findViewById(R.id.unfold_header_view), itemView.findViewById(R.id.detail_subject_title_tv), transformedPosition)
+    })
     private fun initAdapter() {
 
         if (subjects != null && subjects!!.count() != 0) theListView.visibility = View.VISIBLE
 
-        adapter = FoldingCellListAdapter(activity, getFilteredSubjects(subjects!!), unfoldedIndexesBackUp, transformedPosition)
-        adapter!!.setDefaultRequestBtnClickListener(View.OnClickListener { v ->
-            MainActivity.of(activity).subjectTransporter = subjects!![theListView.getPositionForView(v)]
-            if (transformedPosition != -1) {
-                val itemView = getItemViewByPosition(transformedPosition, theListView)
-                itemView.findViewById<View>(R.id.unfold_header_view).transitionName = ""
-                itemView.findViewById<View>(R.id.detail_subject_title_tv).transitionName = ""
-            }
-            transformedPosition = theListView.getPositionForView(v)
-            val itemView = getItemViewByPosition(theListView.getPositionForView(v), theListView)
-            itemView.findViewById<View>(R.id.floating_action_button).startAnimation(fab_out)
-            itemView.findViewById<View>(R.id.floating_action_button).visibility = View.GONE
-            gotoCourseDetail(itemView.findViewById(R.id.unfold_header_view), itemView.findViewById(R.id.detail_subject_title_tv), transformedPosition)
-        })
+        adapter = FoldingCellListAdapter(activity, utils!!.getFilteredSubjects(subjects!!), unfoldedIndexesBackUp, transformedPosition)
+        adaptrSetDefaultClickListener(adapter!!)
+
         theListView.onItemClickListener = AdapterView.OnItemClickListener { _, view, pos, _ ->
             adapter!!.registerToggle(pos)
             (view as FoldingCell).toggle(false)
@@ -143,7 +130,8 @@ class HomeFragment : TransitionHelper.BaseFragment() {
     fun refreshAdapter(newSubjects: List<Subject>) {
         subjects = newSubjects
         if (adapter == null) initValue()
-        adapter!!.setMainListItems(getFilteredSubjects(newSubjects))
+        adapter!!.setMainListItems(utils!!.getFilteredSubjects(newSubjects))
+        adaptrSetDefaultClickListener(adapter!!)
         adapter!!.notifyDataSetChanged()
         setRefreshing(false)
     }

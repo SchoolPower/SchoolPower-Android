@@ -11,6 +11,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Handler
 import android.os.Message
+import android.preference.PreferenceManager
 import android.support.design.widget.Snackbar
 import android.support.v4.content.ContextCompat
 import android.util.DisplayMetrics
@@ -257,6 +258,20 @@ class Utils(private val context: Context) {
         })).start()
     }
 
+    fun getFilteredSubjects(subjects: List<Subject>): List<Subject> {
+        val filteredSubjects: List<Subject>
+        if (PreferenceManager.getDefaultSharedPreferences(context).getBoolean("list_preference_dashboard_hide_inactive", false)) {
+
+            filteredSubjects = ArrayList<Subject>()
+            subjects
+                    .filter { it.assignments.size != 0 || it.grades.size != 0 }
+                    .forEach { filteredSubjects.add(it) }
+
+        } else {
+            filteredSubjects = subjects
+        }
+        return filteredSubjects
+    }
     companion object {
 
         fun getShortName(subjectTitle: String): String {
