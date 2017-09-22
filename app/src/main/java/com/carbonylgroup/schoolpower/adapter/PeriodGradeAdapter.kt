@@ -2,7 +2,7 @@
  * Copyright (C) 2017 Gustav Wang
  */
 
-package com.carbonylgroup.schoolpower.classes.Adapter
+package com.carbonylgroup.schoolpower.adapter
 
 import android.content.Context
 import android.support.v7.widget.RecyclerView
@@ -14,8 +14,8 @@ import android.widget.TextView
 
 import com.carbonylgroup.schoolpower.R
 import com.carbonylgroup.schoolpower.R2
-import com.carbonylgroup.schoolpower.classes.Data.Subject
-import com.carbonylgroup.schoolpower.classes.Utils.Utils
+import com.carbonylgroup.schoolpower.data.Subject
+import com.carbonylgroup.schoolpower.utils.Utils
 import kotterknife.bindView
 
 class PeriodGradeAdapter(private val context: Context, objects: Map<String, Subject.Grade>) : RecyclerView.Adapter<PeriodGradeAdapter.PeriodGradeViewHolder>() {

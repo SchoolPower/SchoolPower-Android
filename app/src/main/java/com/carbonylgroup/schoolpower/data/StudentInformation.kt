@@ -1,4 +1,4 @@
-package com.carbonylgroup.schoolpower.classes.Data
+package com.carbonylgroup.schoolpower.data
 
 import org.json.JSONObject
 import java.io.Serializable

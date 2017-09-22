@@ -14,8 +14,8 @@ import android.os.Message
 import android.view.View
 import android.widget.EditText
 import com.carbonylgroup.schoolpower.R
-import com.carbonylgroup.schoolpower.classes.Utils.Utils
-import com.carbonylgroup.schoolpower.classes.Utils.postData
+import com.carbonylgroup.schoolpower.utils.PostData
+import com.carbonylgroup.schoolpower.utils.Utils
 
 
 class LoginActivity : Activity() {
@@ -80,7 +80,7 @@ class LoginActivity : Activity() {
         progressDialog.setMessage(getString(R.string.authenticating))
         progressDialog.show()
 
-        Thread(postData(
+        Thread(PostData(
                 getString(R.string.postURL),
                 getString(R.string.username_equals) + username + "&" + getString(R.string.password_equals) + password,
                 object : Handler() {

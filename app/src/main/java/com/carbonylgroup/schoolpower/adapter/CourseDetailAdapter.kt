@@ -2,7 +2,7 @@
  * Copyright (C) 2017 Gustav Wang
  */
 
-package com.carbonylgroup.schoolpower.classes.Adapter
+package com.carbonylgroup.schoolpower.adapter
 
 import android.app.Activity
 import android.app.AlertDialog
@@ -15,9 +15,9 @@ import android.view.ViewGroup
 import android.widget.*
 import com.carbonylgroup.schoolpower.R
 import com.carbonylgroup.schoolpower.R2
-import com.carbonylgroup.schoolpower.classes.Data.AssignmentItem
-import com.carbonylgroup.schoolpower.classes.Data.Subject
-import com.carbonylgroup.schoolpower.classes.Utils.Utils
+import com.carbonylgroup.schoolpower.data.AssignmentItem
+import com.carbonylgroup.schoolpower.data.Subject
+import com.carbonylgroup.schoolpower.utils.Utils
 import kotterknife.bindView
 import java.util.*
 

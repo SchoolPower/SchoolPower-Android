@@ -16,11 +16,11 @@ import android.widget.AdapterView
 import android.widget.ListView
 import com.carbonylgroup.schoolpower.R
 import com.carbonylgroup.schoolpower.activities.MainActivity
-import com.carbonylgroup.schoolpower.classes.Adapter.FoldingCellListAdapter
-import com.carbonylgroup.schoolpower.classes.Data.Subject
-import com.carbonylgroup.schoolpower.classes.Transition.DetailsTransition
-import com.carbonylgroup.schoolpower.classes.Transition.TransitionHelper
-import com.carbonylgroup.schoolpower.classes.Utils.Utils
+import com.carbonylgroup.schoolpower.adapter.FoldingCellListAdapter
+import com.carbonylgroup.schoolpower.data.Subject
+import com.carbonylgroup.schoolpower.transition.DetailsTransition
+import com.carbonylgroup.schoolpower.transition.TransitionHelper
+import com.carbonylgroup.schoolpower.utils.Utils
 import com.ramotion.foldingcell.FoldingCell
 import java.util.*
 

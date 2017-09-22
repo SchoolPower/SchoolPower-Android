@@ -12,7 +12,7 @@ import android.preference.ListPreference
 import android.preference.PreferenceFragment
 import com.carbonylgroup.schoolpower.R
 import com.carbonylgroup.schoolpower.activities.MainActivity
-import com.carbonylgroup.schoolpower.classes.Utils.Utils
+import com.carbonylgroup.schoolpower.utils.Utils
 
 class SettingsFragment : PreferenceFragment(), OnSharedPreferenceChangeListener {
 

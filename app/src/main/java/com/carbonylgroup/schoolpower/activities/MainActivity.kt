@@ -7,6 +7,10 @@ package com.carbonylgroup.schoolpower.activities
 import android.animation.ValueAnimator
 import android.app.Activity
 import android.app.AlertDialog
+import android.app.job.JobInfo
+import android.app.job.JobInfo.NETWORK_TYPE_ANY
+import android.app.job.JobScheduler
+import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.res.Resources
@@ -28,17 +32,18 @@ import android.widget.ImageView
 import android.widget.TextView
 import co.ceryle.segmentedbutton.SegmentedButtonGroup
 import com.carbonylgroup.schoolpower.R
-import com.carbonylgroup.schoolpower.classes.Data.StudentInformation
-import com.carbonylgroup.schoolpower.classes.Data.Subject
-import com.carbonylgroup.schoolpower.classes.Transition.DetailsTransition
-import com.carbonylgroup.schoolpower.classes.Transition.TransitionHelper
-import com.carbonylgroup.schoolpower.classes.Utils.ContextWrapper
-import com.carbonylgroup.schoolpower.classes.Utils.Utils
-import com.carbonylgroup.schoolpower.classes.Utils.WaveHelper
-import com.carbonylgroup.schoolpower.classes.Utils.postData
+import com.carbonylgroup.schoolpower.data.StudentInformation
+import com.carbonylgroup.schoolpower.data.Subject
 import com.carbonylgroup.schoolpower.fragments.ChartFragment
 import com.carbonylgroup.schoolpower.fragments.HomeFragment
 import com.carbonylgroup.schoolpower.fragments.SettingsFragment
+import com.carbonylgroup.schoolpower.service.PullDataJob
+import com.carbonylgroup.schoolpower.transition.DetailsTransition
+import com.carbonylgroup.schoolpower.transition.TransitionHelper
+import com.carbonylgroup.schoolpower.utils.ContextWrapper
+import com.carbonylgroup.schoolpower.utils.PostData
+import com.carbonylgroup.schoolpower.utils.Utils
+import com.carbonylgroup.schoolpower.utils.WaveHelper
 import com.gelitenight.waveview.library.WaveView
 import com.github.premnirmal.textcounter.CounterView
 import com.google.android.gms.ads.AdRequest
@@ -95,6 +100,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
         initValue()
         initUI()
         initOnClick()
+        initScheduler()
         utils.checkUpdate()
     }
 
@@ -305,6 +311,18 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
         }
     }
 
+    private fun initScheduler() {
+        val OneMinute = 1000L * 60
+        val serviceComponent = ComponentName(this, PullDataJob::class.java)
+        val builder = JobInfo.Builder(0, serviceComponent)
+                .setMinimumLatency(OneMinute * 60) // one hour
+                .setOverrideDeadline(OneMinute * 80) // maximum 80 minutes
+                .setRequiredNetworkType(NETWORK_TYPE_ANY)
+                .setPersisted(true)
+        val jobScheduler = getSystemService(Context.JOB_SCHEDULER_SERVICE) as JobScheduler
+        jobScheduler.schedule(builder.build())
+    }
+
     /* Fragments Handler */
     fun gotoFragmentWithMenuItemId(id: Int) {
 
@@ -452,7 +470,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
         val password = getSharedPreferences("accountData", Activity.MODE_PRIVATE).getString(getString(R.string.passwordKEY), "")
         if (subjects != null) oldSubjects.addAll(subjects!!)
 
-        Thread(postData(
+        Thread(PostData(
                 getString(R.string.postURL),
                 getString(R.string.username_equals) + username + "&" + getString(R.string.password_equals) + password,
                 object : Handler() {

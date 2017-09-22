@@ -2,7 +2,7 @@
  * Copyright (C) 2017 Gustav Wang
  */
 
-package com.carbonylgroup.schoolpower.classes.Utils
+package com.carbonylgroup.schoolpower.utils
 
 import android.app.Activity
 import android.app.AlertDialog
@@ -18,8 +18,8 @@ import android.util.DisplayMetrics
 import android.util.Log
 import android.view.View
 import com.carbonylgroup.schoolpower.R
-import com.carbonylgroup.schoolpower.classes.Data.StudentInformation
-import com.carbonylgroup.schoolpower.classes.Data.Subject
+import com.carbonylgroup.schoolpower.data.StudentInformation
+import com.carbonylgroup.schoolpower.data.Subject
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
@@ -233,7 +233,7 @@ class Utils(private val context: Context) {
 
     fun checkUpdate() {
 
-        Thread(postData(context.getString(R.string.updateURL), "", object : Handler() {
+        Thread(PostData(context.getString(R.string.updateURL), "", object : Handler() {
             override fun handleMessage(msg: Message) {
                 val message = msg.obj.toString()
                 if (!message.contains("{")) return
