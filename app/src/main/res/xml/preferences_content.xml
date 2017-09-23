@@ -28,7 +28,7 @@
         <CheckBoxPreference
             android:defaultValue="false"
             android:key="preference_disable_notification"
-            android:summary="@string/disable_notification"/>
+            android:title="@string/disable_notification"/>
     </PreferenceCategory>
 
 </PreferenceScreen>
