@@ -39,7 +39,7 @@ class ChartFragment : Fragment() {
         utils = Utils(activity)
 
         if (MainActivity.of(activity).subjects == null || MainActivity.of(activity).subjects!!.count() == 0) {
-            //TODO Improve the charts display when there is nothing QVQ
+            //TODO: Improve the charts display when there is nothing QVQ
         } else {
 
             val rawData = MainActivity.of(activity).subjects!!
@@ -68,6 +68,7 @@ class ChartFragment : Fragment() {
                         val subjectNow = subjects.getJSONObject(i)
                         val subjectName = Utils.getShortName(subjectNow.getString("name"))
                         val subjectGrade = subjectNow.getDouble("grade").toFloat()
+                        if (subjectGrade == 0.0f) continue
                         val entry = Entry(floatDate, subjectGrade)
                         if (organizedData[subjectName] == null) organizedData.put(subjectName, ArrayList<Entry>())
                         if (lastData[subjectName] == null) lastData.put(subjectName, Entry(floatDate, subjectGrade))
