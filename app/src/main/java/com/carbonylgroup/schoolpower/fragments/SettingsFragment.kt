@@ -4,12 +4,15 @@
 
 package com.carbonylgroup.schoolpower.fragments
 
+import android.app.job.JobScheduler
+import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener
 import android.os.Bundle
 import android.preference.ListPreference
 import android.preference.PreferenceFragment
+import android.preference.PreferenceManager
 import com.carbonylgroup.schoolpower.R
 import com.carbonylgroup.schoolpower.activities.MainActivity
 import com.carbonylgroup.schoolpower.utils.Utils
@@ -51,6 +54,14 @@ class SettingsFragment : PreferenceFragment(), OnSharedPreferenceChangeListener 
 
             utils!!.saveLangPref(sharedPreferences!!.getString(key, "0"))
             restart()
+        }
+
+        if (key == "preference_disable_notification") {
+
+            val jobScheduler = activity.getSystemService(Context.JOB_SCHEDULER_SERVICE) as JobScheduler
+            if (!PreferenceManager.getDefaultSharedPreferences(activity).getBoolean("preference_disable_notification", false)) {
+                jobScheduler.cancelAll()
+            }
         }
     }
 

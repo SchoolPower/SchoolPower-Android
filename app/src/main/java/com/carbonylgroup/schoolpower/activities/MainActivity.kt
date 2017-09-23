@@ -18,6 +18,7 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.os.Handler
 import android.os.Message
+import android.preference.PreferenceManager
 import android.support.design.widget.AppBarLayout
 import android.support.design.widget.NavigationView
 import android.support.v4.content.ContextCompat
@@ -312,6 +313,11 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
     }
 
     private fun initScheduler() {
+        val jobScheduler = getSystemService(Context.JOB_SCHEDULER_SERVICE) as JobScheduler
+        if (!PreferenceManager.getDefaultSharedPreferences(this).getBoolean("preference_disable_notification", false)) {
+            jobScheduler.cancelAll()
+        }
+
         val OneMinute = 1000L * 60
         val serviceComponent = ComponentName(this, PullDataJob::class.java)
         val builder = JobInfo.Builder(0, serviceComponent)
@@ -319,7 +325,6 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                 .setOverrideDeadline(OneMinute * 80) // maximum 80 minutes
                 .setRequiredNetworkType(NETWORK_TYPE_ANY)
                 .setPersisted(true)
-        val jobScheduler = getSystemService(Context.JOB_SCHEDULER_SERVICE) as JobScheduler
         jobScheduler.schedule(builder.build())
     }
 
@@ -470,9 +475,11 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
         val password = getSharedPreferences("accountData", Activity.MODE_PRIVATE).getString(getString(R.string.passwordKEY), "")
         if (subjects != null) oldSubjects.addAll(subjects!!)
 
+        val version = packageManager.getPackageInfo("com.carbonylgroup.schoolpower", 0).versionName
+
         Thread(PostData(
                 getString(R.string.postURL),
-                getString(R.string.username_equals) + username + "&" + getString(R.string.password_equals) + password,
+                "username=$username&password=$password&version=$version&action=manual_get_data",
                 object : Handler() {
                     override fun handleMessage(msg: Message) {
                         val strMessage = msg.obj.toString().replace("\n", "")

@@ -24,6 +24,11 @@
             android:key="list_preference_dashboard_hide_inactive"
             android:summary="@string/hide_inactive_summary"
             android:title="@string/hide_inactive_title" />
+
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="preference_disable_notification"
+            android:summary="@string/disable_notification"/>
     </PreferenceCategory>
 
 </PreferenceScreen>

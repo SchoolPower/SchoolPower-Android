@@ -74,5 +74,6 @@
     </string-array>
     <string name="hide_inactive_summary">Hide subjects that currently have no assignment and grade</string>
     <string name="hide_inactive_title">Hide inactive subjects</string>
+    <string name="disable_notification">Disable notifications</string>
 
 </resources>

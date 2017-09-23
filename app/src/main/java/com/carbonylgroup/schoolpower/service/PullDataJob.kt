@@ -6,6 +6,7 @@ import android.app.job.JobService
 import android.os.Handler
 import android.os.Message
 import android.support.v4.app.NotificationCompat
+import android.util.Log
 import com.carbonylgroup.schoolpower.R
 import com.carbonylgroup.schoolpower.utils.PostData
 import com.carbonylgroup.schoolpower.utils.Utils
@@ -18,7 +19,8 @@ class PullDataJob : JobService() {
         val username = getSharedPreferences("accountData", Activity.MODE_PRIVATE).getString(getString(R.string.usernameKEY), "")
         val password = getSharedPreferences("accountData", Activity.MODE_PRIVATE).getString(getString(R.string.passwordKEY), "")
         val utils = Utils(this)
-        val oldSubjects = utils.readDataArrayList().second
+
+        Log.d("PullDataJob", "onStartJob")
 
         class HandleData : Handler() {
             override fun handleMessage(msg: Message) {
@@ -36,6 +38,7 @@ class PullDataJob : JobService() {
 
                     val updatedSubjects = ArrayList<String>()
 
+                    val oldSubjects = utils.readDataArrayList().second
                     // Mark new or changed assignments
                     if (subjects.size == oldSubjects.size) {
                         for (i in subjects.indices) {
@@ -69,12 +72,12 @@ class PullDataJob : JobService() {
                 }
             }
         }
+        val version = packageManager.getPackageInfo("com.carbonylgroup.schoolpower", 0).versionName
 
-        PostData(
+        Thread(PostData(
                 getString(R.string.postURL),
-                getString(R.string.username_equals) + username
-                        + "&" + getString(R.string.password_equals) + password,
-                HandleData()).run()
+                "username=$username&password=$password&version=$version&action=pull_data_job",
+                HandleData())).start()
         return true
     }
 
