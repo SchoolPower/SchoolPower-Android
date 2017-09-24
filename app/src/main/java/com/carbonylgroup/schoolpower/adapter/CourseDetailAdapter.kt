@@ -2,8 +2,10 @@
  * Copyright (C) 2017 Gustav Wang
  */
 
-package com.carbonylgroup.schoolpower.classes.Adapter
+package com.carbonylgroup.schoolpower.adapter
 
+import android.app.Activity
+import android.app.AlertDialog
 import android.content.Context
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.RecyclerView
@@ -13,9 +15,9 @@ import android.view.ViewGroup
 import android.widget.*
 import com.carbonylgroup.schoolpower.R
 import com.carbonylgroup.schoolpower.R2
-import com.carbonylgroup.schoolpower.classes.Data.AssignmentItem
-import com.carbonylgroup.schoolpower.classes.Data.Subject
-import com.carbonylgroup.schoolpower.classes.Utils.Utils
+import com.carbonylgroup.schoolpower.data.AssignmentItem
+import com.carbonylgroup.schoolpower.data.Subject
+import com.carbonylgroup.schoolpower.utils.Utils
 import kotterknife.bindView
 import java.util.*
 
@@ -66,6 +68,16 @@ class CourseDetailAdapter(private val context: Context, private val subject: Sub
                     normalViewHolder.detail_header_background.setBackgroundColor(ContextCompat.getColor(context, R.color.white))
                     normalViewHolder.detail_assignment_name_tv.setTextColor(ContextCompat.getColor(context, R.color.text_primary_black))
                     normalViewHolder.detail_assignment_date_tv.setTextColor(ContextCompat.getColor(context, R.color.text_tertiary_black))
+                }
+                normalViewHolder.detail_header_background.setOnLongClickListener {
+                    if(context.getSharedPreferences("other", Activity.MODE_PRIVATE).getBoolean("developer_mode", false)){
+                        val builder = AlertDialog.Builder(context)
+                        builder.setTitle("Developer Mode")
+                        builder.setMessage("Name: ${assignmentItem.title}\nWeight: ${assignmentItem.weight}\nInclude in final grade: ${assignmentItem.includeInFinalGrade}")
+                        builder.setPositiveButton("Okay", null)
+                        builder.show()
+                    }
+                    true
                 }
 
             } else if (holder is HeaderViewHolder) {

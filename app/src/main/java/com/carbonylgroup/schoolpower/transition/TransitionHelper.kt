@@ -1,4 +1,4 @@
-package com.carbonylgroup.schoolpower.classes.Transition
+package com.carbonylgroup.schoolpower.transition
 
 import android.app.Activity
 import android.app.Fragment
@@ -9,8 +9,7 @@ import android.support.v7.app.AppCompatActivity
 import android.transition.Transition
 import android.view.View
 import android.view.ViewTreeObserver
-
-import java.util.ArrayList
+import java.util.*
 
 /**
  * Provides extra lifecycle events and shims for shared element transitions

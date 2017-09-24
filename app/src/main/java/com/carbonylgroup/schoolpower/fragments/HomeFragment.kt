@@ -16,14 +16,13 @@ import android.widget.AdapterView
 import android.widget.ListView
 import com.carbonylgroup.schoolpower.R
 import com.carbonylgroup.schoolpower.activities.MainActivity
-import com.carbonylgroup.schoolpower.classes.Adapter.FoldingCellListAdapter
-import com.carbonylgroup.schoolpower.classes.Data.Subject
-import com.carbonylgroup.schoolpower.classes.Transition.DetailsTransition
-import com.carbonylgroup.schoolpower.classes.Transition.TransitionHelper
-import com.carbonylgroup.schoolpower.classes.Utils.Utils
+import com.carbonylgroup.schoolpower.adapter.FoldingCellListAdapter
+import com.carbonylgroup.schoolpower.data.Subject
+import com.carbonylgroup.schoolpower.transition.DetailsTransition
+import com.carbonylgroup.schoolpower.transition.TransitionHelper
+import com.carbonylgroup.schoolpower.utils.Utils
 import com.ramotion.foldingcell.FoldingCell
 import java.util.*
-
 
 class HomeFragment : TransitionHelper.BaseFragment() {
 
@@ -32,7 +31,7 @@ class HomeFragment : TransitionHelper.BaseFragment() {
     private var view_private: View? = null
     private var fab_in: ScaleAnimation? = null
     private var fab_out: ScaleAnimation? = null
-    private var dataList: List<Subject>? = null
+    private var subjects: List<Subject>? = null
     private var unfoldedIndexesBackUp = HashSet<Int>()
     private var adapter: FoldingCellListAdapter? = null
     private var courseDetailFragment: CourseDetailFragment? = null
@@ -71,7 +70,7 @@ class HomeFragment : TransitionHelper.BaseFragment() {
     private fun initValue() {
 
         utils = Utils(activity)
-        dataList = MainActivity.of(activity).subjects
+        subjects = MainActivity.of(activity).subjects
         MainActivity.of(activity).presentFragment = 0
         MainActivity.of(activity).setToolBarElevation(utils!!.dpToPx(10))
         MainActivity.of(activity).setToolBarTitle(getString(R.string.dashboard))
@@ -80,27 +79,30 @@ class HomeFragment : TransitionHelper.BaseFragment() {
         home_swipe_refresh_layout!!.setColorSchemeResources(R.color.accent, R.color.A_score_green, R.color.B_score_green,
                 R.color.Cp_score_yellow, R.color.C_score_orange, R.color.Cm_score_red, R.color.primary)
         home_swipe_refresh_layout!!.setOnRefreshListener { MainActivity.of(activity).initDataJson() }
-        if (dataList == null || dataList!!.count() == 0) refreshAdapterToEmpty()
+        if (subjects == null || subjects!!.count() == 0) refreshAdapterToEmpty()
         else initAdapter()
     }
 
+    private fun adaptrSetDefaultClickListener(adapter: FoldingCellListAdapter) = adapter.setDefaultRequestBtnClickListener(View.OnClickListener { v ->
+        MainActivity.of(activity).subjectTransporter = utils!!.getFilteredSubjects(subjects!!)[theListView.getPositionForView(v)]
+        if (transformedPosition != -1) {
+            val itemView = getItemViewByPosition(transformedPosition, theListView)
+            itemView.findViewById<View>(R.id.unfold_header_view).transitionName = ""
+            itemView.findViewById<View>(R.id.detail_subject_title_tv).transitionName = ""
+        }
+        transformedPosition = theListView.getPositionForView(v)
+        val itemView = getItemViewByPosition(theListView.getPositionForView(v), theListView)
+        itemView.findViewById<View>(R.id.floating_action_button).startAnimation(fab_out)
+        itemView.findViewById<View>(R.id.floating_action_button).visibility = View.GONE
+        gotoCourseDetail(itemView.findViewById(R.id.unfold_header_view), itemView.findViewById(R.id.detail_subject_title_tv), transformedPosition)
+    })
     private fun initAdapter() {
 
-        if (dataList != null && dataList!!.count() != 0) theListView.visibility = View.VISIBLE
-        adapter = FoldingCellListAdapter(activity, dataList, unfoldedIndexesBackUp, transformedPosition)
-        adapter!!.setDefaultRequestBtnClickListener(View.OnClickListener { v ->
-            MainActivity.of(activity).subjectTransporter = dataList!![theListView.getPositionForView(v)]
-            if (transformedPosition != -1) {
-                val itemView = getItemViewByPosition(transformedPosition, theListView)
-                itemView.findViewById<View>(R.id.unfold_header_view).transitionName = ""
-                itemView.findViewById<View>(R.id.detail_subject_title_tv).transitionName = ""
-            }
-            transformedPosition = theListView.getPositionForView(v)
-            val itemView = getItemViewByPosition(theListView.getPositionForView(v), theListView)
-            itemView.findViewById<View>(R.id.floating_action_button).startAnimation(fab_out)
-            itemView.findViewById<View>(R.id.floating_action_button).visibility = View.GONE
-            gotoCourseDetail(itemView.findViewById(R.id.unfold_header_view), itemView.findViewById(R.id.detail_subject_title_tv), transformedPosition)
-        })
+        if (subjects != null && subjects!!.count() != 0) theListView.visibility = View.VISIBLE
+
+        adapter = FoldingCellListAdapter(activity, utils!!.getFilteredSubjects(subjects!!), unfoldedIndexesBackUp, transformedPosition)
+        adaptrSetDefaultClickListener(adapter!!)
+
         theListView.onItemClickListener = AdapterView.OnItemClickListener { _, view, pos, _ ->
             adapter!!.registerToggle(pos)
             (view as FoldingCell).toggle(false)
@@ -120,15 +122,16 @@ class HomeFragment : TransitionHelper.BaseFragment() {
 
     fun refreshAdapterToEmpty() {
 
-        dataList = arrayListOf()
+        subjects = arrayListOf()
         setRefreshing(false)
         invisiblizeListView()
     }
 
-    fun refreshAdapter(newDataList: List<Subject>) {
-        dataList = newDataList
+    fun refreshAdapter(newSubjects: List<Subject>) {
+        subjects = newSubjects
         if (adapter == null) initValue()
-        adapter!!.setMainListItems(newDataList)
+        adapter!!.setMainListItems(utils!!.getFilteredSubjects(newSubjects))
+        adaptrSetDefaultClickListener(adapter!!)
         adapter!!.notifyDataSetChanged()
         setRefreshing(false)
     }

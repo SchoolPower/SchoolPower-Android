@@ -3,6 +3,7 @@
     package="com.carbonylgroup.schoolpower">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     flag = FLAG_TRANSLUCENT_STATUS
 
     <application
@@ -16,8 +17,8 @@
             android:name=".activities.LoginActivity"
             android:configChanges="locale|orientation"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize"
-            android:theme="@style/Design">
+            android:theme="@style/Design"
+            android:windowSoftInputMode="adjustResize">
             <intent-filter>
 
                 <action android:name="android.intent.action.MAIN" />
@@ -41,6 +42,11 @@
             </intent-filter>
 
         </activity>
+
+        <service
+            android:name=".service.PullDataJob"
+            android:label="Fetch student's data"
+            android:permission="android.permission.BIND_JOB_SERVICE"></service>
 
     </application>
 

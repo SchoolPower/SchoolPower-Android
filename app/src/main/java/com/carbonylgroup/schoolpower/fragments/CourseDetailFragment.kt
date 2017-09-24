@@ -15,10 +15,10 @@ import android.view.animation.AnimationUtils
 import android.widget.TextView
 import com.carbonylgroup.schoolpower.R
 import com.carbonylgroup.schoolpower.activities.MainActivity
-import com.carbonylgroup.schoolpower.classes.Adapter.CourseDetailAdapter
-import com.carbonylgroup.schoolpower.classes.Data.Subject
-import com.carbonylgroup.schoolpower.classes.Transition.TransitionHelper
-import com.carbonylgroup.schoolpower.classes.Utils.Utils
+import com.carbonylgroup.schoolpower.adapter.CourseDetailAdapter
+import com.carbonylgroup.schoolpower.data.Subject
+import com.carbonylgroup.schoolpower.transition.TransitionHelper
+import com.carbonylgroup.schoolpower.utils.Utils
 
 
 class CourseDetailFragment : TransitionHelper.BaseFragment() {
@@ -48,7 +48,7 @@ class CourseDetailFragment : TransitionHelper.BaseFragment() {
             val itemToPresent = MainActivity.of(activity).subjectTransporter
             val course_detail_recycler = view.findViewById<RecyclerView>(R.id.course_detail_recycler)
             val period = utils.getLatestPeriodGrade(itemToPresent!!) ?: Subject.Grade("--", "--")
-            dataList = MainActivity.of(activity).subjects
+            dataList = utils.getFilteredSubjects(MainActivity.of(activity).subjects!!)
             MainActivity.of(activity).setToolBarColor(utils.getColorByLetterGrade(activity, period.letter), true)
             view.findViewById<View>(R.id.detail_view_header).setBackgroundColor(utils.getColorByLetterGrade(activity, period.letter))
             view.findViewById<View>(R.id.detail_view_header).setOnClickListener {

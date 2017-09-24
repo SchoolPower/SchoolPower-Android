@@ -99,9 +99,6 @@
     <string name="shared_element_course_subject_title">SHARE://COURSE_SUBJECT_TITLE</string>
     <string name="shared_element_course_card">SHARE://COURSE_CARD</string>
 
-    <string name="username_equals">username=</string>
-    <string name="password_equals">password=</string>
-    <string name="error_wrong_password">{\"error\":1,\"</string>
     <string name="json_begin">{</string>
 
     <string name="postURL">https://api.schoolpower.studio:8443/api/2.0/get_data.php</string>
@@ -125,4 +122,5 @@
         <item>3</item>
     </string-array>
 
+    <string name="disable_notification">Disable notifications</string>
 </resources>

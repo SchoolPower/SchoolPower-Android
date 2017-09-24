@@ -7,9 +7,11 @@ import android.support.v4.content.ContextCompat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import com.carbonylgroup.schoolpower.R
 import com.carbonylgroup.schoolpower.activities.MainActivity
-import com.carbonylgroup.schoolpower.classes.Utils.Utils
+import com.carbonylgroup.schoolpower.data.Subject
+import com.carbonylgroup.schoolpower.utils.Utils
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.charts.RadarChart
 import com.github.mikephil.charting.components.AxisBase
@@ -37,15 +39,21 @@ class ChartFragment : Fragment() {
         utils = Utils(activity)
 
         if (MainActivity.of(activity).subjects == null || MainActivity.of(activity).subjects!!.count() == 0) {
-            //TODO Improve the charts display when there is nothing QVQ
+            //TODO: Improve the charts display when there is nothing QVQ
         } else {
 
-            val data = MainActivity.of(activity).subjects!!
+            val rawData = MainActivity.of(activity).subjects!!
+            val data = ArrayList<Subject>()
+
+            rawData.forEach {
+                val grade = utils.getLatestPeriodGrade(it)
+                if (grade != null && grade.letter != "--") data.add(it)
+            }
 
             run {
                 val historyData = utils.readHistoryGrade()
 
-                val lineChart : LineChart = view.findViewById(R.id.line_chart)
+                val lineChart: LineChart = view.findViewById<LineChart>(R.id.line_chart)
                 lineChart.description.isEnabled = false
 
                 // Map<SubjectName, Array<Entry<Date, Grade>>>
@@ -60,6 +68,7 @@ class ChartFragment : Fragment() {
                         val subjectNow = subjects.getJSONObject(i)
                         val subjectName = Utils.getShortName(subjectNow.getString("name"))
                         val subjectGrade = subjectNow.getDouble("grade").toFloat()
+                        if (subjectGrade == 0.0f) continue
                         val entry = Entry(floatDate, subjectGrade)
                         if (organizedData[subjectName] == null) organizedData.put(subjectName, ArrayList<Entry>())
                         if (lastData[subjectName] == null) lastData.put(subjectName, Entry(floatDate, subjectGrade))
@@ -119,7 +128,7 @@ class ChartFragment : Fragment() {
             }
             run {
 
-                val radarChart : RadarChart = view.findViewById(R.id.radar_chart)
+                val radarChart: RadarChart = view.findViewById(R.id.radar_chart)
                 val entries = ArrayList<RadarEntry>()
                 radarChart.description.isEnabled = false
                 val xAxis = radarChart.xAxis

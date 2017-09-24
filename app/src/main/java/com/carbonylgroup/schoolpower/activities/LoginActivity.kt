@@ -14,9 +14,8 @@ import android.os.Message
 import android.view.View
 import android.widget.EditText
 import com.carbonylgroup.schoolpower.R
-import com.carbonylgroup.schoolpower.classes.Utils.Utils
-import com.carbonylgroup.schoolpower.classes.Utils.postData
-
+import com.carbonylgroup.schoolpower.utils.PostData
+import com.carbonylgroup.schoolpower.utils.Utils
 
 class LoginActivity : Activity() {
 
@@ -26,7 +25,7 @@ class LoginActivity : Activity() {
 
         setTheme(R.style.Design)
         super.onCreate(savedInstanceState)
-        checkIfLoggedIn()
+        if(checkIfLoggedIn()) return
         setContentView(R.layout.login_content)
 
         initDialog()
@@ -35,11 +34,14 @@ class LoginActivity : Activity() {
         utils.checkUpdate()
     }
 
-    private fun checkIfLoggedIn() {
+    private fun checkIfLoggedIn() : Boolean {
 
         val sharedPreferences = getSharedPreferences(getString(R.string.accountData), Activity.MODE_PRIVATE)
-        if (sharedPreferences.getBoolean(getString(R.string.loggedIn), false))
+        if (sharedPreferences.getBoolean(getString(R.string.loggedIn), false)) {
             startMainActivity()
+            return true
+        }
+        return false
     }
 
     private fun initDialog() {
@@ -80,9 +82,11 @@ class LoginActivity : Activity() {
         progressDialog.setMessage(getString(R.string.authenticating))
         progressDialog.show()
 
-        Thread(postData(
+        val version = packageManager.getPackageInfo("com.carbonylgroup.schoolpower", 0).versionName
+
+        Thread(PostData(
                 getString(R.string.postURL),
-                getString(R.string.username_equals) + username + "&" + getString(R.string.password_equals) + password,
+                "username=$username&password=$password&version=$version&action=login",
                 object : Handler() {
                     override fun handleMessage(msg: Message) {
 

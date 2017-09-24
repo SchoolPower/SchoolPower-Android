@@ -7,6 +7,10 @@ package com.carbonylgroup.schoolpower.activities
 import android.animation.ValueAnimator
 import android.app.Activity
 import android.app.AlertDialog
+import android.app.job.JobInfo
+import android.app.job.JobInfo.NETWORK_TYPE_ANY
+import android.app.job.JobScheduler
+import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.res.Resources
@@ -14,6 +18,7 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.os.Handler
 import android.os.Message
+import android.preference.PreferenceManager
 import android.support.design.widget.AppBarLayout
 import android.support.design.widget.NavigationView
 import android.support.v4.content.ContextCompat
@@ -24,20 +29,22 @@ import android.support.v7.graphics.drawable.DrawerArrowDrawable
 import android.support.v7.widget.Toolbar
 import android.view.*
 import android.view.animation.DecelerateInterpolator
+import android.widget.ImageView
 import android.widget.TextView
 import co.ceryle.segmentedbutton.SegmentedButtonGroup
 import com.carbonylgroup.schoolpower.R
-import com.carbonylgroup.schoolpower.classes.Data.StudentInformation
-import com.carbonylgroup.schoolpower.classes.Data.Subject
-import com.carbonylgroup.schoolpower.classes.Transition.DetailsTransition
-import com.carbonylgroup.schoolpower.classes.Transition.TransitionHelper
-import com.carbonylgroup.schoolpower.classes.Utils.ContextWrapper
-import com.carbonylgroup.schoolpower.classes.Utils.Utils
-import com.carbonylgroup.schoolpower.classes.Utils.WaveHelper
-import com.carbonylgroup.schoolpower.classes.Utils.postData
+import com.carbonylgroup.schoolpower.data.StudentInformation
+import com.carbonylgroup.schoolpower.data.Subject
 import com.carbonylgroup.schoolpower.fragments.ChartFragment
 import com.carbonylgroup.schoolpower.fragments.HomeFragment
 import com.carbonylgroup.schoolpower.fragments.SettingsFragment
+import com.carbonylgroup.schoolpower.service.PullDataJob
+import com.carbonylgroup.schoolpower.transition.DetailsTransition
+import com.carbonylgroup.schoolpower.transition.TransitionHelper
+import com.carbonylgroup.schoolpower.utils.ContextWrapper
+import com.carbonylgroup.schoolpower.utils.PostData
+import com.carbonylgroup.schoolpower.utils.Utils
+import com.carbonylgroup.schoolpower.utils.WaveHelper
 import com.gelitenight.waveview.library.WaveView
 import com.github.premnirmal.textcounter.CounterView
 import com.google.android.gms.ads.AdRequest
@@ -94,6 +101,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
         initValue()
         initUI()
         initOnClick()
+        initScheduler()
         utils.checkUpdate()
     }
 
@@ -218,6 +226,30 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
         navigationView.getHeaderView(0).findViewById<TextView>(R.id.nav_header_username).text = getUsername()
         navigationView.getHeaderView(0).findViewById<TextView>(R.id.nav_header_id).text = getUserID()
 
+        navigationView.getHeaderView(0).findViewById<ImageView>(R.id.SchoolPowerLogo).setOnLongClickListener {
+            val pref = getSharedPreferences("other", Activity.MODE_PRIVATE)
+            val spEditor = pref.edit()
+            spEditor.putBoolean("developer_mode", !pref.getBoolean("developer_mode", false))
+            spEditor.apply()
+            utils.showSnackBar(this@MainActivity, findViewById(R.id.main_coordinate_layout), "Developer Mode: "+pref.getBoolean("developer_mode", false).toString(), false)
+            true
+        }
+    }
+
+    private fun initScheduler() {
+        val jobScheduler = getSystemService(Context.JOB_SCHEDULER_SERVICE) as JobScheduler
+        if (!PreferenceManager.getDefaultSharedPreferences(this).getBoolean("preference_disable_notification", false)) {
+            jobScheduler.cancelAll()
+        }
+
+        val OneMinute = 1000L * 60
+        val serviceComponent = ComponentName(this, PullDataJob::class.java)
+        val builder = JobInfo.Builder(0, serviceComponent)
+                .setMinimumLatency(OneMinute * 60) // one hour
+                .setOverrideDeadline(OneMinute * 80) // maximum 80 minutes
+                .setRequiredNetworkType(NETWORK_TYPE_ANY)
+                .setPersisted(true)
+        jobScheduler.schedule(builder.build())
     }
 
     /* Fragments Handler */
@@ -258,6 +290,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                         .withAboutVersionShown(true)
                         .withAboutDescription(getString(R.string.i_love_open_source))
                         .fragment()
+
                 transaction.setCustomAnimations(R.animator.slide_from_right_in, R.animator.slide_to_left_out)
                         .replace(R.id.content_view, aboutFragment)
                 setToolBarTitle(getString(R.string.about))
@@ -366,9 +399,11 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
         val password = getSharedPreferences("accountData", Activity.MODE_PRIVATE).getString(getString(R.string.passwordKEY), "")
         if (subjects != null) oldSubjects.addAll(subjects!!)
 
-        Thread(postData(
+        val version = packageManager.getPackageInfo("com.carbonylgroup.schoolpower", 0).versionName
+
+        Thread(PostData(
                 getString(R.string.postURL),
-                getString(R.string.username_equals) + username + "&" + getString(R.string.password_equals) + password,
+                "username=$username&password=$password&version=$version&action=manual_get_data",
                 object : Handler() {
                     override fun handleMessage(msg: Message) {
                         val strMessage = msg.obj.toString().replace("\n", "")

@@ -2,9 +2,9 @@
  * Copyright (C) 2017 Gustav Wang
  */
 
-package com.carbonylgroup.schoolpower.classes.Data
+package com.carbonylgroup.schoolpower.data
 
-import com.carbonylgroup.schoolpower.classes.Utils.Utils
+import com.carbonylgroup.schoolpower.utils.Utils
 import org.json.JSONObject
 import java.io.Serializable
 import java.util.*

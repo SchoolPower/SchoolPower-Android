@@ -1,4 +1,4 @@
-package com.carbonylgroup.schoolpower.classes.Utils
+package com.carbonylgroup.schoolpower.utils
 
 import android.annotation.TargetApi
 import android.content.Context

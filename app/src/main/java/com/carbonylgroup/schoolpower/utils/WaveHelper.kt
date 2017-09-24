@@ -2,7 +2,7 @@
  * Copyright (C) 2017 Gustav Wang
  */
 
-package com.carbonylgroup.schoolpower.classes.Utils
+package com.carbonylgroup.schoolpower.utils
 
 import android.animation.Animator
 import android.animation.AnimatorSet
@@ -11,7 +11,7 @@ import android.animation.ValueAnimator
 import android.view.animation.DecelerateInterpolator
 import android.view.animation.LinearInterpolator
 import com.gelitenight.waveview.library.WaveView
-import java.util.ArrayList
+import java.util.*
 
 
 class WaveHelper(private val mWaveView: WaveView, private val lastLevelRatio: Float = 0f, private var lastShiftRatio: Float = 0f) {

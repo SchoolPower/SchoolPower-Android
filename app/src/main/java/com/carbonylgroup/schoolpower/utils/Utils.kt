@@ -2,7 +2,7 @@
  * Copyright (C) 2017 Gustav Wang
  */
 
-package com.carbonylgroup.schoolpower.classes.Utils
+package com.carbonylgroup.schoolpower.utils
 
 import android.app.Activity
 import android.app.AlertDialog
@@ -11,6 +11,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Handler
 import android.os.Message
+import android.preference.PreferenceManager
 import android.support.design.widget.Snackbar
 import android.support.v4.content.ContextCompat
 import android.util.DisplayMetrics
@@ -18,9 +19,8 @@ import android.util.Log
 import android.view.View
 import co.ceryle.segmentedbutton.SegmentedButtonGroup
 import com.carbonylgroup.schoolpower.R
-import com.carbonylgroup.schoolpower.classes.Data.StudentInformation
-import com.carbonylgroup.schoolpower.classes.Data.Subject
-import com.gelitenight.waveview.library.WaveView
+import com.carbonylgroup.schoolpower.data.StudentInformation
+import com.carbonylgroup.schoolpower.data.Subject
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
@@ -233,7 +233,7 @@ class Utils(private val context: Context) {
 
     fun checkUpdate() {
 
-        Thread(postData(context.getString(R.string.updateURL), "", object : Handler() {
+        Thread(PostData(context.getString(R.string.updateURL), "", object : Handler() {
             override fun handleMessage(msg: Message) {
                 val message = msg.obj.toString()
                 if (!message.contains("{")) return
@@ -258,6 +258,20 @@ class Utils(private val context: Context) {
         })).start()
     }
 
+    fun getFilteredSubjects(subjects: List<Subject>): List<Subject> {
+        val filteredSubjects: List<Subject>
+        if (PreferenceManager.getDefaultSharedPreferences(context).getBoolean("list_preference_dashboard_hide_inactive", false)) {
+
+            filteredSubjects = ArrayList<Subject>()
+            subjects
+                    .filter { it.assignments.size != 0 || it.grades.size != 0 }
+                    .forEach { filteredSubjects.add(it) }
+
+        } else {
+            filteredSubjects = subjects
+        }
+        return filteredSubjects
+    }
     companion object {
 
         fun getShortName(subjectTitle: String): String {

@@ -74,5 +74,6 @@
     </string-array>
     <string name="hide_inactive_summary">隐藏目前没有作业和成绩的课程</string>
     <string name="hide_inactive_title">隐藏不活跃课程</string>
+    <string name="disable_notification">关闭成绩通知</string>
 
 </resources>
