@@ -86,7 +86,7 @@ class LoginActivity : Activity() {
 
         Thread(PostData(
                 getString(R.string.postURL),
-                "username=$username&password=$password&version=$version&action=login",
+                "username=$username&password=$password&version=$version&action=login&os=android",
                 object : Handler() {
                     override fun handleMessage(msg: Message) {
 

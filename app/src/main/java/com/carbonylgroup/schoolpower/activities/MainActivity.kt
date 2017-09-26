@@ -401,7 +401,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
 
         Thread(PostData(
                 getString(R.string.postURL),
-                "username=$username&password=$password&version=$version&action=manual_get_data",
+                "username=$username&password=$password&version=$version&action=manual_get_data&os=android",
                 object : Handler() {
                     override fun handleMessage(msg: Message) {
                         val strMessage = msg.obj.toString().replace("\n", "")

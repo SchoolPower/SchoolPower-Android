@@ -76,7 +76,7 @@ class PullDataJob : JobService() {
 
         Thread(PostData(
                 getString(R.string.postURL),
-                "username=$username&password=$password&version=$version&action=pull_data_job",
+                "username=$username&password=$password&version=$version&action=pull_data_job&os=android",
                 HandleData())).start()
         return true
     }
