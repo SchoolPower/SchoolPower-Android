@@ -17,6 +17,7 @@ import android.support.v4.content.ContextCompat
 import android.util.DisplayMetrics
 import android.util.Log
 import android.view.View
+import co.ceryle.segmentedbutton.SegmentedButtonGroup
 import com.carbonylgroup.schoolpower.R
 import com.carbonylgroup.schoolpower.data.StudentInformation
 import com.carbonylgroup.schoolpower.data.Subject
@@ -229,7 +230,6 @@ class Utils(private val context: Context) {
     }
 
     fun readHistoryGrade() = JSONObject(readStringFromFile("history.json") ?: "{}")
-
 
     fun checkUpdate() {
 
