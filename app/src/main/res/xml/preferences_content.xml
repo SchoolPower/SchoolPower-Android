@@ -19,13 +19,13 @@
             android:summary="%s"
             android:title="@string/dashboard_displays" />
 
-        <CheckBoxPreference
-            android:defaultValue="false"
+        <SwitchPreference
+            android:defaultValue="true"
             android:key="list_preference_dashboard_hide_inactive"
             android:summary="@string/hide_inactive_summary"
             android:title="@string/hide_inactive_title" />
 
-        <CheckBoxPreference
+        <SwitchPreference
             android:defaultValue="false"
             android:key="preference_disable_notification"
             android:title="@string/disable_notification"/>

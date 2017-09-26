@@ -314,15 +314,13 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
 
     private fun initScheduler() {
         val jobScheduler = getSystemService(Context.JOB_SCHEDULER_SERVICE) as JobScheduler
-        if (!PreferenceManager.getDefaultSharedPreferences(this).getBoolean("preference_disable_notification", false)) {
+        if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean("preference_disable_notification", false)) {
             jobScheduler.cancelAll()
+            return
         }
 
-        val OneMinute = 1000L * 60
-        val serviceComponent = ComponentName(this, PullDataJob::class.java)
-        val builder = JobInfo.Builder(0, serviceComponent)
-                .setMinimumLatency(OneMinute * 60) // one hour
-                .setOverrideDeadline(OneMinute * 80) // maximum 80 minutes
+        val builder = JobInfo.Builder(1, ComponentName(this, PullDataJob::class.java))
+                .setPeriodic(1000L * 60 * 60) // one hour
                 .setRequiredNetworkType(NETWORK_TYPE_ANY)
                 .setPersisted(true)
         jobScheduler.schedule(builder.build())
