@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <PreferenceCategory>
+    <PreferenceCategory android:title="@string/display">
 
         <ListPreference
             android:defaultValue="0"
@@ -27,7 +27,7 @@
 
     </PreferenceCategory>
 
-    <PreferenceCategory>
+    <PreferenceCategory android:title="@string/notification">
 
         <SwitchPreference
             android:defaultValue="true"

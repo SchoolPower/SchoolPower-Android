@@ -1,6 +1,7 @@
 package com.carbonylgroup.schoolpower.service
 
 import android.app.Activity
+import android.app.NotificationManager
 import android.app.job.JobParameters
 import android.app.job.JobService
 import android.os.Handler
@@ -57,7 +58,7 @@ class PullDataJob : JobService() {
                         val nBuilder = NotificationCompat.Builder(this@PullDataJob, "data updated")
                                 .setContentTitle("New assignments are out")
                                 .setContentText(updatedSubjects.joinToString(", "))
-                        nBuilder.build()
+                        (getSystemService(NOTIFICATION_SERVICE) as NotificationManager).notify(1, nBuilder.build())
                     }
 
                     jobFinished(params, false)
