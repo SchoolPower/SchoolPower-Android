@@ -73,8 +73,8 @@
         <item>简体中文</item>
     </string-array>
 
-    <string name="hide_inactive_title">Hide inactive subjects</string>
-    <string name="hide_inactive_summary">Hide subjects that currently have no assignment and grade</string>
     <string name="enable_notification">Enable notifications</string>
+    <string name="show_inactive_summary">Show subjects that currently have no assignment and grade</string>
+    <string name="show_inactive_title">Show inactive subjects</string>
 
 </resources>
