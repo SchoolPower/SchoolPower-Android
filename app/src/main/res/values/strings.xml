@@ -59,6 +59,7 @@
     <string name="dashboard_display_preference_summary_suffix"> </string>
 
     <string name="notification">Notification</string>
+    <string name="notification_settings">Notification</string>
     <string name="only_alert">SchoolPower is currently ONLY available for the students in Maple Leaf Education System (MLES) in China.</string>
     <string name="i_understand">I Understand</string>
 

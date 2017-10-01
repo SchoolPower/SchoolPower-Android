@@ -28,7 +28,7 @@
 
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/notification">
+    <PreferenceCategory android:title="@string/notification_settings">
 
         <SwitchPreference
             android:defaultValue="true"

@@ -17,7 +17,6 @@ import android.support.v4.content.ContextCompat
 import android.util.DisplayMetrics
 import android.util.Log
 import android.view.View
-import co.ceryle.segmentedbutton.SegmentedButtonGroup
 import com.carbonylgroup.schoolpower.R
 import com.carbonylgroup.schoolpower.data.StudentInformation
 import com.carbonylgroup.schoolpower.data.Subject
@@ -289,8 +288,12 @@ class Utils(private val context: Context) {
                     "Exercise" to "EXE",
                     "Social" to "SS"
             )
-            val short = shorts[subjectTitle.split(" ")[0]]
-            if (short != null) return short
+            val splitedSubject = subjectTitle.split(" ")
+            var short = shorts[splitedSubject[0]]
+            if (short != null) {
+                if (splitedSubject[splitedSubject.size - 1] == "Music") short += "M"
+                return short
+            }
 
             var ret = ""
             for (c in subjectTitle) {
