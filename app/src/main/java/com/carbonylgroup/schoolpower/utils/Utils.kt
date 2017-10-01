@@ -275,7 +275,8 @@ class Utils(private val context: Context) {
     companion object {
 
         fun getShortName(subjectTitle: String): String {
-            val shorts = mapOf("Homeroom" to "HR",
+            val shorts = mapOf(
+                    "Homeroom" to "HR",
                     "Planning" to "PL",
                     "Mandarin" to "CN",
                     "Chinese" to "CSS",
@@ -286,7 +287,8 @@ class Utils(private val context: Context) {
                     "Physics" to "PHY",
                     "Chemistry" to "CHEM",
                     "Exercise" to "EXE",
-                    "Social" to "SS")
+                    "Social" to "SS"
+            )
             val short = shorts[subjectTitle.split(" ")[0]]
             if (short != null) return short
 

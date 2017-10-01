@@ -74,10 +74,6 @@
         <item>简体中文</item>
     </string-array>
 
-    <string name="hide_inactive_title">Hide inactive subjects</string>
-    <string name="hide_inactive_summary">Hide subjects that currently have no assignment and grade</string>
-
-
     <!-- KEYS DO NOT TRANSLATE -->
     <string name="adMob_app_id">ca-app-pub-9841217337381410~1214844685</string>
     <!--TEST ID-->
@@ -122,5 +118,8 @@
         <item>3</item>
     </string-array>
 
-    <string name="disable_notification">Disable notifications</string>
+    <string name="hide_inactive_title">Hide inactive subjects</string>
+    <string name="hide_inactive_summary">Hide subjects that currently have no assignment and grade</string>
+    <string name="enable_notification">Enable notifications</string>
+
 </resources>

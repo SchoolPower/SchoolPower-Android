@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <PreferenceCategory android:title="@string/display">
+    <PreferenceCategory>
 
         <ListPreference
             android:defaultValue="0"
@@ -25,10 +25,15 @@
             android:summary="@string/hide_inactive_summary"
             android:title="@string/hide_inactive_title" />
 
+    </PreferenceCategory>
+
+    <PreferenceCategory>
+
         <SwitchPreference
-            android:defaultValue="false"
-            android:key="preference_disable_notification"
-            android:title="@string/disable_notification"/>
+            android:defaultValue="true"
+            android:key="preference_enable_notification"
+            android:title="@string/enable_notification"/>
+
     </PreferenceCategory>
 
 </PreferenceScreen>
