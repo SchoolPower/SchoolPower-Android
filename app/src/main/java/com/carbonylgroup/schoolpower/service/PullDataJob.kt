@@ -43,6 +43,7 @@ class PullDataJob : JobService() {
                     val subjects = utils.parseJsonResult(strMessage).second
 
                     val updatedSubjects = ArrayList<String>()
+                    val updatedGradedSubjects = ArrayList<String>()
 
                     val oldSubjects = utils.readDataArrayList().second
                     // Mark new or changed assignments
@@ -55,7 +56,7 @@ class PullDataJob : JobService() {
                                 var newGrade = true
                                 var grade = ""
                                 val maxGrade = item.maximumScore
-                                for (it in newAssignmentListCollection) {
+                                for (it in oldAssignmentListCollection) {
                                     if (it.title == item.title && it.date == item.date) {
                                         newItem = false
                                         if (it.score == item.score) newGrade = false
@@ -71,7 +72,7 @@ class PullDataJob : JobService() {
 
                                 if (newGrade || (newItem && preference.getBoolean("notification_show_no_grade_assignment", true))) {
                                     if (newGrade && preference.getBoolean("notification_show_grade", true))
-                                        updatedSubjects.add(item.title + " ($grade/$maxGrade)")
+                                        updatedGradedSubjects.add(item.title + " ($grade/$maxGrade)")
                                     else
                                         updatedSubjects.add(item.title)
                                 }
@@ -79,13 +80,16 @@ class PullDataJob : JobService() {
                         }
                     }
 
-                    if (updatedSubjects.size != 0) {
+                    if (updatedSubjects.size != 0 || updatedGradedSubjects.size != 0) {
+                        val allUpdated = updatedSubjects
+                        allUpdated.addAll(updatedGradedSubjects)
+
                         val stackBuilder = TaskStackBuilder.create(this@PullDataJob)
                         stackBuilder.addParentStack(MainActivity::class.java)
                         stackBuilder.addNextIntent(Intent(this@PullDataJob, MainActivity::class.java))
                         val nBuilder = NotificationCompat.Builder(this@PullDataJob, "data updated")
                                 .setContentTitle(getString(R.string.notification_new))
-                                .setContentText(updatedSubjects.joinToString(", "))
+                                .setContentText(allUpdated.joinToString(", "))
                                 .setSmallIcon(R.drawable.icon_light)
                                 .setContentIntent(stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT))
                                 .setAutoCancel(true)

@@ -121,8 +121,8 @@
     <string name="show_inactive_title">Show Inactive Subjects</string>
     <string name="show_inactive_summary">Show subjects that currently have no assignment and grade.</string>
     <string name="enable_notification">Enable Notifications</string>
-    <string name="notification_show_grade">Show Grades in Notifications</string>
-    <string name="notification_show_no_grade_assignment">Show Notifications with No Grades</string>
+    <string name="notification_show_grade">Show Assignment Details in Notification</string>
+    <string name="notification_show_no_grade_assignment">Notify Ungraded New Assignments</string>
 
     <string name="notification_new">New Assignments</string>
 </resources>
