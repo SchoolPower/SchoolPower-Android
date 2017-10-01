@@ -238,7 +238,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
 
     private fun initScheduler() {
         val jobScheduler = getSystemService(Context.JOB_SCHEDULER_SERVICE) as JobScheduler
-        if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean("preference_disable_notification", false)) {
+        if (!PreferenceManager.getDefaultSharedPreferences(this).getBoolean("preference_enable_notification", true)) {
             jobScheduler.cancelAll()
             return
         }

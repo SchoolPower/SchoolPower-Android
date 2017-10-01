@@ -56,10 +56,10 @@ class SettingsFragment : PreferenceFragment(), OnSharedPreferenceChangeListener 
             restart()
         }
 
-        if (key == "preference_disable_notification") {
+        if (key == "preference_enable_notification") {
 
             val jobScheduler = activity.getSystemService(Context.JOB_SCHEDULER_SERVICE) as JobScheduler
-            if (!PreferenceManager.getDefaultSharedPreferences(activity).getBoolean("preference_disable_notification", false)) {
+            if (!PreferenceManager.getDefaultSharedPreferences(activity).getBoolean("preference_enable_notification", true)) {
                 jobScheduler.cancelAll()
             }
         }
