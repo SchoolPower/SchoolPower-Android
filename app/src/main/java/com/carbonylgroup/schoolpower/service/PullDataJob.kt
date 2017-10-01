@@ -2,13 +2,18 @@ package com.carbonylgroup.schoolpower.service
 
 import android.app.Activity
 import android.app.NotificationManager
+import android.app.PendingIntent
+import android.app.TaskStackBuilder
 import android.app.job.JobParameters
 import android.app.job.JobService
+import android.content.Intent
 import android.os.Handler
 import android.os.Message
+import android.preference.PreferenceManager
 import android.support.v4.app.NotificationCompat
 import android.util.Log
 import com.carbonylgroup.schoolpower.R
+import com.carbonylgroup.schoolpower.activities.MainActivity
 import com.carbonylgroup.schoolpower.utils.PostData
 import com.carbonylgroup.schoolpower.utils.Utils
 import java.util.*
@@ -46,18 +51,44 @@ class PullDataJob : JobService() {
                             val newAssignmentListCollection = subjects[i].assignments
                             val oldAssignmentListCollection = oldSubjects[i].assignments
                             for (item in newAssignmentListCollection) {
-                                // if no item in oldAssignmentListCollection has the same title, score and date as those of the new one, then the assignment should be marked.
-                                val found = oldAssignmentListCollection.any { it.title == item.title && it.score == item.score && it.date == item.date && !it.isNew }
-                                if (!found) updatedSubjects.add(item.title)
+                                var newItem = true
+                                var newGrade = true
+                                var grade = ""
+                                val maxGrade = item.maximumScore
+                                for (it in newAssignmentListCollection) {
+                                    if (it.title == item.title && it.date == item.date) {
+                                        newItem = false
+                                        if (it.score == item.score) newGrade = false
+                                        else grade = it.score
+                                    }
+                                }
+                                if (newItem && item.score != "--") {
+                                    newGrade = true
+                                    grade = item.score
+                                }
 
+                                val preference = PreferenceManager.getDefaultSharedPreferences(applicationContext)
+
+                                if (newGrade || (newItem && preference.getBoolean("notification_show_no_grade_assignment", true))) {
+                                    if (newGrade && preference.getBoolean("notification_show_grade", true))
+                                        updatedSubjects.add(item.title + " ($grade/$maxGrade)")
+                                    else
+                                        updatedSubjects.add(item.title)
+                                }
                             }
                         }
                     }
-                    if (updatedSubjects.size != 0) {
 
+                    if (updatedSubjects.size != 0) {
+                        val stackBuilder = TaskStackBuilder.create(this@PullDataJob)
+                        stackBuilder.addParentStack(MainActivity::class.java)
+                        stackBuilder.addNextIntent(Intent(this@PullDataJob, MainActivity::class.java))
                         val nBuilder = NotificationCompat.Builder(this@PullDataJob, "data updated")
-                                .setContentTitle("New assignments are out")
+                                .setContentTitle(getString(R.string.notification_new))
                                 .setContentText(updatedSubjects.joinToString(", "))
+                                .setSmallIcon(R.drawable.icon_light)
+                                .setContentIntent(stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT))
+                                .setAutoCancel(true)
                         (getSystemService(NOTIFICATION_SERVICE) as NotificationManager).notify(1, nBuilder.build())
                     }
 

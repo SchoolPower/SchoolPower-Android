@@ -77,5 +77,11 @@
     <string name="enable_notification">啟用成績通知</string>
     <string name="show_inactive_summary">顯示目前沒有作業和成績的課程。</string>
     <string name="show_inactive_title">顯示不活躍課程</string>
+    <string name="navigation_drawer_close">關閉側滑欄</string>
+    <string name="navigation_drawer_open">打開側滑欄</string>
+    <string name="notification_new">出分辣</string>
+    <string name="notification_show_grade">在通知裡顯示成績</string>
+    <string name="notification_show_no_grade_assignment">通知沒有成績的作業</string>
+    <string name="title_activity_settings">設置</string>
 
 </resources>

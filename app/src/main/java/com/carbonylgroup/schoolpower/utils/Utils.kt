@@ -263,7 +263,10 @@ class Utils(private val context: Context) {
 
             filteredSubjects = ArrayList<Subject>()
             subjects
-                    .filter { it.assignments.size != 0 || it.grades.size != 0 }
+                    .filter {
+                        val latest = getLatestPeriodGrade(it)
+                        it.assignments.size != 0 || (latest != null && latest.letter != "--")
+                    }
                     .forEach { filteredSubjects.add(it) }
 
         } else {

@@ -32,8 +32,8 @@
         <activity
             android:name=".activities.MainActivity"
             android:configChanges="locale|orientation"
-            android:screenOrientation="portrait"
             android:launchMode="singleTop"
+            android:screenOrientation="portrait"
             android:theme="@style/Design">
 
             <intent-filter>
@@ -59,7 +59,7 @@
 
         <service
             android:name=".service.PullDataJob"
-            android:label="Fetch student&apos;s data"
+            android:label="Fetch student data"
             android:permission="android.permission.BIND_JOB_SERVICE" />
 
     </application>

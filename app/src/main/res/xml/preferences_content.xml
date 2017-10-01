@@ -33,6 +33,14 @@
             android:defaultValue="true"
             android:key="preference_enable_notification"
             android:title="@string/enable_notification" />
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="notification_show_grade"
+            android:title="@string/notification_show_grade" />
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="notification_show_no_grade_assignment"
+            android:title="@string/notification_show_no_grade_assignment" />
 
     </PreferenceCategory>
 

@@ -28,7 +28,6 @@
     <string name="authenticating">Authenticating&#8230;</string>
     <string name="wrong_password">Invalid Username or Password</string>
     <string name="no_connection">Cannot connect to server</string>
-    <string name="no_data_to_present">No data to present.</string>
     <string name="user_id_indicator">User ID:</string>
     <string name="no_username">No Username</string>
     <string name="the_end">THIS IS THE END</string>
@@ -87,7 +86,7 @@
     <string name="accountData" translatable="false">accountData</string>
     <string name="loggedIn" translatable="false">loggedIn</string>
     <string name="usernameKEY" translatable="false">Username</string>
-    <string name="passwordKEY">Password</string>
+    <string name="passwordKEY" translatable="false">Password</string>
     <string name="student_name" translatable="false">student_name</string>
     <string name="user_id" translatable="false">user_id</string>
 
@@ -98,7 +97,7 @@
 
     <string name="json_begin" translatable="false">{</string>
 
-    <string name="postURL">https://api.schoolpower.studio:8443/api/2.0/get_data.php</string>
+    <string name="postURL" translatable="false">https://api.schoolpower.studio:8443/api/2.0/get_data.php</string>
     <string name="updateURL" translatable="false">https://api.schoolpower.studio:8443/api/update.json</string>
     <string name="dataFileName" translatable="false">dataMap.json</string>
     <string name="langFileName" translatable="false">lang.file</string>
@@ -122,5 +121,8 @@
     <string name="show_inactive_title">Show Inactive Subjects</string>
     <string name="show_inactive_summary">Show subjects that currently have no assignment and grade.</string>
     <string name="enable_notification">Enable Notifications</string>
+    <string name="notification_show_grade">Show Grades in Notifications</string>
+    <string name="notification_show_no_grade_assignment">Show Notifications with No Grades</string>
 
+    <string name="notification_new">New Assignments</string>
 </resources>

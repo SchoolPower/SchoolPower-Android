@@ -237,16 +237,21 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
 
     private fun initScheduler() {
         val jobScheduler = getSystemService(Context.JOB_SCHEDULER_SERVICE) as JobScheduler
-        if (!PreferenceManager.getDefaultSharedPreferences(applicationContext).getBoolean("preference_enable_notification", true)) {
+        val preferences = PreferenceManager.getDefaultSharedPreferences(applicationContext)
+        if (!preferences.getBoolean("preference_enable_notification", true)) {
             jobScheduler.cancelAll()
+            preferences.edit().putBoolean("NeedsToSchedule", true).apply()
             return
         }
+        if (!preferences.getBoolean("NeedsToSchedule", true)) return
 
         val builder = JobInfo.Builder(1, ComponentName(this, PullDataJob::class.java))
                 .setPeriodic(1000L * 60 * 60) // one hour
                 .setRequiredNetworkType(NETWORK_TYPE_ANY)
                 .setPersisted(true)
         jobScheduler.schedule(builder.build())
+
+        preferences.edit().putBoolean("NeedsToSchedule", false).apply()
     }
 
     /* Fragments Handler */
