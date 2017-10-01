@@ -19,6 +19,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/Design"
             android:windowSoftInputMode="adjustResize">
+
             <intent-filter>
 
                 <action android:name="android.intent.action.MAIN" />
@@ -32,6 +33,7 @@
             android:name=".activities.MainActivity"
             android:configChanges="locale|orientation"
             android:screenOrientation="portrait"
+            android:launchMode="singleTop"
             android:theme="@style/Design">
 
             <intent-filter>
@@ -43,9 +45,21 @@
 
         </activity>
 
+        <activity
+            android:name=".activities.SettingsActivity"
+            android:label="@string/title_activity_settings"
+            android:parentActivityName=".activities.MainActivity"
+            android:theme="@style/DesignActionBar">
+
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.MainActivity" />
+
+        </activity>
+
         <service
             android:name=".service.PullDataJob"
-            android:label="Fetch student's data"
+            android:label="Fetch student&apos;s data"
             android:permission="android.permission.BIND_JOB_SERVICE" />
 
     </application>

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <PreferenceCategory android:title="@string/display">
 
@@ -33,7 +32,25 @@
         <SwitchPreference
             android:defaultValue="true"
             android:key="preference_enable_notification"
-            android:title="@string/enable_notification"/>
+            android:title="@string/enable_notification" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="Support">
+
+        <PreferenceScreen
+            android:summary="Click to contact developer by email. Please provide as much info as possible."
+            android:title="Report a Bug" />
+
+        <SwitchPreference
+            android:defaultValue="true"
+            android:summary="Auto-enables if used often, as this app is ad-supported, so we can keep it free and its developers fed."
+            android:title="Show Ads" />
+
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:summary="In order to help us improve this app, we periodically send anonymous, non-personalized usage data back to us."
+            android:title="Help Us Improve This App" />
 
     </PreferenceCategory>
 

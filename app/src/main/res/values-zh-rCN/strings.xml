@@ -75,7 +75,7 @@
     </string-array>
 
     <string name="enable_notification">启用成绩通知</string>
-    <string name="show_inactive_summary">显示目前没有作业和成绩的课程</string>
+    <string name="show_inactive_summary">显示目前没有作业和成绩的课程。</string>
     <string name="show_inactive_title">显示不活跃课程</string>
 
 </resources>

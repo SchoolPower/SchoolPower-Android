@@ -37,7 +37,6 @@ import com.carbonylgroup.schoolpower.data.StudentInformation
 import com.carbonylgroup.schoolpower.data.Subject
 import com.carbonylgroup.schoolpower.fragments.ChartFragment
 import com.carbonylgroup.schoolpower.fragments.HomeFragment
-import com.carbonylgroup.schoolpower.fragments.SettingsFragment
 import com.carbonylgroup.schoolpower.service.PullDataJob
 import com.carbonylgroup.schoolpower.transition.DetailsTransition
 import com.carbonylgroup.schoolpower.transition.TransitionHelper
@@ -53,6 +52,7 @@ import com.google.android.gms.ads.MobileAds
 import com.mikepenz.aboutlibraries.LibsBuilder
 import kotterknife.bindView
 import java.util.*
+
 
 class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigationItemSelectedListener {
 
@@ -81,7 +81,6 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
     /* Fragments */
     private var homeFragment: HomeFragment? = null
     private var chartFragment: ChartFragment? = null
-    private var settingsFragment: SettingsFragment? = null
 
     override fun attachBaseContext(newBase: Context) {
 
@@ -273,15 +272,8 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                 hideToolBarItems(true)
                 presentFragment = 2
             }
-            R.id.nav_settings -> {
-                settingsFragment = SettingsFragment()
-                transaction.setCustomAnimations(R.animator.slide_from_right_in, R.animator.slide_to_left_out)
-                        .replace(R.id.content_view, settingsFragment)
-                setToolBarTitle(getString(R.string.settings))
-                animateDrawerToggle(true)
-                hideToolBarItems(true)
-                presentFragment = 3
-            }
+            R.id.nav_settings -> startSettingsActivity()
+
             R.id.nav_about -> {
                 val aboutFragment = LibsBuilder()
                         .withAboutIconShown(true)
@@ -294,7 +286,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                 setToolBarTitle(getString(R.string.about))
                 animateDrawerToggle(true)
                 hideToolBarItems(true)
-                presentFragment = 4
+                presentFragment = 3
             }
             R.id.nav_sign_out -> confirmSignOut()
 
@@ -483,6 +475,11 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
         utils.saveHistoryGrade(null)
         utils.saveDataJson("")
         startLoginActivity()
+    }
+
+    private fun startSettingsActivity() {
+
+        startActivity(Intent(application, SettingsActivity::class.java))
     }
 
     private fun startLoginActivity() {
