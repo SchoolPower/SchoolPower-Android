@@ -259,7 +259,7 @@ class Utils(private val context: Context) {
 
     fun getFilteredSubjects(subjects: List<Subject>): List<Subject> {
         val filteredSubjects: List<Subject>
-        if (!PreferenceManager.getDefaultSharedPreferences(context).getBoolean("list_preference_dashboard_show_inactive", false)) {
+        if (!PreferenceManager.getDefaultSharedPreferences(context.applicationContext).getBoolean("list_preference_dashboard_show_inactive", false)) {
 
             filteredSubjects = ArrayList<Subject>()
             subjects

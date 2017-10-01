@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2017 Gustav Wang
+ * Copyright (C) 2017 SchoolPower Studio
  */
 
 package com.carbonylgroup.schoolpower.activities
@@ -129,7 +129,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                     builder.setPositiveButton(getString(R.string.alright), null)
                     builder.create().show()
 
-                } else showGPADialog();
+                } else showGPADialog()
             }
         }
         return super.onOptionsItemSelected(item)
@@ -237,7 +237,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
 
     private fun initScheduler() {
         val jobScheduler = getSystemService(Context.JOB_SCHEDULER_SERVICE) as JobScheduler
-        if (!PreferenceManager.getDefaultSharedPreferences(this).getBoolean("preference_enable_notification", true)) {
+        if (!PreferenceManager.getDefaultSharedPreferences(applicationContext).getBoolean("preference_enable_notification", true)) {
             jobScheduler.cancelAll()
             return
         }

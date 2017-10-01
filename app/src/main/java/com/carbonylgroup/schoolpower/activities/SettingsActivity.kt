@@ -4,22 +4,21 @@
 
 package com.carbonylgroup.schoolpower.activities
 
+import android.app.job.JobScheduler
 import android.content.Context
 import android.content.Intent
-import android.os.Bundle
-import android.preference.ListPreference
-import android.app.job.JobScheduler
 import android.content.SharedPreferences
 import android.content.res.Resources
+import android.os.Bundle
+import android.preference.ListPreference
 import android.preference.PreferenceFragment
 import android.preference.PreferenceManager
-import android.support.v7.app.AppCompatActivity
-
-import com.carbonylgroup.schoolpower.R
-import com.carbonylgroup.schoolpower.utils.Utils
 import android.support.v4.app.NavUtils
+import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
+import com.carbonylgroup.schoolpower.R
 import com.carbonylgroup.schoolpower.utils.ContextWrapper
+import com.carbonylgroup.schoolpower.utils.Utils
 import java.util.*
 
 
@@ -102,8 +101,8 @@ class SettingsActivity : AppCompatActivity() {
 
             if (key == "preference_enable_notification") {
 
-                val jobScheduler = MainActivity().getSystemService(Context.JOB_SCHEDULER_SERVICE) as JobScheduler
-                if (!PreferenceManager.getDefaultSharedPreferences(activity).getBoolean("preference_enable_notification", true)) {
+                val jobScheduler = activity.getSystemService(Context.JOB_SCHEDULER_SERVICE) as JobScheduler
+                if (!PreferenceManager.getDefaultSharedPreferences(activity.applicationContext).getBoolean("preference_enable_notification", true)) {
                     jobScheduler.cancelAll()
                 }
             }
