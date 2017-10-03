@@ -83,5 +83,13 @@
     <string name="notification_show_grade">Show Assignment Details in Notification</string>
     <string name="title_activity_settings">Settings</string>
     <string name="notification_show_no_grade_assignment">Notify Ungraded New Assignments</string>
+    <string name="choose_email_app">Choose an email app…</string>
+    <string name="report_bug">Report a Bug</string>
+    <string name="report_bug_summary">Click to contact developer by email. Please provide as much info as possible.</string>
+    <string name="source_code">Get Source CodeSupporte</string>
+    <string name="support">Support</string>
+    <string name="website">Visit Our Website</string>
+    <string name="bug_report_email_subject">Bug Report of SchoolPower</string>
+    <string name="bug_report_email_content">Please provide as much info as possible, such as how to reproduce it, what the expected result is.</string>
 
 </resources>

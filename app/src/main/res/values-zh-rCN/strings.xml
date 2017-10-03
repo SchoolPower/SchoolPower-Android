@@ -83,5 +83,13 @@
     <string name="notification_show_grade">在通知里显示成绩</string>
     <string name="notification_show_no_grade_assignment">通知没有成绩的作业</string>
     <string name="title_activity_settings">设置</string>
+    <string name="choose_email_app">选择一个邮件应用...</string>
+    <string name="report_bug">提交Bug</string>
+    <string name="report_bug_summary">点击用电子邮件练习开发者。请提供尽可能详细的信息。</string>
+    <string name="source_code">获取源代码</string>
+    <string name="support">支持</string>
+    <string name="website">访问官方网站</string>
+    <string name="bug_report_email_subject">SchoolPower有Bug</string>
+    <string name="bug_report_email_content">请提供尽可能详细的信息，如如何复现问题，预期的结果是什么。</string>
 
 </resources>

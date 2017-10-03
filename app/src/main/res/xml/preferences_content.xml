@@ -44,21 +44,20 @@
 
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="Support">
+    <PreferenceCategory android:title="@string/support">
 
         <PreferenceScreen
-            android:summary="Click to contact developer by email. Please provide as much info as possible."
-            android:title="Report a Bug" />
+            android:key="report_bug"
+            android:summary="@string/report_bug_summary"
+            android:title="@string/report_bug" />
 
-        <SwitchPreference
-            android:defaultValue="true"
-            android:summary="Auto-enables if used often, as this app is ad-supported, so we can keep it free and its developers fed."
-            android:title="Show Ads" />
+        <PreferenceScreen
+            android:key="website"
+            android:title="@string/website" />
 
-        <CheckBoxPreference
-            android:defaultValue="false"
-            android:summary="In order to help us improve this app, we periodically send anonymous, non-personalized usage data back to us."
-            android:title="Help Us Improve This App" />
+        <PreferenceScreen
+            android:key="source_code"
+            android:title="@string/source_code" />
 
     </PreferenceCategory>
 

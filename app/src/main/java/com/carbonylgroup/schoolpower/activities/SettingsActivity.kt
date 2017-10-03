@@ -10,14 +10,15 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.res.Resources
+import android.net.Uri
 import android.os.Bundle
 import android.preference.ListPreference
+import android.preference.Preference
 import android.preference.PreferenceFragment
 import android.preference.PreferenceManager
 import android.support.v4.app.NavUtils
 import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
-import com.carbonylgroup.schoolpower.R
 import com.carbonylgroup.schoolpower.utils.ContextWrapper
 import com.carbonylgroup.schoolpower.utils.Utils
 import java.util.*
@@ -88,6 +89,23 @@ class SettingsActivity : AppCompatActivity() {
 
             val dashboard_display = (findPreference("list_preference_dashboard_display") as ListPreference)
             dashboard_display.summary = activity.getString(R.string.dashboard_display_preference_summary_prefix) + dashboard_display.entry + activity.getString(R.string.dashboard_display_preference_summary_suffix)
+
+            findPreference("report_bug").onPreferenceClickListener = Preference.OnPreferenceClickListener {
+                val uri = Uri.parse(getString(R.string.bug_report_email))
+                val intent = Intent(Intent.ACTION_SENDTO, uri)
+                intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.bug_report_email_subject))
+                intent.putExtra(Intent.EXTRA_TEXT, getString(R.string.bug_report_email_content))
+                startActivity(Intent.createChooser(intent, getString(R.string.choose_email_app)))
+                true
+            }
+            findPreference("website").onPreferenceClickListener = Preference.OnPreferenceClickListener {
+                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.website_address))))
+                true
+            }
+            findPreference("source_code").onPreferenceClickListener = Preference.OnPreferenceClickListener {
+                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.source_code_address))))
+                true
+            }
         }
 
         private fun refreshPreferences(sharedPreferences: SharedPreferences?, key: String?) {

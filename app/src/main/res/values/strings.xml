@@ -125,4 +125,18 @@
     <string name="notification_show_no_grade_assignment">Notify Ungraded New Assignments</string>
 
     <string name="notification_new">New Assignments</string>
+    <string name="support">Support</string>
+    <string name="report_bug">Report a Bug</string>
+    <string name="report_bug_summary">Click to contact developer by email. Please provide as much info as possible.</string>
+    <string name="website">Visit Our Website</string>
+    <string name="source_code">Get Source Code</string>
+
+    <string name="bug_report_email" translatable="false">mailto:harryyunull@gmail.com</string>
+    <string name="bug_report_email_subject">Bug Report of SchoolPower</string>
+    <string name="bug_report_email_content">Please provide as much info as possible, such as how to reproduce it, what the expected result is.</string>
+    <string name="choose_email_app">Choose an email app…</string>
+
+    <string name="website_address" translatable="false">https://schoolpower.studio</string>
+    <string name="source_code_address" translatable="false">https://github.com/SchoolPower</string>
+
 </resources>
