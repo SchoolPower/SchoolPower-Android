@@ -4,6 +4,7 @@
 
 package com.carbonylgroup.schoolpower.activities
 
+import android.app.Activity
 import android.app.job.JobScheduler
 import android.content.Context
 import android.content.Intent
@@ -26,6 +27,10 @@ class SettingsActivity : AppCompatActivity() {
 
     private val localeSet = arrayListOf(Resources.getSystem().configuration.locale, Locale.ENGLISH, Locale.TRADITIONAL_CHINESE, Locale.SIMPLIFIED_CHINESE)
 
+    companion object {
+        val LANGUAGE_CHANGED = Activity.RESULT_FIRST_USER
+    }
+
     override fun attachBaseContext(newBase: Context) {
 
         val utils = Utils(newBase)
@@ -42,6 +47,7 @@ class SettingsActivity : AppCompatActivity() {
         supportActionBar?.setDisplayShowHomeEnabled(true)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar!!.title = getString(R.string.settings)
+        setResult(RESULT_OK) // to invoke onActivityResult to apply settings
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -111,6 +117,7 @@ class SettingsActivity : AppCompatActivity() {
         private fun restart() {
 
             startActivity(Intent(activity, MainActivity::class.java))
+            activity.setResult(SettingsActivity.LANGUAGE_CHANGED)
             activity.finish()
         }
     }

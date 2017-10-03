@@ -484,7 +484,26 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
 
     private fun startSettingsActivity() {
 
-        startActivity(Intent(application, SettingsActivity::class.java))
+        startActivityForResult(Intent(application, SettingsActivity::class.java), 0)
+        // Use startActivityForResult to invoke onActivityResult to apply settings
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (resultCode == SettingsActivity.LANGUAGE_CHANGED) { // language changed. need to restart.
+            finish()
+            return
+        }
+
+        if (presentFragment == 0) { // Refresh the home fragment to apply settings
+
+            homeFragment = HomeFragment()
+
+            fragmentManager
+                    .beginTransaction()
+                    .replace(R.id.content_view, homeFragment)
+                    .addToBackStack(null)
+                    .commit()
+        }
     }
 
     private fun startLoginActivity() {
