@@ -51,6 +51,11 @@
     <string name="signing_out_dialog_positive">對</string> 
     <string name="signing_out_dialog_negative">別</string> 
 
+    <string name="navigation_drawer_close">關閉側滑欄</string>
+    <string name="navigation_drawer_open">打開側滑欄</string>
+
+    <string name="title_activity_settings">設置</string>
+
     <string name="display">顯示</string>
     <string name="dashboard_displays">儀表盤顯示</string>
     <string name="language">語言</string>
@@ -74,22 +79,22 @@
         <item>简体中文</item>
     </string-array>
 
-    <string name="enable_notification">啟用成績通知</string>
-    <string name="show_inactive_summary">顯示目前沒有作業和成績的課程。</string>
     <string name="show_inactive_title">顯示不活躍課程</string>
-    <string name="navigation_drawer_close">關閉側滑欄</string>
-    <string name="navigation_drawer_open">打開側滑欄</string>
-    <string name="notification_new">出分辣</string>
+    <string name="show_inactive_summary">顯示目前沒有作業和成績的課程。</string>
+
+    <string name="enable_notification">啟用成績通知</string>
     <string name="notification_show_grade">在通知裡顯示成績</string>
-    <string name="notification_show_no_grade_assignment">通知沒有成績的作業</string>
-    <string name="title_activity_settings">設置</string>
-    <string name="choose_email_app">選擇一個郵件應用...</string>
-    <string name="report_bug">提交Bug</string>
-    <string name="report_bug_summary">點擊用電子郵件練習開發者。請提供盡可能詳細的信息。</string>
-    <string name="source_code">獲取源代碼</string>
+    <string name="notification_show_no_grade_assignment">通知還沒出分的作業</string>
+    <string name="notification_new">出分辣</string>
+
     <string name="support">支持</string>
-    <string name="website">訪問官方網站</string>
-    <string name="bug_report_email_subject">SchoolPower有Bug</string>
+    <string name="report_bug">提交Bug</string>
+    <string name="report_bug_summary">用電子郵件聯繫開發者。\n請提供盡可能詳細的信息。</string>
+    <string name="choose_email_app">選擇一個郵件應用&#8230;</string>
+    <string name="bug_report_email_subject">SchoolPower 有 Bug</string>
     <string name="bug_report_email_content">請提供盡可能詳細的信息，如如何复现问题，預期的結果是什麼。</string>
+
+    <string name="website">訪問官網</string>
+    <string name="source_code">獲取源碼</string>
 
 </resources>

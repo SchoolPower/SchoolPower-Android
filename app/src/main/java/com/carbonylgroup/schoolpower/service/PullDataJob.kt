@@ -22,6 +22,7 @@ import java.util.*
 class PullDataJob : JobService() {
 
     override fun onStartJob(params: JobParameters): Boolean {
+
         val username = getSharedPreferences("accountData", Activity.MODE_PRIVATE).getString(getString(R.string.usernameKEY), "")
         val password = getSharedPreferences("accountData", Activity.MODE_PRIVATE).getString(getString(R.string.passwordKEY), "")
         val utils = Utils(this)
@@ -81,6 +82,7 @@ class PullDataJob : JobService() {
                     }
 
                     if (updatedSubjects.size != 0 || updatedGradedSubjects.size != 0) {
+
                         val allUpdated = updatedSubjects
                         allUpdated.addAll(updatedGradedSubjects)
 
@@ -114,6 +116,7 @@ class PullDataJob : JobService() {
                 getString(R.string.postURL),
                 "username=$username&password=$password&version=$version&action=pull_data_job&os=android",
                 HandleData())).start()
+
         return true
     }
 

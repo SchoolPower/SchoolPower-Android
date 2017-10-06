@@ -51,6 +51,11 @@
     <string name="signing_out_dialog_positive">Sign Out</string>
     <string name="signing_out_dialog_negative">Don\'t</string>
 
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="title_activity_settings">Settings</string>
+
     <string name="display">Display</string>
     <string name="dashboard_displays">Dashboard Displays</string>
     <string name="language">Language</string>
@@ -74,14 +79,30 @@
         <item>简体中文</item>
     </string-array>
 
+    <string name="show_inactive_title">Show Inactive Subjects</string>
+    <string name="show_inactive_summary">Show subjects that currently have no assignment and grade.</string>
+
+    <string name="enable_notification">Enable Notifications</string>
+    <string name="notification_show_grade">Show Grades in Notification</string>
+    <string name="notification_show_no_grade_assignment">Notify Ungraded Assignments</string>
+    <string name="notification_new">New Assignments</string>
+
+    <string name="support">Support</string>
+    <string name="report_bug">Report a Bug</string>
+    <string name="report_bug_summary">Contact developer with email.\nPlease provide as much info as possible.</string>
+    <string name="choose_email_app">Choose an email app…</string>
+    <string name="bug_report_email_subject">Found Bug(s) in SchoolPower</string>
+    <string name="bug_report_email_content">Please provide as much info as possible, such as how to reproduce it, what is the expected result.</string>
+
+    <string name="website">Visit Website</string>
+    <string name="source_code">Get Source Code</string>
+
+
     <!-- KEYS DO NOT TRANSLATE -->
     <string name="adMob_app_id" translatable="false">ca-app-pub-9841217337381410~1214844685</string>
     <!--TEST ID-->
     <!--<string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>-->
     <string name="banner_ad_unit_id" translatable="false">ca-app-pub-9841217337381410/7121777483</string>
-
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="accountData" translatable="false">accountData</string>
     <string name="loggedIn" translatable="false">loggedIn</string>
@@ -101,7 +122,6 @@
     <string name="updateURL" translatable="false">https://api.schoolpower.studio:8443/api/update.json</string>
     <string name="dataFileName" translatable="false">dataMap.json</string>
     <string name="langFileName" translatable="false">lang.file</string>
-    <string name="title_activity_settings">Settings</string>
 
     <string name="gpa_segments_exhr" translatable="false">⊉ {HR}</string>
     <string name="gpa_segments_exhrme" translatable="false">⊉ {HR, ME}</string>
@@ -118,24 +138,7 @@
         <item>3</item>
     </string-array>
 
-    <string name="show_inactive_title">Show Inactive Subjects</string>
-    <string name="show_inactive_summary">Show subjects that currently have no assignment and grade.</string>
-    <string name="enable_notification">Enable Notifications</string>
-    <string name="notification_show_grade">Show Assignment Details in Notification</string>
-    <string name="notification_show_no_grade_assignment">Notify Ungraded New Assignments</string>
-
-    <string name="notification_new">New Assignments</string>
-    <string name="support">Support</string>
-    <string name="report_bug">Report a Bug</string>
-    <string name="report_bug_summary">Click to contact developer by email. Please provide as much info as possible.</string>
-    <string name="website">Visit Our Website</string>
-    <string name="source_code">Get Source Code</string>
-
     <string name="bug_report_email" translatable="false">mailto:harryyunull@gmail.com</string>
-    <string name="bug_report_email_subject">Bug Report of SchoolPower</string>
-    <string name="bug_report_email_content">Please provide as much info as possible, such as how to reproduce it, what the expected result is.</string>
-    <string name="choose_email_app">Choose an email app…</string>
-
     <string name="website_address" translatable="false">https://schoolpower.studio</string>
     <string name="source_code_address" translatable="false">https://github.com/SchoolPower</string>
 

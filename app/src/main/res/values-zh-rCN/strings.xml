@@ -51,6 +51,11 @@
     <string name="signing_out_dialog_positive">对</string> 
     <string name="signing_out_dialog_negative">别</string> 
 
+    <string name="navigation_drawer_close">关闭侧滑栏</string>
+    <string name="navigation_drawer_open">打开侧滑栏</string>
+
+    <string name="title_activity_settings">设置</string>
+
     <string name="display">显示</string>
     <string name="dashboard_displays">仪表盘显示</string>
     <string name="language">语言</string>
@@ -74,22 +79,22 @@
         <item>简体中文</item>
     </string-array>
 
-    <string name="enable_notification">启用成绩通知</string>
-    <string name="show_inactive_summary">显示目前没有作业和成绩的课程。</string>
     <string name="show_inactive_title">显示不活跃课程</string>
-    <string name="navigation_drawer_close">关闭侧滑栏</string>
-    <string name="navigation_drawer_open">打开侧滑栏</string>
-    <string name="notification_new">出分辣</string>
+    <string name="show_inactive_summary">显示目前没有作业和成绩的课程。</string>
+
+    <string name="enable_notification">启用成绩通知</string>
     <string name="notification_show_grade">在通知里显示成绩</string>
-    <string name="notification_show_no_grade_assignment">通知没有成绩的作业</string>
-    <string name="title_activity_settings">设置</string>
-    <string name="choose_email_app">选择一个邮件应用...</string>
-    <string name="report_bug">提交Bug</string>
-    <string name="report_bug_summary">点击用电子邮件练习开发者。请提供尽可能详细的信息。</string>
-    <string name="source_code">获取源代码</string>
+    <string name="notification_show_no_grade_assignment">通知还没出分的作业</string>
+    <string name="notification_new">出分辣</string>
+
     <string name="support">支持</string>
-    <string name="website">访问官方网站</string>
-    <string name="bug_report_email_subject">SchoolPower有Bug</string>
-    <string name="bug_report_email_content">请提供尽可能详细的信息，如如何复现问题，预期的结果是什么。</string>
+    <string name="report_bug">提交Bug</string>
+    <string name="report_bug_summary">用电子邮件联系开发者。\n请提供尽可能详细的信息。</string>
+    <string name="choose_email_app">选择一个邮件应用&#8230;</string>
+    <string name="bug_report_email_subject">SchoolPower 有 Bug</string>
+    <string name="bug_report_email_content">请提供尽可能详细的信息，比如怎么复现问题，预期的表现是什么。</string>
+
+    <string name="website">访问官网</string>
+    <string name="source_code">获取源码</string>
 
 </resources>

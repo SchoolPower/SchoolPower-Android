@@ -19,6 +19,7 @@ import android.preference.PreferenceManager
 import android.support.v4.app.NavUtils
 import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
+import com.carbonylgroup.schoolpower.R
 import com.carbonylgroup.schoolpower.utils.ContextWrapper
 import com.carbonylgroup.schoolpower.utils.Utils
 import java.util.*
