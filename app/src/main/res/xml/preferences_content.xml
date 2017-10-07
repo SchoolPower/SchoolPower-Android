@@ -53,7 +53,7 @@
 
         <PreferenceScreen
             android:key="website"
-            android:title="@string/website" />
+            android:title="@string/visit_website" />
 
         <PreferenceScreen
             android:key="source_code"

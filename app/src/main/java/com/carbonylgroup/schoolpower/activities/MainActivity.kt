@@ -23,6 +23,7 @@ import android.support.design.widget.AppBarLayout
 import android.support.design.widget.NavigationView
 import android.support.v4.content.ContextCompat
 import android.support.v4.view.GravityCompat
+import android.support.v4.view.LayoutInflaterCompat
 import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.graphics.drawable.DrawerArrowDrawable
@@ -35,6 +36,7 @@ import co.ceryle.segmentedbutton.SegmentedButtonGroup
 import com.carbonylgroup.schoolpower.R
 import com.carbonylgroup.schoolpower.data.StudentInformation
 import com.carbonylgroup.schoolpower.data.Subject
+import com.carbonylgroup.schoolpower.fragments.AboutFragment
 import com.carbonylgroup.schoolpower.fragments.ChartFragment
 import com.carbonylgroup.schoolpower.fragments.HomeFragment
 import com.carbonylgroup.schoolpower.service.PullDataJob
@@ -49,7 +51,6 @@ import com.github.premnirmal.textcounter.CounterView
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.MobileAds
-import com.mikepenz.aboutlibraries.LibsBuilder
 import kotterknife.bindView
 import java.util.*
 
@@ -81,6 +82,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
     /* Fragments */
     private var homeFragment: HomeFragment? = null
     private var chartFragment: ChartFragment? = null
+    private var aboutFragment: AboutFragment? = null
 
     override fun attachBaseContext(newBase: Context) {
 
@@ -280,15 +282,11 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
             R.id.nav_settings -> startSettingsActivity()
 
             R.id.nav_about -> {
-                val aboutFragment = LibsBuilder()
-                        .withAboutIconShown(true)
-                        .withAboutVersionShown(true)
-                        .withAboutDescription(getString(R.string.i_love_open_source))
-                        .fragment()
-
+                aboutFragment = AboutFragment()
                 transaction.setCustomAnimations(R.animator.slide_from_right_in, R.animator.slide_to_left_out)
                         .replace(R.id.content_view, aboutFragment)
                 setToolBarTitle(getString(R.string.about))
+                expandToolBar(true, true)
                 animateDrawerToggle(true)
                 hideToolBarItems(true)
                 presentFragment = 3

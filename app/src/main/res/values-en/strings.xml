@@ -16,6 +16,15 @@
     <string name="username">Username</string>
     <string name="password">Password</string>
     <string name="copyright">Copyright © 2017 SchoolPower Studio</string>
+    <string name="copyright_short">© 2017 SchoolPower Studio</string>
+
+    <string name="version">Version</string>
+    <string name="eula">User Agreement</string>
+    <string name="changelog">Changelog</string>
+    <string name="author">Author</string>
+    <string name="license">License</string>
+    <string name="carbonylgroup">CarbonylGroup</string>
+    <string name="null_name">Null</string>
 
     <string name="grades">GRADES</string>
     <string name="block">Block</string>

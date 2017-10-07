@@ -1,0 +1,630 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tool="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/mal_baseline_half"
+            android:layout_marginLeft="@dimen/mal_baseline_half"
+            android:layout_marginRight="@dimen/mal_baseline_half"
+            android:layout_marginStart="@dimen/mal_baseline_half"
+            android:layout_marginTop="@dimen/mal_baseline_half"
+            android:paddingBottom="@dimen/mal_baseline"
+            android:paddingEnd="@dimen/mal_baseline_half"
+            android:paddingLeft="@dimen/mal_baseline_half"
+            android:paddingRight="@dimen/mal_baseline_half"
+            android:paddingStart="@dimen/mal_baseline_half"
+            android:paddingTop="@dimen/mal_baseline"
+            app:cardBackgroundColor="@color/white"
+            app:cardCornerRadius="@dimen/mal_card_radius"
+            app:cardElevation="@dimen/mal_card_elevation"
+            app:cardPreventCornerOverlap="false"
+            app:cardUseCompatPadding="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingBottom="@dimen/mal_baseline_half"
+                    android:paddingEnd="@dimen/mal_baseline"
+                    android:paddingLeft="@dimen/mal_baseline_half"
+                    android:paddingRight="@dimen/mal_baseline"
+                    android:paddingStart="@dimen/mal_baseline_half"
+                    android:paddingTop="@dimen/mal_baseline">
+
+                    <ImageView
+                        android:id="@+id/mal_item_image"
+                        android:layout_width="@dimen/mal_title_item_image_size"
+                        android:layout_height="@dimen/mal_title_item_image_size"
+                        android:layout_gravity="center"
+                        android:layout_marginEnd="@dimen/mal_baseline_half"
+                        android:layout_marginLeft="@dimen/mal_baseline_half"
+                        android:layout_marginRight="@dimen/mal_baseline_half"
+                        android:layout_marginStart="@dimen/mal_baseline_half"
+                        android:adjustViewBounds="false"
+                        android:contentDescription="@null"
+                        android:cropToPadding="false"
+                        android:scaleType="fitCenter"
+                        app:srcCompat="@drawable/ic_launcher_web" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/mal_item_text"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/mal_baseline_half"
+                            android:layout_marginStart="@dimen/mal_baseline_half"
+                            android:text="@string/app_name"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+                            android:textColor="@color/text_primary_black" />
+
+                        <TextView
+                            android:id="@+id/mal_item_desc"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="@dimen/mal_baseline_half"
+                            android:layout_marginStart="@dimen/mal_baseline_half"
+                            android:layout_marginTop="-4dp"
+                            android:text="@string/copyright_short"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                            android:textColor="@color/text_secondary_black" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/about_version_cell"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?selectableItemBackground"
+                    android:orientation="horizontal"
+                    android:paddingBottom="@dimen/mal_baseline_half"
+                    android:paddingTop="@dimen/mal_baseline_half">
+
+                    <ImageView
+                        android:layout_width="@dimen/mal_action_item_image_width"
+                        android:layout_height="@dimen/mal_action_action_item_image_height"
+                        android:layout_gravity="center"
+                        android:layout_marginEnd="@dimen/mal_baseline_half"
+                        android:layout_marginLeft="@dimen/mal_baseline"
+                        android:layout_marginRight="@dimen/mal_baseline_half"
+                        android:layout_marginStart="@dimen/mal_baseline"
+                        android:adjustViewBounds="false"
+                        android:contentDescription="@null"
+                        android:cropToPadding="false"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/ic_info" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginEnd="@dimen/mal_baseline"
+                        android:layout_marginLeft="@dimen/mal_baseline"
+                        android:layout_marginRight="@dimen/mal_baseline"
+                        android:layout_marginStart="@dimen/mal_baseline"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:minHeight="@dimen/mal_action_action_item_image_height"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/version"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                            android:textColor="@color/text_primary_black" />
+
+                        <TextView
+                            android:id="@+id/about_version_label"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                            android:textColor="@color/text_secondary_black"
+                            tool:text="1.0.0" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/about_changelog_cell"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?selectableItemBackground"
+                    android:orientation="horizontal"
+                    android:paddingBottom="@dimen/mal_baseline_half"
+                    android:paddingTop="@dimen/mal_baseline_half">
+
+                    <ImageView
+                        android:layout_width="@dimen/mal_action_item_image_width"
+                        android:layout_height="@dimen/mal_action_action_item_image_height"
+                        android:layout_gravity="center"
+                        android:layout_marginEnd="@dimen/mal_baseline_half"
+                        android:layout_marginLeft="@dimen/mal_baseline"
+                        android:layout_marginRight="@dimen/mal_baseline_half"
+                        android:layout_marginStart="@dimen/mal_baseline"
+                        android:adjustViewBounds="false"
+                        android:contentDescription="@null"
+                        android:cropToPadding="false"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/ic_restore" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginEnd="@dimen/mal_baseline"
+                        android:layout_marginLeft="@dimen/mal_baseline"
+                        android:layout_marginRight="@dimen/mal_baseline"
+                        android:layout_marginStart="@dimen/mal_baseline"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:minHeight="@dimen/mal_action_action_item_image_height"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/changelog"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                            android:textColor="@color/text_primary_black" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/about_eula_cell"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?selectableItemBackground"
+                    android:orientation="horizontal"
+                    android:paddingBottom="@dimen/mal_baseline"
+                    android:paddingTop="@dimen/mal_baseline_half">
+
+                    <ImageView
+                        android:layout_width="@dimen/mal_action_item_image_width"
+                        android:layout_height="@dimen/mal_action_action_item_image_height"
+                        android:layout_gravity="center"
+                        android:layout_marginEnd="@dimen/mal_baseline_half"
+                        android:layout_marginLeft="@dimen/mal_baseline"
+                        android:layout_marginRight="@dimen/mal_baseline_half"
+                        android:layout_marginStart="@dimen/mal_baseline"
+                        android:adjustViewBounds="false"
+                        android:contentDescription="@null"
+                        android:cropToPadding="false"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/ic_book" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginEnd="@dimen/mal_baseline"
+                        android:layout_marginLeft="@dimen/mal_baseline"
+                        android:layout_marginRight="@dimen/mal_baseline"
+                        android:layout_marginStart="@dimen/mal_baseline"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:minHeight="@dimen/mal_action_action_item_image_height"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/eula"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                            android:textColor="@color/text_primary_black" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/mal_baseline_half"
+            android:layout_marginLeft="@dimen/mal_baseline_half"
+            android:layout_marginRight="@dimen/mal_baseline_half"
+            android:layout_marginStart="@dimen/mal_baseline_half"
+            android:layout_marginTop="@dimen/mal_baseline_half"
+            android:paddingBottom="@dimen/mal_baseline"
+            android:paddingEnd="@dimen/mal_baseline_half"
+            android:paddingLeft="@dimen/mal_baseline_half"
+            android:paddingRight="@dimen/mal_baseline_half"
+            android:paddingStart="@dimen/mal_baseline_half"
+            android:paddingTop="@dimen/mal_baseline"
+            app:cardBackgroundColor="@color/white"
+            app:cardCornerRadius="@dimen/mal_card_radius"
+            app:cardElevation="@dimen/mal_card_elevation"
+            app:cardPreventCornerOverlap="false"
+            app:cardUseCompatPadding="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/mal_baseline_half"
+                    android:layout_marginEnd="@dimen/mal_baseline"
+                    android:layout_marginLeft="@dimen/mal_baseline"
+                    android:layout_marginRight="@dimen/mal_baseline"
+                    android:layout_marginStart="@dimen/mal_baseline"
+                    android:layout_marginTop="@dimen/mal_baseline"
+                    android:text="@string/author"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                    android:textColor="@color/primary" />
+
+                <LinearLayout
+                    android:id="@+id/about_carbon_cell"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?selectableItemBackground"
+                    android:orientation="horizontal"
+                    android:paddingBottom="@dimen/mal_baseline_half"
+                    android:paddingTop="@dimen/mal_baseline_half">
+
+                    <ImageView
+                        android:layout_width="@dimen/mal_action_item_image_width"
+                        android:layout_height="@dimen/mal_action_action_item_image_height"
+                        android:layout_gravity="center"
+                        android:layout_marginEnd="@dimen/mal_baseline_half"
+                        android:layout_marginLeft="@dimen/mal_baseline"
+                        android:layout_marginRight="@dimen/mal_baseline_half"
+                        android:layout_marginStart="@dimen/mal_baseline"
+                        android:adjustViewBounds="false"
+                        android:contentDescription="@null"
+                        android:cropToPadding="false"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/ic_person" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginEnd="@dimen/mal_baseline"
+                        android:layout_marginLeft="@dimen/mal_baseline"
+                        android:layout_marginRight="@dimen/mal_baseline"
+                        android:layout_marginStart="@dimen/mal_baseline"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:minHeight="@dimen/mal_action_action_item_image_height"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/carbonylgroup"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                            android:textColor="@color/text_primary_black" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/about_null_cell"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?selectableItemBackground"
+                    android:orientation="horizontal"
+                    android:paddingBottom="@dimen/mal_baseline_half"
+                    android:paddingTop="@dimen/mal_baseline_half">
+
+                    <ImageView
+                        android:layout_width="@dimen/mal_action_item_image_width"
+                        android:layout_height="@dimen/mal_action_action_item_image_height"
+                        android:layout_gravity="center"
+                        android:layout_marginEnd="@dimen/mal_baseline_half"
+                        android:layout_marginLeft="@dimen/mal_baseline"
+                        android:layout_marginRight="@dimen/mal_baseline_half"
+                        android:layout_marginStart="@dimen/mal_baseline"
+                        android:adjustViewBounds="false"
+                        android:contentDescription="@null"
+                        android:cropToPadding="false"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/ic_person" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginEnd="@dimen/mal_baseline"
+                        android:layout_marginLeft="@dimen/mal_baseline"
+                        android:layout_marginRight="@dimen/mal_baseline"
+                        android:layout_marginStart="@dimen/mal_baseline"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:minHeight="@dimen/mal_action_action_item_image_height"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/null_name"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                            android:textColor="@color/text_primary_black" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/about_license_cell"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?selectableItemBackground"
+                    android:orientation="horizontal"
+                    android:paddingBottom="@dimen/mal_baseline"
+                    android:paddingTop="@dimen/mal_baseline_half">
+
+                    <ImageView
+                        android:layout_width="@dimen/mal_action_item_image_width"
+                        android:layout_height="@dimen/mal_action_action_item_image_height"
+                        android:layout_gravity="center"
+                        android:layout_marginEnd="@dimen/mal_baseline_half"
+                        android:layout_marginLeft="@dimen/mal_baseline"
+                        android:layout_marginRight="@dimen/mal_baseline_half"
+                        android:layout_marginStart="@dimen/mal_baseline"
+                        android:adjustViewBounds="false"
+                        android:contentDescription="@null"
+                        android:cropToPadding="false"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/ic_book_collection" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginEnd="@dimen/mal_baseline"
+                        android:layout_marginLeft="@dimen/mal_baseline"
+                        android:layout_marginRight="@dimen/mal_baseline"
+                        android:layout_marginStart="@dimen/mal_baseline"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:minHeight="@dimen/mal_action_action_item_image_height"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/license"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                            android:textColor="@color/text_primary_black" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/mal_baseline_half"
+            android:layout_marginLeft="@dimen/mal_baseline_half"
+            android:layout_marginRight="@dimen/mal_baseline_half"
+            android:layout_marginStart="@dimen/mal_baseline_half"
+            android:layout_marginTop="@dimen/mal_baseline_half"
+            android:paddingBottom="@dimen/mal_baseline"
+            android:paddingEnd="@dimen/mal_baseline_half"
+            android:paddingLeft="@dimen/mal_baseline_half"
+            android:paddingRight="@dimen/mal_baseline_half"
+            android:paddingStart="@dimen/mal_baseline_half"
+            android:paddingTop="@dimen/mal_baseline"
+            app:cardBackgroundColor="@color/white"
+            app:cardCornerRadius="@dimen/mal_card_radius"
+            app:cardElevation="@dimen/mal_card_elevation"
+            app:cardPreventCornerOverlap="false"
+            app:cardUseCompatPadding="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/mal_baseline_half"
+                    android:layout_marginEnd="@dimen/mal_baseline"
+                    android:layout_marginLeft="@dimen/mal_baseline"
+                    android:layout_marginRight="@dimen/mal_baseline"
+                    android:layout_marginStart="@dimen/mal_baseline"
+                    android:layout_marginTop="@dimen/mal_baseline"
+                    android:text="@string/support"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                    android:textColor="@color/primary" />
+
+                <LinearLayout
+                    android:id="@+id/about_bug_cell"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?selectableItemBackground"
+                    android:orientation="horizontal"
+                    android:paddingBottom="@dimen/mal_baseline_half"
+                    android:paddingTop="@dimen/mal_baseline_half">
+
+                    <ImageView
+                        android:layout_width="@dimen/mal_action_item_image_width"
+                        android:layout_height="@dimen/mal_action_action_item_image_height"
+                        android:layout_gravity="center"
+                        android:layout_marginEnd="@dimen/mal_baseline_half"
+                        android:layout_marginLeft="@dimen/mal_baseline"
+                        android:layout_marginRight="@dimen/mal_baseline_half"
+                        android:layout_marginStart="@dimen/mal_baseline"
+                        android:adjustViewBounds="false"
+                        android:contentDescription="@null"
+                        android:cropToPadding="false"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/ic_bug" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginEnd="@dimen/mal_baseline"
+                        android:layout_marginLeft="@dimen/mal_baseline"
+                        android:layout_marginRight="@dimen/mal_baseline"
+                        android:layout_marginStart="@dimen/mal_baseline"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:minHeight="@dimen/mal_action_action_item_image_height"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/report_bug"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                            android:textColor="@color/text_primary_black" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/report_bug_summary"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                            android:textColor="@color/text_secondary_black" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/about_website_cell"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?selectableItemBackground"
+                    android:orientation="horizontal"
+                    android:paddingBottom="@dimen/mal_baseline_half"
+                    android:paddingTop="@dimen/mal_baseline_half">
+
+                    <ImageView
+                        android:id="@+id/imageView"
+                        android:layout_width="@dimen/mal_action_item_image_width"
+                        android:layout_height="@dimen/mal_action_action_item_image_height"
+                        android:layout_gravity="center"
+                        android:layout_marginEnd="@dimen/mal_baseline_half"
+                        android:layout_marginLeft="@dimen/mal_baseline"
+                        android:layout_marginRight="@dimen/mal_baseline_half"
+                        android:layout_marginStart="@dimen/mal_baseline"
+                        android:adjustViewBounds="false"
+                        android:contentDescription="@null"
+                        android:cropToPadding="false"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/ic_public" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginEnd="@dimen/mal_baseline"
+                        android:layout_marginLeft="@dimen/mal_baseline"
+                        android:layout_marginRight="@dimen/mal_baseline"
+                        android:layout_marginStart="@dimen/mal_baseline"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:minHeight="@dimen/mal_action_action_item_image_height"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/visit_website"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                            android:textColor="@color/text_primary_black" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/about_code_cell"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?selectableItemBackground"
+                    android:orientation="horizontal"
+                    android:paddingBottom="@dimen/mal_baseline"
+                    android:paddingTop="@dimen/mal_baseline_half">
+
+                    <ImageView
+                        android:layout_width="@dimen/mal_action_item_image_width"
+                        android:layout_height="@dimen/mal_action_action_item_image_height"
+                        android:layout_gravity="center"
+                        android:layout_marginEnd="@dimen/mal_baseline_half"
+                        android:layout_marginLeft="@dimen/mal_baseline"
+                        android:layout_marginRight="@dimen/mal_baseline_half"
+                        android:layout_marginStart="@dimen/mal_baseline"
+                        android:adjustViewBounds="false"
+                        android:alpha=".50"
+                        android:contentDescription="@null"
+                        android:cropToPadding="true"
+                        android:padding="2dp"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/ic_github" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginEnd="@dimen/mal_baseline"
+                        android:layout_marginLeft="@dimen/mal_baseline"
+                        android:layout_marginRight="@dimen/mal_baseline"
+                        android:layout_marginStart="@dimen/mal_baseline"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:minHeight="@dimen/mal_action_action_item_image_height"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/source_code"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                            android:textColor="@color/text_primary_black" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </android.support.v7.widget.CardView>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="57dp" />
+
+    </LinearLayout>
+
+</android.support.v4.widget.NestedScrollView>

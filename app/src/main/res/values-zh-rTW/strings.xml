@@ -16,6 +16,15 @@
     <string name="username">用戶名</string>
     <string name="password">密碼</string>
     <string name="copyright">版權所有 © 2017 SchoolPower 工作室</string> 
+    <string name="copyright_short">© 2017 SchoolPower 工作室</string>
+
+    <string name="version">版本號</string>
+    <string name="eula">用戶協議</string>
+    <string name="changelog">更新日誌</string>
+    <string name="author">作者</string>
+    <string name="license">開源許可</string>
+    <string name="carbonylgroup">CarbonylGroup</string>
+    <string name="null_name">Null</string>
 
     <string name="grades">成績</string> 
     <string name="block">Block</string> 

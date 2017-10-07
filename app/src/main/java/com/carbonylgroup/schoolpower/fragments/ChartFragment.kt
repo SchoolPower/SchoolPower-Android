@@ -25,6 +25,7 @@ import java.util.*
 import java.util.concurrent.TimeUnit
 
 class ChartFragment : Fragment() {
+
     private lateinit var utils: Utils
 
     override fun onCreate(savedInstanceState: Bundle?) {
