@@ -94,7 +94,7 @@
     <string name="bug_report_email_subject">Found Bug(s) in SchoolPower</string>
     <string name="bug_report_email_content">Please provide as much info as possible, such as how to reproduce it, what is the expected result.</string>
 
-    <string name="website">Visit Website</string>
+    <string name="visit_website">Visit Website</string>
     <string name="source_code">Get Source Code</string>
 
 

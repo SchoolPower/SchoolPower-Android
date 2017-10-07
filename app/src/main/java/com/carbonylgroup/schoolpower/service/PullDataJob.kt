@@ -40,16 +40,16 @@ class PullDataJob : JobService() {
 
                 } else if (strMessage.contains(getString(R.string.json_begin))) {
 
-                    utils.saveDataJson(strMessage)
                     val subjects = utils.parseJsonResult(strMessage).second
-
                     val updatedSubjects = ArrayList<String>()
                     val updatedGradedSubjects = ArrayList<String>()
-
                     val oldSubjects = utils.readDataArrayList().second
+
                     // Mark new or changed assignments
                     if (subjects.size == oldSubjects.size) {
+
                         for (i in subjects.indices) {
+
                             val newAssignmentListCollection = subjects[i].assignments
                             val oldAssignmentListCollection = oldSubjects[i].assignments
                             for (item in newAssignmentListCollection) {
@@ -57,7 +57,9 @@ class PullDataJob : JobService() {
                                 var newGrade = true
                                 var grade = ""
                                 val maxGrade = item.maximumScore
+
                                 for (it in oldAssignmentListCollection) {
+
                                     if (it.title == item.title && it.date == item.date) {
                                         newItem = false
                                         if (it.score == item.score) newGrade = false
@@ -90,7 +92,7 @@ class PullDataJob : JobService() {
                         stackBuilder.addParentStack(MainActivity::class.java)
                         stackBuilder.addNextIntent(Intent(this@PullDataJob, MainActivity::class.java))
                         val nBuilder = NotificationCompat.Builder(this@PullDataJob, "data updated")
-                                .setContentTitle(getString(R.string.notification_new))
+                                .setContentTitle(allUpdated.count().toString() + " " + getString(R.string.notification_new))
                                 .setContentText(allUpdated.joinToString(", "))
                                 .setSmallIcon(R.drawable.icon_light)
                                 .setContentIntent(stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT))
