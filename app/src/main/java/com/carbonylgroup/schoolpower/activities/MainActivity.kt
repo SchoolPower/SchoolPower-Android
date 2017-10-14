@@ -28,6 +28,7 @@ import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.graphics.drawable.DrawerArrowDrawable
 import android.support.v7.widget.Toolbar
+import android.util.Log
 import android.view.*
 import android.view.animation.DecelerateInterpolator
 import android.widget.ImageView
@@ -241,19 +242,18 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
         val jobScheduler = getSystemService(Context.JOB_SCHEDULER_SERVICE) as JobScheduler
         val preferences = PreferenceManager.getDefaultSharedPreferences(applicationContext)
         if (!preferences.getBoolean("preference_enable_notification", true)) {
+            Log.d("PullDataJob", "Job Gets Cancelled")
             jobScheduler.cancelAll()
-            preferences.edit().putBoolean("NeedsToSchedule", true).apply()
             return
         }
-        if (!preferences.getBoolean("NeedsToSchedule", true)) return
+        if (jobScheduler.allPendingJobs.size != 0) return
+        Log.d("PullDataJob", "Job Registered")
 
         val builder = JobInfo.Builder(1, ComponentName(this, PullDataJob::class.java))
                 .setPeriodic(1000L * 60 * 60) // one hour
                 .setRequiredNetworkType(NETWORK_TYPE_ANY)
                 .setPersisted(true)
         jobScheduler.schedule(builder.build())
-
-        preferences.edit().putBoolean("NeedsToSchedule", false).apply()
     }
 
     /* Fragments Handler */

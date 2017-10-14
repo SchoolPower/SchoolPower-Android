@@ -94,7 +94,7 @@
     <string name="enable_notification">啟用新作業通知</string>
     <string name="notification_show_grade">在通知裡顯示成績</string>
     <string name="notification_show_no_grade_assignment">通知還沒出分的作業</string>
-    <string name="notification_new">项新作业</string>
+    <string name="notification_new">項新作業</string>
 
     <string name="support">支持</string>
     <string name="report_bug">提交Bug</string>

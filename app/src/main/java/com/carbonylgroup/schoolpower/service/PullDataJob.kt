@@ -98,8 +98,9 @@ class PullDataJob : JobService() {
                                 .setContentIntent(stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT))
                                 .setAutoCancel(true)
                         (getSystemService(NOTIFICATION_SERVICE) as NotificationManager).notify(1, nBuilder.build())
+                        Log.d("PullDataJob", "Notification Sent")
                     }
-
+                    Log.d("PullDataJob", "Job Finished Normally")
                     jobFinished(params, false)
                 } else if (strMessage == "") {
 
