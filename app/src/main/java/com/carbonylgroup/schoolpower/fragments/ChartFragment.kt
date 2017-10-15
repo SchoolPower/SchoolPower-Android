@@ -84,15 +84,21 @@ class ChartFragment : Fragment() {
                 }
 
                 val colorList = intArrayOf(
-                        Color.parseColor("#065143"),
-                        Color.parseColor("#00072D"),
-                        Color.parseColor("#996888"),
-                        Color.parseColor("#802392"),
-                        Color.parseColor("#5762D5"),
-                        Color.parseColor("#DD6E42"),
-                        Color.parseColor("#FFD166"),
-                        Color.parseColor("#D81159"),
-                        Color.parseColor("#A23E48")
+                        Color.parseColor("#ff1744"),
+                        Color.parseColor("#f50057"),
+                        Color.parseColor("#d500f9"),
+                        Color.parseColor("#651fff"),
+                        Color.parseColor("#3d5afe"),
+                        Color.parseColor("#00b0ff"),
+                        Color.parseColor("#00e5ff"),
+                        Color.parseColor("#00e676"),
+                        Color.parseColor("#76ff03"),
+                        Color.parseColor("#c6ff00"),
+                        Color.parseColor("#ffea00"),
+                        Color.parseColor("#ffc400"),
+                        Color.parseColor("#ff3d00"),
+                        Color.parseColor("#ff9100"),
+                        Color.parseColor("#3e2723")
                 )
                 for ((count, subjectName) in organizedData.keys.withIndex()) {
                     val dataSet = LineDataSet(organizedData[subjectName], subjectName)
