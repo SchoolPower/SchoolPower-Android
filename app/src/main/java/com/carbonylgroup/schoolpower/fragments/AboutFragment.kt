@@ -1,5 +1,6 @@
 package com.carbonylgroup.schoolpower.fragments
 
+import android.app.Activity
 import android.app.Fragment
 import android.content.Intent
 import android.graphics.Color
@@ -9,6 +10,7 @@ import android.support.v4.content.ContextCompat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import com.carbonylgroup.schoolpower.R
 import com.carbonylgroup.schoolpower.activities.MainActivity
@@ -41,10 +43,16 @@ class AboutFragment : Fragment() {
         MainActivity.of(activity).expandToolBar(true, true)
         utils = Utils(activity)
 
-        (view.findViewById<View>(R.id.about_version_label) as TextView)
-                .setText(activity.packageManager.getPackageInfo(activity.packageName, 0).versionName)
+        (view.findViewById<View>(R.id.about_version_label) as TextView).text = activity.packageManager.getPackageInfo(activity.packageName, 0).versionName
 
-        view.findViewById<View>(R.id.about_version_cell).setOnClickListener {  }
+        view.findViewById<View>(R.id.about_version_cell).setOnLongClickListener {
+            val pref = activity.getSharedPreferences("other", Activity.MODE_PRIVATE)
+            val spEditor = pref.edit()
+            spEditor.putBoolean("developer_mode", !pref.getBoolean("developer_mode", false))
+            spEditor.apply()
+            utils.showSnackBar(activity, view.findViewById(R.id.about_content_parent), "Developer Mode: "+pref.getBoolean("developer_mode", false).toString(), false)
+            true
+        }
 
         view.findViewById<View>(R.id.about_changelog_cell).setOnClickListener {
             startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.changelog_address))))

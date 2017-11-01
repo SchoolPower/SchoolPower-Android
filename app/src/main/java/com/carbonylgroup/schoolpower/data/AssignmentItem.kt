@@ -38,7 +38,7 @@ Sample:
 */
 class AssignmentItem(json: JSONObject) : Serializable {
     val title: String = json.getString("name")
-    val date: String = SimpleDateFormat("yyyy/MM/dd", Locale.CHINA).format(SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX", Locale.US).parse(json.getString("date")))
+    var date: String
     val percentage: String = json.optString("percent", "--").replace("null", "--")  // value like "86.96" or "--"
     val score: String = json.optString("score", "--").replace("null", "--")  // value like "20" or "--"
     val maximumScore: String = json.getString("pointsPossible") // value like "23.0"
@@ -47,7 +47,11 @@ class AssignmentItem(json: JSONObject) : Serializable {
     val includeInFinalGrade: Boolean = json.getString("includeInFinalGrade") == "1"
     val weight: String = json.getString("weight")
     //val term: String
-
+    init{
+        val temp = SimpleDateFormat("yyyy-MM-dd", Locale.CHINA).parse(json.getString("date").replace("T16:00:00.000Z", ""))
+        temp.time+=24*60*60*1000
+        date = SimpleDateFormat("yyyy/MM/dd", Locale.CHINA).format(temp)
+    }
     var isNew = false
 
     fun getDividedScore() = "$score/$maximumScore"
