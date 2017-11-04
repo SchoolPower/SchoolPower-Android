@@ -7,6 +7,7 @@
 
     <string name="dashboard">Dashboard</string>
     <string name="charts">Charts</string>
+    <string name="attendance">Attendance</string>
     <string name="course_detail">Course Detail</string>
     <string name="preference">Preference</string>
     <string name="about">About</string>

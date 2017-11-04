@@ -38,6 +38,7 @@ import com.carbonylgroup.schoolpower.R
 import com.carbonylgroup.schoolpower.data.StudentInformation
 import com.carbonylgroup.schoolpower.data.Subject
 import com.carbonylgroup.schoolpower.fragments.AboutFragment
+import com.carbonylgroup.schoolpower.fragments.AttendanceFragment
 import com.carbonylgroup.schoolpower.fragments.ChartFragment
 import com.carbonylgroup.schoolpower.fragments.HomeFragment
 import com.carbonylgroup.schoolpower.service.PullDataJob
@@ -83,6 +84,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
     /* Fragments */
     private var homeFragment: HomeFragment? = null
     private var chartFragment: ChartFragment? = null
+    private var attendanceFragment: AttendanceFragment? = null
     private var aboutFragment: AboutFragment? = null
 
     override fun attachBaseContext(newBase: Context) {
@@ -157,8 +159,9 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
         when (presentFragment) {
             1 -> returnFromDetail()
             2 -> returnFromPrimaryFragments(1)
-            3 -> returnFromSecondaryFragments()
+            3 -> returnFromPrimaryFragments(2)
             4 -> returnFromSecondaryFragments()
+            5 -> returnFromSecondaryFragments()
             else -> super.onBackPressed()
         }
     }
@@ -212,6 +215,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
             if (menuOpenDrawer) drawer.openDrawer(GravityCompat.START)
             else if (presentFragment == 1) returnFromDetail()
             else if (presentFragment == 2) returnFromPrimaryFragments(1)
+            else if (presentFragment == 3) returnFromPrimaryFragments(2)
             else returnFromSecondaryFragments()
         }
     }
@@ -270,6 +274,14 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                 hideToolBarItems(true)
                 presentFragment = 2
             }
+            R.id.nav_attendance -> {
+                attendanceFragment = AttendanceFragment()
+                transaction.replace(R.id.content_view, attendanceFragment)
+                setToolBarTitle(getString(R.string.attendance))
+                expandToolBar(true, true)
+                hideToolBarItems(true)
+                presentFragment = 3
+            }
             R.id.nav_settings -> startSettingsActivity()
 
             R.id.nav_about -> {
@@ -280,7 +292,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                 expandToolBar(true, true)
                 animateDrawerToggle(true)
                 hideToolBarItems(true)
-                presentFragment = 3
+                presentFragment = 4
             }
             R.id.nav_sign_out -> confirmSignOut()
 

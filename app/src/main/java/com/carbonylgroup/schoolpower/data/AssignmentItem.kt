@@ -37,6 +37,7 @@ Sample:
     }
 */
 class AssignmentItem(json: JSONObject) : Serializable {
+
     val title: String = json.getString("name")
     var date: String
     val percentage: String = json.optString("percent", "--").replace("null", "--")  // value like "86.96" or "--"

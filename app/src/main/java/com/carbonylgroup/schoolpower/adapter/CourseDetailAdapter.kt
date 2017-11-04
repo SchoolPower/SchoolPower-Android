@@ -26,7 +26,7 @@ class CourseDetailAdapter(private val context: Context, private val subject: Sub
     private var presentingTermPos = 0
     private val utils: Utils = Utils(context)
     private val termsList: ArrayList<String> = ArrayList()
-    private var list: List<AssignmentItem>? = null
+    private var list: ArrayList<AssignmentItem>? = null
 
     init {
         initTermList()

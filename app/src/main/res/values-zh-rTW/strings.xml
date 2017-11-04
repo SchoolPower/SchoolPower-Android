@@ -7,6 +7,7 @@
 
     <string name="dashboard">儀表盤</string>
     <string name="charts">圖表</string> 
+    <string name="attendance">出勤</string>
     <string name="course_detail">課程明細</string> 
     <string name="preference">偏好</string> 
     <string name="about">關於</string>
