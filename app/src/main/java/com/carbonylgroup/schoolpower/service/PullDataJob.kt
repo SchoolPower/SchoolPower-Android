@@ -91,7 +91,7 @@ class PullDataJob : JobService() {
         for (item in newAttendances) {
             val newItem = oldAttendances.none { it -> it.name == item.name && it.date == item.date && it.code == item.code }
 
-            if (newItem) updatedAttendances.add(item.name + " - " + item.code)
+            if (newItem) updatedAttendances.add(item.name + " - " + item.description)
         }
 
         if (updatedAttendances.size != 0) {
