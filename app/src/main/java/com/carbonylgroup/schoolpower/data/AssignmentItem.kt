@@ -39,7 +39,7 @@ Sample:
 class AssignmentItem(json: JSONObject) : Serializable {
 
     val title: String = json.getString("name")
-    var date: String
+    val date: String
     val percentage: String = json.optString("percent", "--").replace("null", "--")  // value like "86.96" or "--"
     val score: String = json.optString("score", "--").replace("null", "--")  // value like "20" or "--"
     val maximumScore: String = json.getString("pointsPossible") // value like "23.0"

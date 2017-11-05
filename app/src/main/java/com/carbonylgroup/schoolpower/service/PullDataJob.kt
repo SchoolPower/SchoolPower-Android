@@ -40,10 +40,10 @@ class PullDataJob : JobService() {
 
                 } else if (strMessage.contains(getString(R.string.json_begin))) {
 
-                    val subjects = utils.parseJsonResult(strMessage).second
+                    val subjects = utils.parseJsonResult(strMessage).subjects
                     val updatedSubjects = ArrayList<String>()
                     val updatedGradedSubjects = ArrayList<String>()
-                    val oldSubjects = utils.readDataArrayList().second
+                    val oldSubjects = utils.readDataArrayList().subjects
 
                     // Mark new or changed assignments
                     if (subjects.size == oldSubjects.size) {

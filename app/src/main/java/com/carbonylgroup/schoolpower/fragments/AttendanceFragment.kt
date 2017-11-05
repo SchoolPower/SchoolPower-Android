@@ -26,7 +26,7 @@ class AttendanceFragment : Fragment() {
 
         val attendanceRecycler = view.findViewById<RecyclerView>(R.id.attendance_recycler)
         attendanceRecycler.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
-        attendanceRecycler.adapter = AttendanceAdapter(activity)
+        attendanceRecycler.adapter = AttendanceAdapter(activity, MainActivity.of(activity).attendances!!)
 
         return view
     }

@@ -35,6 +35,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import co.ceryle.segmentedbutton.SegmentedButtonGroup
 import com.carbonylgroup.schoolpower.R
+import com.carbonylgroup.schoolpower.data.Attendance
 import com.carbonylgroup.schoolpower.data.StudentInformation
 import com.carbonylgroup.schoolpower.data.Subject
 import com.carbonylgroup.schoolpower.fragments.AboutFragment
@@ -62,6 +63,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
     var presentFragment: Int = 0
     var studentInformation: StudentInformation? = null
     var subjects: List<Subject>? = null
+    var attendances: List<Attendance>? = null
     var subjectTransporter: Subject? = null
 
     private var noConnection = false
@@ -185,8 +187,9 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
 
         try {
             val input = utils.readDataArrayList()
-            studentInformation = input.first
-            subjects = input.second
+            studentInformation = input.studentInfo
+            attendances = input.attendances
+            subjects = input.subjects
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -413,8 +416,8 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
 
                             utils.saveDataJson(strMessage)
                             val data = utils.parseJsonResult(strMessage)
-                            studentInformation = data.first
-                            subjects = data.second
+                            studentInformation = data.studentInfo
+                            subjects = data.subjects
                             if (subjects!!.isEmpty()) {
                                 homeFragment!!.refreshAdapterToEmpty()
                             }

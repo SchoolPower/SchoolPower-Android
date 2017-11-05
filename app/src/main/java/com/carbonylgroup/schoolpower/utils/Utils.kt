@@ -18,6 +18,8 @@ import android.util.DisplayMetrics
 import android.util.Log
 import android.view.View
 import com.carbonylgroup.schoolpower.R
+import com.carbonylgroup.schoolpower.data.Attendance
+import com.carbonylgroup.schoolpower.data.StudentData
 import com.carbonylgroup.schoolpower.data.StudentInformation
 import com.carbonylgroup.schoolpower.data.Subject
 import org.json.JSONArray
@@ -103,7 +105,7 @@ class Utils(private val context: Context) {
     }
      */
     @Throws(IllegalArgumentException::class, JSONException::class)
-    fun parseJsonResult(jsonStr: String): Pair<StudentInformation, List<Subject>> {
+    fun parseJsonResult(jsonStr: String): StudentData {
 
         val studentData = JSONObject(jsonStr)
         if (!studentData.has("information")) { // not successful
@@ -111,15 +113,17 @@ class Utils(private val context: Context) {
             throw IllegalArgumentException("JSON Format Error")
         }
         val studentInfo = StudentInformation(studentData.getJSONObject("information"))
+        val attendance = studentData.getJSONArray("attendances")
+        val attendances = (0 until attendance.length()).map { Attendance(attendance.getJSONObject(it)) }
         val sections = studentData.getJSONArray("sections")
-        val subjects = (0..sections.length() - 1).map { Subject(sections.getJSONObject(it)) }
+        val subjects = (0 until sections.length()).map { Subject(sections.getJSONObject(it)) }
 
         Collections.sort(subjects, Comparator<Subject> { o1, o2 ->
             if (o1.blockLetter == "HR(A-E)") return@Comparator -1
             if (o2.blockLetter == "HR(A-E)") return@Comparator 1
             o1.blockLetter.compareTo(o2.blockLetter)
         })
-        return Pair(studentInfo, subjects)
+        return StudentData(studentInfo, attendances, subjects)
     }
 
     /* IO */
