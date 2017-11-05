@@ -106,5 +106,6 @@
 
     <string name="visit_website">Visit Website</string>
     <string name="source_code">Get Source Code</string>
+    <string name="attendance_new">New Attendances</string>
 
 </resources>

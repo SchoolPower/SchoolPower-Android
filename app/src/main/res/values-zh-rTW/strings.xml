@@ -106,5 +106,6 @@
 
     <string name="visit_website">訪問官網</string>
     <string name="source_code">獲取源碼</string>
+    <string name="attendance_new">新出勤情況</string>
 
 </resources>

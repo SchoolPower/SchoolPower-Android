@@ -5,6 +5,7 @@
 package com.carbonylgroup.schoolpower.activities
 
 import android.animation.ValueAnimator
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
 import android.app.job.JobInfo
@@ -394,57 +395,71 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
     fun initDataJson() {
 
         val oldSubjects = ArrayList<Subject>()
+        val oldAttendances = ArrayList<Attendance>()
+
         val username = getSharedPreferences("accountData", Activity.MODE_PRIVATE).getString(getString(R.string.usernameKEY), "")
         val password = getSharedPreferences("accountData", Activity.MODE_PRIVATE).getString(getString(R.string.passwordKEY), "")
         if (subjects != null) oldSubjects.addAll(subjects!!)
+        if (attendances != null) oldAttendances.addAll(attendances!!)
 
         val version = packageManager.getPackageInfo("com.carbonylgroup.schoolpower", 0).versionName
 
         Thread(PostData(
                 getString(R.string.postURL),
                 "username=$username&password=$password&version=$version&action=manual_get_data&os=android",
+                @SuppressLint("HandlerLeak")
                 object : Handler() {
                     override fun handleMessage(msg: Message) {
                         val strMessage = msg.obj.toString().replace("\n", "")
 
-                        if (strMessage.contains("Something went wrong!")) {
+                        when {
+                            strMessage.contains("Something went wrong!") -> {
 
-                            utils.showSnackBar(this@MainActivity, findViewById(R.id.main_coordinate_layout), getString(R.string.wrong_password), true)
-                            signOut()
+                                utils.showSnackBar(this@MainActivity, findViewById(R.id.main_coordinate_layout), getString(R.string.wrong_password), true)
+                                signOut()
 
-                        } else if (strMessage.contains(getString(R.string.json_begin))) {
-
-                            utils.saveDataJson(strMessage)
-                            val data = utils.parseJsonResult(strMessage)
-                            studentInformation = data.studentInfo
-                            subjects = data.subjects
-                            if (subjects!!.isEmpty()) {
-                                homeFragment!!.refreshAdapterToEmpty()
                             }
-                            utils.saveHistoryGrade(subjects!!)
+                            strMessage.contains(getString(R.string.json_begin)) -> {
 
-                            // Mark new or changed assignments
-                            if (subjects!!.size == oldSubjects.size) {
-                                for (i in subjects!!.indices) {
-                                    val newAssignmentListCollection = subjects!![i].assignments
-                                    val oldAssignmentListCollection = oldSubjects[i].assignments
-                                    for (item in newAssignmentListCollection) {
-                                        // if no item in oldAssignmentListCollection has the same title, score and date as those of the new one, then the assignment should be marked.
-                                        val found = oldAssignmentListCollection.any { it.title == item.title && it.score == item.score && it.date == item.date && !it.isNew }
-                                        if (!found) item.isNew = true
+                                utils.saveDataJson(strMessage)
+                                val data = utils.parseJsonResult(strMessage)
+                                studentInformation = data.studentInfo
+                                subjects = data.subjects
+                                attendances = data.attendances
+                                if (subjects!!.isEmpty()) {
+                                    homeFragment!!.refreshAdapterToEmpty()
+                                }
+                                utils.saveHistoryGrade(subjects!!)
+
+                                // Mark new or changed assignments
+                                if (subjects!!.size == oldSubjects.size) {
+                                    for (i in subjects!!.indices) {
+                                        val newAssignmentListCollection = subjects!![i].assignments
+                                        val oldAssignmentListCollection = oldSubjects[i].assignments
+                                        for (item in newAssignmentListCollection) {
+                                            // if no item in oldAssignmentListCollection has the same title, score and date as those of the new one, then the assignment should be marked.
+                                            val found = oldAssignmentListCollection.any { it.title == item.title && it.score == item.score && it.date == item.date && !it.isNew }
+                                            if (!found) item.isNew = true
+                                        }
                                     }
                                 }
+                                // Mark new or changed attendances
+                                for (item in attendances!!) {
+                                    val found = oldAttendances.any { it -> it.name == item.name && it.date == item.date && it.code == item.code && !it.isNew }
+                                    if (!found) item.isNew = true
+                                }
+
+                                homeFragment!!.refreshAdapter(subjects!!)
+                                utils.showSnackBar(this@MainActivity, findViewById(R.id.main_coordinate_layout), getString(R.string.data_updated), false)
+
+
                             }
+                            else -> {
 
-                            homeFragment!!.refreshAdapter(subjects!!)
-                            utils.showSnackBar(this@MainActivity, findViewById(R.id.main_coordinate_layout), getString(R.string.data_updated), false)
-
-
-                        } else {
-
-                            utils.showSnackBar(this@MainActivity, findViewById(R.id.main_coordinate_layout), getString(R.string.no_connection), true)
-                            homeFragment!!.setRefreshing(false)
-                            noConnection = true
+                                utils.showSnackBar(this@MainActivity, findViewById(R.id.main_coordinate_layout), getString(R.string.no_connection), true)
+                                homeFragment!!.setRefreshing(false)
+                                noConnection = true
+                            }
                         }
                     }
                 })).start()

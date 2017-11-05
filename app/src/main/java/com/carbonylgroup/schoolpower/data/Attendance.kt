@@ -33,4 +33,6 @@ class Attendance(json: JSONObject) : Serializable {
         temp.time+=24*60*60*1000
         date = SimpleDateFormat("yyyy/MM/dd", Locale.CHINA).format(temp)
     }
+
+    var isNew = false
 }

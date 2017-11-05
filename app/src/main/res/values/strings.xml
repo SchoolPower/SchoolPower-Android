@@ -97,6 +97,8 @@
     <string name="notification_show_no_grade_assignment">Notify Ungraded Assignments</string>
     <string name="notification_new">New Assignments</string>
 
+    <string name="attendance_new">New Attendances</string>
+
     <string name="support">Support</string>
     <string name="report_bug">Report a Bug</string>
     <string name="report_bug_summary">Contact developer with email.</string>
