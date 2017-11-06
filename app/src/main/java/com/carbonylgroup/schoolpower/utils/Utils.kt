@@ -36,17 +36,51 @@ import java.util.*
 
 class Utils(private val context: Context) {
 
-    private val gradeColorIds = intArrayOf(R.color.A_score_green, R.color.B_score_green,
-            R.color.Cp_score_yellow, R.color.C_score_orange, R.color.Cm_score_red,
-            R.color.primary_dark, R.color.primary, R.color.primary)
+    private val gradeColorIds = intArrayOf(
+            R.color.A_score_green,
+            R.color.B_score_green,
+            R.color.Cp_score_yellow,
+            R.color.C_score_orange,
+            R.color.Cm_score_red,
+            R.color.primary_dark,
+            R.color.primary,
+            R.color.primary
+    )
 
-    private val gradeColorIdsPlain = intArrayOf(R.color.A_score_green, R.color.B_score_green,
-            R.color.Cp_score_yellow, R.color.C_score_orange, R.color.Cm_score_red,
-            R.color.primary_dark, R.color.primary)
+    private val gradeColorIdsPlain = intArrayOf(
+            R.color.A_score_green,
+            R.color.B_score_green,
+            R.color.Cp_score_yellow,
+            R.color.C_score_orange,
+            R.color.Cm_score_red,
+            R.color.primary_dark,
+            R.color.primary
+    )
 
-    private val gradeDarkColorIdsPlain = intArrayOf(R.color.A_score_green_dark,
-            R.color.B_score_green_dark, R.color.Cp_score_yellow_dark, R.color.C_score_orange_dark,
-            R.color.Cm_score_red_dark, R.color.primary_darker, R.color.primary_dark)
+    private val gradeDarkColorIdsPlain = intArrayOf(
+            R.color.A_score_green_dark,
+            R.color.B_score_green_dark,
+            R.color.Cp_score_yellow_dark,
+            R.color.C_score_orange_dark,
+            R.color.Cm_score_red_dark,
+            R.color.primary_darker,
+            R.color.primary_dark
+    )
+
+    private val attendanceColorIds = intArrayOf(
+            R.color.primary_dark,
+            R.color.A_score_green_dark,
+            R.color.Cp_score_yellow,
+            R.color.Cp_score_yellow_dark,
+            R.color.C_score_orange_dark,
+            R.color.C_score_orange,
+            R.color.primary,
+            R.color.Cm_score_red,
+            R.color.A_score_green,
+            R.color.Cm_score_red_dark,
+            R.color.B_score_green_dark,
+            R.color.B_score_green
+    )
 
     private fun indexOfString(searchString: String, domain: Array<String>):
             Int = domain.indices.firstOrNull { searchString == domain[it] } ?: -1
@@ -58,6 +92,8 @@ class Utils(private val context: Context) {
     fun getDarkColorByPrimary(originalPrimary: Int) = ContextCompat.getColor(context,
             gradeDarkColorIdsPlain[gradeColorIdsPlain.takeWhile { originalPrimary != ContextCompat.getColor(context, it) }.count()])
 
+    fun getColorByAttendance(context: Context, attendanceCode: String) = ContextCompat.getColor(context,
+            attendanceColorIds[indexOfString(attendanceCode, arrayOf("A", "E", "L", "R", "H", "T", "S", "I", "X", "M", "C", "D"))])
     /* Others */
     fun dpToPx(dp: Int) = Math.round(dp * (context.resources.displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT))
 

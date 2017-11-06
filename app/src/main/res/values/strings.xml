@@ -42,6 +42,7 @@
     <string name="no_username">No Username</string>
     <string name="the_end">THIS IS THE END</string>
     <string name="nothing_here">Nothing Here.</string>
+    <string name="perfect_attendance">Perfect Attendance!</string>
 
     <string name="your_gpa" formatted="false">Your GPA for %s is</string>
     <string name="gpa_segments_all">All</string>

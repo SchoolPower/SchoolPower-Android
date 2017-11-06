@@ -1,17 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/attendance_background"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:background="#fafafa">
+
+<LinearLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/primary_light"
+    android:gravity="center"
+    android:paddingBottom="50dp"
     android:orientation="vertical">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/perfect_attendance" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="@string/perfect_attendance"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+</LinearLayout>
+
+<android.support.v4.widget.SwipeRefreshLayout
+    android:id="@+id/attendance_swipe_refresh_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/attendance_recycler"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/primary_light"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="10dp"
+        android:drawSelectorOnTop="false"
+        android:nestedScrollingEnabled="true"
+        android:paddingBottom="10dp"
+        android:paddingEnd="10dp"
+        android:paddingStart="10dp"
+        android:paddingTop="10dp"
+        android:scrollbars="none"
+        android:visibility="gone"
         android:layoutAnimation="@anim/layout_swipe_in">
 
     </android.support.v7.widget.RecyclerView>
+
+</android.support.v4.widget.SwipeRefreshLayout>
 
 </RelativeLayout>

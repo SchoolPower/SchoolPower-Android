@@ -18,11 +18,12 @@ import kotlin.collections.ArrayList
 /**
  * Created by carbonyl on 04/11/2017.
  */
-class AttendanceAdapter(private val context: Context, private var attendanceList: List<Attendance>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class AttendanceAdapter(private val context: Context, private var attendanceList: List<Attendance>?) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private val utils: Utils = Utils(context)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        if (viewType == AttendanceAdapter.FOOTER_VIEW) return FooterViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.course_detail_footer, parent, false))
         return AttendanceHolder(LayoutInflater.from(parent.context).inflate(R.layout.attendance_item, parent, false))
     }
 
@@ -31,7 +32,7 @@ class AttendanceAdapter(private val context: Context, private var attendanceList
         if (holder is AttendanceHolder) {
 
             Collections.sort(attendanceList) { o1, o2 -> o2.date.compareTo(o1.date) }
-            val attendanceItem = attendanceList[position]
+            val attendanceItem = attendanceList!![position]
             holder.attendance_code_tv.text = attendanceItem.code
             holder.attendance_description_tv.text = attendanceItem.description
             holder.attendance_subject_tv.text = attendanceItem.name
@@ -47,17 +48,19 @@ class AttendanceAdapter(private val context: Context, private var attendanceList
                 holder.attendance_subject_tv.setTextColor(ContextCompat.getColor(context, R.color.text_tertiary_black))
                 holder.attendance_date_tv.setTextColor(ContextCompat.getColor(context, R.color.text_tertiary_black))
             }
-//            AttendanceHolder.attendance_code_background.setBackgroundColor(utils.getColorByLetterGrade(context, attendanceItem.letterGrade))
+            holder.attendance_code_background.setBackgroundColor(utils.getColorByAttendance(context, attendanceItem.code))
         }
     }
 
     override fun getItemCount(): Int {
 
-        return attendanceList.size
+        if (attendanceList == null || attendanceList!!.isEmpty()) return 1
+        return attendanceList!!.size + 1
     }
 
     open inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
+    inner class FooterViewHolder(itemView: View) : AttendanceAdapter.ViewHolder(itemView)
     inner class AttendanceHolder(itemView: View) : ViewHolder(itemView) {
 
         val attendance_code_tv: TextView by bindView(R2.id.attendance_code_tv)
@@ -68,7 +71,17 @@ class AttendanceAdapter(private val context: Context, private var attendanceList
         val fold_background: RelativeLayout by bindView(R2.id.fold_background)
     }
 
-    private fun refreshAdapter() {
-        this.notifyDataSetChanged()
+    fun setAttendanceItems(attendance: List<Attendance>) {
+        attendanceList = attendance
+    }
+
+    override fun getItemViewType(position: Int): Int {
+
+        if (position == itemCount - 1) return AttendanceAdapter.FOOTER_VIEW
+        return super.getItemViewType(position)
+    }
+
+    companion object {
+        private val FOOTER_VIEW = 1
     }
 }

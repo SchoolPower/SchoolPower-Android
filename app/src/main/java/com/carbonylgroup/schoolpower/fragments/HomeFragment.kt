@@ -36,7 +36,7 @@ class HomeFragment : TransitionHelper.BaseFragment() {
     private var adapter: FoldingCellListAdapter? = null
     private var courseDetailFragment: CourseDetailFragment? = null
     private var home_swipe_refresh_layout: SwipeRefreshLayout? = null
-    private lateinit var theListView: ListView
+    private lateinit var dashboardListView: ListView
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
@@ -74,7 +74,7 @@ class HomeFragment : TransitionHelper.BaseFragment() {
         MainActivity.of(activity).presentFragment = 0
         MainActivity.of(activity).setToolBarElevation(utils!!.dpToPx(10))
         MainActivity.of(activity).setToolBarTitle(getString(R.string.dashboard))
-        theListView = view_private!!.findViewById(R.id.mainListView)
+        dashboardListView = view_private!!.findViewById(R.id.mainListView)
         home_swipe_refresh_layout = view_private!!.findViewById(R.id.home_swipe_refresh_layout)
         home_swipe_refresh_layout!!.setColorSchemeResources(R.color.accent, R.color.A_score_green, R.color.B_score_green,
                 R.color.Cp_score_yellow, R.color.C_score_orange, R.color.Cm_score_red, R.color.primary)
@@ -83,37 +83,41 @@ class HomeFragment : TransitionHelper.BaseFragment() {
         else initAdapter()
     }
 
-    private fun adaptrSetDefaultClickListener(adapter: FoldingCellListAdapter) = adapter.setDefaultRequestBtnClickListener(View.OnClickListener { v ->
-        MainActivity.of(activity).subjectTransporter = utils!!.getFilteredSubjects(subjects!!)[theListView.getPositionForView(v)]
+    private fun adapterSetDefaultClickListener(adapter: FoldingCellListAdapter) = adapter.setDefaultRequestBtnClickListener(View.OnClickListener { v ->
+
+        MainActivity.of(activity).subjectTransporter = utils!!.getFilteredSubjects(subjects!!)[dashboardListView.getPositionForView(v)]
         if (transformedPosition != -1) {
-            val itemView = getItemViewByPosition(transformedPosition, theListView)
+            val itemView = getItemViewByPosition(transformedPosition, dashboardListView)
             itemView.findViewById<View>(R.id.unfold_header_view).transitionName = ""
             itemView.findViewById<View>(R.id.detail_subject_title_tv).transitionName = ""
         }
-        transformedPosition = theListView.getPositionForView(v)
-        val itemView = getItemViewByPosition(theListView.getPositionForView(v), theListView)
+        transformedPosition = dashboardListView.getPositionForView(v)
+        val itemView = getItemViewByPosition(dashboardListView.getPositionForView(v), dashboardListView)
         itemView.findViewById<View>(R.id.floating_action_button).startAnimation(fab_out)
         itemView.findViewById<View>(R.id.floating_action_button).visibility = View.GONE
         gotoCourseDetail(itemView.findViewById(R.id.unfold_header_view), itemView.findViewById(R.id.detail_subject_title_tv), transformedPosition)
     })
+
     private fun initAdapter() {
 
-        if (subjects != null && subjects!!.count() != 0) theListView.visibility = View.VISIBLE
+        if (subjects != null && subjects!!.count() != 0) dashboardListView.visibility = View.VISIBLE
 
         adapter = FoldingCellListAdapter(activity, utils!!.getFilteredSubjects(subjects!!), unfoldedIndexesBackUp, transformedPosition)
-        adaptrSetDefaultClickListener(adapter!!)
 
-        theListView.onItemClickListener = AdapterView.OnItemClickListener { _, view, pos, _ ->
+        adapterSetDefaultClickListener(adapter!!)
+
+        dashboardListView.onItemClickListener = AdapterView.OnItemClickListener { _, view, pos, _ ->
             adapter!!.registerToggle(pos)
             (view as FoldingCell).toggle(false)
             adapter!!.refreshPeriodRecycler(view, pos)
             unfoldedIndexesBackUp = adapter!!.unfoldedIndexes
         }
-        theListView.adapter = adapter
+
+        dashboardListView.adapter = adapter
     }
 
     fun invisiblizeListView() {
-        theListView.visibility = View.GONE
+        dashboardListView.visibility = View.GONE
     }
 
     fun setRefreshing(isRefreshing: Boolean) {
@@ -128,11 +132,14 @@ class HomeFragment : TransitionHelper.BaseFragment() {
     }
 
     fun refreshAdapter(newSubjects: List<Subject>) {
+
         subjects = newSubjects
         if (adapter == null) initValue()
-        adapter!!.setMainListItems(utils!!.getFilteredSubjects(newSubjects))
-        adaptrSetDefaultClickListener(adapter!!)
-        adapter!!.notifyDataSetChanged()
+        else {
+            adapter!!.setMainListItems(utils!!.getFilteredSubjects(newSubjects))
+            adapterSetDefaultClickListener(adapter!!)
+            adapter!!.notifyDataSetChanged()
+        }
         setRefreshing(false)
     }
 
@@ -175,7 +182,7 @@ class HomeFragment : TransitionHelper.BaseFragment() {
 
     private fun preRenderUnfoldCells() {
 
-        for (i in 0..9) (getItemViewByPosition(transformedPosition, theListView) as FoldingCell).toggle(false)
+        for (i in 0..9) (getItemViewByPosition(transformedPosition, dashboardListView) as FoldingCell).toggle(false)
     }
 
     override fun onAfterEnter() {

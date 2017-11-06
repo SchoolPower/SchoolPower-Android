@@ -24,7 +24,6 @@ import android.support.design.widget.AppBarLayout
 import android.support.design.widget.NavigationView
 import android.support.v4.content.ContextCompat
 import android.support.v4.view.GravityCompat
-import android.support.v4.view.LayoutInflaterCompat
 import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.graphics.drawable.DrawerArrowDrawable
@@ -32,7 +31,6 @@ import android.support.v7.widget.Toolbar
 import android.util.Log
 import android.view.*
 import android.view.animation.DecelerateInterpolator
-import android.widget.ImageView
 import android.widget.TextView
 import co.ceryle.segmentedbutton.SegmentedButtonGroup
 import com.carbonylgroup.schoolpower.R
@@ -64,7 +62,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
     var presentFragment: Int = 0
     var studentInformation: StudentInformation? = null
     var subjects: List<Subject>? = null
-    var attendances: List<Attendance>? = null
+    var attendance: List<Attendance>? = null
     var subjectTransporter: Subject? = null
 
     private var noConnection = false
@@ -125,7 +123,10 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
         when (item.itemId) {
             R.id.action_refresh -> {
                 initDataJson()
-                homeFragment!!.setRefreshing(true)
+                when (presentFragment) {
+                    0 -> homeFragment!!.setRefreshing(true)
+                    3 -> attendanceFragment!!.setRefreshing(true)
+                }
             }
             R.id.action_gpa -> {
 
@@ -189,7 +190,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
         try {
             val input = utils.readDataArrayList()
             studentInformation = input.studentInfo
-            attendances = input.attendances
+            attendance = input.attendances
             subjects = input.subjects
         } catch (e: Exception) {
             e.printStackTrace()
@@ -400,7 +401,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
         val username = getSharedPreferences("accountData", Activity.MODE_PRIVATE).getString(getString(R.string.usernameKEY), "")
         val password = getSharedPreferences("accountData", Activity.MODE_PRIVATE).getString(getString(R.string.passwordKEY), "")
         if (subjects != null) oldSubjects.addAll(subjects!!)
-        if (attendances != null) oldAttendances.addAll(attendances!!)
+        if (attendance != null) oldAttendances.addAll(attendance!!)
 
         val version = packageManager.getPackageInfo("com.carbonylgroup.schoolpower", 0).versionName
 
@@ -425,9 +426,10 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                                 val data = utils.parseJsonResult(strMessage)
                                 studentInformation = data.studentInfo
                                 subjects = data.subjects
-                                attendances = data.attendances
-                                if (subjects!!.isEmpty()) {
-                                    homeFragment!!.refreshAdapterToEmpty()
+                                attendance = data.attendances
+                                when (presentFragment) {
+                                    0 -> if (subjects!!.isEmpty()) homeFragment!!.refreshAdapterToEmpty()
+                                    3 -> if (attendance!!.isEmpty()) attendanceFragment!!.refreshAdapterToEmpty()
                                 }
                                 utils.saveHistoryGrade(subjects!!)
 
@@ -443,21 +445,24 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                                         }
                                     }
                                 }
-                                // Mark new or changed attendances
-                                for (item in attendances!!) {
+                                // Mark new or changed attendance
+                                for (item in attendance!!) {
                                     val found = oldAttendances.any { it -> it.name == item.name && it.date == item.date && it.code == item.code && !it.isNew }
                                     if (!found) item.isNew = true
                                 }
-
-                                homeFragment!!.refreshAdapter(subjects!!)
+                                when (presentFragment) {
+                                    0 -> homeFragment!!.refreshAdapter(subjects!!)
+                                    3 -> attendanceFragment!!.refreshAdapter(attendance!!)
+                                }
                                 utils.showSnackBar(this@MainActivity, findViewById(R.id.main_coordinate_layout), getString(R.string.data_updated), false)
-
-
                             }
                             else -> {
 
                                 utils.showSnackBar(this@MainActivity, findViewById(R.id.main_coordinate_layout), getString(R.string.no_connection), true)
-                                homeFragment!!.setRefreshing(false)
+                                when (presentFragment) {
+                                    0 -> homeFragment!!.setRefreshing(false)
+                                    3 -> attendanceFragment!!.setRefreshing(false)
+                                }
                                 noConnection = true
                             }
                         }

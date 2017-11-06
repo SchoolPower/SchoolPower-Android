@@ -42,6 +42,7 @@
     <string name="no_username">用户名不可用</string>
     <string name="the_end">下面没了</string>
     <string name="nothing_here">没东西。</string>
+    <string name="perfect_attendance">完美出勤！</string>
 
     <string name="your_gpa" formatted="false">你 %s 的 GPA 是</string>
     <string name="gpa_segments_all">所有</string>

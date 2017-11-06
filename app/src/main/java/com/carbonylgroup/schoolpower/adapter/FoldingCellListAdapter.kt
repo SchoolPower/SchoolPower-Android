@@ -113,6 +113,8 @@ class FoldingCellListAdapter(context: Context, private var subjects: List<Subjec
             viewHolder.fold_background!!.setBackgroundColor(ContextCompat.getColor(context, R.color.white))
         }
 
+        viewHolder.unfolded_grade_recycler_view!!.setOnClickListener { print("[][][" + position) }
+
         return cell
     }
 

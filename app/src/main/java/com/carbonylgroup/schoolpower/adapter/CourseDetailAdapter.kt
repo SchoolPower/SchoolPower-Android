@@ -158,12 +158,10 @@ class CourseDetailAdapter(private val context: Context, private val subject: Sub
     }
 
     private fun setAllTerms() {
-
         setTerm("ANY")
     }
 
     companion object {
-
         private val HEADER_VIEW = 1
         private val FOOTER_VIEW = 2
     }
