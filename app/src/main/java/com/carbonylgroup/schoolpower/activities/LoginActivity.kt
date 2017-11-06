@@ -102,11 +102,11 @@ class LoginActivity : Activity() {
                             spEditor.putString(getString(R.string.usernameKEY), username)
                             spEditor.putString(getString(R.string.passwordKEY), password)
                             spEditor.putBoolean(getString(R.string.loggedIn), true)
-                            spEditor.putString(getString(R.string.student_name), data.first.getFullName())
+                            spEditor.putString(getString(R.string.student_name), data.studentInfo.getFullName())
                             spEditor.apply()
 
                             utils.saveDataJson(strMessage)
-                            utils.saveHistoryGrade(data.second)
+                            utils.saveHistoryGrade(data.subjects)
 
                             startMainActivity()
 

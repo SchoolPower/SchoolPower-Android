@@ -106,5 +106,6 @@
 
     <string name="visit_website">访问官网</string>
     <string name="source_code">获取源码</string>
+    <string name="attendance_new">新出勤情况</string>
 
 </resources>

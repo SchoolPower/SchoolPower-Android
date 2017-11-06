@@ -30,7 +30,7 @@ class CourseDetailAdapter(private val context: Context, private val subject: Sub
 
     init {
         initTermList()
-        setAllTerms(termsList)
+        setAllTerms()
     }
 
     private fun initTermList() {
@@ -99,7 +99,7 @@ class CourseDetailAdapter(private val context: Context, private val subject: Sub
                         val selectItem = termsList[pos]
                         if (pos != presentingTermPos) {
                             presentingTermPos = pos
-                            if (selectItem == context.getString(R.string.all_terms)) setAllTerms(termsList)
+                            if (selectItem == context.getString(R.string.all_terms)) setAllTerms()
                             else setTerm(selectItem)
                             refreshAdapter()
                         }
@@ -147,17 +147,19 @@ class CourseDetailAdapter(private val context: Context, private val subject: Sub
     }
 
     private fun setTerm(term: String) {
-        //TODO: filter by term
-        list = subject.assignments
+        if (term == "ANY") {
+            list = subject.assignments
+        } else {
+            list = ArrayList()
+            subject.assignments
+                    .filter { it.terms.contains(term) }
+                    .forEach { list!!.add(it) }
+        }
     }
 
-    private fun setAllTerms(termsList: ArrayList<*>) {
+    private fun setAllTerms() {
 
-        if (termsList.size <= 1) return
-        if (termsList.contains("Y1")) setTerm("Y1")
-        else if (termsList.contains("S1")) setTerm("S1")
-        else if (termsList.contains("S2")) setTerm("S2")
-        else setTerm(termsList[1].toString())
+        setTerm("ANY")
     }
 
     companion object {
