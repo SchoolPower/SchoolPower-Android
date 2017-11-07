@@ -348,6 +348,8 @@ class Utils(private val context: Context) {
             var short = shorts[splitedSubject[0]]
             if (short != null) {
                 if (splitedSubject[splitedSubject.size - 1] == "Music") short += "M"
+                if (splitedSubject[splitedSubject.size - 1] == "Politics") short += "P"
+
                 return short
             }
 

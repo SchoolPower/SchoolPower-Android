@@ -18,12 +18,14 @@ import kotlin.collections.ArrayList
 /**
  * Created by carbonyl on 04/11/2017.
  */
-class AttendanceAdapter(private val context: Context, private var attendanceList: List<Attendance>?) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class AttendanceAdapter(private val context: Context, private var attendanceList: List<Attendance>?)
+    : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private val utils: Utils = Utils(context)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        if (viewType == AttendanceAdapter.FOOTER_VIEW) return FooterViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.course_detail_footer, parent, false))
+        if (viewType == AttendanceAdapter.FOOTER_VIEW)
+            return FooterViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.course_detail_footer, parent, false))
         return AttendanceHolder(LayoutInflater.from(parent.context).inflate(R.layout.attendance_item, parent, false))
     }
 
@@ -32,22 +34,27 @@ class AttendanceAdapter(private val context: Context, private var attendanceList
         if (holder is AttendanceHolder) {
 
             Collections.sort(attendanceList) { o1, o2 -> o2.date.compareTo(o1.date) }
+
             val attendanceItem = attendanceList!![position]
             holder.attendance_code_tv.text = attendanceItem.code
             holder.attendance_description_tv.text = attendanceItem.description
             holder.attendance_subject_tv.text = attendanceItem.name
             holder.attendance_date_tv.text = attendanceItem.date
+
             if (attendanceItem.isNew) {
+
                 holder.fold_background.setBackgroundColor(ContextCompat.getColor(context, R.color.accent))
                 holder.attendance_description_tv.setTextColor(ContextCompat.getColor(context, R.color.white))
                 holder.attendance_subject_tv.setTextColor(ContextCompat.getColor(context, R.color.white_0_20))
                 holder.attendance_date_tv.setTextColor(ContextCompat.getColor(context, R.color.white_0_20))
             }else{
+
                 holder.fold_background.setBackgroundColor(ContextCompat.getColor(context, R.color.white))
                 holder.attendance_description_tv.setTextColor(ContextCompat.getColor(context, R.color.text_primary_black))
                 holder.attendance_subject_tv.setTextColor(ContextCompat.getColor(context, R.color.text_tertiary_black))
                 holder.attendance_date_tv.setTextColor(ContextCompat.getColor(context, R.color.text_tertiary_black))
             }
+
             holder.attendance_code_background.setBackgroundColor(utils.getColorByAttendance(context, attendanceItem.code))
         }
     }

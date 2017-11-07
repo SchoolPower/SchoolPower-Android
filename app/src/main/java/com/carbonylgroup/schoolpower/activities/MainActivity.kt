@@ -62,7 +62,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
     var presentFragment: Int = 0
     var studentInformation: StudentInformation? = null
     var subjects: List<Subject>? = null
-    var attendance: List<Attendance>? = null
+    var attendances: List<Attendance>? = null
     var subjectTransporter: Subject? = null
 
     private var noConnection = false
@@ -190,7 +190,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
         try {
             val input = utils.readDataArrayList()
             studentInformation = input.studentInfo
-            attendance = input.attendances
+            attendances = input.attendances
             subjects = input.subjects
         } catch (e: Exception) {
             e.printStackTrace()
@@ -239,6 +239,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
     }
 
     private fun initScheduler() {
+
         val jobScheduler = getSystemService(Context.JOB_SCHEDULER_SERVICE) as JobScheduler
         val preferences = PreferenceManager.getDefaultSharedPreferences(applicationContext)
         if (!preferences.getBoolean("preference_enable_notification", true)) {
@@ -401,7 +402,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
         val username = getSharedPreferences("accountData", Activity.MODE_PRIVATE).getString(getString(R.string.usernameKEY), "")
         val password = getSharedPreferences("accountData", Activity.MODE_PRIVATE).getString(getString(R.string.passwordKEY), "")
         if (subjects != null) oldSubjects.addAll(subjects!!)
-        if (attendance != null) oldAttendances.addAll(attendance!!)
+        if (attendances != null) oldAttendances.addAll(attendances!!)
 
         val version = packageManager.getPackageInfo("com.carbonylgroup.schoolpower", 0).versionName
 
@@ -426,10 +427,10 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                                 val data = utils.parseJsonResult(strMessage)
                                 studentInformation = data.studentInfo
                                 subjects = data.subjects
-                                attendance = data.attendances
+                                attendances = data.attendances
                                 when (presentFragment) {
                                     0 -> if (subjects!!.isEmpty()) homeFragment!!.refreshAdapterToEmpty()
-                                    3 -> if (attendance!!.isEmpty()) attendanceFragment!!.refreshAdapterToEmpty()
+                                    3 -> if (attendances!!.isEmpty()) attendanceFragment!!.refreshAdapterToEmpty()
                                 }
                                 utils.saveHistoryGrade(subjects!!)
 
@@ -445,14 +446,14 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                                         }
                                     }
                                 }
-                                // Mark new or changed attendance
-                                for (item in attendance!!) {
+                                // Mark new or changed attendances
+                                for (item in attendances!!) {
                                     val found = oldAttendances.any { it -> it.name == item.name && it.date == item.date && it.code == item.code && !it.isNew }
                                     if (!found) item.isNew = true
                                 }
                                 when (presentFragment) {
                                     0 -> homeFragment!!.refreshAdapter(subjects!!)
-                                    3 -> attendanceFragment!!.refreshAdapter(attendance!!)
+                                    3 -> attendanceFragment!!.refreshAdapter(attendances!!)
                                 }
                                 utils.showSnackBar(this@MainActivity, findViewById(R.id.main_coordinate_layout), getString(R.string.data_updated), false)
                             }

@@ -4,6 +4,7 @@
 
 package com.carbonylgroup.schoolpower.activities
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
 import android.app.ProgressDialog
@@ -16,6 +17,7 @@ import android.widget.EditText
 import com.carbonylgroup.schoolpower.R
 import com.carbonylgroup.schoolpower.utils.PostData
 import com.carbonylgroup.schoolpower.utils.Utils
+import org.json.JSONObject
 
 class LoginActivity : Activity() {
 
@@ -87,6 +89,7 @@ class LoginActivity : Activity() {
         Thread(PostData(
                 getString(R.string.postURL),
                 "username=$username&password=$password&version=$version&action=login&os=android",
+                @SuppressLint("HandlerLeak")
                 object : Handler() {
                     override fun handleMessage(msg: Message) {
 
@@ -94,6 +97,9 @@ class LoginActivity : Activity() {
                         val strMessage = msg.obj.toString().replace("\n", "")
                         if (strMessage.contains("Something went wrong!"))
                             utils.showSnackBar(this@LoginActivity, findViewById(R.id.login_coordinate_layout), getString(R.string.wrong_password), true)
+                        else if (strMessage.contains("\"alert\"")) {
+                            utils.showSnackBar(this@LoginActivity, findViewById(R.id.login_coordinate_layout), JSONObject("{$strMessage}").getString("alert"), true)
+                        }
                         else if (strMessage.contains(getString(R.string.json_begin))) {
 
                             val data = utils.parseJsonResult(strMessage)

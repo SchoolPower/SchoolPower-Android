@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -51,7 +50,7 @@ class AttendanceFragment : Fragment() {
     private fun initValue() {
 
         utils = Utils(activity)
-        attendance = MainActivity.of(activity).attendance!!
+        attendance = MainActivity.of(activity).attendances!!
         attendanceRecyclerView = view_private!!.findViewById(R.id.attendance_recycler)
         attendance_swipe_refresh_layout = view_private!!.findViewById(R.id.attendance_swipe_refresh_layout)
         attendance_swipe_refresh_layout!!.setColorSchemeResources(R.color.accent, R.color.A_score_green, R.color.B_score_green,
