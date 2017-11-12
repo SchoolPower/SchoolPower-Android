@@ -46,7 +46,8 @@ import java.util.*
  */
 
 class Subject(json: JSONObject) : Serializable {
-    data class Grade(val percentage: String, val letter: String)
+
+    data class Grade(val percentage: String, val letter: String, val comment: String, val evaluation: String)
 
     val name: String = json.getString("name")
     val teacherName: String = json.getJSONObject("teacher").let { obj -> obj.getString("firstName") + " " + obj.getString("lastName") }
@@ -65,7 +66,8 @@ class Subject(json: JSONObject) : Serializable {
             val finalGrades = json.getJSONObject("finalGrades")
             for (key in finalGrades.keys()) {
                 val grade = finalGrades.getJSONObject(key)
-                grades[key] = Grade(grade.getString("percent").toDouble().toInt().toString(), grade.getString("letter"))
+                grades[key] = Grade(grade.getString("percent").toDouble().toInt().toString(),
+                        grade.getString("letter"), grade.getString("comment"), grade.getString("eval"))
             }
         }
 

@@ -47,7 +47,7 @@ dependencies {
     compile 'com.android.support:support-v4:27.0.0'
     compile 'com.github.PhilJay:MPAndroidChart:v3.0.2'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    compile 'com.google.android.gms:play-services-ads:11.4.2'
+    compile 'com.google.android.gms:play-services-ads:11.6.0'
     compile 'com.gelitenight.waveview:waveview:1.0.0'
     compile 'com.android.support:percent:27.0.0'
     compile 'com.github.premnirmal:TextCounter:1.1.0'

@@ -27,6 +27,8 @@
     <string name="carbonylgroup">CarbonylGroup</string>
     <string name="null_name">Null</string>
 
+    <string name="evaluation">评估</string>
+    <string name="comment">评语</string>
     <string name="grades">成绩</string> 
     <string name="block">Block</string> 
     <string name="room">教室</string> 

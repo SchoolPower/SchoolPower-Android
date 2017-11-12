@@ -27,6 +27,8 @@
     <string name="carbonylgroup">CarbonylGroup</string>
     <string name="null_name">Null</string>
 
+    <string name="evaluation">Evaluation</string>
+    <string name="comment">Comment</string>
     <string name="grades">GRADES</string>
     <string name="block">Block</string>
     <string name="room">Room</string>

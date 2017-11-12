@@ -82,6 +82,12 @@ class Utils(private val context: Context) {
             R.color.B_score_green
     )
 
+    val citizenshipCodes: HashMap<String, String> = hashMapOf(
+            "M" to "Meeting Expectations",
+            "P" to "Partially Meeting Expectations",
+            "N" to "Not Yet Meeting Expectations"
+    )
+
     private fun indexOfString(searchString: String, domain: Array<String>):
             Int = domain.indices.firstOrNull { searchString == domain[it] } ?: -1
 

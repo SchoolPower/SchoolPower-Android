@@ -1,6 +1,7 @@
 package com.carbonylgroup.schoolpower.adapter
 
 
+import android.app.AlertDialog
 import android.content.Context
 import android.support.design.widget.FloatingActionButton
 import android.support.v4.content.ContextCompat
@@ -21,6 +22,7 @@ import com.carbonylgroup.schoolpower.utils.Utils
 import com.ramotion.foldingcell.FoldingCell
 import java.util.*
 
+
 /**
  * Simple example of ListAdapter for using with Folding Cell
  * Adapter holds indexes of unfolded elements for correct work with default reusable views behavior
@@ -30,7 +32,8 @@ class FoldingCellListAdapter(context: Context, private var subjects: List<Subjec
 
     private var fab_in: Animation? = null
     private var utils: Utils = Utils(getContext())
-    private var defaultRequestBtnClickListener: View.OnClickListener? = null
+    private var fabOnClickListener: View.OnClickListener? = null
+    private var termOnClickListener: View.OnClickListener? = null
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
 
@@ -86,7 +89,7 @@ class FoldingCellListAdapter(context: Context, private var subjects: List<Subjec
 
         val adapter = PeriodGradeAdapter(context, item.grades)
         val layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        val period = utils.getLatestPeriodGrade(item) ?: Subject.Grade("--", "--")
+        val period = utils.getLatestPeriodGrade(item) ?: Subject.Grade("--", "--", "null", "--")
         viewHolder.fold_letter_grade_tv!!.text = period.letter
         viewHolder.fold_teacher_name_tv!!.text = item.teacherName
         viewHolder.fold_block_letter_tv!!.text = item.blockLetter
@@ -96,7 +99,7 @@ class FoldingCellListAdapter(context: Context, private var subjects: List<Subjec
         viewHolder.unfold_subject_title_tv!!.text = item.name
         viewHolder.unfolded_grade_recycler_view!!.layoutManager = layoutManager
         viewHolder.fold_percentage_grade_tv!!.text = period.percentage
-        viewHolder.floating_action_button!!.setOnClickListener(defaultRequestBtnClickListener)
+        viewHolder.floating_action_button!!.setOnClickListener(fabOnClickListener)
         viewHolder.unfold_percentage_grade_tv!!.text = period.percentage
         viewHolder.unfold_header_view!!.setBackgroundColor(utils.getColorByLetterGrade(context, period.letter))
         viewHolder.fold_grade_background!!.setBackgroundColor(utils.getColorByLetterGrade(context, period.letter))
@@ -113,7 +116,11 @@ class FoldingCellListAdapter(context: Context, private var subjects: List<Subjec
             viewHolder.fold_background!!.setBackgroundColor(ContextCompat.getColor(context, R.color.white))
         }
 
-        viewHolder.unfolded_grade_recycler_view!!.setOnClickListener { print("[][][" + position) }
+        viewHolder.unfolded_grade_recycler_view!!.addOnItemClickListener(object: com.carbonylgroup.schoolpower.adapter.OnItemClickListener {
+            override fun onItemClicked(position: Int, view: View) {
+                showTermDialog(item, position)
+            }
+        })
 
         return cell
     }
@@ -157,8 +164,51 @@ class FoldingCellListAdapter(context: Context, private var subjects: List<Subjec
         unfoldedIndexes.add(position)
     }
 
-    fun setDefaultRequestBtnClickListener(defaultRequestBtnClickListener: View.OnClickListener) {
-        this.defaultRequestBtnClickListener = defaultRequestBtnClickListener
+    fun setFabOnClickListener(fabOnClickListener: View.OnClickListener) {
+        this.fabOnClickListener = fabOnClickListener
+    }
+
+    fun setTermOnClickListener(termOnClickListener: View.OnClickListener) {
+        this.termOnClickListener = termOnClickListener
+    }
+
+    private fun showTermDialog(subject: Subject, position: Int) {
+
+        val objects = subject.grades
+        val gradeMap: Map<String, Subject.Grade> = objects
+        val keys = objects.keys.toTypedArray()
+        val term = gradeMap[keys[position]]!!
+
+        val letter = term.letter
+        val percentage = term.percentage
+        val termIndicator = keys[position]
+        val subjectTitle = subject.name
+        val evaluation = term.evaluation
+        val comment = term.comment
+
+        val termDialog = LayoutInflater.from(context).inflate(R.layout.term_dialog, null)
+        val termDialogView = termDialog.findViewById<View>(R.id.term_dialog_root_view)
+        val termDialogBuilder = AlertDialog.Builder(context)
+
+        termDialogView.findViewById<RelativeLayout>(R.id.term_header_view).setBackgroundColor(
+                utils.getColorByLetterGrade(context, letter))
+
+        termDialogView.findViewById<TextView>(R.id.term_percentage_grade_tv).text = percentage
+        termDialogView.findViewById<TextView>(R.id.term_name_tv).text = termIndicator
+        termDialogView.findViewById<TextView>(R.id.term_subject_tv).text = subjectTitle
+        termDialogView.findViewById<TextView>(R.id.term_eval_body_tv).text =
+                if (evaluation.equals("--")) "N/A"
+                else String.format("%s (%s)", evaluation, utils.citizenshipCodes[evaluation])
+        termDialogView.findViewById<TextView>(R.id.term_comment_body_tv).text =
+                if (comment.equals("null")) "N/A" else comment
+
+        termDialogView.findViewById<TextView>(R.id.term_eval_title_tv).text = context.getString(R.string.evaluation)
+        termDialogView.findViewById<TextView>(R.id.term_comment_title_tv).text = context.getString(R.string.comment)
+
+        termDialogBuilder.setView(termDialogView)
+        termDialogBuilder.setPositiveButton(context.getString(R.string.sweet), null)
+        termDialogBuilder.create().setCanceledOnTouchOutside(true)
+        termDialogBuilder.create().show()
     }
 
     private class ViewHolder {

@@ -84,7 +84,7 @@ class CourseDetailAdapter(private val context: Context, private val subject: Sub
 
                 val headerViewHolder = holder
                 val termAdapter = ArrayAdapter(context, R.layout.term_selection_spinner, termsList)
-                val period = utils.getLatestPeriodGrade(subject) ?: Subject.Grade("--", "--")
+                val period = utils.getLatestPeriodGrade(subject) ?: Subject.Grade("--", "--", "null", "--")
 
                 headerViewHolder.detail_letter_grade_tv.text = period.letter
                 headerViewHolder.detail_percentage_grade_tv.text = period.percentage

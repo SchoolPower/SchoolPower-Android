@@ -23,4 +23,9 @@
 
     <dimen name="mal_card_radius">2dp</dimen>
     <dimen name="mal_card_elevation">2dp</dimen>
+
+    <dimen name="md_styled_text_title">20sp</dimen>
+    <dimen name="md_styled_text_description">16sp</dimen>
+    <dimen name="md_styled_dialog_header">120dp</dimen>
+    <dimen name="md_styled_pic_size">44dp</dimen>
 </resources>

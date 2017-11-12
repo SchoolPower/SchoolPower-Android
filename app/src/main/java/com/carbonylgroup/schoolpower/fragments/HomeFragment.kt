@@ -4,6 +4,7 @@
 
 package com.carbonylgroup.schoolpower.fragments
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.support.v4.widget.SwipeRefreshLayout
 import android.view.LayoutInflater
@@ -83,7 +84,7 @@ class HomeFragment : TransitionHelper.BaseFragment() {
         else initAdapter()
     }
 
-    private fun adapterSetDefaultClickListener(adapter: FoldingCellListAdapter) = adapter.setDefaultRequestBtnClickListener(View.OnClickListener { v ->
+    private fun adapterSetFabOnClickListener(adapter: FoldingCellListAdapter) = adapter.setFabOnClickListener(View.OnClickListener { v ->
 
         MainActivity.of(activity).subjectTransporter = utils!!.getFilteredSubjects(subjects!!)[dashboardListView.getPositionForView(v)]
         if (transformedPosition != -1) {
@@ -104,7 +105,7 @@ class HomeFragment : TransitionHelper.BaseFragment() {
 
         adapter = FoldingCellListAdapter(activity, utils!!.getFilteredSubjects(subjects!!), unfoldedIndexesBackUp, transformedPosition)
 
-        adapterSetDefaultClickListener(adapter!!)
+        adapterSetFabOnClickListener(adapter!!)
 
         dashboardListView.onItemClickListener = AdapterView.OnItemClickListener { _, view, pos, _ ->
             adapter!!.registerToggle(pos)
@@ -137,7 +138,7 @@ class HomeFragment : TransitionHelper.BaseFragment() {
         if (adapter == null) initValue()
         else {
             adapter!!.setMainListItems(utils!!.getFilteredSubjects(newSubjects))
-            adapterSetDefaultClickListener(adapter!!)
+            adapterSetFabOnClickListener(adapter!!)
             adapter!!.notifyDataSetChanged()
         }
         setRefreshing(false)
@@ -146,6 +147,8 @@ class HomeFragment : TransitionHelper.BaseFragment() {
     fun notifyAdapter() {
         adapter!!.notifyDataSetChanged()
     }
+
+
 
     private fun getItemViewByPosition(position: Int, listView: ListView): View {
 

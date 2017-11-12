@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tool="http://schemas.android.com/tools"
+    android:id="@+id/term_dialog_root_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/term_header_background"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:id="@+id/term_header_view"
+            android:layout_width="match_parent"
+            android:layout_height="140dp"
+            android:background="@color/A_score_green">
+
+            <TextView
+                android:id="@+id/term_percentage_grade_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginEnd="15dp"
+                android:fontFamily="sans-serif-light"
+                android:textAppearance="@android:style/TextAppearance.Material.Title"
+                android:textColor="@color/white"
+                android:textSize="65sp"
+                android:text="100" />
+
+            <TextView
+                android:id="@+id/term_subject_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignStart="@+id/term_name_tv"
+                android:layout_marginBottom="20dp"
+                android:fontFamily="sans-serif-light"
+                android:maxLines="2"
+                android:text="Chinese Social Studies 11: Music"
+                android:textAppearance="@android:style/TextAppearance.Material.Title"
+                android:textColor="@color/white_0_20"
+                android:textSize="13sp" />
+
+            <TextView
+                android:id="@+id/term_name_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@id/term_subject_tv"
+                android:layout_marginBottom="5dp"
+                android:layout_marginStart="20dp"
+                android:textColor="@color/white"
+                android:textSize="22sp"
+                android:text="S2" />
+
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/term_header_view"
+            android:layout_marginEnd="15dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="15dp">
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/term_eval_card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardUseCompatPadding="true">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="10dp"
+                    android:paddingEnd="15dp"
+                    android:paddingStart="15dp"
+                    android:paddingTop="10dp">
+
+                    <TextView
+                        android:id="@+id/term_eval_title_tv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:text="Evaluation"
+                        android:textColor="@color/text_secondary_black"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/term_eval_body_tv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/term_eval_title_tv"
+                        android:layout_marginBottom="5dp"
+                        android:text="Meet Expectation"
+                        android:textColor="@color/text_primary_black"
+                        android:textSize="15sp" />
+
+                </RelativeLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/term_comment_card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_below="@id/term_eval_card"
+                app:cardUseCompatPadding="true">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="10dp"
+                    android:paddingEnd="15dp"
+                    android:paddingStart="15dp"
+                    android:paddingTop="10dp">
+
+                    <TextView
+                        android:id="@+id/term_comment_title_tv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:text="Comment"
+                        android:textColor="@color/text_secondary_black"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/term_comment_body_tv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/term_comment_title_tv"
+                        android:layout_marginBottom="5dp"
+                        android:text="Excellent progress to date. Attention to procederal details is contributing to the student's success in this course."
+                        android:textColor="@color/text_primary_black"
+                        android:textSize="15sp" />
+
+                </RelativeLayout>
+
+            </android.support.v7.widget.CardView>
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+</android.support.v4.widget.NestedScrollView>
