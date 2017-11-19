@@ -217,11 +217,13 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
     private fun initOnClick() {
 
         toggle.toolbarNavigationClickListener = View.OnClickListener {
-            if (menuOpenDrawer) drawer.openDrawer(GravityCompat.START)
-            else if (presentFragment == 1) returnFromDetail()
-            else if (presentFragment == 2) returnFromPrimaryFragments(1)
-            else if (presentFragment == 3) returnFromPrimaryFragments(2)
-            else returnFromSecondaryFragments()
+            when {
+                menuOpenDrawer -> drawer.openDrawer(GravityCompat.START)
+                presentFragment == 1 -> returnFromDetail()
+                presentFragment == 2 -> returnFromPrimaryFragments(1)
+                presentFragment == 3 -> returnFromPrimaryFragments(2)
+                else -> returnFromSecondaryFragments()
+            }
         }
     }
 

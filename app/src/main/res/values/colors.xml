@@ -21,12 +21,16 @@
     <color name="A_score_green_dark">#006156</color>
     <color name="B_score_green">#388E3C</color>
     <color name="B_score_green_dark">#2d7230</color>
+    <color name="Cp_score_yellow_lighter">#ffd180</color>
+    <color name="Cp_score_yellow_light">#ffd740</color>
     <color name="Cp_score_yellow">#ffb300</color>
     <color name="Cp_score_yellow_dark">#cc8f00</color>
+    <color name="Cp_score_yellow_darker">#827717</color>
     <color name="C_score_orange">#FF5722</color>
     <color name="C_score_orange_dark">#cc461b</color>
     <color name="Cm_score_red">#D32F2F</color>
     <color name="Cm_score_red_dark">#a92626</color>
+    <color name="gray">#757575</color>
 
     <color name="dark_blue_background">#202235</color>
     <color name="dark_blue_table">#343447</color>

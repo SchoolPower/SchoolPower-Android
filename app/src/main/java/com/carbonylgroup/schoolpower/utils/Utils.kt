@@ -67,19 +67,28 @@ class Utils(private val context: Context) {
             R.color.primary_dark
     )
 
-    private val attendanceColorIds = intArrayOf(
-            R.color.primary_dark,
-            R.color.A_score_green_dark,
-            R.color.Cp_score_yellow,
-            R.color.Cp_score_yellow_dark,
-            R.color.C_score_orange_dark,
-            R.color.C_score_orange,
-            R.color.primary,
-            R.color.Cm_score_red,
-            R.color.A_score_green,
-            R.color.Cm_score_red_dark,
-            R.color.B_score_green_dark,
-            R.color.B_score_green
+    private val attendanceColorIds = mapOf(
+            "A" to R.color.primary_dark,
+            "E" to R.color.A_score_green_dark,
+            "L" to R.color.Cp_score_yellow,
+            "R" to R.color.Cp_score_yellow_dark,
+            "H" to R.color.C_score_orange_dark,
+            "T" to R.color.C_score_orange,
+            "S" to R.color.primary,
+            "I" to R.color.Cm_score_red,
+            "X" to R.color.A_score_green,
+            "M" to R.color.Cm_score_red_dark,
+            "C" to R.color.B_score_green_dark,
+            "D" to R.color.B_score_green,
+            "P" to R.color.A_score_green,
+            "NR" to R.color.C_score_orange,
+            "TW" to R.color.primary,
+            "RA" to R.color.Cp_score_yellow_darker,
+            "NE" to R.color.Cp_score_yellow_light,
+            "U" to R.color.Cp_score_yellow_lighter,
+            "RS" to R.color.primary_light,
+            "ISS" to R.color.primary,
+            "FT" to R.color.B_score_green_dark
     )
 
     val citizenshipCodes: HashMap<String, String> = hashMapOf(
@@ -99,7 +108,7 @@ class Utils(private val context: Context) {
             gradeDarkColorIdsPlain[gradeColorIdsPlain.takeWhile { originalPrimary != ContextCompat.getColor(context, it) }.count()])
 
     fun getColorByAttendance(context: Context, attendanceCode: String) = ContextCompat.getColor(context,
-            attendanceColorIds[indexOfString(attendanceCode, arrayOf("A", "E", "L", "R", "H", "T", "S", "I", "X", "M", "C", "D"))])
+            attendanceColorIds.getOrDefault(attendanceCode, R.color.gray))
     /* Others */
     fun dpToPx(dp: Int) = Math.round(dp * (context.resources.displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT))
 
@@ -130,12 +139,14 @@ class Utils(private val context: Context) {
     fun getLetterGradeByPercentageGrade(percentageGrade: Float): String {
 
         val letterGrades = arrayOf("A", "B", "C+", "C", "C-", "F", "I", "--")
-        if (percentageGrade >= 86) return letterGrades[0]
-        else if (percentageGrade >= 73) return letterGrades[1]
-        else if (percentageGrade >= 67) return letterGrades[2]
-        else if (percentageGrade >= 60) return letterGrades[3]
-        else if (percentageGrade >= 50) return letterGrades[4]
-        else return letterGrades[5]
+        return when {
+            percentageGrade >= 86 -> letterGrades[0]
+            percentageGrade >= 73 -> letterGrades[1]
+            percentageGrade >= 67 -> letterGrades[2]
+            percentageGrade >= 60 -> letterGrades[3]
+            percentageGrade >= 50 -> letterGrades[4]
+            else -> letterGrades[5]
+        }
     }
 
     fun showSnackBar(context: Context, view: View, msg: String, colorRed: Boolean) {
@@ -355,7 +366,9 @@ class Utils(private val context: Context) {
             if (short != null) {
                 if (splitedSubject[splitedSubject.size - 1] == "Music") short += "M"
                 if (splitedSubject[splitedSubject.size - 1] == "Politics") short += "P"
-
+                if (splitedSubject[splitedSubject.size - 1] == "Sci") short += "S"
+                if (splitedSubject[splitedSubject.size - 1] == "Humanities") short += "H"
+                if (splitedSubject[splitedSubject.size - 1] == "Arts") short += "A"
                 return short
             }
 

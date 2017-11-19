@@ -87,10 +87,11 @@ class AboutFragment : Fragment() {
         }
 
         view.findViewById<View>(R.id.about_bug_cell).setOnClickListener {
+            val version = activity.packageManager.getPackageInfo("com.carbonylgroup.schoolpower", 0).versionName
             val uri = Uri.parse(getString(R.string.bug_report_email))
             val intent = Intent(Intent.ACTION_SENDTO, uri)
             intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.bug_report_email_subject))
-            intent.putExtra(Intent.EXTRA_TEXT, getString(R.string.bug_report_email_content))
+            intent.putExtra(Intent.EXTRA_TEXT, String.format(getString(R.string.bug_report_email_content), version))
             startActivity(Intent.createChooser(intent, getString(R.string.choose_email_app)))
         }
 

@@ -7,10 +7,14 @@ package com.carbonylgroup.schoolpower.adapter
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
+import android.opengl.Visibility
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
 import android.view.ViewGroup
 import android.widget.*
 import com.carbonylgroup.schoolpower.R
@@ -106,6 +110,15 @@ class CourseDetailAdapter(private val context: Context, private val subject: Sub
                     }
                     override fun onNothingSelected(parent: AdapterView<*>) {}
                 }
+                if(subject.teacherEmail == "null") {
+                    headerViewHolder.detail_header_email.visibility = GONE
+                }else{
+                    headerViewHolder.detail_header_email.setOnClickListener {
+                        val uri = Uri.parse("mailto:" + subject.teacherEmail)
+                        val intent = Intent(Intent.ACTION_SENDTO, uri)
+                        context.startActivity(Intent.createChooser(intent, context.getString(R.string.choose_email_app)))
+                    }
+                }
             }
     }
 
@@ -128,6 +141,7 @@ class CourseDetailAdapter(private val context: Context, private val subject: Sub
         val detail_letter_grade_tv: TextView by bindView(R2.id.detail_letter_grade_tv)
         val detail_percentage_grade_tv: TextView by bindView(R2.id.detail_percentage_grade_tv)
         val detail_header_teacher_name_tv: TextView by bindView(R2.id.detail_header_teacher_name_tv)
+        val detail_header_email: ImageView by bindView(R2.id.detail_header_email)
         val detail_header_block_tv: TextView by bindView(R2.id.detail_header_block_tv)
         val detail_header_room_tv: TextView by bindView(R2.id.detail_header_room_tv)
         val detail_header_grade_background: RelativeLayout by bindView(R2.id.detail_header_grade_background)

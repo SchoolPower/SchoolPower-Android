@@ -105,10 +105,10 @@
     <string name="report_bug_summary">用電子郵件聯繫開發者</string>
     <string name="choose_email_app">選擇一個郵件應用&#8230;</string>
     <string name="bug_report_email_subject">SchoolPower 有 Bug</string>
-    <string name="bug_report_email_content">請提供盡可能詳細的信息，如如何复现问题，預期的結果是什麼。</string>
 
     <string name="visit_website">訪問官網</string>
     <string name="source_code">獲取源碼</string>
     <string name="attendance_new">新出勤情況</string>
+    <string name="bug_report_email_content">請提供盡可能詳細的信息，比如怎麼復現問題，預期的表現是什麼。\n調試信息: SchoolPower Android %s.\nPowerSchool用戶名與密碼（可選，有助於我們更快修復問題）：\n</string>
 
 </resources>

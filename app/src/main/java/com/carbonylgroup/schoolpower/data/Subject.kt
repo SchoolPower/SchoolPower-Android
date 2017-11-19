@@ -51,6 +51,7 @@ class Subject(json: JSONObject) : Serializable {
 
     val name: String = json.getString("name")
     val teacherName: String = json.getJSONObject("teacher").let { obj -> obj.getString("firstName") + " " + obj.getString("lastName") }
+    val teacherEmail: String = json.getJSONObject("teacher").optString("email")
     val blockLetter: String = json.getString("expression")
     val roomNumber: String = json.getString("roomName")
     val assignments: ArrayList<AssignmentItem> = arrayListOf()
@@ -59,7 +60,7 @@ class Subject(json: JSONObject) : Serializable {
     init {
         if (!json.isNull("assignments")) {
             val jsonAssignments = json.getJSONArray("assignments")
-            (0..jsonAssignments.length() - 1).mapTo(assignments) { AssignmentItem(jsonAssignments.getJSONObject(it)) }
+            (0 until jsonAssignments.length()).mapTo(assignments) { AssignmentItem(jsonAssignments.getJSONObject(it)) }
         }
 
         if (!json.isNull("finalGrades")) {
