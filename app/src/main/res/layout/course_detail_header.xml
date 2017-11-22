@@ -2,6 +2,7 @@
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginEnd="10dp"
@@ -67,20 +68,40 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content">
 
-                        <TextView
-                            android:id="@+id/detail_header_teacher_name_tv"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Grainne Smith A Very Long Name"
-                            android:textColor="@color/black"
-                            android:textSize="20sp"
-                            android:textStyle="bold" />
+                        <RelativeLayout
+                            android:id="@+id/detail_header_profile_inner_upper_view"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <ImageView
+                                android:id="@+id/detail_header_email_image"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentEnd="true"
+                                android:layout_centerVertical="true"
+                                android:background="?selectableItemBackgroundBorderless"
+                                app:srcCompat="@drawable/ic_email_black_24dp" />
+
+                            <TextView
+                                android:id="@+id/detail_header_teacher_name_tv"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentStart="true"
+                                android:layout_alignParentTop="true"
+                                android:layout_marginEnd="8dp"
+                                android:layout_toStartOf="@id/detail_header_email_image"
+                                android:text="Grainne Hamal-Smith"
+                                android:textColor="@color/black"
+                                android:textSize="20sp"
+                                android:textStyle="bold" />
+
+                        </RelativeLayout>
 
                         <TextView
                             android:id="@+id/detail_header_block_tv"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_below="@id/detail_header_teacher_name_tv"
+                            android:layout_below="@id/detail_header_profile_inner_upper_view"
                             android:layout_marginTop="10dp"
                             android:text="Block A(1)"
                             android:textColor="@color/text_secondary_black"
@@ -97,28 +118,9 @@
                             android:textColor="@color/text_primary_black"
                             android:textSize="13sp" />
 
-                        <TextView
-                            android:id="@+id/detail_header_email_tv"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignBottom="@+id/detail_header_email"
-                            android:layout_toEndOf="@+id/detail_header_email"
-                            android:layout_marginBottom="5dp"
-                            android:layout_marginStart="2dp"
-                            android:text="grainne-smith@mapleleafedu.com"
-                            android:textColor="@color/text_secondary_black"
-                            android:textSize="13sp" />
-
-                        <ImageView
-                            android:id="@+id/detail_header_email"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentStart="true"
-                            android:layout_below="@+id/detail_header_block_tv"
-                            android:layout_marginTop="10dp"
-                            app:srcCompat="@drawable/ic_email_black_24dp" />
 
                     </RelativeLayout>
+
 
                 </RelativeLayout>
 

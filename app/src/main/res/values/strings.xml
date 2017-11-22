@@ -133,8 +133,8 @@
 
     <string name="json_begin" translatable="false">{</string>
 
-    <string name="postURL" translatable="false">https://api.schoolpower.studio:8443/api/2.0/get_data.php</string>
-    <string name="updateURL" translatable="false">https://api.schoolpower.studio:8443/api/update.json</string>
+    <string name="postURL" translatable="false">https://schoolpower.harrynull.tech:8443/api/2.0/get_data.php</string>
+    <string name="updateURL" translatable="false">https://schoolpower.harrynull.tech:8443/api/update.json</string>
     <string name="dataFileName" translatable="false">dataMap.json</string>
     <string name="langFileName" translatable="false">lang.file</string>
 

@@ -395,7 +395,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
         transaction.commit()
     }
 
-    /* Other Method */
+    /* Other Methods */
     fun initDataJson() {
 
         val oldSubjects = ArrayList<Subject>()

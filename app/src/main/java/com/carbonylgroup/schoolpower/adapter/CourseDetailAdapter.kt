@@ -141,7 +141,7 @@ class CourseDetailAdapter(private val context: Context, private val subject: Sub
         val detail_letter_grade_tv: TextView by bindView(R2.id.detail_letter_grade_tv)
         val detail_percentage_grade_tv: TextView by bindView(R2.id.detail_percentage_grade_tv)
         val detail_header_teacher_name_tv: TextView by bindView(R2.id.detail_header_teacher_name_tv)
-        val detail_header_email: ImageView by bindView(R2.id.detail_header_email)
+        val detail_header_email: ImageView by bindView(R2.id.detail_header_email_image)
         val detail_header_block_tv: TextView by bindView(R2.id.detail_header_block_tv)
         val detail_header_room_tv: TextView by bindView(R2.id.detail_header_room_tv)
         val detail_header_grade_background: RelativeLayout by bindView(R2.id.detail_header_grade_background)
