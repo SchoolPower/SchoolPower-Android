@@ -617,7 +617,6 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
 
         gpaDialogBuilder.setView(gpaDialogView)
         gpaDialogBuilder.setTitle("GPA")
-        gpaDialogBuilder.setMessage(String.format(getString(R.string.your_gpa), latestPeriod))
         gpaDialogBuilder.setPositiveButton(getString(R.string.sweet), null)
         gpaDialogBuilder.create().setCanceledOnTouchOutside(true)
         gpaDialogBuilder.create().show()
