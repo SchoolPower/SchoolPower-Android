@@ -9,20 +9,31 @@
     android:paddingEnd="24dp"
     android:paddingStart="24dp"
     android:paddingBottom="10dp">
-
-    <TextView
-        android:id="@+id/textView"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="你T1的GPA是"
-        android:textColor="@color/black"
-        android:layout_margin="10dp"/>
+        android:orientation="horizontal">
+
+        <Spinner
+            android:id="@+id/gpa_dialog_term_spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:entries="@array/terms_sample"/>
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="的GPA是"
+            android:textColor="@color/black" />
+    </LinearLayout>
 
     <android.support.percent.PercentFrameLayout
             android:id="@+id/gpa_dialog_frame"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
+            android:layout_marginTop="50dp"
             android:layout_marginEnd="24dp"
             android:layout_marginStart="24dp">
 
@@ -84,14 +95,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:minHeight="10dp"
-                android:text="@string/gpa_segments_exhr"
+                android:text="@string/gpa_segments_custom"
                 android:textAllCaps="false" />
 
             <Button
+                android:id="@+id/gpa_segments_official"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:minHeight="10dp"
-                android:text="@string/gpa_segments_exhrme"
+                android:text="@string/gpa_segments_official"
                 android:textAllCaps="false" />
 
         </co.ceryle.segmentedbutton.SegmentedButtonGroup>

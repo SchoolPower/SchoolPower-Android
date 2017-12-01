@@ -12,11 +12,9 @@ import android.content.SharedPreferences
 import android.content.res.Resources
 import android.net.Uri
 import android.os.Bundle
-import android.preference.ListPreference
-import android.preference.Preference
-import android.preference.PreferenceFragment
-import android.preference.PreferenceManager
+import android.preference.*
 import android.support.v4.app.NavUtils
+import android.support.v4.app.ShareCompat.getCallingActivity
 import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
 import com.carbonylgroup.schoolpower.R
@@ -107,6 +105,9 @@ class SettingsActivity : AppCompatActivity() {
                 startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.source_code_address))))
                 true
             }
+            val customGPA = findPreference("list_preference_customize_gpa") as MultiSelectListPreference
+            customGPA.entries = activity.intent.getCharSequenceArrayExtra("subjects")
+            customGPA.entryValues = activity.intent.getCharSequenceArrayExtra("subjects_values")
         }
 
         private fun refreshPreferences(sharedPreferences: SharedPreferences?, key: String?) {

@@ -110,5 +110,7 @@
     <string name="visit_website">Visit Website</string>
     <string name="source_code">Get Source Code</string>
     <string name="attendance_new">New Attendances</string>
+    <string name="gpa_segments_custom">Custom</string>
+    <string name="gpa_segments_official">Official</string>
 
 </resources>

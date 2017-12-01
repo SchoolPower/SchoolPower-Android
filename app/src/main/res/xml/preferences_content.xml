@@ -18,12 +18,17 @@
             android:key="list_preference_dashboard_display"
             android:summary="%s"
             android:title="@string/dashboard_displays" />
-
         <SwitchPreference
             android:defaultValue="false"
             android:key="list_preference_dashboard_show_inactive"
             android:summary="@string/show_inactive_summary"
             android:title="@string/show_inactive_title" />
+
+        <MultiSelectListPreference
+            android:defaultValue="@array/empty_array"
+            android:title="@string/customize_gpa"
+            android:key="list_preference_customize_gpa"
+            android:summary="@string/customize_gpa_intro"/>
 
     </PreferenceCategory>
 

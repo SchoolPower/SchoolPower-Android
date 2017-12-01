@@ -31,7 +31,7 @@ class StudentInformation(json: JSONObject) : Serializable {
         Male, Female
     }
 
-    val GPA: Double? = json.optDouble("currentGPA")
+    val GPA: Double?        = json.optDouble("currentGPA")
     val id : Int            = json.getInt("id")
     val gender : Gender     = if(json.getString("gender") == "M") Gender.Male else Gender.Female
     val dob : String        = json.getString("dob")

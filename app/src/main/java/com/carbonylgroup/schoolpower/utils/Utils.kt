@@ -33,7 +33,6 @@ import java.net.URL
 import java.text.SimpleDateFormat
 import java.util.*
 
-
 class Utils(private val context: Context) {
 
     private val gradeColorIds = intArrayOf(
@@ -101,7 +100,7 @@ class Utils(private val context: Context) {
             Int = domain.indices.firstOrNull { searchString == domain[it] } ?: -1
 
     /* Color Handler */
-    fun getColorByLetterGrade(context: Context, letterGrade: String) = ContextCompat.getColor(context,
+    fun getColorByLetterGrade(letterGrade: String) = ContextCompat.getColor(context,
             gradeColorIds[indexOfString(letterGrade, arrayOf("A", "B", "C+", "C", "C-", "F", "I", "--"))])
 
     fun getDarkColorByPrimary(originalPrimary: Int) = ContextCompat.getColor(context,
@@ -131,7 +130,7 @@ class Utils(private val context: Context) {
             else if (termsList.contains("T1")) return "T1"
         }
 
-        return ""
+        return null
     }
 
     fun getLatestPeriodGrade(subject: Subject) = subject.grades[getLatestPeriod(subject.grades)]

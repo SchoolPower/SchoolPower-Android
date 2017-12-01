@@ -44,10 +44,7 @@ import com.carbonylgroup.schoolpower.fragments.HomeFragment
 import com.carbonylgroup.schoolpower.service.PullDataJob
 import com.carbonylgroup.schoolpower.transition.DetailsTransition
 import com.carbonylgroup.schoolpower.transition.TransitionHelper
-import com.carbonylgroup.schoolpower.utils.ContextWrapper
-import com.carbonylgroup.schoolpower.utils.PostData
-import com.carbonylgroup.schoolpower.utils.Utils
-import com.carbonylgroup.schoolpower.utils.WaveHelper
+import com.carbonylgroup.schoolpower.utils.*
 import com.gelitenight.waveview.library.WaveView
 import com.github.premnirmal.textcounter.CounterView
 import com.google.android.gms.ads.AdRequest
@@ -75,12 +72,9 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
     private val localeSet = arrayListOf(Resources.getSystem().configuration.locale, Locale.ENGLISH, Locale.TRADITIONAL_CHINESE, Locale.SIMPLIFIED_CHINESE)
 
     private lateinit var mAdView: AdView
-    private lateinit var waveView: WaveView
     private lateinit var toggle: ActionBarDrawerToggle
     private lateinit var navigationView: NavigationView
     private lateinit var toggleIcon: DrawerArrowDrawable
-    private lateinit var gpa_dialog_percentage_back: CounterView
-    private lateinit var gpa_dialog_percentage_front: CounterView
 
     /* Fragments */
     private var homeFragment: HomeFragment? = null
@@ -138,7 +132,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                     builder.setPositiveButton(getString(R.string.alright), null)
                     builder.create().show()
 
-                } else showGPADialog()
+                } else GPADialog(this, subjects!!, studentInformation!!.GPA).show()
             }
         }
         return super.onOptionsItemSelected(item)
@@ -510,8 +504,12 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
     }
 
     private fun startSettingsActivity() {
-
-        startActivityForResult(Intent(application, SettingsActivity::class.java), 0)
+        val intent = Intent(application, SettingsActivity::class.java)
+        val subjectList = subjects!!.mapTo(ArrayList<CharSequence>()) { "${it.name} (${utils.getLatestPeriodGrade(it)?.percentage}%)" }
+        val subjectValueList = subjects!!.mapTo(ArrayList<CharSequence>()) { it.name }
+        intent.putExtra("subjects", subjectList.toTypedArray())
+        intent.putExtra("subjects_values", subjectValueList.toTypedArray())
+        startActivityForResult(intent, 0)
         // Use startActivityForResult to invoke onActivityResult to apply settings
     }
 
@@ -539,111 +537,6 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
         this@MainActivity.finish()
     }
 
-    private fun showGPADialog() {
-
-        var sum_gpa = 0.0
-        var gpa_except_hr = 0.0
-        var gpa_except_hr_me = 0.0
-        var contain_hr = false
-        var contain_me = false
-        var num = 0
-        for (i in subjects!!.indices) {
-
-            val subject = subjects!![i]
-            val periodGrade = utils.getLatestPeriodGrade(subject) ?: continue
-            if (periodGrade.percentage == "--" || periodGrade.letter == "--") continue
-            val grade = periodGrade.percentage.toDouble()
-            sum_gpa += grade
-            num += 1
-            if (subject.name.contains("Homeroom")) {
-                contain_hr = true
-                continue
-            }
-            gpa_except_hr += grade
-            if (subject.name.contains("Moral Education")) {
-                contain_me = true
-                continue
-            }
-            gpa_except_hr_me += grade
-        }
-
-        val gpaDialog = layoutInflater.inflate(R.layout.gpa_dialog, null)
-        val gpaDialogView = gpaDialog.findViewById<View>(R.id.gpa_dialog_rootView)
-        val gpaDialogBuilder = AlertDialog.Builder(this)
-        val gpa_dialog_segmented: SegmentedButtonGroup = gpaDialogView.findViewById(R.id.gpa_dialog_segmented)
-
-        var latestPeriod = ""
-        val percentage_all = (sum_gpa / num).toFloat()
-        var num_to_minus = 0
-        if (contain_hr) num_to_minus++
-        val percentage_exhr = (gpa_except_hr / (num - num_to_minus)).toFloat()
-        if (contain_me) num_to_minus++
-        val percentage_exhrme = (gpa_except_hr_me / (num - num_to_minus)).toFloat()
-
-
-        val waveLightColor = utils.getColorByLetterGrade(this, utils.getLetterGradeByPercentageGrade(percentage_all))
-        val waveDarkColor = utils.getDarkColorByPrimary(waveLightColor)
-
-        gpa_dialog_percentage_front = gpaDialogView.findViewById(R.id.gpa_dialog_percentage_front)
-        gpa_dialog_percentage_back = gpaDialogView.findViewById(R.id.gpa_dialog_percentage_back)
-        gpa_dialog_percentage_front.setFormatter({ _, suffix, value -> String.format("%.3f", value) + suffix })
-        gpa_dialog_percentage_back.setFormatter({ _, suffix, value -> String.format("%.3f", value) + suffix })
-        gpa_dialog_percentage_front.setAutoStart(false)
-        gpa_dialog_percentage_front.setPrefix("")
-        gpa_dialog_percentage_front.setSuffix("%")
-        gpa_dialog_percentage_back.setAutoStart(false)
-        gpa_dialog_percentage_back.setPrefix("")
-        gpa_dialog_percentage_back.setSuffix("%")
-        waveView = gpaDialogView.findViewById(R.id.gpa_Dialog_wave_view)
-        waveView.setShapeType(WaveView.ShapeType.CIRCLE)
-
-        subjects!!.forEach {
-            if (!utils.getLatestPeriod(it.grades)!!.isEmpty()) {
-                val latest = utils.getLatestPeriod(it.grades)
-                latestPeriod = latest!!
-            }
-        }
-
-        gpa_dialog_segmented.rippleColor = waveDarkColor
-        gpa_dialog_segmented.selectorColor = waveDarkColor
-        gpa_dialog_segmented.setPosition(0, 0)
-        gpa_dialog_segmented.setOnClickedButtonPosition({ position: Int ->
-            when (position) {
-                0 -> animateWaveAndText(waveView.waterLevelRatio, percentage_all)
-                1 -> animateWaveAndText(waveView.waterLevelRatio, percentage_exhr)
-                2 -> animateWaveAndText(waveView.waterLevelRatio, percentage_exhrme)
-            }
-        })
-
-        gpaDialogBuilder.setView(gpaDialogView)
-        gpaDialogBuilder.setTitle("GPA")
-        gpaDialogBuilder.setPositiveButton(getString(R.string.sweet), null)
-        gpaDialogBuilder.create().setCanceledOnTouchOutside(true)
-        gpaDialogBuilder.create().show()
-
-        animateWaveAndText(0f, percentage_all)
-    }
-
-    fun animateWaveAndText(startValue: Float, endValue: Float) {
-
-        val waveLightColor = utils.getColorByLetterGrade(this, utils.getLetterGradeByPercentageGrade(endValue))
-        val waveDarkColor = utils.getDarkColorByPrimary(waveLightColor)
-
-        gpa_dialog_percentage_front.setStartValue(startValue * 100)
-        gpa_dialog_percentage_front.setEndValue(endValue)
-        gpa_dialog_percentage_front.setIncrement((endValue - startValue * 100) / 25f) // the amount the number increments at each time interval
-        gpa_dialog_percentage_front.setTimeInterval(2) // the time interval (ms) at which the text changes
-        gpa_dialog_percentage_back.setStartValue(startValue * 100)
-        gpa_dialog_percentage_back.setEndValue(endValue)
-        gpa_dialog_percentage_back.setIncrement((endValue - startValue * 100) / 25f) // the amount the number increments at each time interval
-        gpa_dialog_percentage_back.setTimeInterval(2) // the time interval (ms) at which the text changes
-        gpa_dialog_percentage_front.start()
-        gpa_dialog_percentage_back.start()
-
-        waveView.setWaveColor(waveLightColor, waveDarkColor)
-        waveView.waterLevelRatio = (endValue / 100)
-        WaveHelper(waveView, startValue, waveView.waveShiftRatio).start()
-    }
 
     fun animateDrawerToggle(toArrow: Boolean) {
 

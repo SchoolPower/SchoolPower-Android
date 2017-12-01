@@ -101,8 +101,8 @@ class FoldingCellListAdapter(context: Context, private var subjects: List<Subjec
         viewHolder.fold_percentage_grade_tv!!.text = period.percentage
         viewHolder.floating_action_button!!.setOnClickListener(fabOnClickListener)
         viewHolder.unfold_percentage_grade_tv!!.text = period.percentage
-        viewHolder.unfold_header_view!!.setBackgroundColor(utils.getColorByLetterGrade(context, period.letter))
-        viewHolder.fold_grade_background!!.setBackgroundColor(utils.getColorByLetterGrade(context, period.letter))
+        viewHolder.unfold_header_view!!.setBackgroundColor(utils.getColorByLetterGrade(period.letter))
+        viewHolder.fold_grade_background!!.setBackgroundColor(utils.getColorByLetterGrade(period.letter))
 
         if (item.assignments.any { it -> it.isNew }) { // if any assignment is marked as new
             viewHolder.fold_subject_title_tv!!.setTextColor(ContextCompat.getColor(context, R.color.white))
@@ -191,7 +191,7 @@ class FoldingCellListAdapter(context: Context, private var subjects: List<Subjec
         val termDialogBuilder = AlertDialog.Builder(context)
 
         termDialogView.findViewById<RelativeLayout>(R.id.term_header_view).setBackgroundColor(
-                utils.getColorByLetterGrade(context, letter))
+                utils.getColorByLetterGrade(letter))
 
         termDialogView.findViewById<TextView>(R.id.term_percentage_grade_tv).text = percentage
         termDialogView.findViewById<TextView>(R.id.term_name_tv).text = termIndicator

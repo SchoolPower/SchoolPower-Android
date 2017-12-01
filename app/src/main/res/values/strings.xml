@@ -92,6 +92,12 @@
         <item>简体中文</item>
     </string-array>
 
+    <string-array name="terms_sample">
+        <item>T1</item>
+        <item>T2</item>
+        <item>S1</item>
+    </string-array>
+
     <string name="show_inactive_title">Show Inactive Subjects</string>
     <string name="show_inactive_summary">Show subjects that currently have no assignment and grade.</string>
 
@@ -138,8 +144,8 @@
     <string name="dataFileName" translatable="false">dataMap.json</string>
     <string name="langFileName" translatable="false">lang.file</string>
 
-    <string name="gpa_segments_exhr" translatable="false">⊉ {HR}</string>
-    <string name="gpa_segments_exhrme" translatable="false">⊉ {HR, ME}</string>
+    <string name="gpa_segments_custom">Custom</string>
+    <string name="gpa_segments_official">Official</string>
 
     <string-array name="list_preference_display_types_values">
         <item>0</item>
@@ -161,4 +167,7 @@
     <string name="website_address" translatable="false">https://schoolpower.studio</string>
     <string name="source_code_address" translatable="false">https://github.com/SchoolPower</string>
 
+    <string name="customize_gpa">Customize GPA</string>
+    <string name="customize_gpa_intro">Highest four subject in grade from your selection will be used to calculate GPA</string>
+    <string-array name="empty_array" />
 </resources>

@@ -49,8 +49,8 @@ class CourseDetailFragment : TransitionHelper.BaseFragment() {
             val course_detail_recycler = view.findViewById<RecyclerView>(R.id.course_detail_recycler)
             val period = utils.getLatestPeriodGrade(itemToPresent!!) ?: Subject.Grade("--", "--", "null", "--")
             dataList = utils.getFilteredSubjects(MainActivity.of(activity).subjects!!)
-            MainActivity.of(activity).setToolBarColor(utils.getColorByLetterGrade(activity, period.letter), true)
-            view.findViewById<View>(R.id.detail_view_header).setBackgroundColor(utils.getColorByLetterGrade(activity, period.letter))
+            MainActivity.of(activity).setToolBarColor(utils.getColorByLetterGrade(period.letter), true)
+            view.findViewById<View>(R.id.detail_view_header).setBackgroundColor(utils.getColorByLetterGrade(period.letter))
             view.findViewById<View>(R.id.detail_view_header).setOnClickListener {
                 MainActivity.of(activity).expandToolBar(true, true)
                 course_detail_recycler.smoothScrollToPosition(0)

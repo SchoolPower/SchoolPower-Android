@@ -9,7 +9,6 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.opengl.Visibility
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -63,7 +62,7 @@ class CourseDetailAdapter(private val context: Context, private val subject: Sub
                 normalViewHolder.detail_assignment_date_tv.text = assignmentItem.date
                 normalViewHolder.detail_assignment_percentage_tv.text = assignmentItem.percentage
                 normalViewHolder.detail_assignment_dividing_score_tv.text = assignmentItem.getDividedScore()
-                normalViewHolder.detail_assignment_grade_background.setBackgroundColor(utils.getColorByLetterGrade(context, assignmentItem.letterGrade))
+                normalViewHolder.detail_assignment_grade_background.setBackgroundColor(utils.getColorByLetterGrade(assignmentItem.letterGrade))
                 if (assignmentItem.isNew) {
                     normalViewHolder.detail_header_background.setBackgroundColor(ContextCompat.getColor(context, R.color.accent))
                     normalViewHolder.detail_assignment_name_tv.setTextColor(ContextCompat.getColor(context, R.color.white))
@@ -86,19 +85,18 @@ class CourseDetailAdapter(private val context: Context, private val subject: Sub
 
             } else if (holder is HeaderViewHolder) {
 
-                val headerViewHolder = holder
                 val termAdapter = ArrayAdapter(context, R.layout.term_selection_spinner, termsList)
                 val period = utils.getLatestPeriodGrade(subject) ?: Subject.Grade("--", "--", "null", "--")
 
-                headerViewHolder.detail_letter_grade_tv.text = period.letter
-                headerViewHolder.detail_percentage_grade_tv.text = period.percentage
-                headerViewHolder.detail_header_teacher_name_tv.text = subject.teacherName
-                headerViewHolder.detail_header_block_tv.text = context.getString(R.string.block) + " " + subject.blockLetter
-                headerViewHolder.detail_header_room_tv.text = context.getString(R.string.room) + " " + subject.roomNumber
-                headerViewHolder.detail_header_grade_background.setBackgroundColor(utils.getColorByLetterGrade(context, period.letter))
-                headerViewHolder.detail_term_select_spinner.adapter = termAdapter
-                headerViewHolder.detail_term_select_spinner.setSelection(presentingTermPos)
-                headerViewHolder.detail_term_select_spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                holder.detail_letter_grade_tv.text = period.letter
+                holder.detail_percentage_grade_tv.text = period.percentage
+                holder.detail_header_teacher_name_tv.text = subject.teacherName
+                holder.detail_header_block_tv.text = context.getString(R.string.block) + " " + subject.blockLetter
+                holder.detail_header_room_tv.text = context.getString(R.string.room) + " " + subject.roomNumber
+                holder.detail_header_grade_background.setBackgroundColor(utils.getColorByLetterGrade(period.letter))
+                holder.detail_term_select_spinner.adapter = termAdapter
+                holder.detail_term_select_spinner.setSelection(presentingTermPos)
+                holder.detail_term_select_spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                     override fun onItemSelected(parent: AdapterView<*>, view: View, pos: Int, id: Long) {
                         val selectItem = termsList[pos]
                         if (pos != presentingTermPos) {
@@ -111,9 +109,9 @@ class CourseDetailAdapter(private val context: Context, private val subject: Sub
                     override fun onNothingSelected(parent: AdapterView<*>) {}
                 }
                 if(subject.teacherEmail == "null") {
-                    headerViewHolder.detail_header_email.visibility = GONE
+                    holder.detail_header_email.visibility = GONE
                 }else{
-                    headerViewHolder.detail_header_email.setOnClickListener {
+                    holder.detail_header_email.setOnClickListener {
                         val uri = Uri.parse("mailto:" + subject.teacherEmail)
                         val intent = Intent(Intent.ACTION_SENDTO, uri)
                         context.startActivity(Intent.createChooser(intent, context.getString(R.string.choose_email_app)))
