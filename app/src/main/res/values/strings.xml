@@ -92,7 +92,7 @@
         <item>简体中文</item>
     </string-array>
 
-    <string-array name="terms_sample">
+    <string-array name="terms_sample" translatable="false">
         <item>T1</item>
         <item>T2</item>
         <item>S1</item>
@@ -147,12 +147,12 @@
     <string name="gpa_segments_custom">Custom</string>
     <string name="gpa_segments_official">Official</string>
 
-    <string-array name="list_preference_display_types_values">
+    <string-array name="list_preference_display_types_values" translatable="false">
         <item>0</item>
         <item>1</item>
     </string-array>
 
-    <string-array name="list_preference_language_values">
+    <string-array name="list_preference_language_values" translatable="false">
         <item>0</item>
         <item>1</item>
         <item>2</item>
@@ -181,7 +181,7 @@
         <item>Highest 4</item>
         <item>Highest 5</item>
     </string-array>
-    <string-array name="list_preference_gpa_calculate_values">
+    <string-array name="list_preference_gpa_calculate_values" translatable="false">
         <item>all</item>
         <item>3</item>
         <item>4</item>
