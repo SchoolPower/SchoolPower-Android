@@ -25,9 +25,14 @@
             android:summary="@string/show_inactive_summary"
             android:title="@string/show_inactive_title" />
 
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/customize_gpa">
+
         <MultiSelectListPreference
             android:defaultValue="@array/empty_array"
-            android:title="@string/customize_gpa"
+            android:title="@string/list_preference_custom_gpa_select"
             android:key="list_preference_customize_gpa"/>
 
         <ListPreference

@@ -168,7 +168,8 @@
     <string name="source_code_address" translatable="false">https://github.com/SchoolPower</string>
 
     <string name="customize_gpa">Customize GPA</string>
-    <string name="list_preference_custom_gpa_calculate">Customize GPA Calculate Rule</string>
+    <string name="list_preference_custom_gpa_select">Select Subjects</string>
+    <string name="list_preference_custom_gpa_calculate">Calculate Rule</string>
     <string name="dashboard_gpa_rule_summary_prefix">Calculate&#160;</string>
     <string name="dashboard_gpa_rule_summary_suffix">&#160;subjects in your selections</string>
     <string name="custom_gpa_not_available">Custom GPA Not Available</string>

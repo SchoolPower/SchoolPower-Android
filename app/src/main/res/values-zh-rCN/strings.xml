@@ -113,7 +113,8 @@
     <string name="gpa_segments_custom">自定义</string>
     <string name="gpa_segments_official">官方</string>
     <string name="customize_gpa">自定义GPA</string>
-    <string name="list_preference_custom_gpa_calculate">自定义GPA计算规则</string>
+    <string name="list_preference_custom_gpa_select">选择科目</string>
+    <string name="list_preference_custom_gpa_calculate">计算规则</string>
     <string name="dashboard_gpa_rule_summary_prefix">计算</string>
     <string name="dashboard_gpa_rule_summary_suffix">选择科目的成绩</string>
     <string name="custom_gpa_not_available">自定义GPA不可用</string>
