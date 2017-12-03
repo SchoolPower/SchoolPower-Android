@@ -168,6 +168,23 @@
     <string name="source_code_address" translatable="false">https://github.com/SchoolPower</string>
 
     <string name="customize_gpa">Customize GPA</string>
-    <string name="customize_gpa_intro">Highest four subject in grade from your selection will be used to calculate GPA</string>
+    <string name="list_preference_custom_gpa_calculate">Customize GPA Calculate Rule</string>
+    <string name="dashboard_gpa_rule_summary_prefix">Calculate&#160;</string>
+    <string name="dashboard_gpa_rule_summary_suffix">&#160;subjects in your selections</string>
+    <string name="custom_gpa_not_available">Custom GPA Not Available</string>
+    <string name="custom_gpa_not_available_because">Please go to settings to customize your GPA calculate rules.</string>
+
+    <string-array name="list_preference_gpa_calculate_entries">
+        <item>All</item>
+        <item>Highest 3</item>
+        <item>Highest 4</item>
+        <item>Highest 5</item>
+    </string-array>
+    <string-array name="list_preference_gpa_calculate_values">
+        <item>all</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+    </string-array>
     <string-array name="empty_array" />
 </resources>

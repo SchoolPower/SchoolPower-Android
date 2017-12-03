@@ -88,6 +88,8 @@ class SettingsActivity : AppCompatActivity() {
 
             val dashboard_display = (findPreference("list_preference_dashboard_display") as ListPreference)
             dashboard_display.summary = activity.getString(R.string.dashboard_display_preference_summary_prefix) + dashboard_display.entry + activity.getString(R.string.dashboard_display_preference_summary_suffix)
+            val gpa_rule = findPreference("list_preference_custom_gpa_calculate") as ListPreference
+            gpa_rule.summary = getString(R.string.dashboard_gpa_rule_summary_prefix) + gpa_rule.entry.toString().toLowerCase() + activity.getString(R.string.dashboard_gpa_rule_summary_suffix)
 
             findPreference("report_bug").onPreferenceClickListener = Preference.OnPreferenceClickListener {
                 val uri = Uri.parse(getString(R.string.bug_report_email))
@@ -131,6 +133,13 @@ class SettingsActivity : AppCompatActivity() {
                 if (!PreferenceManager.getDefaultSharedPreferences(activity.applicationContext).getBoolean("preference_enable_notification", true)) {
                     jobScheduler.cancelAll()
                 }
+            }
+            if (key == "list_preference_custom_gpa_calculate") {
+
+                val gpa_rule = findPreference(key) as ListPreference
+                gpa_rule.summary = getString(R.string.dashboard_gpa_rule_summary_prefix) + gpa_rule.entry.toString().toLowerCase() + activity.getString(R.string.dashboard_gpa_rule_summary_suffix)
+                utils!!.setSettingsPreference(key, sharedPreferences!!.getString(key, "0"))
+
             }
         }
 

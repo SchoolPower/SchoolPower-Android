@@ -114,7 +114,7 @@ class Utils(private val context: Context) {
     fun getLatestPeriod(grades: Map<String, Subject.Grade>): String? {
 
         val termsList = grades.keys
-        val forLatestSemester = getSettingsPreference("list_preference_dashboard_display") == "1"
+        val forLatestSemester = getSettingsPreference().getString("list_preference_dashboard_display", "0") == "1"
 
         if (forLatestSemester) {
             if (termsList.contains("S2") && grades["S2"]!!.letter != "--") return "S2"
@@ -191,8 +191,8 @@ class Utils(private val context: Context) {
     }
 
     /* IO */
-    fun getSettingsPreference(key: String): String =
-            context.getSharedPreferences(context.getString(R.string.settings), Activity.MODE_PRIVATE).getString(key, "0")
+    fun getSettingsPreference() =
+            context.getSharedPreferences(context.getString(R.string.settings), Activity.MODE_PRIVATE)
 
     fun setSettingsPreference(key: String, value: String) {
 

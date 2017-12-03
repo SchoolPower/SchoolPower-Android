@@ -3,6 +3,7 @@ package com.carbonylgroup.schoolpower.utils
 import android.app.Activity
 import android.app.AlertDialog
 import android.opengl.Visibility
+import android.preference.PreferenceManager
 import android.util.Log
 import android.view.View
 import android.view.View.GONE
@@ -27,7 +28,6 @@ class GPADialog(private val activity: Activity, private val subjects: List<Subje
     private lateinit var gpa_dialog_percentage_back: CounterView
     private lateinit var gpa_dialog_percentage_front: CounterView
     private lateinit var gpaDialogSegmented: SegmentedButtonGroup
-    private val filter = ArrayList<String>()
 
     fun show() {
         val latestPeriods = HashMap<String, Subject.Grade>()
@@ -40,23 +40,33 @@ class GPADialog(private val activity: Activity, private val subjects: List<Subje
         val latestPeriod = utils.getLatestPeriod(latestPeriods) ?: return // overall latest period, usually indicate the current term
 
         constructView(latestPeriod, allPeriods.toList())
-        updateData(calculateGPA(latestPeriod, ArrayList()),
-                calculateGPA(latestPeriod, filter),
+        updateData(calculateGPA(latestPeriod),
+                calculateCustomGPA(latestPeriod),
                 officialGPA?.toFloat())
 
     }
+    private fun customGPANotAvailable(){
+        val builder = AlertDialog.Builder(activity)
+        builder.setMessage(activity.getString(R.string.custom_gpa_not_available_because))
+        builder.setTitle(activity.getString(R.string.custom_gpa_not_available))
+        builder.setPositiveButton(activity.getString(R.string.alright), null)
+        builder.create().show()
+    }
+
     private fun updateData(GPAAll:Float, GPACustom:Float, GPAOfficial:Float?){
         gpaDialogSegmented.setOnClickedButtonPosition({ position: Int ->
             when (position) {
                 0 -> animateWaveAndText(waveView.waterLevelRatio, GPAAll)
-                1 -> animateWaveAndText(waveView.waterLevelRatio, GPACustom)
+                1 -> if(GPACustom.isNaN()) customGPANotAvailable() else
+                    animateWaveAndText(waveView.waterLevelRatio, GPACustom)
                 2 -> animateWaveAndText(waveView.waterLevelRatio, GPAOfficial!! / 4.0f)
             }
         })
 
         when (gpaDialogSegmented.position) {
             0 -> animateWaveAndText(waveView.waterLevelRatio, GPAAll)
-            1 -> animateWaveAndText(waveView.waterLevelRatio, GPACustom)
+            1 -> if(GPACustom.isNaN()) customGPANotAvailable() else
+                animateWaveAndText(waveView.waterLevelRatio, GPACustom)
             2 -> animateWaveAndText(waveView.waterLevelRatio, GPAOfficial!! / 4.0f)
         }
     }
@@ -97,27 +107,48 @@ class GPADialog(private val activity: Activity, private val subjects: List<Subje
         spinner.setSelection(allPeriods.indexOf(latestPeriod))
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View, pos: Int, id: Long) {
-                updateData(calculateGPA(allPeriods[pos], ArrayList()),
-                        calculateGPA(allPeriods[pos], filter),
+                updateData(calculateGPA(allPeriods[pos]),
+                        calculateCustomGPA(allPeriods[pos]),
                         officialGPA?.toFloat())
             }
             override fun onNothingSelected(parent: AdapterView<*>) {}
         }
     }
 
-    private fun calculateGPA(term : String, coursesExclude : List<String>) : Float {
+    private fun calculateGPA(term : String) : Float {
         var sumGPA = 0.0f
         var num = 0
         for (subject in subjects) {
 
             val periodGrade = subject.grades[term] ?: continue
             if (periodGrade.letter == "--") continue
-            if (coursesExclude.contains(subject.name)) continue
             sumGPA += periodGrade.percentage.toFloat()
             num += 1
 
         }
         return sumGPA/num
+    }
+
+    private fun calculateCustomGPA(term : String) : Float {
+        val customRule = utils.getSettingsPreference().getString("list_preference_custom_gpa_calculate", "all")
+        val customSubjects = PreferenceManager.getDefaultSharedPreferences(activity).getStringSet("list_preference_customize_gpa", HashSet())
+        if(customSubjects.isEmpty()) return Float.NaN
+
+        val grades = ArrayList<Float>()
+        for (subject in subjects) {
+
+            val periodGrade = subject.grades[term] ?: continue
+            if (periodGrade.letter == "--") continue
+            if (!customSubjects.contains(subject.name)) continue
+            grades.add(periodGrade.percentage.toFloat())
+
+        }
+
+        return if(customRule == "all"){
+            grades.average().toFloat()
+        }else{
+            grades.sortedDescending().take(customRule.toInt()).average().toFloat()
+        }
     }
 
     private fun animateWaveAndText(rawStartValue: Float, endValue: Float) {

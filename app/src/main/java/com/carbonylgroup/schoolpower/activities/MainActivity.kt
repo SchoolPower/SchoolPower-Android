@@ -505,8 +505,12 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
 
     private fun startSettingsActivity() {
         val intent = Intent(application, SettingsActivity::class.java)
-        val subjectList = subjects!!.mapTo(ArrayList<CharSequence>()) { "${it.name} (${utils.getLatestPeriodGrade(it)?.percentage}%)" }
-        val subjectValueList = subjects!!.mapTo(ArrayList<CharSequence>()) { it.name }
+        val subjectList = subjects!!
+                .filter { it -> utils.getLatestPeriodGrade(it) != null }
+                .mapTo (ArrayList<CharSequence>()) { it -> "${it.name} (${utils.getLatestPeriodGrade(it)!!.percentage}%)" }
+        val subjectValueList = subjects!!
+                .filter { it -> utils.getLatestPeriodGrade(it) != null }
+                .mapTo (ArrayList<CharSequence>()) { it.name }
         intent.putExtra("subjects", subjectList.toTypedArray())
         intent.putExtra("subjects_values", subjectValueList.toTypedArray())
         startActivityForResult(intent, 0)
