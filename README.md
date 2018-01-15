@@ -5,7 +5,7 @@
 
 什么是 SchoolPower-Android
 -------
-SchoolPower-Android 是使用 Kotlin 编写的开源、现代化的 [PowerSchool](https://www.powerschool.com/) Android 客户端替代品，原理是使用爬虫获取 PowerSchool 上的信息。
+SchoolPower-Android 是使用 Kotlin 编写的开源、现代化的 [PowerSchool](https://www.powerschool.com/) Android 客户端替代品。后端在 [SchoolPower/SchoolPower-Backend](https://github.com/SchoolPower/SchoolPower-Backend).
 
 License
 -------
