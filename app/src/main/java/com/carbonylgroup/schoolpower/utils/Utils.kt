@@ -100,8 +100,10 @@ class Utils(private val context: Context) {
             Int = domain.indices.firstOrNull { searchString == domain[it] } ?: -1
 
     /* Color Handler */
-    fun getColorByLetterGrade(letterGrade: String) = ContextCompat.getColor(context,
-            gradeColorIds[indexOfString(letterGrade, arrayOf("A", "B", "C+", "C", "C-", "F", "I", "--"))])
+    fun getColorByLetterGrade(letterGrade: String) : Int {
+        val colorIndex = indexOfString(letterGrade, arrayOf("A", "B", "C+", "C", "C-", "F", "I", "--"))
+        return ContextCompat.getColor(context, if (colorIndex!=-1) gradeColorIds[colorIndex] else 7)
+    }
 
     fun getDarkColorByPrimary(originalPrimary: Int) = ContextCompat.getColor(context,
             gradeDarkColorIdsPlain[gradeColorIdsPlain.takeWhile { originalPrimary != ContextCompat.getColor(context, it) }.count()])
