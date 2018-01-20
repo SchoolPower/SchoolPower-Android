@@ -33,7 +33,7 @@ class FoldingCellListAdapter(context: Context, private var subjects: List<Subjec
     private var fab_in: Animation? = null
     private var utils: Utils = Utils(getContext())
     private var fabOnClickListener: View.OnClickListener? = null
-    private var termOnClickListener: View.OnClickListener? = null
+    private var termOnClickListener: com.carbonylgroup.schoolpower.adapter.OnItemClickListener? = null
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
 
@@ -116,11 +116,7 @@ class FoldingCellListAdapter(context: Context, private var subjects: List<Subjec
             viewHolder.fold_background!!.setBackgroundColor(ContextCompat.getColor(context, R.color.white))
         }
 
-        viewHolder.unfolded_grade_recycler_view!!.addOnItemClickListener(object: com.carbonylgroup.schoolpower.adapter.OnItemClickListener {
-            override fun onItemClicked(position: Int, view: View) {
-                showTermDialog(item, position)
-            }
-        })
+        viewHolder.unfolded_grade_recycler_view!!.addOnItemClickListener(termOnClickListener!!)
 
         return cell
     }
@@ -168,11 +164,11 @@ class FoldingCellListAdapter(context: Context, private var subjects: List<Subjec
         this.fabOnClickListener = fabOnClickListener
     }
 
-    fun setTermOnClickListener(termOnClickListener: View.OnClickListener) {
+    fun setTermOnClickListener(termOnClickListener: com.carbonylgroup.schoolpower.adapter.OnItemClickListener) {
         this.termOnClickListener = termOnClickListener
     }
 
-    private fun showTermDialog(subject: Subject, position: Int) {
+    public fun showTermDialog(subject: Subject, position: Int) {
 
         val objects = subject.grades
         val gradeMap: Map<String, Subject.Grade> = objects

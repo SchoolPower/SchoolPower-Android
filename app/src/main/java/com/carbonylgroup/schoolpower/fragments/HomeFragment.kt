@@ -98,6 +98,12 @@ class HomeFragment : TransitionHelper.BaseFragment() {
         itemView.findViewById<View>(R.id.floating_action_button).visibility = View.GONE
         gotoCourseDetail(itemView.findViewById(R.id.unfold_header_view), itemView.findViewById(R.id.detail_subject_title_tv), transformedPosition)
     })
+    private fun adapterSetTermOnClickListener(adapter: FoldingCellListAdapter) =
+            adapter.setTermOnClickListener(object: com.carbonylgroup.schoolpower.adapter.OnItemClickListener {
+                override fun onItemClicked(position: Int, view: View) {
+                    adapter.showTermDialog(utils!!.getFilteredSubjects(subjects!!)[dashboardListView.getPositionForView(view)], position)
+                }
+            })
 
     private fun initAdapter() {
 
@@ -105,7 +111,7 @@ class HomeFragment : TransitionHelper.BaseFragment() {
 
         adapter = FoldingCellListAdapter(activity, utils!!.getFilteredSubjects(subjects!!), unfoldedIndexesBackUp, transformedPosition)
 
-        adapterSetFabOnClickListener(adapter!!)
+        adapterSetTermOnClickListener(adapter!!)
 
         dashboardListView.onItemClickListener = AdapterView.OnItemClickListener { _, view, pos, _ ->
             adapter!!.registerToggle(pos)
