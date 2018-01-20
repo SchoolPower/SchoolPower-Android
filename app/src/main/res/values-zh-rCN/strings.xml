@@ -103,6 +103,8 @@
     <string name="support">支持</string>
     <string name="report_bug">提交Bug</string>
     <string name="report_bug_summary">用电子邮件联系开发者</string>
+    <string name="feedback_forum">访问反馈论坛</string>
+    <string name="feedback_forum_summary">在我们论坛里查看最新通知，提交意见和建议</string>
     <string name="choose_email_app">选择一个邮件应用&#8230;</string>
     <string name="bug_report_email_subject">SchoolPower 有 Bug</string>
     <string name="bug_report_email_content">请提供尽可能详细的信息，比如怎么复现问题，预期的表现是什么。\n调试信息: SchoolPower Android %s.\nPowerSchool用户名与密码（可选，有助于我们更快修复问题）：\n</string>

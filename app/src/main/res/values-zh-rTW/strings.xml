@@ -103,6 +103,8 @@
     <string name="support">支持</string>
     <string name="report_bug">提交Bug</string>
     <string name="report_bug_summary">用電子郵件聯繫開發者</string>
+    <string name="feedback_forum">訪問反饋論壇</string>
+    <string name="feedback_forum_summary">在我們論壇裡查看最新通知，提交意見和建議</string>
     <string name="choose_email_app">選擇一個郵件應用&#8230;</string>
     <string name="bug_report_email_subject">SchoolPower 有 Bug</string>
 

@@ -70,6 +70,11 @@
             android:title="@string/report_bug" />
 
         <PreferenceScreen
+            android:key="feedback_forum"
+            android:summary="@string/feedback_forum_summary"
+            android:title="@string/feedback_forum" />
+
+        <PreferenceScreen
             android:key="website"
             android:title="@string/visit_website" />
 

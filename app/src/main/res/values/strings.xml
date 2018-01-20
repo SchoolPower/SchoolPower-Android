@@ -111,6 +111,9 @@
     <string name="support">Support</string>
     <string name="report_bug">Report a Bug</string>
     <string name="report_bug_summary">Contact developer with email.</string>
+    <string name="feedback_forum">Visit feedback forum</string>
+    <string name="feedback_forum_summary">View announcements, give suggestions or report bugs via our forum</string>
+
     <string name="choose_email_app">Choose an email app…</string>
     <string name="bug_report_email_subject">Found Bug(s) in SchoolPower</string>
     <string name="bug_report_email_content">Please provide as much info as possible, such as how to reproduce it, what is the expected result. \nDebug Info: SchoolPower Android %s.\nPowerSchool Username and Password (Optional, help us solve it faster): \n</string>
@@ -165,6 +168,7 @@
     <string name="carbon_address" translatable="false">https://github.com/HITGIF</string>
     <string name="null_address" translatable="false">https://github.com/abc612008</string>
     <string name="website_address" translatable="false">https://schoolpower.studio</string>
+    <string name="feedback_forum_address" translatable="false">https://feedback.schoolpower.studio</string>
     <string name="source_code_address" translatable="false">https://github.com/SchoolPower</string>
 
     <string name="customize_gpa">Customize GPA</string>
@@ -176,6 +180,7 @@
     <string name="custom_gpa_not_available_because">Please go to settings to customize your GPA calculate rules.</string>
 
     <string name="powerschool_disabled">PowerSchool is currently disabled by school. Please contact school for more information.</string>
+
     <string-array name="list_preference_gpa_calculate_entries">
         <item>All</item>
         <item>Highest 3</item>
