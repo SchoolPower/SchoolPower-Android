@@ -333,6 +333,7 @@ class Utils(private val context: Context) {
         })).start()
     }
 
+
     fun getFilteredSubjects(subjects: List<Subject>): List<Subject> {
 
         val filteredSubjects: List<Subject>
@@ -341,8 +342,8 @@ class Utils(private val context: Context) {
             filteredSubjects = ArrayList()
             subjects
                     .filter {
-                        val latest = getLatestPeriodGrade(it)
-                        it.assignments.size != 0 || (latest != null && latest.letter != "--")
+                        val currentTime = System.currentTimeMillis()
+                        currentTime>it.startDate && currentTime<it.endDate
                     }
                     .forEach { filteredSubjects.add(it) }
 
@@ -352,6 +353,13 @@ class Utils(private val context: Context) {
         return filteredSubjects
     }
     companion object {
+
+        // convert date like "2018-01-21T16:00:00.000Z" to timestamp (unit: MILLISECOND)
+        fun convertDateToTimestamp(date:String): Long{
+            val temp = SimpleDateFormat("yyyy-MM-dd", Locale.CHINA).parse(date.replace("T16:00:00.000Z", ""))
+            temp.time+=24*60*60*1000
+            return temp.time
+        }
 
         fun getShortName(subjectTitle: String): String {
             val shorts = mapOf(

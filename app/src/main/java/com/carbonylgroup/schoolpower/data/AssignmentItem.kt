@@ -4,6 +4,7 @@
 
 package com.carbonylgroup.schoolpower.data
 
+import com.carbonylgroup.schoolpower.utils.Utils
 import org.json.JSONObject
 import java.io.Serializable
 import java.text.SimpleDateFormat
@@ -52,10 +53,7 @@ class AssignmentItem(json: JSONObject) : Serializable {
     init{
         val termsJSON = json.getJSONArray("terms")
         terms = (0 until termsJSON.length()).map { termsJSON.getString(it) }
-
-        val temp = SimpleDateFormat("yyyy-MM-dd", Locale.CHINA).parse(json.getString("date").replace("T16:00:00.000Z", ""))
-        temp.time+=24*60*60*1000
-        date = SimpleDateFormat("yyyy/MM/dd", Locale.CHINA).format(temp)
+        date = SimpleDateFormat("yyyy/MM/dd", Locale.CHINA).format(Utils.convertDateToTimestamp(json.getString("date")))
     }
     var isNew = false
 

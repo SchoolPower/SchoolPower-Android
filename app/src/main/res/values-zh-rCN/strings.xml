@@ -93,7 +93,7 @@
     </string-array>
 
     <string name="show_inactive_title">显示不活跃课程</string>
-    <string name="show_inactive_summary">显示目前没有作业和成绩的课程。</string>
+    <string name="show_inactive_summary">显示您现在不正在修的课程。</string>
 
     <string name="enable_notification">启用新作业通知</string>
     <string name="notification_show_grade">在通知里显示成绩</string>

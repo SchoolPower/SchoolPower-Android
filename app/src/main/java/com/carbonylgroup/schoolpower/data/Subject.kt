@@ -16,24 +16,42 @@ import java.util.*
             (AssignmentItem)...
         ],
         "expression": "1(A-E)",
+        "startDate": "2017-08-31T16:00:00.000Z",
+        "endDate": "2018-01-21T16:00:00.000Z",
         "finalGrades": {
-                "X1": {
-                    "percentage": "0.0",
-                    "letter": "--"
-                },
-                "T2": {
-                    "percentage": "0.0",
-                    "letter": "--"
-                },
-                "T1": {
-                    "percentage": "80.0",
-                    "letter": "B"
-                },
-                "S1": {
-                    "percentage": "80.0",
-                    "letter": "B"
-                }
-            ,
+            "X1": {
+                "percent": "0.0",
+                "letter": "--",
+                "comment": null,
+                "eval": "--",
+                "startDate": 1515945600,
+                "endDate": 1515945600
+            },
+            "T2": {
+                "percent": "92.0",
+                "letter": "A",
+                "comment": "Some comments",
+                "eval": "M",
+                "startDate": 1510502400,
+                "endDate": 1510502400
+            },
+            "T1": {
+                "percent": "90.0",
+                "letter": "A",
+                "comment": "Some comments",
+                "eval": "M",
+                "startDate": 1504195200,
+                "endDate": 1504195200
+            },
+            "S1": {
+                "percent": "91.0",
+                "letter": "A",
+                "comment": null,
+                "eval": "M",
+                "startDate": 1504195200,
+                "endDate": 1504195200
+            }
+        },
         "name": "Course Name",
         "roomName": "100",
         "teacher": {
@@ -56,6 +74,8 @@ class Subject(json: JSONObject) : Serializable {
     val roomNumber: String = json.getString("roomName")
     val assignments: ArrayList<AssignmentItem> = arrayListOf()
     val grades: HashMap<String, Grade> = hashMapOf()
+    val startDate: Long
+    val endDate: Long
 
     init {
         if (!json.isNull("assignments")) {
@@ -72,6 +92,8 @@ class Subject(json: JSONObject) : Serializable {
             }
         }
 
+        startDate = Utils.convertDateToTimestamp(json.getString("startDate"))
+        endDate = Utils.convertDateToTimestamp(json.getString("endDate"))
     }
 
     fun getShortName() = Utils.getShortName(name)
