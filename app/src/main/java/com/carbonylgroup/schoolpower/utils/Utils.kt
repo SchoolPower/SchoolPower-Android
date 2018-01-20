@@ -107,7 +107,7 @@ class Utils(private val context: Context) {
             gradeDarkColorIdsPlain[gradeColorIdsPlain.takeWhile { originalPrimary != ContextCompat.getColor(context, it) }.count()])
 
     fun getColorByAttendance(context: Context, attendanceCode: String) = ContextCompat.getColor(context,
-            attendanceColorIds.getOrDefault(attendanceCode, R.color.gray))
+            attendanceColorIds[attendanceCode] ?: R.color.gray)
     /* Others */
     fun dpToPx(dp: Int) = Math.round(dp * (context.resources.displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT))
 
