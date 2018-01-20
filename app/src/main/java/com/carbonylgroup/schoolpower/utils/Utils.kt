@@ -187,7 +187,15 @@ class Utils(private val context: Context) {
             if (o2.blockLetter == "HR(A-E)") return@Comparator 1
             o1.blockLetter.compareTo(o2.blockLetter)
         })
-        return StudentData(studentInfo, attendances, subjects)
+        val disabled = studentData.has("disabled")
+        var disabledTitle : String? = null
+        var disabledMessage : String? = null
+        if(disabled){
+            val disable = studentData.getJSONObject("disabled")
+            disabledTitle = disable.getString("title")?:"Access is disabled"
+            disabledMessage = disable.getString("message")?:context.getString(R.string.powerschool_disabled)
+        }
+        return StudentData(studentInfo, attendances, subjects, disabled, disabledTitle, disabledMessage)
     }
 
     /* IO */
@@ -330,7 +338,7 @@ class Utils(private val context: Context) {
         val filteredSubjects: List<Subject>
         if (!PreferenceManager.getDefaultSharedPreferences(context.applicationContext).getBoolean("list_preference_dashboard_show_inactive", false)) {
 
-            filteredSubjects = ArrayList<Subject>()
+            filteredSubjects = ArrayList()
             subjects
                     .filter {
                         val latest = getLatestPeriodGrade(it)

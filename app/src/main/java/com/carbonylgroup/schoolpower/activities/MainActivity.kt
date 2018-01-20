@@ -421,6 +421,13 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
 
                                 utils.saveDataJson(strMessage)
                                 val data = utils.parseJsonResult(strMessage)
+                                if(data.disabled){
+                                    val builder = AlertDialog.Builder(this@MainActivity)
+                                    builder.setMessage(data.disabledMessage)
+                                    builder.setTitle(data.disabledTitle)
+                                    builder.setPositiveButton(getString(R.string.alright), null)
+                                    builder.create().show()
+                                }
                                 studentInformation = data.studentInfo
                                 subjects = data.subjects
                                 attendances = data.attendances

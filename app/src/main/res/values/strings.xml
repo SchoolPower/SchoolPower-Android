@@ -175,6 +175,7 @@
     <string name="custom_gpa_not_available">Custom GPA Not Available</string>
     <string name="custom_gpa_not_available_because">Please go to settings to customize your GPA calculate rules.</string>
 
+    <string name="powerschool_disabled">PowerSchool is currently disabled by school. Please contact school for more information.</string>
     <string-array name="list_preference_gpa_calculate_entries">
         <item>All</item>
         <item>Highest 3</item>

@@ -125,4 +125,5 @@
         <item>最高4门</item>
         <item>最高5门</item>
     </string-array>
+    <string name="powerschool_disabled">PowerSchool 目前被学校关闭。请联系学校获取更多信息。</string>
 </resources>
