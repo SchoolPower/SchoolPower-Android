@@ -46,7 +46,9 @@
     <string name="nothing_here">没东西。</string>
     <string name="perfect_attendance">完美出勤！</string>
 
-    <string name="your_gpa" formatted="false">你 %s 的 GPA 是</string>
+    <string name="gpa_is">的 GPA 是</string>
+    <string name="gpa_segments_custom">自定义</string>
+    <string name="gpa_segments_official">官方</string>
     <string name="gpa_segments_all">所有</string>
     <string name="sweet">不错</string>
     <string name="gpa_not_available">GPA 不可用</string>
@@ -112,8 +114,6 @@
     <string name="visit_website">访问官网</string>
     <string name="source_code">获取源码</string>
     <string name="attendance_new">新出勤情况</string>
-    <string name="gpa_segments_custom">自定义</string>
-    <string name="gpa_segments_official">官方</string>
     <string name="customize_gpa">自定义 GPA</string>
     <string name="list_preference_custom_gpa_select">选择科目</string>
     <string name="list_preference_custom_gpa_calculate">计算规则</string>

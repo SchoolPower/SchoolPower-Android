@@ -12,6 +12,8 @@
     <string name="passwordKEY" translatable="false">Password</string>
     <string name="student_name" translatable="false">student_name</string>
     <string name="user_id" translatable="false">user_id</string>
+    <string name="flag_badge" translatable="false">flag badge</string>
+    <string name="trend_indicator" translatable="false">trend_indicator</string>
 
     <string name="shared_element_course_header" translatable="false">SHARE://COURSE_HEADER</string>
     <string name="shared_element_course_fab" translatable="false">SHARE://COURSE_FAB</string>
@@ -24,9 +26,6 @@
     <string name="updateURL" translatable="false">https://schoolpower.harrynull.tech:8443/api/update.json</string>
     <string name="dataFileName" translatable="false">dataMap.json</string>
     <string name="langFileName" translatable="false">lang.file</string>
-
-    <string name="gpa_segments_custom">Custom</string>
-    <string name="gpa_segments_official">Official</string>
 
     <string-array name="list_preference_display_types_values" translatable="false">
         <item>0</item>
@@ -95,7 +94,9 @@
     <string name="nothing_here">Nothing Here.</string>
     <string name="perfect_attendance">Perfect Attendance!</string>
 
-    <string name="your_gpa" formatted="false">Your GPA for %s is</string>
+    <string name="gpa_is">has a GPA of</string>
+    <string name="gpa_segments_custom">Custom</string>
+    <string name="gpa_segments_official">Official</string>
     <string name="gpa_segments_all">All</string>
     <string name="sweet">SWEET</string>
     <string name="gpa_not_available">GPA not available</string>
@@ -195,7 +196,6 @@
     <string-array name="empty_array" />
 
     <string name="powerschool_disabled">PowerSchool is currently disabled by school. Please contact school for more information.</string>
-    <string name="trend_indicator">trend_indicator</string>
     <string name="collected">Collected</string>
     <string name="late">Late</string>
     <string name="missing">Missing</string>
@@ -205,6 +205,5 @@
     <string name="score">Score</string>
     <string name="weight">Weight</string>
     <string name="flags">Flags</string>
-    <string name="flag_badge">flag badge</string>
 
 </resources>

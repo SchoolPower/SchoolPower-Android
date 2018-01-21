@@ -46,7 +46,9 @@
     <string name="nothing_here">Nothing Here.</string>
     <string name="perfect_attendance">Perfect Attendance!</string>
 
-    <string name="your_gpa" formatted="false">Your GPA for %s is</string>
+    <string name="gpa_is">has a GPA of</string>
+    <string name="gpa_segments_custom">Custom</string>
+    <string name="gpa_segments_official">Official</string>
     <string name="gpa_segments_all">All</string>
     <string name="sweet">SWEET</string>
     <string name="gpa_not_available">GPA not available</string>
@@ -92,12 +94,6 @@
         <item>简体中文</item>
     </string-array>
 
-    <string-array name="terms_sample" translatable="false">
-        <item>T1</item>
-        <item>T2</item>
-        <item>S1</item>
-    </string-array>
-
     <string name="show_inactive_title">Show Inactive Subjects</string>
     <string name="show_inactive_summary">Show subjects that you are not currently taking.</string>
 
@@ -136,17 +132,9 @@
         <item>Highest 5</item>
     </string-array>
 
-    <string-array name="list_preference_gpa_calculate_values" translatable="false">
-        <item>all</item>
-        <item>3</item>
-        <item>4</item>
-        <item>5</item>
-    </string-array>
-
     <string-array name="empty_array" />
 
     <string name="powerschool_disabled">PowerSchool is currently disabled by school. Please contact school for more information.</string>
-    <string name="trend_indicator">trend_indicator</string>
     <string name="collected">Collected</string>
     <string name="late">Late</string>
     <string name="missing">Missing</string>

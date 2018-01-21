@@ -24,7 +24,7 @@
             android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="的GPA是"
+            android:text="@string/gpa_is"
             android:textColor="@color/black" />
     </LinearLayout>
 

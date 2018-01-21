@@ -46,7 +46,9 @@
     <string name="nothing_here">沒東西。</string>
     <string name="perfect_attendance">完美出勤！</string>
 
-    <string name="your_gpa" formatted="false">你 %s 的 GPA 是</string>
+    <string name="gpa_is">的 GPA 是</string>
+    <string name="gpa_segments_custom">自定義</string>
+    <string name="gpa_segments_official">官方</string>
     <string name="gpa_segments_all">所有</string>
     <string name="sweet">不錯</string>
     <string name="gpa_not_available">GPA 不可用</string>
@@ -112,8 +114,6 @@
     <string name="source_code">獲取源碼</string>
     <string name="attendance_new">新出勤情況</string>
     <string name="bug_report_email_content">請提供盡可能詳細的信息，比如怎麼復現問題，預期的表現是什麼。\n調試信息: SchoolPower Android %s.\nPowerSchool用戶名與密碼（可選，有助於我們更快修復問題）：\n</string>
-    <string name="gpa_segments_custom">自定義</string>
-    <string name="gpa_segments_official">官方</string>
     <string name="customize_gpa">自定義 GPA</string>
     <string name="list_preference_custom_gpa_select">選擇科目</string>
     <string name="list_preference_custom_gpa_calculate">計算規則</string>
