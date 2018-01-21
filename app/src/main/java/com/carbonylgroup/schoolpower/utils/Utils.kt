@@ -8,6 +8,7 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
+import android.media.Image
 import android.net.Uri
 import android.os.Handler
 import android.os.Message
@@ -32,6 +33,7 @@ import java.io.PrintWriter
 import java.net.URL
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.HashMap
 
 class Utils(private val context: Context) {
 
@@ -112,6 +114,40 @@ class Utils(private val context: Context) {
             attendanceColorIds[attendanceCode] ?: R.color.gray)
     /* Others */
     fun dpToPx(dp: Int) = Math.round(dp * (context.resources.displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT))
+
+    fun getAssignmentFlag(key: String): Pair<Int, String> {
+
+        val icon: Int
+        val descrip: String
+
+        when (key) {
+            "collected" -> {
+                icon = R.drawable.ic_check_box_white_24dp
+                descrip = context.getString(R.string.collected)
+            }
+            "late" -> {
+                icon = R.drawable.ic_late_white_24dp
+                descrip = context.getString(R.string.late)
+            }
+            "missing" -> {
+                icon = R.drawable.ic_missing_white_24dp
+                descrip = context.getString(R.string.missing)
+            }
+            "exempt" -> {
+                icon = R.drawable.ic_exempt_white_24dp
+                descrip = context.getString(R.string.exempt)
+            }
+            "excludeInFinalGrade" -> {
+                icon = R.drawable.ic_exclude_white_24dp
+                descrip = context.getString(R.string.not_include_in_final)
+            }
+            else -> {
+                icon = R.drawable.ic_info_black_24dp
+                descrip = context.getString(R.string.unknown_flag)
+            }
+        }
+        return Pair(icon, descrip)
+    }
 
     fun getLatestPeriod(grades: Map<String, Subject.Grade>): String? {
 

@@ -4,11 +4,14 @@
 
 package com.carbonylgroup.schoolpower.data
 
+import android.util.Log
 import com.carbonylgroup.schoolpower.utils.Utils
+import org.json.JSONException
 import org.json.JSONObject
 import java.io.Serializable
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.HashMap
 
 /*
 Sample:
@@ -49,13 +52,44 @@ class AssignmentItem(json: JSONObject) : Serializable {
     val includeInFinalGrade: Boolean = json.getString("includeInFinalGrade") == "1"
     val weight: String = json.getString("weight")
     val terms: List<String>
-    //val term: String
-    init{
+
+//    val flags: ArrayList<Pair<String, Boolean>> = arrayListOf(
+//            Pair("collected", true),
+//            Pair("late", true),
+//            Pair("missing", true),
+//            Pair("exempt", true),
+//            Pair("excludeInFinalGrade", true)
+//    )
+
+    var flags: ArrayList<Pair<String, Boolean>> = arrayListOf()
+    val trueFlags: ArrayList<Pair<String, Boolean>> = arrayListOf()
+    var isNew = false
+
+    init {
         val termsJSON = json.getJSONArray("terms")
         terms = (0 until termsJSON.length()).map { termsJSON.getString(it) }
-        date = SimpleDateFormat("yyyy/MM/dd", Locale.CHINA).format(Utils.convertDateToTimestamp(json.getString("date")))
+        date = SimpleDateFormat("yyyy/MM/dd", Locale.CHINA)
+                .format(Utils.convertDateToTimestamp(json.getString("date")))
+
+        try {
+            flags = arrayListOf(
+                    Pair("collected", json.getJSONObject("status").getBoolean("collected")),
+                    Pair("late", json.getJSONObject("status").getBoolean("late")),
+                    Pair("missing", json.getJSONObject("status").getBoolean("missing")),
+                    Pair("exempt", json.getJSONObject("status").getBoolean("exempt")),
+                    Pair("excludeInFinalGrade",
+                            if (json.getJSONObject("status").has("includeInFinalGrade"))
+                                !json.getJSONObject("status").getBoolean("includeInFinalGrade")
+                            else false)
+            )
+        } catch (e: JSONException) {
+            e.printStackTrace()
+        }
+
+        for (flag in flags) {
+            if (flag.second) trueFlags.add(flag)
+        }
     }
-    var isNew = false
 
     fun getDividedScore() = "$score/$maximumScore"
 }

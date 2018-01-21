@@ -121,11 +121,23 @@
     <string name="dashboard_gpa_rule_summary_suffix">選擇科目的成績</string>
     <string name="custom_gpa_not_available">自定義 GPA 不可用</string>
     <string name="custom_gpa_not_available_because">請先轉到設置來自定義您的 GPA 計算規則。</string>
+
     <string-array name="list_preference_gpa_calculate_entries">
         <item>全部</item>
         <item>最高3門</item>
         <item>最高4門</item>
         <item>最高5門</item>
     </string-array>
+
     <string name="powerschool_disabled">PowerSchool目前被學校關閉。請聯繫學校獲取更多信息。</string>
+    <string name="collected">已交</string>
+    <string name="late">遲交</string>
+    <string name="missing">缺少</string>
+    <string name="exempt">得分獨立於最終成績</string>
+    <string name="not_include_in_final">作業不包含在最終成績中</string>
+    <string name="unknown_flag">未知標記</string>
+    <string name="score">分數</string>
+    <string name="weight">權重</string>
+    <string name="flags">標記</string>
+
 </resources>

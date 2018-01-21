@@ -18,13 +18,58 @@
             android:id="@+id/detail_header_background"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/white">
+            android:background="@color/white"
+            android:foreground="?selectableItemBackgroundBorderless">
 
             <RelativeLayout
                 android:id="@+id/unfold_header_view"
                 android:layout_width="match_parent"
                 android:layout_height="140dp"
                 android:background="@color/primary">
+
+                <android.support.v7.widget.CardView
+                    android:id="@+id/unfold_trend_card"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@+id/unfold_percentage_grade_tv"
+                    android:layout_marginEnd="15dp"
+                    android:layout_marginTop="13dp"
+                    android:layout_toStartOf="@+id/unfold_percentage_grade_tv"
+                    app:cardCornerRadius="5dp"
+                    app:cardElevation="5dp"
+                    app:cardUseCompatPadding="true">
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp">
+
+                        <ImageView
+                            android:id="@+id/unfold_trend_image"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_centerVertical="true"
+                            android:layout_marginStart="4dp"
+                            android:contentDescription="@string/trend_indicator"
+                            android:paddingTop="1dp"
+                            android:src="@drawable/ic_trending_up_green_24dp" />
+
+                        <TextView
+                            android:id="@+id/unfold_trend_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginBottom="2dp"
+                            android:layout_marginEnd="5dp"
+                            android:layout_marginStart="8dp"
+                            android:layout_toEndOf="@+id/unfold_trend_image"
+                            android:textColor="@color/B_score_green_dark"
+                            android:textSize="15sp"
+                            tool:text="1" />
+
+                    </RelativeLayout>
+
+                </android.support.v7.widget.CardView>
 
                 <TextView
                     android:id="@+id/unfold_percentage_grade_tv"
@@ -52,7 +97,8 @@
                     android:maxLines="2"
                     android:textAppearance="@android:style/TextAppearance.Material.Title"
                     android:textColor="@color/white"
-                    android:textSize="22sp" />
+                    android:textSize="22sp"
+                    tool:text="Pre-Calculus 11" />
 
                 <TextView
                     android:id="@+id/unfold_teacher_name_tv"
@@ -62,8 +108,8 @@
                     android:layout_marginBottom="5dp"
                     android:layout_marginStart="20dp"
                     android:textColor="@color/white_0_20"
-                    android:textSize="13sp" />
-
+                    android:textSize="13sp"
+                    tool:text="Alex Appiah" />
 
             </RelativeLayout>
 
@@ -89,7 +135,6 @@
                 android:src="@drawable/ic_keyboard_arrow_right_white_48dp"
                 app:rippleColor="@color/white" />
 
-
         </RelativeLayout>
 
     </android.support.v7.widget.CardView>
@@ -103,6 +148,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:baselineAligned="false"
+            android:foreground="?selectableItemBackgroundBorderless"
             android:orientation="horizontal">
 
             <RelativeLayout

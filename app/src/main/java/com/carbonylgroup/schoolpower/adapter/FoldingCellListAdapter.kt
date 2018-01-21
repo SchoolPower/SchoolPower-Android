@@ -5,6 +5,7 @@ import android.app.AlertDialog
 import android.content.Context
 import android.support.design.widget.FloatingActionButton
 import android.support.v4.content.ContextCompat
+import android.support.v7.widget.CardView
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -14,6 +15,7 @@ import android.view.animation.Animation
 import android.view.animation.DecelerateInterpolator
 import android.view.animation.ScaleAnimation
 import android.widget.ArrayAdapter
+import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
 import com.carbonylgroup.schoolpower.R
@@ -48,17 +50,20 @@ class FoldingCellListAdapter(context: Context, private var subjects: List<Subjec
             cell = vi.inflate(R.layout.main_list_item, parent, false) as FoldingCell
 
             viewHolder.fold_background = cell.findViewById(R.id.fold_background)
+            viewHolder.unfold_trend_card = cell.findViewById(R.id.unfold_trend_card)
+            viewHolder.unfold_trend_text = cell.findViewById(R.id.unfold_trend_text)
+            viewHolder.unfold_trend_image = cell.findViewById(R.id.unfold_trend_image)
+            viewHolder.unfold_header_view = cell.findViewById(R.id.unfold_header_view)
             viewHolder.fold_letter_grade_tv = cell.findViewById(R.id.fold_letter_grade_tv)
             viewHolder.fold_teacher_name_tv = cell.findViewById(R.id.fold_teacher_name_tv)
             viewHolder.fold_block_letter_tv = cell.findViewById(R.id.fold_block_letter_tv)
+            viewHolder.fold_grade_background = cell.findViewById(R.id.fold_grade_background)
             viewHolder.fold_subject_title_tv = cell.findViewById(R.id.fold_subject_title_tv)
-            viewHolder.unfold_header_view = cell.findViewById(R.id.unfold_header_view)
+            viewHolder.floating_action_button = cell.findViewById(R.id.floating_action_button)
             viewHolder.unfold_teacher_name_tv = cell.findViewById(R.id.unfold_teacher_name_tv)
             viewHolder.unfold_subject_title_tv = cell.findViewById(R.id.detail_subject_title_tv)
             viewHolder.fold_percentage_grade_tv = cell.findViewById(R.id.fold_percentage_grade_tv)
-            viewHolder.fold_grade_background = cell.findViewById(R.id.fold_grade_background)
             viewHolder.unfold_percentage_grade_tv = cell.findViewById(R.id.unfold_percentage_grade_tv)
-            viewHolder.floating_action_button = cell.findViewById(R.id.floating_action_button)
             viewHolder.unfolded_grade_recycler_view = cell.findViewById(R.id.unfolded_grade_recycler_view)
 
             if (transformedPosition != -1)
@@ -71,25 +76,23 @@ class FoldingCellListAdapter(context: Context, private var subjects: List<Subjec
             cell.tag = viewHolder
 
             if (unfoldedIndexes.contains(position)) {
-
                 cell.unfold(true)
                 popUpFAB(cell, 300)
-            } else
-                cell.fold(true)
+            } else cell.fold(true)
+
         } else {
 
             if (unfoldedIndexes.contains(position)) {
-
                 cell.unfold(true)
                 popUpFAB(cell, 300)
-            } else
-                cell.fold(true)
+            } else cell.fold(true)
             viewHolder = cell.tag as ViewHolder
         }
 
         val adapter = PeriodGradeAdapter(context, item.grades)
         val layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         val period = utils.getLatestPeriodGrade(item) ?: Subject.Grade("--", "--", "null", "--")
+
         viewHolder.fold_letter_grade_tv!!.text = period.letter
         viewHolder.fold_teacher_name_tv!!.text = item.teacherName
         viewHolder.fold_block_letter_tv!!.text = item.blockLetter
@@ -103,13 +106,32 @@ class FoldingCellListAdapter(context: Context, private var subjects: List<Subjec
         viewHolder.unfold_percentage_grade_tv!!.text = period.percentage
         viewHolder.unfold_header_view!!.setBackgroundColor(utils.getColorByLetterGrade(period.letter))
         viewHolder.fold_grade_background!!.setBackgroundColor(utils.getColorByLetterGrade(period.letter))
+        viewHolder.unfold_trend_card!!.visibility = View.GONE
 
         if (item.assignments.any { it -> it.isNew }) { // if any assignment is marked as new
             viewHolder.fold_subject_title_tv!!.setTextColor(ContextCompat.getColor(context, R.color.white))
             viewHolder.fold_teacher_name_tv!!.setTextColor(ContextCompat.getColor(context, R.color.white_0_10))
             viewHolder.fold_block_letter_tv!!.setTextColor(ContextCompat.getColor(context, R.color.white_0_10))
             viewHolder.fold_background!!.setBackgroundColor(ContextCompat.getColor(context, R.color.accent))
-        }else{
+
+            // Show increase/decrease margin badge
+            viewHolder.unfold_trend_card!!.visibility = View.VISIBLE
+            if (item.margin > 0) {
+                // Increased
+                viewHolder.unfold_trend_image!!.setImageResource(R.drawable.ic_trending_up_green_24dp)
+                viewHolder.unfold_trend_text!!.setTextColor(ContextCompat.getColor(context, R.color.B_score_green_dark))
+            } else if (item.margin < 0) {
+                // Decreased
+                viewHolder.unfold_trend_image!!.setImageResource(R.drawable.ic_trending_down_red_24dp)
+                viewHolder.unfold_trend_text!!.setTextColor(ContextCompat.getColor(context, R.color.Cm_score_red))
+            } else {
+                // Not changed
+                viewHolder.unfold_trend_image!!.setImageResource(R.drawable.ic_trending_flat_blue_24dp)
+                viewHolder.unfold_trend_text!!.setTextColor(ContextCompat.getColor(context, R.color.accent))
+            }
+            viewHolder.unfold_trend_text!!.text = Math.abs(item.margin).toString()
+
+        } else {
             viewHolder.fold_subject_title_tv!!.setTextColor(ContextCompat.getColor(context, R.color.text_primary_black))
             viewHolder.fold_teacher_name_tv!!.setTextColor(ContextCompat.getColor(context, R.color.text_tertiary_black))
             viewHolder.fold_block_letter_tv!!.setTextColor(ContextCompat.getColor(context, R.color.text_tertiary_black))
@@ -168,7 +190,7 @@ class FoldingCellListAdapter(context: Context, private var subjects: List<Subjec
         this.termOnClickListener = termOnClickListener
     }
 
-    public fun showTermDialog(subject: Subject, position: Int) {
+    fun showTermDialog(subject: Subject, position: Int) {
 
         val objects = subject.grades
         val gradeMap: Map<String, Subject.Grade> = objects
@@ -209,6 +231,9 @@ class FoldingCellListAdapter(context: Context, private var subjects: List<Subjec
 
     private class ViewHolder {
 
+        internal var unfold_trend_card: CardView? = null
+        internal var unfold_trend_text: TextView? = null
+        internal var unfold_trend_image: ImageView? = null
         internal var fold_letter_grade_tv: TextView? = null
         internal var fold_teacher_name_tv: TextView? = null
         internal var fold_block_letter_tv: TextView? = null

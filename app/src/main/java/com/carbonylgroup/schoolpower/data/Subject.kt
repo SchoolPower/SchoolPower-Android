@@ -77,6 +77,8 @@ class Subject(json: JSONObject) : Serializable {
     val startDate: Long
     val endDate: Long
 
+    var margin = 0
+
     init {
         if (!json.isNull("assignments")) {
             val jsonAssignments = json.getJSONArray("assignments")

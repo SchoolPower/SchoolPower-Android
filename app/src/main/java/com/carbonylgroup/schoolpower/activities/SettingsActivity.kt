@@ -95,7 +95,8 @@ class SettingsActivity : AppCompatActivity() {
                 val uri = Uri.parse(getString(R.string.bug_report_email))
                 val intent = Intent(Intent.ACTION_SENDTO, uri)
                 intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.bug_report_email_subject))
-                intent.putExtra(Intent.EXTRA_TEXT, getString(R.string.bug_report_email_content))
+                intent.putExtra(Intent.EXTRA_TEXT, String.format(getString(R.string.bug_report_email_content),
+                        activity.packageManager.getPackageInfo("com.carbonylgroup.schoolpower", 0).versionName))
                 startActivity(Intent.createChooser(intent, getString(R.string.choose_email_app)))
                 true
             }

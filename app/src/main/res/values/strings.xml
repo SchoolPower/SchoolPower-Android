@@ -1,5 +1,54 @@
 <resources>
 
+    <!-- KEYS DO NOT TRANSLATE -->
+    <string name="adMob_app_id" translatable="false">ca-app-pub-9841217337381410~1214844685</string>
+    <!--TEST ID-->
+    <!--<string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>-->
+    <string name="banner_ad_unit_id" translatable="false">ca-app-pub-9841217337381410/7121777483</string>
+
+    <string name="accountData" translatable="false">accountData</string>
+    <string name="loggedIn" translatable="false">loggedIn</string>
+    <string name="usernameKEY" translatable="false">Username</string>
+    <string name="passwordKEY" translatable="false">Password</string>
+    <string name="student_name" translatable="false">student_name</string>
+    <string name="user_id" translatable="false">user_id</string>
+
+    <string name="shared_element_course_header" translatable="false">SHARE://COURSE_HEADER</string>
+    <string name="shared_element_course_fab" translatable="false">SHARE://COURSE_FAB</string>
+    <string name="shared_element_course_subject_title" translatable="false">SHARE://COURSE_SUBJECT_TITLE</string>
+    <string name="shared_element_course_card" translatable="false">SHARE://COURSE_CARD</string>
+
+    <string name="json_begin" translatable="false">{</string>
+
+    <string name="postURL" translatable="false">https://schoolpower.harrynull.tech:8443/api/2.0/get_data.php</string>
+    <string name="updateURL" translatable="false">https://schoolpower.harrynull.tech:8443/api/update.json</string>
+    <string name="dataFileName" translatable="false">dataMap.json</string>
+    <string name="langFileName" translatable="false">lang.file</string>
+
+    <string name="gpa_segments_custom">Custom</string>
+    <string name="gpa_segments_official">Official</string>
+
+    <string-array name="list_preference_display_types_values" translatable="false">
+        <item>0</item>
+        <item>1</item>
+    </string-array>
+
+    <string-array name="list_preference_language_values" translatable="false">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
+    <string name="bug_report_email" translatable="false">mailto:harryyunull@gmail.com</string>
+    <string name="eula_address" translatable="false">https://schoolpower.studio/eula.html</string>
+    <string name="changelog_address" translatable="false">https://github.com/SchoolPower/SchoolPower-Android/releases</string>
+    <string name="carbon_address" translatable="false">https://github.com/HITGIF</string>
+    <string name="null_address" translatable="false">https://github.com/abc612008</string>
+    <string name="website_address" translatable="false">https://schoolpower.studio</string>
+    <string name="feedback_forum_address" translatable="false">https://feedback.schoolpower.studio</string>
+    <string name="source_code_address" translatable="false">https://github.com/SchoolPower</string>
+
     <!-- DO TRANSLATE THESE -->
     <string name="app_name">SchoolPower</string>
     <string name="action_refreshing">Refresh</string>
@@ -121,56 +170,6 @@
     <string name="visit_website">Visit Website</string>
     <string name="source_code">Get Source Code</string>
 
-
-    <!-- KEYS DO NOT TRANSLATE -->
-    <string name="adMob_app_id" translatable="false">ca-app-pub-9841217337381410~1214844685</string>
-    <!--TEST ID-->
-    <!--<string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>-->
-    <string name="banner_ad_unit_id" translatable="false">ca-app-pub-9841217337381410/7121777483</string>
-
-    <string name="accountData" translatable="false">accountData</string>
-    <string name="loggedIn" translatable="false">loggedIn</string>
-    <string name="usernameKEY" translatable="false">Username</string>
-    <string name="passwordKEY" translatable="false">Password</string>
-    <string name="student_name" translatable="false">student_name</string>
-    <string name="user_id" translatable="false">user_id</string>
-
-    <string name="shared_element_course_header" translatable="false">SHARE://COURSE_HEADER</string>
-    <string name="shared_element_course_fab" translatable="false">SHARE://COURSE_FAB</string>
-    <string name="shared_element_course_subject_title" translatable="false">SHARE://COURSE_SUBJECT_TITLE</string>
-    <string name="shared_element_course_card" translatable="false">SHARE://COURSE_CARD</string>
-
-    <string name="json_begin" translatable="false">{</string>
-
-    <string name="postURL" translatable="false">https://schoolpower.harrynull.tech:8443/api/2.0/get_data.php</string>
-    <string name="updateURL" translatable="false">https://schoolpower.harrynull.tech:8443/api/update.json</string>
-    <string name="dataFileName" translatable="false">dataMap.json</string>
-    <string name="langFileName" translatable="false">lang.file</string>
-
-    <string name="gpa_segments_custom">Custom</string>
-    <string name="gpa_segments_official">Official</string>
-
-    <string-array name="list_preference_display_types_values" translatable="false">
-        <item>0</item>
-        <item>1</item>
-    </string-array>
-
-    <string-array name="list_preference_language_values" translatable="false">
-        <item>0</item>
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-    </string-array>
-
-    <string name="bug_report_email" translatable="false">mailto:harryyunull@gmail.com</string>
-    <string name="eula_address" translatable="false">https://schoolpower.studio/eula.html</string>
-    <string name="changelog_address" translatable="false">https://github.com/SchoolPower/SchoolPower-Android/releases</string>
-    <string name="carbon_address" translatable="false">https://github.com/HITGIF</string>
-    <string name="null_address" translatable="false">https://github.com/abc612008</string>
-    <string name="website_address" translatable="false">https://schoolpower.studio</string>
-    <string name="feedback_forum_address" translatable="false">https://feedback.schoolpower.studio</string>
-    <string name="source_code_address" translatable="false">https://github.com/SchoolPower</string>
-
     <string name="customize_gpa">Customize GPA</string>
     <string name="list_preference_custom_gpa_select">Select Subjects</string>
     <string name="list_preference_custom_gpa_calculate">Calculate Rule</string>
@@ -179,19 +178,33 @@
     <string name="custom_gpa_not_available">Custom GPA Not Available</string>
     <string name="custom_gpa_not_available_because">Please go to settings to customize your GPA calculate rules.</string>
 
-    <string name="powerschool_disabled">PowerSchool is currently disabled by school. Please contact school for more information.</string>
-
     <string-array name="list_preference_gpa_calculate_entries">
         <item>All</item>
         <item>Highest 3</item>
         <item>Highest 4</item>
         <item>Highest 5</item>
     </string-array>
+
     <string-array name="list_preference_gpa_calculate_values" translatable="false">
         <item>all</item>
         <item>3</item>
         <item>4</item>
         <item>5</item>
     </string-array>
+
     <string-array name="empty_array" />
+
+    <string name="powerschool_disabled">PowerSchool is currently disabled by school. Please contact school for more information.</string>
+    <string name="trend_indicator">trend_indicator</string>
+    <string name="collected">Collected</string>
+    <string name="late">Late</string>
+    <string name="missing">Missing</string>
+    <string name="exempt">Score is exempt from final grade</string>
+    <string name="not_include_in_final">Assignment is not included in final grade</string>
+    <string name="unknown_flag">Unknown Flag</string>
+    <string name="score">Score</string>
+    <string name="weight">Weight</string>
+    <string name="flags">Flags</string>
+    <string name="flag_badge">flag badge</string>
+
 </resources>

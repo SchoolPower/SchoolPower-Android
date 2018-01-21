@@ -445,7 +445,22 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                                         for (item in newAssignmentListCollection) {
                                             // if no item in oldAssignmentListCollection has the same title, score and date as those of the new one, then the assignment should be marked.
                                             val found = oldAssignmentListCollection.any { it.title == item.title && it.score == item.score && it.date == item.date && !it.isNew }
-                                            if (!found) item.isNew = true
+                                            if (!found) {
+                                                item.isNew = true
+
+                                                var oldPercent = 0
+                                                var newPercent = 0
+                                                var oldPercentStr = "--"
+                                                var newPercentStr = "--"
+                                                if (utils.getLatestPeriodGrade(oldSubjects[i]) != null)
+                                                    oldPercentStr = utils.getLatestPeriodGrade(oldSubjects[i])!!.percentage
+                                                if (utils.getLatestPeriodGrade(subjects!![i]) != null)
+                                                    newPercentStr = utils.getLatestPeriodGrade(subjects!![i])!!.percentage
+                                                if (oldPercentStr != "--")  oldPercent = oldPercentStr.toInt()
+                                                if (newPercentStr != "--")  newPercent = newPercentStr.toInt()
+
+                                                subjects!![i].margin = newPercent - oldPercent
+                                            }
                                         }
                                     }
                                 }

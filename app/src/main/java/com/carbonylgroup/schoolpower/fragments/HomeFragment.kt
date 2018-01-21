@@ -111,6 +111,7 @@ class HomeFragment : TransitionHelper.BaseFragment() {
 
         adapter = FoldingCellListAdapter(activity, utils!!.getFilteredSubjects(subjects!!), unfoldedIndexesBackUp, transformedPosition)
 
+        adapterSetFabOnClickListener(adapter!!)
         adapterSetTermOnClickListener(adapter!!)
 
         dashboardListView.onItemClickListener = AdapterView.OnItemClickListener { _, view, pos, _ ->

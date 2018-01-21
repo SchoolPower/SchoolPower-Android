@@ -64,8 +64,8 @@
     <string name="signing_out_dialog_positive">Sign Out</string>
     <string name="signing_out_dialog_negative">Don\'t</string>
 
-    <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="title_activity_settings">Settings</string>
 
@@ -92,6 +92,12 @@
         <item>简体中文</item>
     </string-array>
 
+    <string-array name="terms_sample" translatable="false">
+        <item>T1</item>
+        <item>T2</item>
+        <item>S1</item>
+    </string-array>
+
     <string name="show_inactive_title">Show Inactive Subjects</string>
     <string name="show_inactive_summary">Show subjects that you are not currently taking.</string>
 
@@ -100,20 +106,21 @@
     <string name="notification_show_no_grade_assignment">Notify Ungraded Assignments</string>
     <string name="notification_new">New Assignments</string>
 
+    <string name="attendance_new">New Attendances</string>
+
     <string name="support">Support</string>
     <string name="report_bug">Report a Bug</string>
-    <string name="report_bug_summary">Contact developer with email</string>
+    <string name="report_bug_summary">Contact developer with email.</string>
     <string name="feedback_forum">Visit feedback forum</string>
     <string name="feedback_forum_summary">View announcements, give suggestions or report bugs via our forum</string>
+
     <string name="choose_email_app">Choose an email app…</string>
     <string name="bug_report_email_subject">Found Bug(s) in SchoolPower</string>
     <string name="bug_report_email_content">Please provide as much info as possible, such as how to reproduce it, what is the expected result. \nDebug Info: SchoolPower Android %s.\nPowerSchool Username and Password (Optional, help us solve it faster): \n</string>
 
     <string name="visit_website">Visit Website</string>
     <string name="source_code">Get Source Code</string>
-    <string name="attendance_new">New Attendances</string>
-    <string name="gpa_segments_custom">Custom</string>
-    <string name="gpa_segments_official">Official</string>
+
     <string name="customize_gpa">Customize GPA</string>
     <string name="list_preference_custom_gpa_select">Select Subjects</string>
     <string name="list_preference_custom_gpa_calculate">Calculate Rule</string>
@@ -121,11 +128,33 @@
     <string name="dashboard_gpa_rule_summary_suffix">&#160;subjects in your selections</string>
     <string name="custom_gpa_not_available">Custom GPA Not Available</string>
     <string name="custom_gpa_not_available_because">Please go to settings to customize your GPA calculate rules.</string>
-    <string name="powerschool_disabled">PowerSchool is currently disabled by school. Please contact school for more information.</string>
+
     <string-array name="list_preference_gpa_calculate_entries">
         <item>All</item>
         <item>Highest 3</item>
         <item>Highest 4</item>
         <item>Highest 5</item>
     </string-array>
+
+    <string-array name="list_preference_gpa_calculate_values" translatable="false">
+        <item>all</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+    </string-array>
+
+    <string-array name="empty_array" />
+
+    <string name="powerschool_disabled">PowerSchool is currently disabled by school. Please contact school for more information.</string>
+    <string name="trend_indicator">trend_indicator</string>
+    <string name="collected">Collected</string>
+    <string name="late">Late</string>
+    <string name="missing">Missing</string>
+    <string name="exempt">Score is exempt from final grade</string>
+    <string name="not_include_in_final">Assignment is not included in final grade</string>
+    <string name="unknown_flag">Unknown Flag</string>
+    <string name="score">Score</string>
+    <string name="weight">Weight</string>
+    <string name="flags">Flags</string>
+
 </resources>
