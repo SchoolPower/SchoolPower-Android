@@ -43,8 +43,8 @@
     <string name="user_id_indicator">用户 ID:</string> 
     <string name="no_username">用户名不可用</string>
     <string name="the_end">下面没了</string>
-    <string name="nothing_here">没东西。</string>
-    <string name="perfect_attendance">完美出勤！</string>
+    <string name="nothing_here">没东西</string>
+    <string name="perfect_attendance">完美出勤</string>
 
     <string name="gpa_is">的 GPA 是</string>
     <string name="gpa_segments_custom">自定义</string>
