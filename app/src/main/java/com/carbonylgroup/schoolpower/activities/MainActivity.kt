@@ -421,7 +421,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
 
                                 utils.saveDataJson(strMessage)
                                 val data = utils.parseJsonResult(strMessage)
-                                if(data.disabled){
+                                if (data.disabled) {
                                     val builder = AlertDialog.Builder(this@MainActivity)
                                     builder.setMessage(data.disabledMessage)
                                     builder.setTitle(data.disabledTitle)
@@ -444,7 +444,12 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                                         val oldAssignmentListCollection = oldSubjects[i].assignments
                                         for (item in newAssignmentListCollection) {
                                             // if no item in oldAssignmentListCollection has the same title, score and date as those of the new one, then the assignment should be marked.
-                                            val found = oldAssignmentListCollection.any { it.title == item.title && it.score == item.score && it.date == item.date && !it.isNew }
+                                            val found = oldAssignmentListCollection.any {
+                                                it.title == item.title
+                                                        && it.score == item.score
+                                                        && it.date == item.date
+                                                        && !it.isNew
+                                            }
                                             if (!found) {
                                                 item.isNew = true
 
@@ -456,10 +461,11 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                                                     oldPercentStr = utils.getLatestPeriodGrade(oldSubjects[i])!!.percentage
                                                 if (utils.getLatestPeriodGrade(subjects!![i]) != null)
                                                     newPercentStr = utils.getLatestPeriodGrade(subjects!![i])!!.percentage
-                                                if (oldPercentStr != "--")  oldPercent = oldPercentStr.toInt()
-                                                if (newPercentStr != "--")  newPercent = newPercentStr.toInt()
+                                                if (oldPercentStr != "--") oldPercent = oldPercentStr.toInt()
+                                                if (newPercentStr != "--") newPercent = newPercentStr.toInt()
 
-                                                subjects!![i].margin = newPercent - oldPercent
+                                                if (oldPercent != newPercent)
+                                                    subjects!![i].margin = newPercent - oldPercent
                                             }
                                         }
                                     }
@@ -529,10 +535,10 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
         val intent = Intent(application, SettingsActivity::class.java)
         val subjectList = subjects!!
                 .filter { it -> utils.getLatestPeriodGrade(it) != null }
-                .mapTo (ArrayList<CharSequence>()) { it -> "${it.name} (${utils.getLatestPeriodGrade(it)!!.percentage}%)" }
+                .mapTo(ArrayList<CharSequence>()) { it -> "${it.name} (${utils.getLatestPeriodGrade(it)!!.percentage}%)" }
         val subjectValueList = subjects!!
                 .filter { it -> utils.getLatestPeriodGrade(it) != null }
-                .mapTo (ArrayList<CharSequence>()) { it.name }
+                .mapTo(ArrayList<CharSequence>()) { it.name }
         intent.putExtra("subjects", subjectList.toTypedArray())
         intent.putExtra("subjects_values", subjectValueList.toTypedArray())
         startActivityForResult(intent, 0)

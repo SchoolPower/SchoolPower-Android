@@ -126,8 +126,8 @@ class FoldingCellListAdapter(context: Context, private var subjects: List<Subjec
                 viewHolder.unfold_trend_text!!.setTextColor(ContextCompat.getColor(context, R.color.Cm_score_red))
             } else {
                 // Not changed
-                viewHolder.unfold_trend_image!!.setImageResource(R.drawable.ic_trending_flat_blue_24dp)
-                viewHolder.unfold_trend_text!!.setTextColor(ContextCompat.getColor(context, R.color.accent))
+                viewHolder.unfold_trend_image!!.setImageResource(R.drawable.ic_trending_flat_gray_24dp)
+                viewHolder.unfold_trend_text!!.setTextColor(ContextCompat.getColor(context, R.color.gray))
             }
             viewHolder.unfold_trend_text!!.text = Math.abs(item.margin).toString()
 
