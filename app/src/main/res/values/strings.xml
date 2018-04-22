@@ -43,7 +43,7 @@
     <string name="eula_address" translatable="false">https://schoolpower.tech/eula.html</string>
     <string name="changelog_address" translatable="false">https://github.com/SchoolPower/SchoolPower-Android/releases</string>
     <string name="carbon_address" translatable="false">https://github.com/HITGIF</string>
-    <string name="null_address" translatable="false">https://github.com/abc612008</string>
+    <string name="null_address" translatable="false">https://github.com/harrynull</string>
     <string name="website_address" translatable="false">https://schoolpower.tech</string>
     <string name="feedback_forum_address" translatable="false">https://feedback.schoolpower.studio</string>
     <string name="source_code_address" translatable="false">https://github.com/SchoolPower</string>
