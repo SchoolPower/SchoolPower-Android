@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import com.carbonylgroup.schoolpower.R
-import com.carbonylgroup.schoolpower.R2
 import com.carbonylgroup.schoolpower.data.AssignmentItem
 import com.carbonylgroup.schoolpower.utils.Utils
 import kotterknife.bindView
@@ -41,7 +40,7 @@ class AssignmentFlagAdapter(private val context: Context, private val assignment
     }
 
     class AssignmentFlagViewHolder internal constructor(view: View) : RecyclerView.ViewHolder(view) {
-        val assignment_flag_image: ImageView by bindView(R2.id.assignment_flag_image)
-        val assignment_flag_description: TextView by bindView(R2.id.assignment_flag_description)
+        val assignment_flag_image: ImageView by bindView(R.id.assignment_flag_image)
+        val assignment_flag_description: TextView by bindView(R.id.assignment_flag_description)
     }
 }
