@@ -22,6 +22,7 @@ import android.os.Message
 import android.preference.PreferenceManager
 import android.support.design.widget.AppBarLayout
 import android.support.design.widget.NavigationView
+import android.support.v4.app.FragmentActivity
 import android.support.v4.content.ContextCompat
 import android.support.v4.view.GravityCompat
 import android.support.v4.widget.DrawerLayout
@@ -264,6 +265,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                 homeFragment = HomeFragment()
                 transaction.replace(R.id.content_view, homeFragment)
                 setToolBarTitle(getString(R.string.dashboard))
+                setToolBarElevation()
                 expandToolBar(true, true)
                 hideToolBarItems(false)
                 presentFragment = 0
@@ -272,6 +274,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                 chartFragment = ChartFragment()
                 transaction.replace(R.id.content_view, chartFragment)
                 setToolBarTitle(getString(R.string.charts))
+                setToolBarElevation(0)
                 expandToolBar(true, true)
                 hideToolBarItems(true)
                 presentFragment = 2
@@ -280,6 +283,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                 attendanceFragment = AttendanceFragment()
                 transaction.replace(R.id.content_view, attendanceFragment)
                 setToolBarTitle(getString(R.string.attendance))
+                setToolBarElevation()
                 expandToolBar(true, true)
                 hideToolBarItems(true)
                 presentFragment = 3
@@ -291,6 +295,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                 transaction.setCustomAnimations(R.animator.slide_from_right_in, R.animator.slide_to_left_out)
                         .replace(R.id.content_view, aboutFragment)
                 setToolBarTitle(getString(R.string.about))
+                setToolBarElevation()
                 expandToolBar(true, true)
                 animateDrawerToggle(true)
                 hideToolBarItems(true)
@@ -609,7 +614,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
         supportActionBar!!.title = barTitle
     }
 
-    fun setToolBarElevation(toolBarElevation: Int) {
+    fun setToolBarElevation(toolBarElevation: Int = resources.getDimensionPixelOffset(R.dimen.toolbar_elevation)) {
         mainAppBar.elevation = toolBarElevation.toFloat()
     }
 

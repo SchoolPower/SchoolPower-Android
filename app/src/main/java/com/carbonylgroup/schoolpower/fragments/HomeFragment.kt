@@ -73,7 +73,7 @@ class HomeFragment : TransitionHelper.BaseFragment() {
         utils = Utils(activity)
         subjects = MainActivity.of(activity).subjects
         MainActivity.of(activity).presentFragment = 0
-        MainActivity.of(activity).setToolBarElevation(utils!!.dpToPx(10))
+        MainActivity.of(activity).setToolBarElevation()
         MainActivity.of(activity).setToolBarTitle(getString(R.string.dashboard))
         dashboardListView = view_private!!.findViewById(R.id.mainListView)
         home_swipe_refresh_layout = view_private!!.findViewById(R.id.home_swipe_refresh_layout)

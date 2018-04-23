@@ -145,4 +145,6 @@
     <string name="weight">Weight</string>
     <string name="flags">Flags</string>
 
+    <string name="chart_line">Line</string>
+    <string name="chart_radar">Radar</string>
 </resources>

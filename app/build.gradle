@@ -36,6 +36,7 @@ dependencies {
     })
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
     implementation('com.mikepenz:aboutlibraries:5.9.6@aar') { transitive = true }
+    implementation 'com.android.support:support-v13:27.1.1'
     implementation 'com.android.support:appcompat-v7:27.1.1'
     implementation "com.android.support:customtabs:27.1.1"
     implementation 'com.android.support:design:27.1.1'
