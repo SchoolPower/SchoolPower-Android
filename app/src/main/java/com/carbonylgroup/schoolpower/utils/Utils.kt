@@ -390,6 +390,15 @@ class Utils(private val context: Context) {
         }
         return filteredSubjects
     }
+
+    fun getActionBarSizePx():Int{
+        val styledAttributes = context.theme.obtainStyledAttributes(
+                intArrayOf(android.R.attr.actionBarSize))
+        val actionBarSize = styledAttributes.getDimension(0, 0f).toInt()
+        styledAttributes.recycle()
+        return actionBarSize
+    }
+
     companion object {
 
         // convert date like "2018-01-21T16:00:00.000Z" to timestamp (unit: MILLISECOND)
@@ -422,14 +431,22 @@ class Utils(private val context: Context) {
                 if (splitedSubject[splitedSubject.size - 1] == "Sci") short += "S"
                 if (splitedSubject[splitedSubject.size - 1] == "Humanities") short += "H"
                 if (splitedSubject[splitedSubject.size - 1] == "Arts") short += "A"
+                for (c in subjectTitle) {
+                    if (c.isDigit()) short += c
+                }
                 return short
             }
 
-            var ret = ""
-            for (c in subjectTitle) {
-                if (c.isUpperCase() || c.isDigit()) ret += c
+
+            if(subjectTitle.length>3) {
+                var ret = subjectTitle.substring(0, 3).capitalize()
+                for (c in subjectTitle.substring(3)) {
+                    if (c.isUpperCase() || c.isDigit()) ret += c
+                }
+                return ret
+            }else{
+                return subjectTitle
             }
-            return ret
         }
 
         /**
@@ -448,7 +465,7 @@ class Utils(private val context: Context) {
 
                 val realUrl = URL(url)
                 val conn = realUrl.openConnection()
-                conn.setRequestProperty("user-agent", "SchoolPower")
+                conn.setRequestProperty("user-agent", "SchoolPower Android")
                 conn.doOutput = true
                 conn.doInput = true
                 out = PrintWriter(conn.getOutputStream())

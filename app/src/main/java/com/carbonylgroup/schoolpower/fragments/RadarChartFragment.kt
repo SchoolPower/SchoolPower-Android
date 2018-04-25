@@ -27,29 +27,24 @@ class RadarChartFragment : Fragment() {
                               savedInstanceState: Bundle?): View? {
 
         val view = inflater!!.inflate(R.layout.fragment_radar_chart, container, false)
-        //MainActivity.of(activity).expandToolBar(true, true)
+
         utils = Utils(activity)
 
-        val styledAttributes = activity.theme.obtainStyledAttributes(
-                intArrayOf(android.R.attr.actionBarSize))
-        val mActionBarSize = styledAttributes.getDimension(0, 0f).toInt()
-        styledAttributes.recycle()
-
-        val radarChart = view.findViewById<CardView>(R.id.radar_chart_card)
-        val layoutParams = radarChart.layoutParams as ViewGroup.MarginLayoutParams
-        layoutParams.setMargins(0, 0, 0, mActionBarSize + utils.dpToPx(58))
-        radarChart.requestLayout()
+        // Adjust chart's size to leave the space for the action bar and ad. bar.
+        val radarChartCardView = view.findViewById<CardView>(R.id.radar_chart_card)
+        val layoutParams = radarChartCardView.layoutParams as ViewGroup.MarginLayoutParams
+        layoutParams.setMargins(0, 0, 0, utils.getActionBarSizePx() + utils.dpToPx(58))
+        radarChartCardView.requestLayout()
 
         if (MainActivity.of(activity).subjects == null || MainActivity.of(activity).subjects!!.count() == 0) {
             //TODO: Improve the charts display when there is nothing QVQ
         } else {
 
-            val rawData = MainActivity.of(activity).subjects!!
-            val data = ArrayList<Subject>()
+            val gradedSubjects = ArrayList<Subject>() // Subjects that have grades
 
-            rawData.forEach {
+            MainActivity.of(activity).subjects!!.forEach {
                 val grade = utils.getLatestPeriodGrade(it)
-                if (grade != null && grade.letter != "--") data.add(it)
+                if (grade != null && grade.letter != "--") gradedSubjects.add(it)
             }
 
             run {
@@ -65,7 +60,7 @@ class RadarChartFragment : Fragment() {
                     private val mSubjectsName = ArrayList<String>()
 
                     init {
-                        data.mapTo(mSubjectsName) { it.getShortName() }
+                        gradedSubjects.mapTo(mSubjectsName) { it.getShortName() }
                     }
 
                     override fun getFormattedValue(value: Float, axis: AxisBase): String {
@@ -73,7 +68,7 @@ class RadarChartFragment : Fragment() {
                     }
                 }
                 var minGrade = 100.0f
-                for (it in data) {
+                for (it in gradedSubjects) {
                     val periodGrade = (utils.getLatestPeriodGrade(it) ?: continue).percentage.toFloat()
                     entries.add(RadarEntry(periodGrade))
                     if (periodGrade < minGrade) minGrade = periodGrade

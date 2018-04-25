@@ -28,11 +28,11 @@ class ChartFragment : Fragment() {
             return when (position) {
                 0 -> LineChartFragment()
                 1 -> RadarChartFragment()
-                else -> LineChartFragment()
+                else -> LineChartFragment() // you shouldn't be here though
             }
         }
 
-        override fun getPageTitle(position: Int) = activity.getString(titles[position])
+        override fun getPageTitle(position: Int) = activity.getString(titles[position])!!
 
         override fun getCount() = PagesNumber
     }
