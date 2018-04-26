@@ -14,6 +14,7 @@
     <string name="user_id" translatable="false">user_id</string>
     <string name="flag_badge" translatable="false">flag badge</string>
     <string name="trend_indicator" translatable="false">trend_indicator</string>
+    <string name="KEY_DARK_MODE" translatable="false">KEY_DARK_MODE</string>
 
     <string name="shared_element_course_header" translatable="false">SHARE://COURSE_HEADER</string>
     <string name="shared_element_course_fab" translatable="false">SHARE://COURSE_FAB</string>

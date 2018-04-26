@@ -25,7 +25,7 @@ class LoginActivity : Activity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
-        setTheme(R.style.Design)
+        setTheme(R.style.AppThemeBase_Light)
         super.onCreate(savedInstanceState)
         if(checkIfLoggedIn()) return
         setContentView(R.layout.login_content)

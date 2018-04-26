@@ -2,15 +2,15 @@
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#fafafa">
+    android:layout_height="match_parent">
 
     <LinearLayout
+        android:id="@+id/no_grade_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:paddingBottom="50dp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingBottom="50dp">
 
         <ImageView
             android:layout_width="wrap_content"
@@ -35,7 +35,6 @@
             android:id="@+id/mainListView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/primary_light"
             android:clipChildren="false"
             android:clipToPadding="false"
             android:divider="@android:color/transparent"

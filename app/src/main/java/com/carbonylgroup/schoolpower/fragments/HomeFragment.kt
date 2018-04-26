@@ -4,7 +4,6 @@
 
 package com.carbonylgroup.schoolpower.fragments
 
-import android.app.AlertDialog
 import android.os.Bundle
 import android.support.v4.widget.SwipeRefreshLayout
 import android.view.LayoutInflater
@@ -14,6 +13,7 @@ import android.view.animation.Animation
 import android.view.animation.DecelerateInterpolator
 import android.view.animation.ScaleAnimation
 import android.widget.AdapterView
+import android.widget.LinearLayout
 import android.widget.ListView
 import com.carbonylgroup.schoolpower.R
 import com.carbonylgroup.schoolpower.activities.MainActivity
@@ -38,6 +38,7 @@ class HomeFragment : TransitionHelper.BaseFragment() {
     private var courseDetailFragment: CourseDetailFragment? = null
     private var home_swipe_refresh_layout: SwipeRefreshLayout? = null
     private lateinit var dashboardListView: ListView
+    private lateinit var no_grade_view: LinearLayout
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
@@ -76,12 +77,14 @@ class HomeFragment : TransitionHelper.BaseFragment() {
         MainActivity.of(activity).setToolBarElevation(utils!!.dpToPx(10))
         MainActivity.of(activity).setToolBarTitle(getString(R.string.dashboard))
         dashboardListView = view_private!!.findViewById(R.id.mainListView)
+        no_grade_view = view_private!!.findViewById(R.id.no_grade_view)
         home_swipe_refresh_layout = view_private!!.findViewById(R.id.home_swipe_refresh_layout)
         home_swipe_refresh_layout!!.setColorSchemeResources(R.color.accent, R.color.A_score_green, R.color.B_score_green,
                 R.color.Cp_score_yellow, R.color.C_score_orange, R.color.Cm_score_red, R.color.primary)
         home_swipe_refresh_layout!!.setOnRefreshListener { MainActivity.of(activity).initDataJson() }
         if (subjects == null || subjects!!.count() == 0) refreshAdapterToEmpty()
         else initAdapter()
+
     }
 
     private fun adapterSetFabOnClickListener(adapter: FoldingCellListAdapter) = adapter.setFabOnClickListener(View.OnClickListener { v ->
@@ -107,7 +110,10 @@ class HomeFragment : TransitionHelper.BaseFragment() {
 
     private fun initAdapter() {
 
-        if (subjects != null && subjects!!.count() != 0) dashboardListView.visibility = View.VISIBLE
+        if (subjects != null && subjects!!.count() != 0) {
+            dashboardListView.visibility = View.VISIBLE
+            no_grade_view.visibility = View.GONE
+        }
 
         adapter = FoldingCellListAdapter(activity, utils!!.getFilteredSubjects(subjects!!), unfoldedIndexesBackUp, transformedPosition)
 
@@ -124,8 +130,9 @@ class HomeFragment : TransitionHelper.BaseFragment() {
         dashboardListView.adapter = adapter
     }
 
-    fun invisiblizeListView() {
+    fun visiblizeNoGradeView() {
         dashboardListView.visibility = View.GONE
+        no_grade_view.visibility = View.VISIBLE
     }
 
     fun setRefreshing(isRefreshing: Boolean) {
@@ -136,7 +143,7 @@ class HomeFragment : TransitionHelper.BaseFragment() {
 
         subjects = arrayListOf()
         setRefreshing(false)
-        invisiblizeListView()
+        visiblizeNoGradeView()
     }
 
     fun refreshAdapter(newSubjects: List<Subject>) {

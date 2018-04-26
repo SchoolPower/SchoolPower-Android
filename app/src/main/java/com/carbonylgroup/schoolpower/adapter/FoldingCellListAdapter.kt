@@ -135,7 +135,7 @@ class FoldingCellListAdapter(context: Context, private var subjects: List<Subjec
             viewHolder.fold_subject_title_tv!!.setTextColor(ContextCompat.getColor(context, R.color.text_primary_black))
             viewHolder.fold_teacher_name_tv!!.setTextColor(ContextCompat.getColor(context, R.color.text_tertiary_black))
             viewHolder.fold_block_letter_tv!!.setTextColor(ContextCompat.getColor(context, R.color.text_tertiary_black))
-            viewHolder.fold_background!!.setBackgroundColor(ContextCompat.getColor(context, R.color.white))
+            viewHolder.fold_background!!.setBackgroundColor(ContextCompat.getColor(context, android.support.design.R.color.background_floating_material_dark))
         }
 
         viewHolder.unfolded_grade_recycler_view!!.addOnItemClickListener(termOnClickListener!!)

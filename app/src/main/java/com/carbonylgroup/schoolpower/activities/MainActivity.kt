@@ -82,6 +82,8 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
     private var attendanceFragment: AttendanceFragment? = null
     private var aboutFragment: AboutFragment? = null
 
+    private var darkModeCache = true
+
     override fun attachBaseContext(newBase: Context) {
 
         utils = Utils(newBase)
@@ -167,7 +169,9 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
     /* Initializer */
     private fun initBase() {
 
-        setTheme(R.style.Design)
+        this.darkModeCache = this.getSharedPreferences(getString(R.string.accountData), Context.MODE_PRIVATE)
+                .getBoolean(getString(R.string.KEY_DARK_MODE), false)
+        setTheme(if (darkModeCache) R.style.AppThemeBase_Light else R.style.AppThemeBase_Dark)
     }
 
     private fun initValue() {
