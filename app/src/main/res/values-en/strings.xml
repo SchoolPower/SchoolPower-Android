@@ -148,4 +148,27 @@
     <string name="chart_line">Line</string>
     <string name="chart_radar">Radar</string>
     <string name="chart_bar">Bar</string>
+
+    <string name="accept">Accept</string>
+    <string name="decline">Decline</string>
+
+    <string name="avatar_agreement_title">Avatar Upload Agreement</string>
+    <string name="avatar_agreement_message">SchoolPower uses the third-party website SM.MS ("the website") to store the user\'s avatar.\n
+By clicking "Agree" you agree that we will upload your chosen avatar to the website and agree to accept the website\'s license agreement.\n\n
+The SM.MS license agreement is excerpted as follows (it is only a translation. please refer to the original version on the website):\n
+{Start of SM.MS Agreement}\n
+To the extent permitted by law, please feel free to use this bed.\n
+It is forbidden to upload and share the following types of pictures:\n
+Image containing pornography, violence, and promotion of terrorism\n
+Copyright infringement, unauthorized pictures\n
+Other pictures that violate the laws of the People\'s Republic\n
+Other pictures that violate Hong Kong law\n
+{End of SM.MS Agreement}\n
+SchoolPower is not authorized by, sponsored by, affiliated with, or otherwise authorized by any of the above websites.\n\n
+SchoolPower is not responsible for any breach of their agreement.\n
+SchoolPower does not guarantee stability of the above-mentioned website.\n
+SchoolPower does not guarantee that the user\'s picture will be permanently saved or the user\'s picture will not be leaked by the above websites or the user can permanently delete his/her picture when he wishes.
+    </string>
+    <string name="avatar_upload_failed">Avatar upload failed. Please try again.</string>
+
 </resources>

@@ -143,4 +143,26 @@
     <string name="chart_line">線圖</string>
     <string name="chart_radar">雷達圖</string>
     <string name="chart_bar">柱狀圖</string>
+
+    <string name="accept">同意</string>
+    <string name="decline">拒絕</string>
+
+    <string name="avatar_agreement_title">頭像上傳許可協議</string>
+    <string name="avatar_agreement_message">SchoolPower 使用了第三方圖床網站 SM.MS 來儲存用戶的頭像。\n
+點擊“同意”代表您同意我們將您所選擇的頭像上傳到上述網站，並且同意接受上述網站的許可協議。\n\n
+SM.MS 許可協議摘抄如下（若有更新，請以該網站上的最新版為準）：\n
+{SM.MS 協議從此開始}\n
+在法律允许范围内，请随意使用本图床。\n
+严禁上传及分享如下类型的图片：\n
+含有色情、暴力、宣扬恐怖主义的图片\n
+侵犯版权、未经授权的图片\n
+其他违反中华人民共和国法律的图片\n
+其他违反香港法律的图片\n
+{SM.MS 協議至此結束}\n\n
+SchoolPower 未經上述網站的認可，贊助，附屬或以其他任何方式授權。\n
+SchoolPower 不對用戶因使用上述網站或因違反其協議導致的任何問題負責。\n
+SchoolPower 不保證上述網站的服務穩定性，不保證用戶頭像會被永久保存，不保證用戶頭像不會被上述網站洩漏，不保證用戶可以在其希望的時候永久刪除其頭像。
+   </string>
+    <string name="avatar_upload_failed">頭像上傳失敗，請重試</string>
+
 </resources>

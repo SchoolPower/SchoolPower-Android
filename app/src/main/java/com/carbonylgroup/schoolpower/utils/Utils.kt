@@ -4,6 +4,7 @@
 
 package com.carbonylgroup.schoolpower.utils
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
@@ -28,8 +29,6 @@ import org.json.JSONObject
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader
-import java.io.PrintWriter
-import java.net.URL
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -237,7 +236,7 @@ class Utils(private val context: Context) {
 
     /* IO */
     fun getSettingsPreference() =
-            context.getSharedPreferences(context.getString(R.string.settings), Activity.MODE_PRIVATE)
+            context.getSharedPreferences(context.getString(R.string.settings), Activity.MODE_PRIVATE)!!
 
     fun setSettingsPreference(key: String, value: String) {
 
@@ -345,7 +344,8 @@ class Utils(private val context: Context) {
 
     fun checkUpdate() {
 
-        Thread(PostData(context.getString(R.string.updateURL), "", object : Handler() {
+        Thread(PostData(context.getString(R.string.updateURL), "", @SuppressLint("HandlerLeak")
+        object : Handler() {
             override fun handleMessage(msg: Message) {
                 val message = msg.obj.toString()
                 if (!message.contains("{")) return
@@ -465,47 +465,5 @@ class Utils(private val context: Context) {
             }
         }
 
-        /**
-         * @param url    url
-         * *
-         * @param params name1=value1&name2=value2
-         * *
-         * @return result
-         */
-        internal fun sendPost(url: String, params: String): String {
-
-            var out: PrintWriter? = null
-            var `in`: BufferedReader? = null
-            var result = ""
-            try {
-
-                val realUrl = URL(url)
-                val conn = realUrl.openConnection()
-                conn.setRequestProperty("user-agent", "SchoolPower Android")
-                conn.doOutput = true
-                conn.doInput = true
-                out = PrintWriter(conn.getOutputStream())
-                out.print(params)
-                out.flush()
-                `in` = BufferedReader(InputStreamReader(conn.getInputStream()))
-                var line: String?
-                while (true) {
-                    line = `in`.readLine()
-                    if (line == null) break
-                    result += "\n" + line
-                }
-
-            } catch (e: Exception) {
-                e.printStackTrace()
-            } finally {
-                try {
-                    if (out != null) out.close()
-                    if (`in` != null) `in`.close()
-                } catch (ex: IOException) {
-                    ex.printStackTrace()
-                }
-            }
-            return result
-        }
     }
 }

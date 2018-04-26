@@ -22,7 +22,6 @@ import android.os.Message
 import android.preference.PreferenceManager
 import android.support.design.widget.AppBarLayout
 import android.support.design.widget.NavigationView
-import android.support.v4.app.FragmentActivity
 import android.support.v4.content.ContextCompat
 import android.support.v4.view.GravityCompat
 import android.support.v4.widget.DrawerLayout
@@ -32,8 +31,8 @@ import android.support.v7.widget.Toolbar
 import android.util.Log
 import android.view.*
 import android.view.animation.DecelerateInterpolator
+import android.widget.ImageView
 import android.widget.TextView
-import co.ceryle.segmentedbutton.SegmentedButtonGroup
 import com.carbonylgroup.schoolpower.R
 import com.carbonylgroup.schoolpower.data.Attendance
 import com.carbonylgroup.schoolpower.data.StudentInformation
@@ -45,13 +44,22 @@ import com.carbonylgroup.schoolpower.fragments.HomeFragment
 import com.carbonylgroup.schoolpower.service.PullDataJob
 import com.carbonylgroup.schoolpower.transition.DetailsTransition
 import com.carbonylgroup.schoolpower.transition.TransitionHelper
-import com.carbonylgroup.schoolpower.utils.*
-import com.gelitenight.waveview.library.WaveView
-import com.github.premnirmal.textcounter.CounterView
+import com.carbonylgroup.schoolpower.utils.ContextWrapper
+import com.carbonylgroup.schoolpower.utils.GPADialog
+import com.carbonylgroup.schoolpower.utils.PostData
+import com.carbonylgroup.schoolpower.utils.Utils
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.MobileAds
+import com.squareup.picasso.Picasso
+import com.theartofdev.edmodo.cropper.CropImage
+import com.theartofdev.edmodo.cropper.CropImageView
 import kotterknife.bindView
+import okhttp3.*
+import org.json.JSONObject
+import java.io.File
+import java.io.IOException
+import java.net.URLConnection
 import java.util.*
 
 
@@ -222,17 +230,43 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
         }
     }
 
+    private fun setAvatar() {
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle(getString(R.string.avatar_agreement_title))
+        builder.setMessage(getString(R.string.avatar_agreement_message))
+        builder.setPositiveButton(getString(R.string.accept)) { _, _ ->
+            CropImage.activity()
+                    .setCropShape(CropImageView.CropShape.OVAL)
+                    .setAspectRatio(1,1)
+                    .setFixAspectRatio(true)
+                    .start(this)
+        }
+        builder.setNegativeButton(getString(R.string.decline), null)
+        builder.show()
+    }
+    private fun updateAvatar() {
+        val header = navigationView.getHeaderView(0)
+        val avatarUrl = getSharedPreferences("accountData", Activity.MODE_PRIVATE).getString("user_avatar", "")
+        if(avatarUrl!="")
+            Picasso.get().load(avatarUrl).placeholder(R.drawable.icon).into(header.findViewById<ImageView>(R.id.user_avatar))
+
+    }
     private fun initDrawer() {
 
-        navigationView = findViewById<NavigationView>(R.id.nav_view)
+        navigationView = findViewById(R.id.nav_view)
         navigationView.setNavigationItemSelectedListener(this)
 
         toggle.isDrawerIndicatorEnabled = false
         toggle.setHomeAsUpIndicator(toggleIcon)
         toggle.syncState()
 
-        navigationView.getHeaderView(0).findViewById<TextView>(R.id.nav_header_username).text = getUsername()
-        navigationView.getHeaderView(0).findViewById<TextView>(R.id.nav_header_id).text = getUserID()
+        val header = navigationView.getHeaderView(0)
+        header.findViewById<TextView>(R.id.nav_header_username).text = getUsername()
+        header.findViewById<TextView>(R.id.nav_header_id).text = getUserID()
+        header.findViewById<ImageView>(R.id.user_avatar).setOnLongClickListener(
+                {_-> setAvatar();true }
+        )
+        updateAvatar()
     }
 
     private fun initScheduler() {
@@ -555,7 +589,69 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
             finish()
             return
         }
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            val result = CropImage.getActivityResult(data)
+            if (resultCode == RESULT_OK) {
+                val file = File(result.uri.path)
 
+                val requestBody = MultipartBody.Builder()
+                        .setType(MultipartBody.FORM)
+                        .addFormDataPart("smfile", file.name,
+                                RequestBody.create(MediaType.parse(URLConnection.guessContentTypeFromName(file.name)), file))
+                        .build()
+
+                val request = Request.Builder()
+                        .url(getString(R.string.imageUploadURL))
+                        .post(requestBody)
+                        .header("User-Agent", "SchoolPower")
+                        .build()
+
+                val client = OkHttpClient.Builder().build()
+                client.newCall(request).enqueue(object : Callback {
+                    override fun onFailure(call: Call, e: IOException) {
+                        utils.showSnackBar(this@MainActivity, findViewById(R.id.main_coordinate_layout), getString(R.string.avatar_upload_failed), true)
+                        e.printStackTrace()
+                    }
+                    override fun onResponse(call: Call, response: Response) {
+                        val res = response.body()?.string()
+                        Log.d("avatar", res)
+                        val responseJson = JSONObject(res)
+                        if (responseJson["code"] != "success") {
+                            utils.showSnackBar(this@MainActivity, findViewById(R.id.main_coordinate_layout), getString(R.string.avatar_upload_failed), true)
+                            return
+                        }
+                        val avatarUrl = responseJson.getJSONObject("data")["url"].toString()
+                        val username = getSharedPreferences("accountData", Activity.MODE_PRIVATE).getString(getString(R.string.usernameKEY), "")
+                        val password = getSharedPreferences("accountData", Activity.MODE_PRIVATE).getString(getString(R.string.passwordKEY), "")
+
+                        val requestAvatar = Request.Builder()
+                                .url(getString(R.string.avatarURL))
+                                .post(MultipartBody.Builder()
+                                        .setType(MultipartBody.FORM)
+                                        .addFormDataPart("username", username)
+                                        .addFormDataPart("password", password)
+                                        .addFormDataPart("new_avatar", avatarUrl)
+                                        .build())
+                                .header("User-Agent", "SchoolPower")
+                                .build()
+
+                        val response = client.newCall(requestAvatar).execute()
+
+                        val header = navigationView.getHeaderView(0)
+                        header.findViewById<ImageView>(R.id.user_avatar).post{
+                            updateAvatar()
+                        }
+                        val spEditor = getSharedPreferences("accountData", Activity.MODE_PRIVATE).edit()
+                        spEditor.putString("user_avatar", avatarUrl)
+                        spEditor.apply()
+
+                    }
+                })
+
+            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                //val error = result.error
+            }
+        }
         if (presentFragment == 0) { // Refresh the home fragment to apply settings
 
             homeFragment = HomeFragment()

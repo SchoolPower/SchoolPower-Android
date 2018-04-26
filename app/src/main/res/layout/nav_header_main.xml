@@ -23,7 +23,7 @@
         app:cardCornerRadius="40dp">
 
         <ImageView
-            android:id="@+id/SchoolPowerLogo"
+            android:id="@+id/user_avatar"
             android:layout_width="match_parent"
             android:layout_height="80dp"
             android:layout_alignParentTop="true"
