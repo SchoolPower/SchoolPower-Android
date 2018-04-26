@@ -147,4 +147,5 @@
 
     <string name="chart_line">Line</string>
     <string name="chart_radar">Radar</string>
+    <string name="chart_bar">Bar</string>
 </resources>

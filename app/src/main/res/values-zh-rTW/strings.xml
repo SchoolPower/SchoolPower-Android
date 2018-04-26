@@ -142,4 +142,5 @@
 
     <string name="chart_line">線圖</string>
     <string name="chart_radar">雷達圖</string>
+    <string name="chart_bar">柱狀圖</string>
 </resources>

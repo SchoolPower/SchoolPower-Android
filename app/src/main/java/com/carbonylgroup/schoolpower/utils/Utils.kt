@@ -8,7 +8,6 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
-import android.media.Image
 import android.net.Uri
 import android.os.Handler
 import android.os.Message
@@ -33,7 +32,6 @@ import java.io.PrintWriter
 import java.net.URL
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.HashMap
 
 class Utils(private val context: Context) {
 
@@ -102,9 +100,9 @@ class Utils(private val context: Context) {
             Int = domain.indices.firstOrNull { searchString == domain[it] } ?: -1
 
     /* Color Handler */
-    fun getColorByLetterGrade(letterGrade: String) : Int {
+    fun getColorByLetterGrade(letterGrade: String): Int {
         val colorIndex = indexOfString(letterGrade, arrayOf("A", "B", "C+", "C", "C-", "F", "I", "--"))
-        return ContextCompat.getColor(context, if (colorIndex!=-1) gradeColorIds[colorIndex] else 7)
+        return ContextCompat.getColor(context, if (colorIndex != -1) gradeColorIds[colorIndex] else 7)
     }
 
     fun getDarkColorByPrimary(originalPrimary: Int) = ContextCompat.getColor(context,
@@ -112,6 +110,7 @@ class Utils(private val context: Context) {
 
     fun getColorByAttendance(context: Context, attendanceCode: String) = ContextCompat.getColor(context,
             attendanceColorIds[attendanceCode] ?: R.color.gray)
+
     /* Others */
     fun dpToPx(dp: Int) = Math.round(dp * (context.resources.displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT))
 
@@ -226,12 +225,12 @@ class Utils(private val context: Context) {
             o1.blockLetter.compareTo(o2.blockLetter)
         })
         val disabled = studentData.has("disabled")
-        var disabledTitle : String? = null
-        var disabledMessage : String? = null
-        if(disabled){
+        var disabledTitle: String? = null
+        var disabledMessage: String? = null
+        if (disabled) {
             val disable = studentData.getJSONObject("disabled")
-            disabledTitle = disable.getString("title")?:"Access is disabled"
-            disabledMessage = disable.getString("message")?:context.getString(R.string.powerschool_disabled)
+            disabledTitle = disable.getString("title") ?: "Access is disabled"
+            disabledMessage = disable.getString("message") ?: context.getString(R.string.powerschool_disabled)
         }
         return StudentData(studentInfo, attendances, subjects, disabled, disabledTitle, disabledMessage)
     }
@@ -267,7 +266,7 @@ class Utils(private val context: Context) {
 
             return data.toString()
 
-        } catch(e: Exception) {
+        } catch (e: Exception) {
             e.printStackTrace()
         }
         return null
@@ -323,7 +322,7 @@ class Utils(private val context: Context) {
             // 2. calculate gpa
             val gpaInfo = JSONObject()
             gpaInfo.put("name", "GPA")
-            if (count!=0)
+            if (count != 0)
                 gpaInfo.put("grade", pointSum / count.toDouble())
             else
                 gpaInfo.put("grade", 0.0)
@@ -356,8 +355,7 @@ class Utils(private val context: Context) {
                     val builder = AlertDialog.Builder(context)
                     builder.setTitle(context.getString(R.string.upgrade_title))
                     builder.setMessage(updateJSON.getString("description"))
-                    builder.setPositiveButton(context.getString(R.string.upgrade_pos)) {
-                        dialog, _ ->
+                    builder.setPositiveButton(context.getString(R.string.upgrade_pos)) { dialog, _ ->
                         run {
                             dialog.dismiss()
                             val intent = Intent(Intent.ACTION_VIEW, Uri.parse(updateJSON.getString("url")))
@@ -381,7 +379,7 @@ class Utils(private val context: Context) {
             subjects
                     .filter {
                         val currentTime = System.currentTimeMillis()
-                        currentTime>it.startDate && currentTime<it.endDate
+                        currentTime > it.startDate && currentTime < it.endDate
                     }
                     .forEach { filteredSubjects.add(it) }
 
@@ -391,7 +389,7 @@ class Utils(private val context: Context) {
         return filteredSubjects
     }
 
-    fun getActionBarSizePx():Int{
+    fun getActionBarSizePx(): Int {
         val styledAttributes = context.theme.obtainStyledAttributes(
                 intArrayOf(android.R.attr.actionBarSize))
         val actionBarSize = styledAttributes.getDimension(0, 0f).toInt()
@@ -401,10 +399,28 @@ class Utils(private val context: Context) {
 
     companion object {
 
+        val chartColorList = arrayOf(
+                "#534550",
+                "#c0de32",
+                "#904cdb",
+                "#76ca52",
+                "#c953b8",
+                "#67bc84",
+                "#5d4da6",
+                "#c3a83f",
+                "#858fbf",
+                "#d7552d",
+                "#65bebe",
+                "#b8517b",
+                "#919652",
+                "#ad5844",
+                "#a49a85"
+        )
+
         // convert date like "2018-01-21T16:00:00.000Z" to timestamp (unit: MILLISECOND)
-        fun convertDateToTimestamp(date:String): Long{
+        fun convertDateToTimestamp(date: String): Long {
             val temp = SimpleDateFormat("yyyy-MM-dd", Locale.CHINA).parse(date.replace("T16:00:00.000Z", ""))
-            temp.time+=24*60*60*1000
+            temp.time += 24 * 60 * 60 * 1000
             return temp.time
         }
 
@@ -438,13 +454,13 @@ class Utils(private val context: Context) {
             }
 
 
-            if(subjectTitle.length>3) {
+            if (subjectTitle.length > 3) {
                 var ret = subjectTitle.substring(0, 3).capitalize()
                 for (c in subjectTitle.substring(3)) {
                     if (c.isUpperCase() || c.isDigit()) ret += c
                 }
                 return ret
-            }else{
+            } else {
                 return subjectTitle
             }
         }
