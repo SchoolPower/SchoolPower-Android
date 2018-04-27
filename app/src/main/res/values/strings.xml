@@ -233,4 +233,7 @@ SchoolPower does not guarantee stability of the above-mentioned website.\n
 SchoolPower does not guarantee that the user\'s picture will be permanently saved or the user\'s picture will not be leaked by the above websites or the user can permanently delete his/her picture when he wishes.
     </string>
     <string name="avatar_upload_failed">Avatar upload failed. Please try again.</string>
+    <string name="change_avatar">Change avatar</string>
+    <string name="remove_avatar">Remove avatar</string>
+
 </resources>

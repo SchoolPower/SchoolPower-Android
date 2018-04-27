@@ -31,6 +31,8 @@ import android.support.v7.widget.Toolbar
 import android.util.Log
 import android.view.*
 import android.view.animation.DecelerateInterpolator
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.ImageView
 import android.widget.TextView
 import com.carbonylgroup.schoolpower.R
@@ -230,27 +232,92 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
         }
     }
 
-    private fun setAvatar() {
+    private fun modifyAvatar() {
         val builder = AlertDialog.Builder(this)
         builder.setTitle(getString(R.string.avatar_agreement_title))
         builder.setMessage(getString(R.string.avatar_agreement_message))
         builder.setPositiveButton(getString(R.string.accept)) { _, _ ->
             CropImage.activity()
                     .setCropShape(CropImageView.CropShape.OVAL)
-                    .setAspectRatio(1,1)
+                    .setAspectRatio(1, 1)
                     .setFixAspectRatio(true)
                     .start(this)
         }
         builder.setNegativeButton(getString(R.string.decline), null)
         builder.show()
     }
+
+    private fun removeAvatar() {
+        val username = getSharedPreferences("accountData", Activity.MODE_PRIVATE).getString(getString(R.string.usernameKEY), "")
+        val password = getSharedPreferences("accountData", Activity.MODE_PRIVATE).getString(getString(R.string.passwordKEY), "")
+
+        val requestAvatar = Request.Builder()
+                .url(getString(R.string.avatarURL))
+                .post(MultipartBody.Builder()
+                        .setType(MultipartBody.FORM)
+                        .addFormDataPart("username", username)
+                        .addFormDataPart("password", password)
+                        .addFormDataPart("new_avatar", "")
+                        .addFormDataPart("remove_code", "")
+                        .build())
+                .header("User-Agent", "SchoolPower")
+                .build()
+
+        val client = OkHttpClient.Builder().build()
+        client.newCall(requestAvatar).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                e.printStackTrace()
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                val res = response.body()?.string()
+                if (res?.contains("error") != false) {
+                    utils.showSnackBar(this@MainActivity, findViewById(R.id.main_coordinate_layout),
+                            JSONObject(res)["error"].toString(), true)
+                }else{
+                    val spEditor = getSharedPreferences("accountData", Activity.MODE_PRIVATE).edit()
+                    spEditor.putString("user_avatar", "")
+                    spEditor.apply()
+                    val header = navigationView.getHeaderView(0)
+                    header.findViewById<ImageView>(R.id.user_avatar).post {
+                        header.findViewById<ImageView>(R.id.user_avatar).setImageDrawable(getDrawable(R.drawable.icon))
+                    }
+                }
+            }
+        }
+        )
+
+    }
+
+    private fun setAvatar() {
+
+        val builder = AlertDialog.Builder(this)
+
+        builder.setAdapter(
+                ArrayAdapter<String>(this,
+                        R.layout.simple_list_item,
+                        arrayOf(getString(R.string.change_avatar), getString(R.string.remove_avatar)))
+                , null)
+
+        val alertDialog = builder.create()
+
+        alertDialog.listView.setOnItemClickListener { _: AdapterView<*>, _: View, position: Int, _: Long ->
+            if (position == 0) modifyAvatar()
+            else removeAvatar()
+            alertDialog.dismiss()
+        }
+        alertDialog.show()
+
+    }
+
     private fun updateAvatar() {
         val header = navigationView.getHeaderView(0)
         val avatarUrl = getSharedPreferences("accountData", Activity.MODE_PRIVATE).getString("user_avatar", "")
-        if(avatarUrl!="")
+        if (avatarUrl != "")
             Picasso.get().load(avatarUrl).placeholder(R.drawable.icon).into(header.findViewById<ImageView>(R.id.user_avatar))
 
     }
+
     private fun initDrawer() {
 
         navigationView = findViewById(R.id.nav_view)
@@ -264,7 +331,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
         header.findViewById<TextView>(R.id.nav_header_username).text = getUsername()
         header.findViewById<TextView>(R.id.nav_header_id).text = getUserID()
         header.findViewById<ImageView>(R.id.user_avatar).setOnLongClickListener(
-                {_-> setAvatar();true }
+                { _ -> setAvatar();true }
         )
         updateAvatar()
     }
@@ -470,6 +537,13 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                                 studentInformation = data.studentInfo
                                 subjects = data.subjects
                                 attendances = data.attendances
+                                val extraInfo = data.extraInfo
+
+                                val spEditor = getSharedPreferences("accountData", Activity.MODE_PRIVATE).edit()
+                                spEditor.putString("user_avatar", extraInfo.avatar)
+                                spEditor.apply()
+                                updateAvatar()
+
                                 when (presentFragment) {
                                     0 -> if (subjects!!.isEmpty()) homeFragment!!.refreshAdapterToEmpty()
                                     3 -> if (attendances!!.isEmpty()) attendanceFragment!!.refreshAdapterToEmpty()
@@ -612,6 +686,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                         utils.showSnackBar(this@MainActivity, findViewById(R.id.main_coordinate_layout), getString(R.string.avatar_upload_failed), true)
                         e.printStackTrace()
                     }
+
                     override fun onResponse(call: Call, response: Response) {
                         val res = response.body()?.string()
                         Log.d("avatar", res)
@@ -631,20 +706,26 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                                         .addFormDataPart("username", username)
                                         .addFormDataPart("password", password)
                                         .addFormDataPart("new_avatar", avatarUrl)
+                                        .addFormDataPart("remove_code", responseJson.getJSONObject("data")["hash"].toString())
                                         .build())
                                 .header("User-Agent", "SchoolPower")
                                 .build()
 
-                        val response = client.newCall(requestAvatar).execute()
+                        val responseAvatar = client.newCall(requestAvatar).execute().body()?.string()
 
-                        val header = navigationView.getHeaderView(0)
-                        header.findViewById<ImageView>(R.id.user_avatar).post{
-                            updateAvatar()
+                        if (responseAvatar?.contains("error") != false) {
+                            utils.showSnackBar(this@MainActivity, findViewById(R.id.main_coordinate_layout),
+                                    JSONObject(responseAvatar)["error"].toString(), true)
                         }
+
                         val spEditor = getSharedPreferences("accountData", Activity.MODE_PRIVATE).edit()
                         spEditor.putString("user_avatar", avatarUrl)
                         spEditor.apply()
 
+                        val header = navigationView.getHeaderView(0)
+                        header.findViewById<ImageView>(R.id.user_avatar).post {
+                            updateAvatar()
+                        }
                     }
                 })
 

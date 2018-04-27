@@ -164,5 +164,6 @@ SchoolPower 不對用戶因使用上述網站或因違反其協議導致的任�
 SchoolPower 不保證上述網站的服務穩定性，不保證用戶頭像會被永久保存，不保證用戶頭像不會被上述網站洩漏，不保證用戶可以在其希望的時候永久刪除其頭像。
    </string>
     <string name="avatar_upload_failed">頭像上傳失敗，請重試</string>
-
+    <string name="change_avatar">修改頭像</string>
+    <string name="remove_avatar">刪除頭像</string>
 </resources>

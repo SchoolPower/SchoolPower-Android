@@ -5,4 +5,6 @@ package com.carbonylgroup.schoolpower.data
  */
 
 class StudentData(val studentInfo: StudentInformation, val attendances: List<Attendance>, val subjects: List<Subject>,
-                  val disabled: Boolean, val disabledTitle: String?, val disabledMessage: String?)
+                  val disabled: Boolean, val disabledTitle: String?, val disabledMessage: String?, val extraInfo: ExtraInfo)
+
+class ExtraInfo(val avatar:String)

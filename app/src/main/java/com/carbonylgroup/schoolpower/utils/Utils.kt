@@ -19,10 +19,7 @@ import android.util.DisplayMetrics
 import android.util.Log
 import android.view.View
 import com.carbonylgroup.schoolpower.R
-import com.carbonylgroup.schoolpower.data.Attendance
-import com.carbonylgroup.schoolpower.data.StudentData
-import com.carbonylgroup.schoolpower.data.StudentInformation
-import com.carbonylgroup.schoolpower.data.Subject
+import com.carbonylgroup.schoolpower.data.*
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
@@ -231,7 +228,13 @@ class Utils(private val context: Context) {
             disabledTitle = disable.getString("title") ?: "Access is disabled"
             disabledMessage = disable.getString("message") ?: context.getString(R.string.powerschool_disabled)
         }
-        return StudentData(studentInfo, attendances, subjects, disabled, disabledTitle, disabledMessage)
+        val extraInfo = if (studentData.has("additional")) {
+            val additional = studentData.getJSONObject("additional")
+            ExtraInfo(avatar = additional["avatar"].toString())
+        }else{
+            ExtraInfo(avatar = "")
+        }
+        return StudentData(studentInfo, attendances, subjects, disabled, disabledTitle, disabledMessage, extraInfo)
     }
 
     /* IO */
