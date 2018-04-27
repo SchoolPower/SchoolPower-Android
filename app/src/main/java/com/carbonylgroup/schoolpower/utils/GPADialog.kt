@@ -2,14 +2,10 @@ package com.carbonylgroup.schoolpower.utils
 
 import android.app.Activity
 import android.app.AlertDialog
-import android.opengl.Visibility
 import android.preference.PreferenceManager
-import android.util.Log
 import android.view.View
-import android.view.View.GONE
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.LinearLayout
 import android.widget.Spinner
 import co.ceryle.segmentedbutton.SegmentedButtonGroup
 import com.carbonylgroup.schoolpower.R
@@ -130,7 +126,7 @@ class GPADialog(private val activity: Activity, private val subjects: List<Subje
     }
 
     private fun calculateCustomGPA(term : String) : Float {
-        val customRule = utils.getSettingsPreference().getString("list_preference_custom_gpa_calculate", "all")
+        val customRule = utils.getSharedPreference(Utils.SettingsPreference).getString("list_preference_custom_gpa_calculate", "all")
         val customSubjects = PreferenceManager.getDefaultSharedPreferences(activity).getStringSet("list_preference_customize_gpa", HashSet())
         if(customSubjects.isEmpty()) return Float.NaN
 

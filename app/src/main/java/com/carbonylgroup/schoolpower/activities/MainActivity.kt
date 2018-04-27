@@ -5,7 +5,6 @@
 package com.carbonylgroup.schoolpower.activities
 
 import android.animation.ValueAnimator
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
 import android.app.job.JobInfo
@@ -17,8 +16,6 @@ import android.content.Intent
 import android.content.res.Resources
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.os.Handler
-import android.os.Message
 import android.preference.PreferenceManager
 import android.support.design.widget.AppBarLayout
 import android.support.design.widget.NavigationView
@@ -37,6 +34,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.carbonylgroup.schoolpower.R
 import com.carbonylgroup.schoolpower.data.Attendance
+import com.carbonylgroup.schoolpower.data.StudentData
 import com.carbonylgroup.schoolpower.data.StudentInformation
 import com.carbonylgroup.schoolpower.data.Subject
 import com.carbonylgroup.schoolpower.fragments.AboutFragment
@@ -48,8 +46,8 @@ import com.carbonylgroup.schoolpower.transition.DetailsTransition
 import com.carbonylgroup.schoolpower.transition.TransitionHelper
 import com.carbonylgroup.schoolpower.utils.ContextWrapper
 import com.carbonylgroup.schoolpower.utils.GPADialog
-import com.carbonylgroup.schoolpower.utils.PostData
 import com.carbonylgroup.schoolpower.utils.Utils
+import com.carbonylgroup.schoolpower.utils.Utils.Companion.AccountData
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.MobileAds
@@ -96,10 +94,10 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
     override fun attachBaseContext(newBase: Context) {
 
         utils = Utils(newBase)
-        var newLocale = utils.readLangPref()
-        if (newLocale == null) newLocale = 0
+        val newLocale = utils.getSharedPreference(Utils.SettingsPreference).getString("lang", "0").toInt()
         val context = ContextWrapper.wrap(newBase, localeSet[newLocale])
         super.attachBaseContext(context)
+
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -112,7 +110,8 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
         initUI()
         initOnClick()
         initScheduler()
-        utils.checkUpdate()
+        utils.checkApplicationUpdate()
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -127,7 +126,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
 
         when (item.itemId) {
             R.id.action_refresh -> {
-                initDataJson()
+                fetchStudentDataFromServer()
                 when (presentFragment) {
                     0 -> homeFragment!!.setRefreshing(true)
                     3 -> attendanceFragment!!.setRefreshing(true)
@@ -200,7 +199,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
         } catch (e: Exception) {
             e.printStackTrace()
         }
-        initDataJson()
+        fetchStudentDataFromServer()
 
         //Start refreshing animation on startup refreshing data
         //Don't when there is no connection
@@ -248,71 +247,61 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
     }
 
     private fun removeAvatar() {
-        val username = getSharedPreferences("accountData", Activity.MODE_PRIVATE).getString(getString(R.string.usernameKEY), "")
-        val password = getSharedPreferences("accountData", Activity.MODE_PRIVATE).getString(getString(R.string.passwordKEY), "")
+        val username = utils.getSharedPreference(AccountData).getString(getString(R.string.usernameKEY), "")
+        val password = utils.getSharedPreference(AccountData).getString(getString(R.string.passwordKEY), "")
 
-        val requestAvatar = Request.Builder()
-                .url(getString(R.string.avatarURL))
-                .post(MultipartBody.Builder()
+        utils.buildNetworkRequest(getString(R.string.avatarURL), "POST",
+                MultipartBody.Builder()
                         .setType(MultipartBody.FORM)
                         .addFormDataPart("username", username)
                         .addFormDataPart("password", password)
                         .addFormDataPart("new_avatar", "")
                         .addFormDataPart("remove_code", "")
                         .build())
-                .header("User-Agent", "SchoolPower")
-                .build()
-
-        val client = OkHttpClient.Builder().build()
-        client.newCall(requestAvatar).enqueue(object : Callback {
-            override fun onFailure(call: Call, e: IOException) {
-                e.printStackTrace()
-            }
-
-            override fun onResponse(call: Call, response: Response) {
-                val res = response.body()?.string()
-                if (res?.contains("error") != false) {
-                    utils.showSnackBar(this@MainActivity, findViewById(R.id.main_coordinate_layout),
-                            JSONObject(res)["error"].toString(), true)
-                }else{
-                    val spEditor = getSharedPreferences("accountData", Activity.MODE_PRIVATE).edit()
-                    spEditor.putString("user_avatar", "")
-                    spEditor.apply()
-                    val header = navigationView.getHeaderView(0)
-                    header.findViewById<ImageView>(R.id.user_avatar).post {
-                        header.findViewById<ImageView>(R.id.user_avatar).setImageDrawable(getDrawable(R.drawable.icon))
+                .enqueue(object : Callback {
+                    override fun onFailure(call: Call, e: IOException) {
+                        e.printStackTrace()
                     }
-                }
-            }
-        }
-        )
 
+                    override fun onResponse(call: Call, response: Response) {
+                        val res = response.body()?.string()
+                        if (res?.contains("error") != false) {
+                            utils.showSnackBar(this@MainActivity, findViewById(R.id.main_coordinate_layout),
+                                    JSONObject(res)["error"].toString(), true)
+                        } else {
+                            utils.setSharedPreference(AccountData, "user_avatar", "")
+                            val header = navigationView.getHeaderView(0)
+                            header.findViewById<ImageView>(R.id.user_avatar).post {
+                                header.findViewById<ImageView>(R.id.user_avatar).setImageDrawable(getDrawable(R.drawable.icon))
+                            }
+                        }
+                    }
+                })
     }
 
     private fun setAvatar() {
 
-        val builder = AlertDialog.Builder(this)
+        if(utils.getSharedPreference(AccountData).getString("user_avatar","")!="") {
+            val alertDialog =
+                    AlertDialog.Builder(this)
+                            .setAdapter(ArrayAdapter<String>(this, R.layout.simple_list_item,
+                                    arrayOf(getString(R.string.change_avatar), getString(R.string.remove_avatar))), null)
+                            .create()
 
-        builder.setAdapter(
-                ArrayAdapter<String>(this,
-                        R.layout.simple_list_item,
-                        arrayOf(getString(R.string.change_avatar), getString(R.string.remove_avatar)))
-                , null)
-
-        val alertDialog = builder.create()
-
-        alertDialog.listView.setOnItemClickListener { _: AdapterView<*>, _: View, position: Int, _: Long ->
-            if (position == 0) modifyAvatar()
-            else removeAvatar()
-            alertDialog.dismiss()
+            alertDialog.listView.setOnItemClickListener { _: AdapterView<*>, _: View, position: Int, _: Long ->
+                if (position == 0) modifyAvatar()
+                else removeAvatar()
+                alertDialog.dismiss()
+            }
+            alertDialog.show()
+        }else{
+            modifyAvatar()
         }
-        alertDialog.show()
-
     }
 
     private fun updateAvatar() {
         val header = navigationView.getHeaderView(0)
-        val avatarUrl = getSharedPreferences("accountData", Activity.MODE_PRIVATE).getString("user_avatar", "")
+        val avatarUrl = utils.getSharedPreference(AccountData).getString("user_avatar", "")
         if (avatarUrl != "")
             Picasso.get().load(avatarUrl).placeholder(R.drawable.icon).into(header.findViewById<ImageView>(R.id.user_avatar))
 
@@ -496,130 +485,115 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
     }
 
     /* Other Methods */
-    fun initDataJson() {
+    fun fetchStudentDataFromServer() {
 
         val oldSubjects = ArrayList<Subject>()
         val oldAttendances = ArrayList<Attendance>()
 
-        val username = getSharedPreferences("accountData", Activity.MODE_PRIVATE).getString(getString(R.string.usernameKEY), "")
-        val password = getSharedPreferences("accountData", Activity.MODE_PRIVATE).getString(getString(R.string.passwordKEY), "")
+        val username = utils.getSharedPreference(AccountData).getString(getString(R.string.usernameKEY), "")
+        val password = utils.getSharedPreference(AccountData).getString(getString(R.string.passwordKEY), "")
         if (subjects != null) oldSubjects.addAll(subjects!!)
         if (attendances != null) oldAttendances.addAll(attendances!!)
 
-        val version = packageManager.getPackageInfo("com.carbonylgroup.schoolpower", 0).versionName
+        utils.buildNetworkRequest(getString(R.string.postURL), "POST",
+                MultipartBody.Builder()
+                        .setType(MultipartBody.FORM)
+                        .addFormDataPart("username", username)
+                        .addFormDataPart("password", password)
+                        .addFormDataPart("version", utils.getAppVersion())
+                        .addFormDataPart("action", "manual_get_data")
+                        .addFormDataPart("os", "android")
+                        .build()).enqueue(
+                object : Callback {
+                    override fun onFailure(call: Call, e: IOException) {
+                        e.printStackTrace()
 
-        Thread(PostData(
-                getString(R.string.postURL),
-                "username=$username&password=$password&version=$version&action=manual_get_data&os=android",
-                @SuppressLint("HandlerLeak")
-                object : Handler() {
-                    override fun handleMessage(msg: Message) {
-                        val strMessage = msg.obj.toString().replace("\n", "")
+                        utils.showSnackBar(this@MainActivity, findViewById(R.id.main_coordinate_layout), getString(R.string.no_connection), true)
+                        when (presentFragment) {
+                            0 -> homeFragment!!.setRefreshing(false)
+                            3 -> attendanceFragment!!.setRefreshing(false)
+                        }
+                        noConnection = true
+                    }
 
-                        when {
-                            strMessage.contains("Something went wrong!") -> {
+                    override fun onResponse(call: Call, response: Response) {
+                        val strMessage = response.body()!!.string().replace("\n", "")
 
-                                utils.showSnackBar(this@MainActivity, findViewById(R.id.main_coordinate_layout), getString(R.string.wrong_password), true)
-                                signOut()
+                        // Error happened. Usually caused by wrong username/password
+                        if (strMessage.contains("Something went wrong!")) {
+                            utils.showSnackBar(this@MainActivity, findViewById(R.id.main_coordinate_layout), getString(R.string.wrong_password), true)
+                            signOut()
+                            return
+                        }
 
+                        // Get response but not a valid JSON
+                        if (!strMessage.contains("{")) {
+                            utils.showSnackBar(this@MainActivity, findViewById(R.id.main_coordinate_layout), getString(R.string.server_problem) + strMessage, true)
+                            when (presentFragment) {
+                                0 -> homeFragment!!.setRefreshing(false)
+                                3 -> attendanceFragment!!.setRefreshing(false)
                             }
-                            strMessage.contains(getString(R.string.json_begin)) -> {
+                            noConnection = true
+                            return
+                        }
 
-                                utils.saveDataJson(strMessage)
-                                val data = utils.parseJsonResult(strMessage)
-                                if (data.disabled) {
-                                    val builder = AlertDialog.Builder(this@MainActivity)
-                                    builder.setMessage(data.disabledMessage)
-                                    builder.setTitle(data.disabledTitle)
-                                    builder.setPositiveButton(getString(R.string.alright), null)
-                                    builder.create().show()
-                                }
-                                studentInformation = data.studentInfo
-                                subjects = data.subjects
-                                attendances = data.attendances
-                                val extraInfo = data.extraInfo
+                        utils.saveDataJson(strMessage)
+                        val data = StudentData(this@MainActivity, strMessage)
+                        if (data.disabled) {
+                            val builder = AlertDialog.Builder(this@MainActivity)
+                            builder.setMessage(data.disabledMessage)
+                            builder.setTitle(data.disabledTitle)
+                            builder.setPositiveButton(getString(R.string.alright), null)
+                            builder.create().show()
+                        }
+                        studentInformation = data.studentInfo
+                        subjects = data.subjects
+                        attendances = data.attendances
+                        val extraInfo = data.extraInfo
 
-                                val spEditor = getSharedPreferences("accountData", Activity.MODE_PRIVATE).edit()
-                                spEditor.putString("user_avatar", extraInfo.avatar)
-                                spEditor.apply()
-                                updateAvatar()
+                        utils.setSharedPreference(AccountData, "user_avatar", extraInfo.avatar)
 
-                                when (presentFragment) {
-                                    0 -> if (subjects!!.isEmpty()) homeFragment!!.refreshAdapterToEmpty()
-                                    3 -> if (attendances!!.isEmpty()) attendanceFragment!!.refreshAdapterToEmpty()
-                                }
-                                utils.saveHistoryGrade(subjects!!)
+                        when (presentFragment) {
+                            0 -> if (subjects!!.isEmpty()) homeFragment!!.refreshAdapterToEmpty()
+                            3 -> if (attendances!!.isEmpty()) attendanceFragment!!.refreshAdapterToEmpty()
+                        }
+                        utils.saveHistoryGrade(subjects!!)
 
-                                // Mark new or changed assignments
-                                if (subjects!!.size == oldSubjects.size) {
-                                    for (i in subjects!!.indices) {
-                                        val newAssignmentListCollection = subjects!![i].assignments
-                                        val oldAssignmentListCollection = oldSubjects[i].assignments
-                                        for (item in newAssignmentListCollection) {
-                                            // if no item in oldAssignmentListCollection has the same title, score and date as those of the new one, then the assignment should be marked.
-                                            val found = oldAssignmentListCollection.any {
-                                                it.title == item.title
-                                                        && it.score == item.score
-                                                        && it.date == item.date
-                                                        && !it.isNew
-                                            }
-                                            if (!found) {
-                                                item.isNew = true
-
-                                                var oldPercent = 0
-                                                var newPercent = 0
-                                                var oldPercentStr = "--"
-                                                var newPercentStr = "--"
-                                                if (utils.getLatestPeriodGrade(oldSubjects[i]) != null)
-                                                    oldPercentStr = utils.getLatestPeriodGrade(oldSubjects[i])!!.percentage
-                                                if (utils.getLatestPeriodGrade(subjects!![i]) != null)
-                                                    newPercentStr = utils.getLatestPeriodGrade(subjects!![i])!!.percentage
-                                                if (oldPercentStr != "--") oldPercent = oldPercentStr.toInt()
-                                                if (newPercentStr != "--") newPercent = newPercentStr.toInt()
-
-                                                if (oldPercent != newPercent)
-                                                    subjects!![i].margin = newPercent - oldPercent
-                                            }
-                                        }
-                                    }
-                                }
-                                // Mark new or changed attendances
-                                for (item in attendances!!) {
-                                    val found = oldAttendances.any { it -> it.name == item.name && it.date == item.date && it.code == item.code && !it.isNew }
-                                    if (!found) item.isNew = true
-                                }
-                                when (presentFragment) {
-                                    0 -> homeFragment!!.refreshAdapter(subjects!!)
-                                    3 -> attendanceFragment!!.refreshAdapter(attendances!!)
-                                }
-                                utils.showSnackBar(this@MainActivity, findViewById(R.id.main_coordinate_layout), getString(R.string.data_updated), false)
-                            }
-                            else -> {
-
-                                utils.showSnackBar(this@MainActivity, findViewById(R.id.main_coordinate_layout), getString(R.string.no_connection), true)
-                                when (presentFragment) {
-                                    0 -> homeFragment!!.setRefreshing(false)
-                                    3 -> attendanceFragment!!.setRefreshing(false)
-                                }
-                                noConnection = true
+                        // Mark new or changed assignments
+                        if (subjects!!.size == oldSubjects.size) {
+                            for (i in subjects!!.indices) {
+                                subjects!![i].markNewAssignments(oldSubjects[i], this@MainActivity)
                             }
                         }
+                        // Mark new or changed attendances
+                        for (item in attendances!!) {
+                            val found = oldAttendances.any { it -> it.name == item.name && it.date == item.date && it.code == item.code && !it.isNew }
+                            if (!found) item.isNew = true
+                        }
+                        runOnUiThread {
+                            when (presentFragment) {
+                                0 -> homeFragment!!.refreshAdapter(subjects!!)
+                                3 -> attendanceFragment!!.refreshAdapter(attendances!!)
+                            }
+
+                            updateAvatar()
+                            utils.showSnackBar(this@MainActivity, findViewById(R.id.main_coordinate_layout), getString(R.string.data_updated), false)
+                        }
                     }
-                })).start()
+                })
     }
 
     private fun getUsername(): String {
 
-        val sharedPreferences = getSharedPreferences(getString(R.string.accountData), Activity.MODE_PRIVATE)
-        val name = sharedPreferences.getString(getString(R.string.student_name), "")
+        val name = utils.getSharedPreference(AccountData).getString(getString(R.string.student_name), "")
         if (name != "") return name.split(" ")[1] + " " + name.split(" ")[2]
         return getString(R.string.no_username)
     }
 
     private fun getUserID(): String {
 
-        val sharedPreferences = getSharedPreferences(getString(R.string.accountData), Activity.MODE_PRIVATE)
-        return getString(R.string.user_id_indicator) + " " + sharedPreferences.getString(getString(R.string.user_id), "")
+        val id = utils.getSharedPreference(AccountData).getString(getString(R.string.user_id), "")
+        return getString(R.string.user_id_indicator) + " " + id
     }
 
     private fun confirmSignOut() {
@@ -634,11 +608,11 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
 
     private fun signOut() {
 
-        val spEditor = getSharedPreferences(getString(R.string.accountData), Activity.MODE_PRIVATE).edit()
-        spEditor.putString(getString(R.string.usernameKEY), "")
-        spEditor.putString(getString(R.string.passwordKEY), "")
-        spEditor.putBoolean(getString(R.string.loggedIn), false)
-        spEditor.apply()
+        utils.getSharedPreference(AccountData).edit()
+                .putString(getString(R.string.usernameKEY), "")
+                .putString(getString(R.string.passwordKEY), "")
+                .putBoolean(getString(R.string.loggedIn), false)
+                .apply()
         utils.saveHistoryGrade(null)
         utils.saveDataJson("")
         startLoginActivity()
@@ -668,20 +642,13 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
             if (resultCode == RESULT_OK) {
                 val file = File(result.uri.path)
 
-                val requestBody = MultipartBody.Builder()
+                val body = MultipartBody.Builder()
                         .setType(MultipartBody.FORM)
                         .addFormDataPart("smfile", file.name,
                                 RequestBody.create(MediaType.parse(URLConnection.guessContentTypeFromName(file.name)), file))
                         .build()
 
-                val request = Request.Builder()
-                        .url(getString(R.string.imageUploadURL))
-                        .post(requestBody)
-                        .header("User-Agent", "SchoolPower")
-                        .build()
-
-                val client = OkHttpClient.Builder().build()
-                client.newCall(request).enqueue(object : Callback {
+                utils.buildNetworkRequest(getString(R.string.imageUploadURL), "POST", body).enqueue(object : Callback {
                     override fun onFailure(call: Call, e: IOException) {
                         utils.showSnackBar(this@MainActivity, findViewById(R.id.main_coordinate_layout), getString(R.string.avatar_upload_failed), true)
                         e.printStackTrace()
@@ -696,31 +663,25 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                             return
                         }
                         val avatarUrl = responseJson.getJSONObject("data")["url"].toString()
-                        val username = getSharedPreferences("accountData", Activity.MODE_PRIVATE).getString(getString(R.string.usernameKEY), "")
-                        val password = getSharedPreferences("accountData", Activity.MODE_PRIVATE).getString(getString(R.string.passwordKEY), "")
+                        val username = utils.getSharedPreference(AccountData).getString(getString(R.string.usernameKEY), "")
+                        val password = utils.getSharedPreference(AccountData).getString(getString(R.string.passwordKEY), "")
 
-                        val requestAvatar = Request.Builder()
-                                .url(getString(R.string.avatarURL))
-                                .post(MultipartBody.Builder()
+                        val responseAvatar = utils.buildNetworkRequest(getString(R.string.avatarURL), "POST",
+                                MultipartBody.Builder()
                                         .setType(MultipartBody.FORM)
                                         .addFormDataPart("username", username)
                                         .addFormDataPart("password", password)
                                         .addFormDataPart("new_avatar", avatarUrl)
                                         .addFormDataPart("remove_code", responseJson.getJSONObject("data")["hash"].toString())
-                                        .build())
-                                .header("User-Agent", "SchoolPower")
-                                .build()
-
-                        val responseAvatar = client.newCall(requestAvatar).execute().body()?.string()
+                                        .build()
+                        ).execute().body()?.string()
 
                         if (responseAvatar?.contains("error") != false) {
                             utils.showSnackBar(this@MainActivity, findViewById(R.id.main_coordinate_layout),
                                     JSONObject(responseAvatar)["error"].toString(), true)
                         }
 
-                        val spEditor = getSharedPreferences("accountData", Activity.MODE_PRIVATE).edit()
-                        spEditor.putString("user_avatar", avatarUrl)
-                        spEditor.apply()
+                        utils.setSharedPreference(AccountData, "user_avatar", avatarUrl)
 
                         val header = navigationView.getHeaderView(0)
                         header.findViewById<ImageView>(R.id.user_avatar).post {
@@ -750,7 +711,6 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
         startActivity(Intent(application, LoginActivity::class.java))
         this@MainActivity.finish()
     }
-
 
     fun animateDrawerToggle(toArrow: Boolean) {
 

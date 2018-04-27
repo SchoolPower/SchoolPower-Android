@@ -20,14 +20,10 @@
     <string name="shared_element_course_subject_title" translatable="false">SHARE://COURSE_SUBJECT_TITLE</string>
     <string name="shared_element_course_card" translatable="false">SHARE://COURSE_CARD</string>
 
-    <string name="json_begin" translatable="false">{</string>
-
     <string name="postURL" translatable="false">https://api.schoolpower.tech/api/2.0/get_data.php</string>
     <string name="imageUploadURL" translatable="false">https://sm.ms/api/upload</string>
     <string name="avatarURL" translatable="false">https://api.schoolpower.tech/api/2.0/set_avatar.php</string>
     <string name="updateURL" translatable="false">https://api.schoolpower.tech/api/update.json</string>
-    <string name="dataFileName" translatable="false">dataMap.json</string>
-    <string name="langFileName" translatable="false">lang.file</string>
 
     <string-array name="list_preference_display_types_values" translatable="false">
         <item>0</item>
@@ -90,6 +86,7 @@
     <string name="authenticating">Authenticating&#8230;</string>
     <string name="wrong_password">Invalid Username or Password</string>
     <string name="no_connection">Cannot connect to server</string>
+    <string name="server_problem">Server error encountered: </string>
     <string name="user_id_indicator">User ID:</string>
     <string name="no_username">No Username</string>
     <string name="the_end">THIS IS THE END</string>

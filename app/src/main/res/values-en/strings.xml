@@ -40,6 +40,7 @@
     <string name="authenticating">Authenticating&#8230;</string>
     <string name="wrong_password">Invalid Username or Password</string>
     <string name="no_connection">Cannot connect to server</string>
+    <string name="server_problem">Server error encountered: </string>
     <string name="user_id_indicator">User ID:</string>
     <string name="no_username">No Username</string>
     <string name="the_end">THIS IS THE END</string>

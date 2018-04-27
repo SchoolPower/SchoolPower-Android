@@ -39,7 +39,8 @@
     <string name="data_updated">數據已更新</string> 
     <string name="authenticating">驗證中&#8230;</string> 
     <string name="wrong_password">用戶名或密碼錯誤</string> 
-    <string name="no_connection">無法連結到服務器</string> 
+    <string name="no_connection">無法連結到伺服器</string>
+    <string name="server_problem">遇到了伺服器問題: </string>
     <string name="user_id_indicator">用戶 ID:</string> 
     <string name="no_username">用戶名不可用</string>
     <string name="the_end">下面沒了</string>

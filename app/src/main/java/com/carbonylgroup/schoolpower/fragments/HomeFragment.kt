@@ -4,7 +4,6 @@
 
 package com.carbonylgroup.schoolpower.fragments
 
-import android.app.AlertDialog
 import android.os.Bundle
 import android.support.v4.widget.SwipeRefreshLayout
 import android.view.LayoutInflater
@@ -79,7 +78,7 @@ class HomeFragment : TransitionHelper.BaseFragment() {
         home_swipe_refresh_layout = view_private!!.findViewById(R.id.home_swipe_refresh_layout)
         home_swipe_refresh_layout!!.setColorSchemeResources(R.color.accent, R.color.A_score_green, R.color.B_score_green,
                 R.color.Cp_score_yellow, R.color.C_score_orange, R.color.Cm_score_red, R.color.primary)
-        home_swipe_refresh_layout!!.setOnRefreshListener { MainActivity.of(activity).initDataJson() }
+        home_swipe_refresh_layout!!.setOnRefreshListener { MainActivity.of(activity).fetchStudentDataFromServer() }
         if (subjects == null || subjects!!.count() == 0) refreshAdapterToEmpty()
         else initAdapter()
     }

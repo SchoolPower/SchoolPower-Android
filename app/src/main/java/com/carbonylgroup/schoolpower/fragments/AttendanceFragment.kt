@@ -55,7 +55,7 @@ class AttendanceFragment : Fragment() {
         attendance_swipe_refresh_layout = view_private!!.findViewById(R.id.attendance_swipe_refresh_layout)
         attendance_swipe_refresh_layout!!.setColorSchemeResources(R.color.accent, R.color.A_score_green, R.color.B_score_green,
                 R.color.Cp_score_yellow, R.color.C_score_orange, R.color.Cm_score_red, R.color.primary)
-        attendance_swipe_refresh_layout!!.setOnRefreshListener { MainActivity.of(activity).initDataJson() }
+        attendance_swipe_refresh_layout!!.setOnRefreshListener { MainActivity.of(activity).fetchStudentDataFromServer() }
 
         if (attendance == null || attendance!!.count() == 0) refreshAdapterToEmpty()
         else initAdapter()

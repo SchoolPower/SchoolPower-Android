@@ -14,7 +14,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.preference.*
 import android.support.v4.app.NavUtils
-import android.support.v4.app.ShareCompat.getCallingActivity
 import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
 import com.carbonylgroup.schoolpower.R
@@ -28,14 +27,13 @@ class SettingsActivity : AppCompatActivity() {
     private val localeSet = arrayListOf(Resources.getSystem().configuration.locale, Locale.ENGLISH, Locale.TRADITIONAL_CHINESE, Locale.SIMPLIFIED_CHINESE)
 
     companion object {
-        val LANGUAGE_CHANGED = Activity.RESULT_FIRST_USER
+        const val LANGUAGE_CHANGED = Activity.RESULT_FIRST_USER
     }
 
     override fun attachBaseContext(newBase: Context) {
 
         val utils = Utils(newBase)
-        var newLocale = utils.readLangPref()
-        if (newLocale == null) newLocale = 0
+        val newLocale = utils.getSharedPreference(Utils.SettingsPreference).getString("lang", "0").toInt()
         val context = ContextWrapper.wrap(newBase, localeSet[newLocale])
         super.attachBaseContext(context)
     }
@@ -86,10 +84,11 @@ class SettingsActivity : AppCompatActivity() {
 
         private fun initPreferences() {
 
-            val dashboard_display = (findPreference("list_preference_dashboard_display") as ListPreference)
-            dashboard_display.summary = activity.getString(R.string.dashboard_display_preference_summary_prefix) + dashboard_display.entry + activity.getString(R.string.dashboard_display_preference_summary_suffix)
-            val gpa_rule = findPreference("list_preference_custom_gpa_calculate") as ListPreference
-            gpa_rule.summary = getString(R.string.dashboard_gpa_rule_summary_prefix) + gpa_rule.entry.toString().toLowerCase() + activity.getString(R.string.dashboard_gpa_rule_summary_suffix)
+            val dashboardDisplay = (findPreference("list_preference_dashboard_display") as ListPreference)
+            dashboardDisplay.summary = activity.getString(R.string.dashboard_display_preference_summary_prefix) + dashboardDisplay.entry + activity.getString(R.string.dashboard_display_preference_summary_suffix)
+
+            val gpaRule = findPreference("list_preference_custom_gpa_calculate") as ListPreference
+            gpaRule.summary = getString(R.string.dashboard_gpa_rule_summary_prefix) + gpaRule.entry.toString().toLowerCase() + activity.getString(R.string.dashboard_gpa_rule_summary_suffix)
 
             findPreference("report_bug").onPreferenceClickListener = Preference.OnPreferenceClickListener {
                 val uri = Uri.parse(getString(R.string.bug_report_email))
@@ -123,12 +122,12 @@ class SettingsActivity : AppCompatActivity() {
 
                 val dashboard_display = (findPreference("list_preference_dashboard_display") as ListPreference)
                 dashboard_display.summary = getString(R.string.dashboard_display_preference_summary_prefix) + dashboard_display.entry + activity.getString(R.string.dashboard_display_preference_summary_suffix)
-                utils!!.setSettingsPreference(key, sharedPreferences!!.getString(key, "0"))
+                utils!!.setSharedPreference(Utils.SettingsPreference, key, sharedPreferences!!.getString(key, "0"))
 
             }
             if (key == "list_preference_language") {
 
-                utils!!.saveLangPref(sharedPreferences!!.getString(key, "0"))
+                utils!!.setSharedPreference(Utils.SettingsPreference, "lang", sharedPreferences!!.getString(key, "0"))
                 restart()
             }
 
@@ -141,9 +140,9 @@ class SettingsActivity : AppCompatActivity() {
             }
             if (key == "list_preference_custom_gpa_calculate") {
 
-                val gpa_rule = findPreference(key) as ListPreference
-                gpa_rule.summary = getString(R.string.dashboard_gpa_rule_summary_prefix) + gpa_rule.entry.toString().toLowerCase() + activity.getString(R.string.dashboard_gpa_rule_summary_suffix)
-                utils!!.setSettingsPreference(key, sharedPreferences!!.getString(key, "0"))
+                val gpaRule = findPreference(key) as ListPreference
+                gpaRule.summary = getString(R.string.dashboard_gpa_rule_summary_prefix) + gpaRule.entry.toString().toLowerCase() + activity.getString(R.string.dashboard_gpa_rule_summary_suffix)
+                utils!!.setSharedPreference(Utils.SettingsPreference, key, sharedPreferences!!.getString(key, "0"))
 
             }
         }
