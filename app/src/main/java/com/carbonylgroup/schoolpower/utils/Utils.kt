@@ -8,6 +8,7 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.media.Image
 import android.net.Uri
 import android.os.Handler
@@ -36,6 +37,11 @@ import java.util.*
 import kotlin.collections.HashMap
 
 class Utils(private val context: Context) {
+
+    val THEME = "appTheme"
+    val LIGHT_INDIGO = "Light indigo"
+    val DARK = "Dark"
+    val LIGHT_TEAL = "Light teal"
 
     private val gradeColorIds = intArrayOf(
             R.color.A_score_green,
@@ -100,6 +106,38 @@ class Utils(private val context: Context) {
 
     private fun indexOfString(searchString: String, domain: Array<String>):
             Int = domain.indices.firstOrNull { searchString == domain[it] } ?: -1
+
+    fun getDefaultSp(context: Context): SharedPreferences {
+        return PreferenceManager.getDefaultSharedPreferences(context)
+    }
+
+    operator fun set(key: String, value: Any) {
+        if (key.trim({ it <= ' ' }) == "") {
+            throw NullPointerException(String.format("Key and value not be null key=%s, value=%s", key, value))
+        }
+        val edit = getDefaultSp(context).edit()
+        if (value is String) {
+            edit.putString(key, value)
+        } else if (value is Int) {
+            edit.putInt(key, value)
+        } else if (value is Long) {
+            edit.putLong(key, value)
+        } else if (value is Boolean) {
+            edit.putBoolean(key, value)
+        } else if (value is Float) {
+            edit.putFloat(key, value)
+        } else if (value is Set<*>) {
+            edit.putStringSet(key, value as Set<String>)
+        } else {
+            throw IllegalArgumentException(String.format("Type of value unsupported key=%s, value=%s", key, value))
+        }
+        edit.apply()
+    }
+
+    /* Theme Handler */
+    fun getTheme(): String {
+        return getDefaultSp(context).getString(THEME, LIGHT_TEAL)
+    }
 
     /* Color Handler */
     fun getColorByLetterGrade(letterGrade: String) : Int {

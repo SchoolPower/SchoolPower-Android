@@ -15,6 +15,7 @@ import android.os.Bundle
 import android.preference.*
 import android.support.v4.app.NavUtils
 import android.support.v4.app.ShareCompat.getCallingActivity
+import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
 import com.carbonylgroup.schoolpower.R
@@ -25,6 +26,11 @@ import java.util.*
 
 class SettingsActivity : AppCompatActivity() {
 
+    interface SettingsCallBack {
+        fun onLogout()
+        fun onRecreate()
+    }
+    private var callBack: SettingsCallBack? = null
     private val localeSet = arrayListOf(Resources.getSystem().configuration.locale, Locale.ENGLISH, Locale.TRADITIONAL_CHINESE, Locale.SIMPLIFIED_CHINESE)
 
     companion object {
@@ -146,6 +152,25 @@ class SettingsActivity : AppCompatActivity() {
                 utils!!.setSettingsPreference(key, sharedPreferences!!.getString(key, "0"))
 
             }
+        }
+
+        private fun showThemeChooser() {
+            val valueList = Arrays.asList(*resources.getStringArray(R.array.theme_array))
+            val theme = Utils.getTheme()
+            val selectIndex = valueList.indexOf(theme)
+            AlertDialog.Builder(activity!!)
+                    .setCancelable(true)
+                    .setTitle("choosetheme")
+                    .setSingleChoiceItems(R.array.theme_array, selectIndex, { dialog1, which ->
+                        dialog1.dismiss()
+                        Utils.set(Utils.THEME, valueList[which])
+                        recreateMain()
+                    })
+                    .show()
+        }
+
+        private fun recreateMain() {
+            callBack.onRecreate()
         }
 
         private fun restart() {
