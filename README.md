@@ -1,7 +1,7 @@
 ![](app/src/main/ic_launcher-web.png)
 
-[![Travis branch](https://img.shields.io/travis/HITGIF/SchoolPower/master.svg)](https://travis-ci.org/HITGIF/SchoolPower)
-[![license](https://img.shields.io/github/license/HITGIF/SchoolPower.svg)](https://github.com/HITGIF/SchoolPower/blob/master/LICENSE.txt)
+[![Travis branch](https://img.shields.io/travis/SchoolPower/SchoolPower-Android/master.svg)](https://travis-ci.org/SchoolPower/SchoolPower-Android)
+[![license](https://img.shields.io/github/license/SchoolPower/SchoolPower-Android.svg)](https://github.com/SchoolPower/SchoolPower-Android/blob/master/LICENSE.txt)
 
 什么是 SchoolPower-Android
 -------

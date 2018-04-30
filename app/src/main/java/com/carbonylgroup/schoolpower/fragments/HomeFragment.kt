@@ -74,14 +74,14 @@ class HomeFragment : TransitionHelper.BaseFragment() {
         utils = Utils(activity)
         subjects = MainActivity.of(activity).subjects
         MainActivity.of(activity).presentFragment = 0
-        MainActivity.of(activity).setToolBarElevation(utils!!.dpToPx(10))
+        MainActivity.of(activity).setToolBarElevation()
         MainActivity.of(activity).setToolBarTitle(getString(R.string.dashboard))
         dashboardListView = view_private!!.findViewById(R.id.mainListView)
         no_grade_view = view_private!!.findViewById(R.id.no_grade_view)
         home_swipe_refresh_layout = view_private!!.findViewById(R.id.home_swipe_refresh_layout)
         home_swipe_refresh_layout!!.setColorSchemeResources(R.color.accent, R.color.A_score_green, R.color.B_score_green,
                 R.color.Cp_score_yellow, R.color.C_score_orange, R.color.Cm_score_red, R.color.primary)
-        home_swipe_refresh_layout!!.setOnRefreshListener { MainActivity.of(activity).initDataJson() }
+        home_swipe_refresh_layout!!.setOnRefreshListener { MainActivity.of(activity).fetchStudentDataFromServer() }
         if (subjects == null || subjects!!.count() == 0) refreshAdapterToEmpty()
         else initAdapter()
 

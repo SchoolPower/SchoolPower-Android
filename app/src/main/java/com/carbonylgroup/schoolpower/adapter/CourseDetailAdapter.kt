@@ -21,7 +21,6 @@ import android.view.View.GONE
 import android.view.ViewGroup
 import android.widget.*
 import com.carbonylgroup.schoolpower.R
-import com.carbonylgroup.schoolpower.R2
 import com.carbonylgroup.schoolpower.data.AssignmentItem
 import com.carbonylgroup.schoolpower.data.Subject
 import com.carbonylgroup.schoolpower.utils.Utils
@@ -173,24 +172,24 @@ class CourseDetailAdapter(private val context: Context, private val subject: Sub
     open inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
     inner class FooterViewHolder(itemView: View) : ViewHolder(itemView)
     inner class HeaderViewHolder(itemView: View) : ViewHolder(itemView) {
-        val detail_letter_grade_tv: TextView by bindView(R2.id.detail_letter_grade_tv)
-        val detail_percentage_grade_tv: TextView by bindView(R2.id.detail_percentage_grade_tv)
-        val detail_header_teacher_name_tv: TextView by bindView(R2.id.detail_header_teacher_name_tv)
-        val detail_header_email: ImageView by bindView(R2.id.detail_header_email_image)
-        val detail_header_block_tv: TextView by bindView(R2.id.detail_header_block_tv)
-        val detail_header_room_tv: TextView by bindView(R2.id.detail_header_room_tv)
-        val detail_header_grade_background: RelativeLayout by bindView(R2.id.detail_header_grade_background)
-        val detail_term_select_spinner: Spinner by bindView(R2.id.detail_term_select_spinner)
+        val detail_letter_grade_tv: TextView by bindView(R.id.detail_letter_grade_tv)
+        val detail_percentage_grade_tv: TextView by bindView(R.id.detail_percentage_grade_tv)
+        val detail_header_teacher_name_tv: TextView by bindView(R.id.detail_header_teacher_name_tv)
+        val detail_header_email: ImageView by bindView(R.id.detail_header_email_image)
+        val detail_header_block_tv: TextView by bindView(R.id.detail_header_block_tv)
+        val detail_header_room_tv: TextView by bindView(R.id.detail_header_room_tv)
+        val detail_header_grade_background: RelativeLayout by bindView(R.id.detail_header_grade_background)
+        val detail_term_select_spinner: Spinner by bindView(R.id.detail_term_select_spinner)
     }
 
     inner class NormalViewHolder(itemView: View) : ViewHolder(itemView) {
-        val detail_assignment_name_tv: TextView by bindView(R2.id.detail_assignment_name_tv)
-        val detail_assignment_date_tv: TextView by bindView(R2.id.detail_assignment_date_tv)
-        val detail_assignment_flag_rv: RecyclerView by bindView(R2.id.detail_assignment_flag_rv)
-        val detail_assignment_percentage_tv: TextView by bindView(R2.id.detail_assignment_percentage_tv)
-        val detail_assignment_dividing_score_tv: TextView by bindView(R2.id.detail_assignment_dividing_score_tv)
-        val detail_assignment_grade_background: RelativeLayout by bindView(R2.id.detail_assignment_grade_background)
-        val detail_header_background: RelativeLayout by bindView(R2.id.detail_header_background)
+        val detail_assignment_name_tv: TextView by bindView(R.id.detail_assignment_name_tv)
+        val detail_assignment_date_tv: TextView by bindView(R.id.detail_assignment_date_tv)
+        val detail_assignment_flag_rv: RecyclerView by bindView(R.id.detail_assignment_flag_rv)
+        val detail_assignment_percentage_tv: TextView by bindView(R.id.detail_assignment_percentage_tv)
+        val detail_assignment_dividing_score_tv: TextView by bindView(R.id.detail_assignment_dividing_score_tv)
+        val detail_assignment_grade_background: RelativeLayout by bindView(R.id.detail_assignment_grade_background)
+        val detail_header_background: RelativeLayout by bindView(R.id.detail_header_background)
     }
 
     private fun refreshAdapter() {

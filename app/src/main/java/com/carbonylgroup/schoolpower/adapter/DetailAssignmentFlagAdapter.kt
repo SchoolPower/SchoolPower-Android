@@ -6,16 +6,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.TextView
 import com.carbonylgroup.schoolpower.R
-import com.carbonylgroup.schoolpower.R2
 import com.carbonylgroup.schoolpower.data.AssignmentItem
 import com.carbonylgroup.schoolpower.utils.Utils
 import kotterknife.bindView
-import android.view.MotionEvent
-
-
 
 /**
  * Created by carbonyl on 21/01/2018.
@@ -44,6 +38,6 @@ class DetailAssignmentFlagAdapter(private val context: Context, private val assi
     }
 
     class DetailAssignmentFlagViewHolder internal constructor(view: View) : RecyclerView.ViewHolder(view) {
-        val assignment_flag_image: ImageView by bindView(R2.id.detail_assignment_flag_image)
+        val assignment_flag_image: ImageView by bindView(R.id.detail_assignment_flag_image)
     }
 }
