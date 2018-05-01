@@ -495,92 +495,103 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
         if (subjects != null) oldSubjects.addAll(subjects!!)
         if (attendances != null) oldAttendances.addAll(attendances!!)
 
-        utils.buildNetworkRequest(getString(R.string.postURL), "POST",
-                MultipartBody.Builder()
-                        .setType(MultipartBody.FORM)
-                        .addFormDataPart("username", username)
-                        .addFormDataPart("password", password)
-                        .addFormDataPart("version", utils.getAppVersion())
-                        .addFormDataPart("action", "manual_get_data")
-                        .addFormDataPart("os", "android")
-                        .build()).enqueue(
-                object : Callback {
-                    override fun onFailure(call: Call, e: IOException) {
-                        e.printStackTrace()
+        val body = MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart("username", username)
+                .addFormDataPart("password", password)
+                .addFormDataPart("version", utils.getAppVersion())
+                .addFormDataPart("action", "manual_get_data")
+                .addFormDataPart("os", "android")
+                .build()
 
-                        utils.showSnackBar(this@MainActivity, findViewById(R.id.main_coordinate_layout), getString(R.string.no_connection), true)
-                        when (presentFragment) {
-                            0 -> homeFragment!!.setRefreshing(false)
-                            3 -> attendanceFragment!!.setRefreshing(false)
-                        }
-                        noConnection = true
+        var retried = false
+        val callback = object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                e.printStackTrace()
+                val backupServer = utils.getBackupServerUrl("pull_data_2")
+                if(!retried && backupServer!=null) {
+                    retried = true
+                    try {
+                        val response = utils.buildNetworkRequest(backupServer, "POST", body).execute()
+                        onResponse(call, response)
+                    }catch(e:IOException){}
+                    return
+                }
+                utils.showSnackBar(this@MainActivity, findViewById(R.id.main_coordinate_layout), getString(R.string.no_connection), true)
+                when (presentFragment) {
+                    0 -> homeFragment!!.setRefreshing(false)
+                    3 -> attendanceFragment!!.setRefreshing(false)
+                }
+                noConnection = true
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                val strMessage = response.body()!!.string().replace("\n", "")
+
+                // Error happened. Usually caused by wrong username/password
+                if (strMessage.contains("Something went wrong!")) {
+                    utils.showSnackBar(this@MainActivity, findViewById(R.id.main_coordinate_layout), getString(R.string.wrong_password), true)
+                    signOut()
+                    return
+                }
+
+                // Get response but not a valid JSON
+                if (!strMessage.contains("{")) {
+                    utils.showSnackBar(this@MainActivity, findViewById(R.id.main_coordinate_layout), getString(R.string.server_problem) + strMessage, true)
+                    when (presentFragment) {
+                        0 -> homeFragment!!.setRefreshing(false)
+                        3 -> attendanceFragment!!.setRefreshing(false)
+                    }
+                    noConnection = true
+                    return
+                }
+
+                utils.saveDataJson(strMessage)
+                val data = StudentData(this@MainActivity, strMessage)
+                if (data.disabled) {
+                    val builder = AlertDialog.Builder(this@MainActivity)
+                    builder.setMessage(data.disabledMessage)
+                    builder.setTitle(data.disabledTitle)
+                    builder.setPositiveButton(getString(R.string.alright), null)
+                    builder.create().show()
+                }
+                studentInformation = data.studentInfo
+                subjects = data.subjects
+                attendances = data.attendances
+                val extraInfo = data.extraInfo
+
+                utils.setSharedPreference(AccountData, "user_avatar", extraInfo.avatar)
+
+                when (presentFragment) {
+                    0 -> if (subjects!!.isEmpty()) homeFragment!!.refreshAdapterToEmpty()
+                    3 -> if (attendances!!.isEmpty()) attendanceFragment!!.refreshAdapterToEmpty()
+                }
+                utils.saveHistoryGrade(subjects!!)
+
+                // Mark new or changed assignments
+                if (subjects!!.size == oldSubjects.size) {
+                    for (i in subjects!!.indices) {
+                        subjects!![i].markNewAssignments(oldSubjects[i], this@MainActivity)
+                    }
+                }
+                // Mark new or changed attendances
+                for (item in attendances!!) {
+                    val found = oldAttendances.any { it -> it.name == item.name && it.date == item.date && it.code == item.code && !it.isNew }
+                    if (!found) item.isNew = true
+                }
+                runOnUiThread {
+                    when (presentFragment) {
+                        0 -> homeFragment!!.refreshAdapter(subjects!!)
+                        3 -> attendanceFragment!!.refreshAdapter(attendances!!)
                     }
 
-                    override fun onResponse(call: Call, response: Response) {
-                        val strMessage = response.body()!!.string().replace("\n", "")
+                    updateAvatar()
+                    utils.showSnackBar(this@MainActivity, findViewById(R.id.main_coordinate_layout), getString(R.string.data_updated), false)
+                }
+            }
+        }
 
-                        // Error happened. Usually caused by wrong username/password
-                        if (strMessage.contains("Something went wrong!")) {
-                            utils.showSnackBar(this@MainActivity, findViewById(R.id.main_coordinate_layout), getString(R.string.wrong_password), true)
-                            signOut()
-                            return
-                        }
-
-                        // Get response but not a valid JSON
-                        if (!strMessage.contains("{")) {
-                            utils.showSnackBar(this@MainActivity, findViewById(R.id.main_coordinate_layout), getString(R.string.server_problem) + strMessage, true)
-                            when (presentFragment) {
-                                0 -> homeFragment!!.setRefreshing(false)
-                                3 -> attendanceFragment!!.setRefreshing(false)
-                            }
-                            noConnection = true
-                            return
-                        }
-
-                        utils.saveDataJson(strMessage)
-                        val data = StudentData(this@MainActivity, strMessage)
-                        if (data.disabled) {
-                            val builder = AlertDialog.Builder(this@MainActivity)
-                            builder.setMessage(data.disabledMessage)
-                            builder.setTitle(data.disabledTitle)
-                            builder.setPositiveButton(getString(R.string.alright), null)
-                            builder.create().show()
-                        }
-                        studentInformation = data.studentInfo
-                        subjects = data.subjects
-                        attendances = data.attendances
-                        val extraInfo = data.extraInfo
-
-                        utils.setSharedPreference(AccountData, "user_avatar", extraInfo.avatar)
-
-                        when (presentFragment) {
-                            0 -> if (subjects!!.isEmpty()) homeFragment!!.refreshAdapterToEmpty()
-                            3 -> if (attendances!!.isEmpty()) attendanceFragment!!.refreshAdapterToEmpty()
-                        }
-                        utils.saveHistoryGrade(subjects!!)
-
-                        // Mark new or changed assignments
-                        if (subjects!!.size == oldSubjects.size) {
-                            for (i in subjects!!.indices) {
-                                subjects!![i].markNewAssignments(oldSubjects[i], this@MainActivity)
-                            }
-                        }
-                        // Mark new or changed attendances
-                        for (item in attendances!!) {
-                            val found = oldAttendances.any { it -> it.name == item.name && it.date == item.date && it.code == item.code && !it.isNew }
-                            if (!found) item.isNew = true
-                        }
-                        runOnUiThread {
-                            when (presentFragment) {
-                                0 -> homeFragment!!.refreshAdapter(subjects!!)
-                                3 -> attendanceFragment!!.refreshAdapter(attendances!!)
-                            }
-
-                            updateAvatar()
-                            utils.showSnackBar(this@MainActivity, findViewById(R.id.main_coordinate_layout), getString(R.string.data_updated), false)
-                        }
-                    }
-                })
+        utils.buildNetworkRequest(getString(R.string.postURL), "POST", body).enqueue(callback)
     }
 
     private fun getUsername(): String {

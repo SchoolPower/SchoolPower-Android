@@ -21,9 +21,10 @@
     <string name="shared_element_course_card" translatable="false">SHARE://COURSE_CARD</string>
 
     <string name="postURL" translatable="false">https://api.schoolpower.tech/api/2.0/get_data.php</string>
-    <string name="imageUploadURL" translatable="false">https://sm.ms/api/upload</string>
     <string name="avatarURL" translatable="false">https://api.schoolpower.tech/api/2.0/set_avatar.php</string>
     <string name="updateURL" translatable="false">https://api.schoolpower.tech/api/update.json</string>
+    <string name="backupServersURL" translatable="false">https://coding.net/u/nullptr_t/p/schoolpower/git/raw/master/server_list.json</string>
+    <string name="imageUploadURL" translatable="false">https://sm.ms/api/upload</string>
 
     <string-array name="list_preference_display_types_values" translatable="false">
         <item>0</item>
