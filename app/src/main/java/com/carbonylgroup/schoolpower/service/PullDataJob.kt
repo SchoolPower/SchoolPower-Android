@@ -156,7 +156,12 @@ class PullDataJob : JobService() {
                             return
 
                         }
-                        val newData = StudentData(this@PullDataJob, strMessage)
+                        val newData = try{StudentData(this@PullDataJob, strMessage)}
+                            catch(e:IllegalArgumentException){
+                                Log.d("PullDataJob", "Job Finished Early $strMessage, ${e.message}")
+                                jobFinished(params, false)
+                                return
+                            }
                         val oldData = utils.readDataArrayList()
 
                         diffSubjects(oldData.subjects, newData.subjects)

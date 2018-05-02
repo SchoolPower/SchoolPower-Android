@@ -128,7 +128,7 @@ class HomeFragment : TransitionHelper.BaseFragment() {
     }
 
     fun setRefreshing(isRefreshing: Boolean) {
-        home_swipe_refresh_layout!!.isRefreshing = isRefreshing
+        home_swipe_refresh_layout?.isRefreshing = isRefreshing
     }
 
     fun refreshAdapterToEmpty() {

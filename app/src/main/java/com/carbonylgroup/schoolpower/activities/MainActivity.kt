@@ -509,19 +509,21 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
             override fun onFailure(call: Call, e: IOException) {
                 e.printStackTrace()
                 val backupServer = utils.getBackupServerUrl("pull_data_2")
-                if(!retried && backupServer!=null) {
+                if (!retried && backupServer != null) {
                     retried = true
                     try {
                         val response = utils.buildNetworkRequest(backupServer, "POST", body).execute()
                         onResponse(call, response)
-                    }catch(e:IOException){}
+                    } catch (e: IOException) {
+                    }
                     return
                 }
                 utils.showSnackBar(this@MainActivity, findViewById(R.id.main_coordinate_layout), getString(R.string.no_connection), true)
                 when (presentFragment) {
-                    0 -> homeFragment!!.setRefreshing(false)
-                    3 -> attendanceFragment!!.setRefreshing(false)
+                    0 -> homeFragment?.setRefreshing(false)
+                    3 -> attendanceFragment?.setRefreshing(false)
                 }
+
                 noConnection = true
             }
 
@@ -626,6 +628,10 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                 .apply()
         utils.saveHistoryGrade(null)
         utils.saveDataJson("")
+
+        val jobScheduler = getSystemService(Context.JOB_SCHEDULER_SERVICE) as JobScheduler
+        jobScheduler.cancelAll()
+
         startLoginActivity()
     }
 
