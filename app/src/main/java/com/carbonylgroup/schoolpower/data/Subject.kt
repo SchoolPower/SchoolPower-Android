@@ -4,6 +4,7 @@
 
 package com.carbonylgroup.schoolpower.data
 
+import android.content.Context
 import com.carbonylgroup.schoolpower.utils.Utils
 import org.json.JSONObject
 import java.io.Serializable
@@ -96,6 +97,37 @@ class Subject(json: JSONObject) : Serializable {
 
         startDate = Utils.convertDateToTimestamp(json.getString("startDate"))
         endDate = Utils.convertDateToTimestamp(json.getString("endDate"))
+    }
+
+    // Compare `oldSubject` with this one and mark changed assignments
+    fun markNewAssignments(oldSubject: Subject, context: Context) {
+        val utils = Utils(context)
+        // Mark new or changed assignments
+        val newAssignmentListCollection = assignments
+        val oldAssignmentListCollection = oldSubject.assignments
+        for (item in newAssignmentListCollection) {
+            // if no item in oldAssignmentListCollection has the same title, score and date as those of the new one, then the assignment should be marked.
+            val found = oldAssignmentListCollection.any {
+                it.title == item.title && it.score == item.score && it.date == item.date && !it.isNew
+            }
+            if (!found) {
+                item.isNew = true
+
+                var oldPercent = 0
+                var newPercent = 0
+                var oldPercentStr = "--"
+                var newPercentStr = "--"
+                if (utils.getLatestPeriodGrade(oldSubject) != null)
+                    oldPercentStr = utils.getLatestPeriodGrade(oldSubject)!!.percentage
+                if (utils.getLatestPeriodGrade(this) != null)
+                    newPercentStr = utils.getLatestPeriodGrade(this)!!.percentage
+                if (oldPercentStr != "--") oldPercent = oldPercentStr.toInt()
+                if (newPercentStr != "--") newPercent = newPercentStr.toInt()
+
+                if (oldPercent != newPercent)
+                    margin = newPercent - oldPercent
+            }
+        }
     }
 
     fun getShortName() = Utils.getShortName(name)

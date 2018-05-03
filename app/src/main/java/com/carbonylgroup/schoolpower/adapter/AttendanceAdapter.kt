@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import com.carbonylgroup.schoolpower.R
-import com.carbonylgroup.schoolpower.R2
 import com.carbonylgroup.schoolpower.data.Attendance
 import com.carbonylgroup.schoolpower.utils.Utils
 import kotterknife.bindView
@@ -70,12 +69,12 @@ class AttendanceAdapter(private val context: Context, private var attendanceList
     inner class FooterViewHolder(itemView: View) : AttendanceAdapter.ViewHolder(itemView)
     inner class AttendanceHolder(itemView: View) : ViewHolder(itemView) {
 
-        val attendance_code_tv: TextView by bindView(R2.id.attendance_code_tv)
-        val attendance_description_tv: TextView by bindView(R2.id.attendance_description_tv)
-        val attendance_subject_tv: TextView by bindView(R2.id.attendance_subject_tv)
-        val attendance_date_tv: TextView by bindView(R2.id.attendance_date_tv)
-        val attendance_code_background: RelativeLayout by bindView(R2.id.attendance_code_background)
-        val fold_background: RelativeLayout by bindView(R2.id.fold_background)
+        val attendance_code_tv: TextView by bindView(R.id.attendance_code_tv)
+        val attendance_description_tv: TextView by bindView(R.id.attendance_description_tv)
+        val attendance_subject_tv: TextView by bindView(R.id.attendance_subject_tv)
+        val attendance_date_tv: TextView by bindView(R.id.attendance_date_tv)
+        val attendance_code_background: RelativeLayout by bindView(R.id.attendance_code_background)
+        val fold_background: RelativeLayout by bindView(R.id.fold_background)
     }
 
     fun setAttendanceItems(attendance: List<Attendance>) {

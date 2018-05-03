@@ -13,7 +13,6 @@ import android.widget.LinearLayout
 import android.widget.TextView
 
 import com.carbonylgroup.schoolpower.R
-import com.carbonylgroup.schoolpower.R2
 import com.carbonylgroup.schoolpower.data.Subject
 import com.carbonylgroup.schoolpower.utils.Utils
 import kotterknife.bindView
@@ -45,9 +44,9 @@ class PeriodGradeAdapter(private val context: Context, objects: Map<String, Subj
     }
 
     class PeriodGradeViewHolder internal constructor(view: View) : RecyclerView.ViewHolder(view) {
-        val period_indicator: TextView by bindView(R2.id.period_indicator)
-        val period_latter_grade: TextView by bindView(R2.id.period_latter_grade)
-        val period_percentage_grade: TextView by bindView(R2.id.period_percentage_grade)
-        val period_grade_background: LinearLayout by bindView(R2.id.period_grade_background)
+        val period_indicator: TextView by bindView(R.id.period_indicator)
+        val period_latter_grade: TextView by bindView(R.id.period_latter_grade)
+        val period_percentage_grade: TextView by bindView(R.id.period_percentage_grade)
+        val period_grade_background: LinearLayout by bindView(R.id.period_grade_background)
     }
 }

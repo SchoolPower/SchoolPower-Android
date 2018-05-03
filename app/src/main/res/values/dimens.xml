@@ -28,4 +28,6 @@
     <dimen name="md_styled_text_description">16sp</dimen>
     <dimen name="md_styled_dialog_header">120dp</dimen>
     <dimen name="md_styled_pic_size">44dp</dimen>
+
+    <dimen name="toolbar_elevation">10dp</dimen>
 </resources>

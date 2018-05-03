@@ -65,6 +65,10 @@ class AssignmentItem(json: JSONObject) : Serializable {
     val trueFlags: ArrayList<Pair<String, Boolean>> = arrayListOf()
     var isNew = false
 
+    fun getStatusIfExists(json: JSONObject, name: String, defaultValue: Boolean = false)
+            = if (json.has("status") && json.getJSONObject("status").has(name))
+            json.getJSONObject("status").getBoolean(name) else defaultValue
+
     init {
         val termsJSON = json.getJSONArray("terms")
         terms = (0 until termsJSON.length()).map { termsJSON.getString(it) }
@@ -72,16 +76,15 @@ class AssignmentItem(json: JSONObject) : Serializable {
                 .format(Utils.convertDateToTimestamp(json.getString("date")))
 
         try {
+
             flags = arrayListOf(
-                    Pair("collected", json.getJSONObject("status").getBoolean("collected")),
-                    Pair("late", json.getJSONObject("status").getBoolean("late")),
-                    Pair("missing", json.getJSONObject("status").getBoolean("missing")),
-                    Pair("exempt", json.getJSONObject("status").getBoolean("exempt")),
-                    Pair("excludeInFinalGrade",
-                            if (json.getJSONObject("status").has("includeInFinalGrade"))
-                                !json.getJSONObject("status").getBoolean("includeInFinalGrade")
-                            else false)
+                    Pair("collected", getStatusIfExists(json, "collected")),
+                    Pair("late", getStatusIfExists(json, "late")),
+                    Pair("missing", getStatusIfExists(json, "missing")),
+                    Pair("exempt", getStatusIfExists(json, "exempt")),
+                    Pair("excludeInFinalGrade", !getStatusIfExists(json, "includeInFinalGrade", true))
             )
+
         } catch (e: JSONException) {
             e.printStackTrace()
         }

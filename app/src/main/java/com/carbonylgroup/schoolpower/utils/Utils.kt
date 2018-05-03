@@ -11,30 +11,22 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.media.Image
 import android.net.Uri
-import android.os.Handler
-import android.os.Message
 import android.preference.PreferenceManager
 import android.support.design.widget.Snackbar
 import android.support.v4.content.ContextCompat
 import android.util.DisplayMetrics
-import android.util.Log
 import android.view.View
 import com.carbonylgroup.schoolpower.R
-import com.carbonylgroup.schoolpower.data.Attendance
 import com.carbonylgroup.schoolpower.data.StudentData
-import com.carbonylgroup.schoolpower.data.StudentInformation
 import com.carbonylgroup.schoolpower.data.Subject
+import okhttp3.*
 import org.json.JSONArray
-import org.json.JSONException
 import org.json.JSONObject
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader
-import java.io.PrintWriter
-import java.net.URL
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.HashMap
 
 class Utils(private val context: Context) {
 
@@ -140,9 +132,9 @@ class Utils(private val context: Context) {
     }
 
     /* Color Handler */
-    fun getColorByLetterGrade(letterGrade: String) : Int {
+    fun getColorByLetterGrade(letterGrade: String): Int {
         val colorIndex = indexOfString(letterGrade, arrayOf("A", "B", "C+", "C", "C-", "F", "I", "--"))
-        return ContextCompat.getColor(context, if (colorIndex!=-1) gradeColorIds[colorIndex] else 7)
+        return ContextCompat.getColor(context, if (colorIndex != -1) gradeColorIds[colorIndex] else 7)
     }
 
     fun getDarkColorByPrimary(originalPrimary: Int) = ContextCompat.getColor(context,
@@ -150,6 +142,7 @@ class Utils(private val context: Context) {
 
     fun getColorByAttendance(context: Context, attendanceCode: String) = ContextCompat.getColor(context,
             attendanceColorIds[attendanceCode] ?: R.color.gray)
+
     /* Others */
     fun dpToPx(dp: Int) = Math.round(dp * (context.resources.displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT))
 
@@ -190,7 +183,8 @@ class Utils(private val context: Context) {
     fun getLatestPeriod(grades: Map<String, Subject.Grade>): String? {
 
         val termsList = grades.keys
-        val forLatestSemester = getSettingsPreference().getString("list_preference_dashboard_display", "0") == "1"
+        val forLatestSemester = getSharedPreference(SettingsPreference)
+                .getString("list_preference_dashboard_display", "0") == "1"
 
         if (forLatestSemester) {
             if (termsList.contains("S2") && grades["S2"]!!.letter != "--") return "S2"
@@ -225,62 +219,19 @@ class Utils(private val context: Context) {
     }
 
     fun showSnackBar(context: Context, view: View, msg: String, colorRed: Boolean) {
-
         val snackBar = Snackbar.make(view, msg, Snackbar.LENGTH_SHORT)
         if (colorRed) snackBar.view.setBackgroundColor(ContextCompat.getColor(context, R.color.Cm_score_red_dark))
         else snackBar.view.setBackgroundColor(ContextCompat.getColor(context, R.color.accent))
         snackBar.show()
     }
 
-    // Parse the student data fetched.
-    // if succeed: return the subject data and the student information.
-    // if not：IllegalArgumentException or JSONException may be thrown.
-    // the format of the JSON: (Sample)
-    /*
-    {
-        "information": (StudentInformation),
-        "sections": [
-            (Subject)...
-        ]
-    }
-     */
-    @Throws(IllegalArgumentException::class, JSONException::class)
-    fun parseJsonResult(jsonStr: String): StudentData {
+    fun getAppVersion() = context.packageManager.getPackageInfo("com.carbonylgroup.schoolpower", 0).versionName!!
 
-        val studentData = JSONObject(jsonStr)
-        if (!studentData.has("information")) { // not successful
-            Log.e("Utils.parseJsonResult", studentData.toString())
-            throw IllegalArgumentException("JSON Format Error")
-        }
-        val studentInfo = StudentInformation(studentData.getJSONObject("information"))
-        val attendance = studentData.getJSONArray("attendances")
-        val attendances = (0 until attendance.length()).map { Attendance(attendance.getJSONObject(it)) }
-        val sections = studentData.getJSONArray("sections")
-        val subjects = (0 until sections.length()).map { Subject(sections.getJSONObject(it)) }
+    fun getSharedPreference(database: String) =
+            context.getSharedPreferences(database, Activity.MODE_PRIVATE)!!
 
-        Collections.sort(subjects, Comparator<Subject> { o1, o2 ->
-            if (o1.blockLetter == "HR(A-E)") return@Comparator -1
-            if (o2.blockLetter == "HR(A-E)") return@Comparator 1
-            o1.blockLetter.compareTo(o2.blockLetter)
-        })
-        val disabled = studentData.has("disabled")
-        var disabledTitle : String? = null
-        var disabledMessage : String? = null
-        if(disabled){
-            val disable = studentData.getJSONObject("disabled")
-            disabledTitle = disable.getString("title")?:"Access is disabled"
-            disabledMessage = disable.getString("message")?:context.getString(R.string.powerschool_disabled)
-        }
-        return StudentData(studentInfo, attendances, subjects, disabled, disabledTitle, disabledMessage)
-    }
-
-    /* IO */
-    fun getSettingsPreference() =
-            context.getSharedPreferences(context.getString(R.string.settings), Activity.MODE_PRIVATE)
-
-    fun setSettingsPreference(key: String, value: String) {
-
-        val spEditor = context.getSharedPreferences(context.getString(R.string.settings), Activity.MODE_PRIVATE).edit()
+    fun setSharedPreference(database: String, key: String, value: String) {
+        val spEditor = context.getSharedPreferences(database, Activity.MODE_PRIVATE).edit()
         spEditor.putString(key, value)
         spEditor.apply()
     }
@@ -305,7 +256,7 @@ class Utils(private val context: Context) {
 
             return data.toString()
 
-        } catch(e: Exception) {
+        } catch (e: Exception) {
             e.printStackTrace()
         }
         return null
@@ -313,22 +264,16 @@ class Utils(private val context: Context) {
 
     @Throws(IOException::class)
     fun saveStringToFile(fileName: String, data: String) {
-
         val outputStream = context.openFileOutput(fileName, Context.MODE_PRIVATE)
         outputStream.write(data.toByteArray())
         outputStream.close()
     }
 
     @Throws(IOException::class)
-    fun readDataArrayList() = parseJsonResult(readStringFromFile(context.getString(R.string.dataFileName))!!)
+    fun readDataArrayList() = StudentData(context, readStringFromFile(StudentDataFileName)!!)
 
     @Throws(IOException::class)
-    fun saveDataJson(jsonStr: String) = saveStringToFile(context.getString(R.string.dataFileName), jsonStr)
-
-    @Throws(IOException::class)
-    fun saveLangPref(langStr: String) = saveStringToFile(context.getString(R.string.langFileName), langStr)
-
-    fun readLangPref() = readStringFromFile(context.getString(R.string.langFileName))?.toInt()
+    fun saveDataJson(jsonStr: String) = saveStringToFile(StudentDataFileName, jsonStr)
 
     // 1. read data into brief info
     // 2. calculate gpa
@@ -338,7 +283,7 @@ class Utils(private val context: Context) {
     fun saveHistoryGrade(data: List<Subject>?) {
 
         if (data == null) {
-            saveStringToFile("history.json", "{}")
+            saveStringToFile(HistoryDataFileName, "{}")
         } else {
             // 1. read data into brief info
             var pointSum = 0.0
@@ -361,14 +306,14 @@ class Utils(private val context: Context) {
             // 2. calculate gpa
             val gpaInfo = JSONObject()
             gpaInfo.put("name", "GPA")
-            if (count!=0)
+            if (count != 0)
                 gpaInfo.put("grade", pointSum / count.toDouble())
             else
                 gpaInfo.put("grade", 0.0)
             gradeInfo.put(gpaInfo)
 
             // 3. read history grade from file
-            val historyData = JSONObject(readStringFromFile("history.json") ?: "{}")
+            val historyData = JSONObject(readStringFromFile(HistoryDataFileName) ?: "{}")
             // {"2017-06-20": [{"name":"...","grade":"80"}, ...], ...}
 
             // 4. update history grade
@@ -376,39 +321,52 @@ class Utils(private val context: Context) {
             historyData.put(date, gradeInfo)
 
             // 5. save history grade
-            saveStringToFile("history.json", historyData.toString())
+            saveStringToFile(HistoryDataFileName, historyData.toString())
         }
     }
 
-    fun readHistoryGrade() = JSONObject(readStringFromFile("history.json") ?: "{}")
+    fun readHistoryGrade() = JSONObject(readStringFromFile(HistoryDataFileName) ?: "{}")
 
-    fun checkUpdate() {
+    fun buildNetworkRequest(url: String, method: String, body: MultipartBody?): Call {
+        val request = Request.Builder()
+                .url(url)
+                .method(method, body)
+                .header("User-Agent", "SchoolPower Android")
+                .build()
 
-        Thread(PostData(context.getString(R.string.updateURL), "", object : Handler() {
-            override fun handleMessage(msg: Message) {
-                val message = msg.obj.toString()
-                if (!message.contains("{")) return
-                val updateJSON = JSONObject(message)
-
-                if (updateJSON.getString("version") != context.packageManager.getPackageInfo("com.carbonylgroup.schoolpower", 0).versionName) {
-                    val builder = AlertDialog.Builder(context)
-                    builder.setTitle(context.getString(R.string.upgrade_title))
-                    builder.setMessage(updateJSON.getString("description"))
-                    builder.setPositiveButton(context.getString(R.string.upgrade_pos)) {
-                        dialog, _ ->
-                        run {
-                            dialog.dismiss()
-                            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(updateJSON.getString("url")))
-                            context.startActivity(intent)
-                        }
-                    }
-                    builder.setNegativeButton(context.getString(R.string.upgrade_neg), null)
-                    builder.create().show()
-                }
-            }
-        })).start()
+        val client = OkHttpClient.Builder().build()
+        return client.newCall(request)
     }
 
+    fun checkApplicationUpdate() {
+        buildNetworkRequest(context.getString(R.string.updateURL), "GET", null)
+                .enqueue(object : Callback {
+                    override fun onFailure(call: Call, e: IOException) {
+                        e.printStackTrace()
+                    }
+
+                    override fun onResponse(call: Call, response: Response) {
+                        val message = response.body()!!.string()
+                        if (!message.contains("{")) return
+                        val updateJSON = JSONObject(message)
+
+                        if (updateJSON.getString("version") != getAppVersion()) {
+                            val builder = AlertDialog.Builder(context)
+                            builder.setTitle(context.getString(R.string.upgrade_title))
+                            builder.setMessage(updateJSON.getString("description"))
+                            builder.setPositiveButton(context.getString(R.string.upgrade_pos)) { dialog, _ ->
+                                run {
+                                    dialog.dismiss()
+                                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(updateJSON.getString("url")))
+                                    context.startActivity(intent)
+                                }
+                            }
+                            builder.setNegativeButton(context.getString(R.string.upgrade_neg), null)
+                            builder.create().show()
+                        }
+                    }
+                })
+    }
 
     fun getFilteredSubjects(subjects: List<Subject>): List<Subject> {
 
@@ -419,7 +377,7 @@ class Utils(private val context: Context) {
             subjects
                     .filter {
                         val currentTime = System.currentTimeMillis()
-                        currentTime>it.startDate && currentTime<it.endDate
+                        currentTime > it.startDate && currentTime < it.endDate
                     }
                     .forEach { filteredSubjects.add(it) }
 
@@ -428,12 +386,45 @@ class Utils(private val context: Context) {
         }
         return filteredSubjects
     }
+
+    fun getActionBarSizePx(): Int {
+        val styledAttributes = context.theme.obtainStyledAttributes(
+                intArrayOf(android.R.attr.actionBarSize))
+        val actionBarSize = styledAttributes.getDimension(0, 0f).toInt()
+        styledAttributes.recycle()
+        return actionBarSize
+    }
+
     companion object {
 
+        const val SettingsPreference: String = "Settings"
+        const val AccountData: String = "accountData"
+
+        const val StudentDataFileName: String = "dataMap.json"
+        const val HistoryDataFileName: String = "history.json"
+
+        val chartColorList = arrayOf(
+                "#534550",
+                "#c0de32",
+                "#904cdb",
+                "#76ca52",
+                "#c953b8",
+                "#67bc84",
+                "#5d4da6",
+                "#c3a83f",
+                "#858fbf",
+                "#d7552d",
+                "#65bebe",
+                "#b8517b",
+                "#919652",
+                "#ad5844",
+                "#a49a85"
+        )
+
         // convert date like "2018-01-21T16:00:00.000Z" to timestamp (unit: MILLISECOND)
-        fun convertDateToTimestamp(date:String): Long{
+        fun convertDateToTimestamp(date: String): Long {
             val temp = SimpleDateFormat("yyyy-MM-dd", Locale.CHINA).parse(date.replace("T16:00:00.000Z", ""))
-            temp.time+=24*60*60*1000
+            temp.time += 24 * 60 * 60 * 1000
             return temp.time
         }
 
@@ -460,57 +451,23 @@ class Utils(private val context: Context) {
                 if (splitedSubject[splitedSubject.size - 1] == "Sci") short += "S"
                 if (splitedSubject[splitedSubject.size - 1] == "Humanities") short += "H"
                 if (splitedSubject[splitedSubject.size - 1] == "Arts") short += "A"
+                for (c in subjectTitle) {
+                    if (c.isDigit()) short += c
+                }
                 return short
             }
 
-            var ret = ""
-            for (c in subjectTitle) {
-                if (c.isUpperCase() || c.isDigit()) ret += c
+
+            if (subjectTitle.length > 3) {
+                var ret = subjectTitle.substring(0, 3).capitalize()
+                for (c in subjectTitle.substring(3)) {
+                    if (c.isUpperCase() || c.isDigit()) ret += c
+                }
+                return ret
+            } else {
+                return subjectTitle
             }
-            return ret
         }
 
-        /**
-         * @param url    url
-         * *
-         * @param params name1=value1&name2=value2
-         * *
-         * @return result
-         */
-        internal fun sendPost(url: String, params: String): String {
-
-            var out: PrintWriter? = null
-            var `in`: BufferedReader? = null
-            var result = ""
-            try {
-
-                val realUrl = URL(url)
-                val conn = realUrl.openConnection()
-                conn.setRequestProperty("user-agent", "SchoolPower")
-                conn.doOutput = true
-                conn.doInput = true
-                out = PrintWriter(conn.getOutputStream())
-                out.print(params)
-                out.flush()
-                `in` = BufferedReader(InputStreamReader(conn.getInputStream()))
-                var line: String?
-                while (true) {
-                    line = `in`.readLine()
-                    if (line == null) break
-                    result += "\n" + line
-                }
-
-            } catch (e: Exception) {
-                e.printStackTrace()
-            } finally {
-                try {
-                    if (out != null) out.close()
-                    if (`in` != null) `in`.close()
-                } catch (ex: IOException) {
-                    ex.printStackTrace()
-                }
-            }
-            return result
-        }
     }
 }

@@ -35,8 +35,8 @@ class StudentInformation(json: JSONObject) : Serializable {
     val id : Int            = json.getInt("id")
     val gender : Gender     = if(json.getString("gender") == "M") Gender.Male else Gender.Female
     val dob : String        = json.getString("dob")
-    val firstName : String  = json.getString("middleName")
-    val middleName : String = json.getString("gender")
+    val firstName : String  = json.getString("firstName")
+    val middleName : String = json.getString("middleName")
     val lastName : String   = json.getString("lastName")
     val photoDate : String  = json.getString("photoDate")
 
