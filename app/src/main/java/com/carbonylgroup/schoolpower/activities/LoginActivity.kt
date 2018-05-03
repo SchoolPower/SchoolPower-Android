@@ -76,18 +76,33 @@ class LoginActivity : Activity() {
         progressDialog.setCanceledOnTouchOutside(false)
         progressDialog.setMessage(getString(R.string.authenticating))
         progressDialog.show()
+        val body = MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart("username", username)
+                .addFormDataPart("password", password)
+                .addFormDataPart("version", utils.getAppVersion())
+                .addFormDataPart("action", "login")
+                .addFormDataPart("os", "android")
+                .build()
 
+        var retried = false
         utils.buildNetworkRequest(getString(R.string.postURL), "POST",
-                MultipartBody.Builder()
-                        .setType(MultipartBody.FORM)
-                        .addFormDataPart("username", username)
-                        .addFormDataPart("password", password)
-                        .addFormDataPart("version", utils.getAppVersion())
-                        .addFormDataPart("action", "login")
-                        .addFormDataPart("os", "android")
-                        .build()).enqueue(
+                body).enqueue(
                 object : Callback {
-                    override fun onFailure(call: Call, e: IOException) {}
+                    override fun onFailure(call: Call, e: IOException) {
+                        e.printStackTrace()
+                        val backupServer = utils.getBackupServerUrl("pull_data_2")
+                        if(!retried && backupServer!=null) {
+                            retried = true
+                            try {
+                                val response = utils.buildNetworkRequest(backupServer, "POST", body).execute()
+                                onResponse(call, response)
+                            }catch(e:IOException){}
+                            return
+                        }
+                        progressDialog.dismiss()
+                        utils.showSnackBar(this@LoginActivity, findViewById(R.id.login_coordinate_layout), getString(R.string.no_connection), true)
+                    }
                     override fun onResponse(call: Call, response: Response) {
 
                         progressDialog.dismiss()

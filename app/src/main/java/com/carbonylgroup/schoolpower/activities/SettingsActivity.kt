@@ -106,10 +106,12 @@ class SettingsActivity : AppCompatActivity() {
                 startActivity(Intent.createChooser(intent, getString(R.string.choose_email_app)))
                 true
             }
+            /*
             findPreference("feedback_forum").onPreferenceClickListener = Preference.OnPreferenceClickListener {
                 startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.feedback_forum_address))))
                 true
             }
+            */
             findPreference("website").onPreferenceClickListener = Preference.OnPreferenceClickListener {
                 startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.website_address))))
                 true

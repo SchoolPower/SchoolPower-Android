@@ -21,6 +21,7 @@ import com.carbonylgroup.schoolpower.data.StudentData
 import com.carbonylgroup.schoolpower.data.Subject
 import okhttp3.*
 import org.json.JSONArray
+import org.json.JSONException
 import org.json.JSONObject
 import java.io.BufferedReader
 import java.io.IOException
@@ -393,6 +394,49 @@ class Utils(private val context: Context) {
         val actionBarSize = styledAttributes.getDimension(0, 0f).toInt()
         styledAttributes.recycle()
         return actionBarSize
+    }
+
+    private fun checkConnectionToUrl(url:String):Boolean {
+        try {
+            buildNetworkRequest(url, "GET", null).execute()
+            return true
+        } catch (e: IOException){
+            return false
+        }
+    }
+
+    // note that the "https://host/api/" part is not included
+    private fun getRouteFromString(route:String) : String? {
+        return when (route) {
+            "pull_data_2" -> "2.0/get_data.php"
+            "update" -> "update.json"
+            "set_avatar" -> "2.0/set_avatar.php"
+            else -> null
+        }
+    }
+
+    // Do NOT call in the main thread
+    // Return null when none found
+    // See getRouteFromString for valid routes
+    fun getBackupServerUrl(route:String):String? {
+        val serversStr = try{
+            buildNetworkRequest(context.getString(R.string.backupServersURL), "GET", null).execute().body()?.string()
+                ?: return null
+        } catch(e: IOException) {
+            return null
+        } // return null when we can't even fetch server list. usually it's because of network issue
+
+        val servers = try{JSONArray(serversStr)}catch(e:JSONException){return null}
+        for (i in 0 until servers.length()) {
+            val server = servers.getJSONObject(i)
+            if(server.has(route) && checkConnectionToUrl(server.getString(route))) // find full match first
+                return server.getString(route)
+            else if (server.has("generic")){ // if failed, try "generic" url
+                val url = server.getString("generic") + (getRouteFromString(route)?:continue)
+                if(checkConnectionToUrl(url)) return url
+            }
+        }
+        return null
     }
 
     companion object {

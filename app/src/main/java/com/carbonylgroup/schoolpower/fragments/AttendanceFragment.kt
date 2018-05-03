@@ -80,7 +80,7 @@ class AttendanceFragment : Fragment() {
     }
 
     fun setRefreshing(isRefreshing: Boolean) {
-        attendance_swipe_refresh_layout!!.isRefreshing = isRefreshing
+        attendance_swipe_refresh_layout?.isRefreshing = isRefreshing
     }
 
     fun refreshAdapterToEmpty() {
