@@ -75,7 +75,7 @@
     <string name="display">顯示</string>
     <string name="dashboard_displays">儀表盤顯示</string>
     <string name="language">語言</string>
-    <string name="dashboard_display_preference_summary_prefix">\0</string> 
+    <string name="dashboard_display_preference_summary_prefix" /> 
     <string name="dashboard_display_preference_summary_suffix">&#160;的分數</string>  
 
     <string name="notification">提示</string>
