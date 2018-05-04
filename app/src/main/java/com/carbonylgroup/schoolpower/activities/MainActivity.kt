@@ -102,18 +102,16 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
 
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+    override fun initActivity() {
 
         utils = Utils(this)
-        initBase()
-        super.onCreate(savedInstanceState)
+        super.initActivity()
         setContentView(R.layout.nav_drawer)
         initValue()
         initUI()
         initOnClick()
         initScheduler()
         utils.checkApplicationUpdate()
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -177,17 +175,10 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
     }
 
     /* Initializer */
-    private fun initBase() {
-
-        this.darkModeCache = this.getSharedPreferences(getString(R.string.accountData), Context.MODE_PRIVATE)
-                .getBoolean(getString(R.string.KEY_DARK_MODE), false)
-        setTheme(if (darkModeCache) R.style.AppThemeBase_Light else R.style.AppThemeBase_Dark)
-    }
-
     private fun initValue() {
 
         MobileAds.initialize(this, getString(R.string.adMob_app_id))
-        mAdView = findViewById<AdView>(R.id.adView)
+        mAdView = findViewById(R.id.adView)
         val adRequest = AdRequest.Builder().build()
         mAdView.loadAd(adRequest)
 
@@ -285,7 +276,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
 
     private fun setAvatar() {
 
-        if(utils.getSharedPreference(AccountData).getString("user_avatar","")!="") {
+        if (utils.getSharedPreference(AccountData).getString("user_avatar", "") != "") {
             val alertDialog =
                     AlertDialog.Builder(this)
                             .setAdapter(ArrayAdapter<String>(this, R.layout.simple_list_item,
@@ -298,7 +289,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                 alertDialog.dismiss()
             }
             alertDialog.show()
-        }else{
+        } else {
             modifyAvatar()
         }
     }
@@ -452,7 +443,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
 
         animateDrawerToggle(false)
         hideToolBarItems(false)
-        if (subjects != null && subjects!!.count() != 0) homeFragment!!.notifyAdapter()
+//        if (subjects != null && subjects!!.count() != 0) homeFragment!!.notifyAdapter()
 
         //TODO Bugs might occur when adding new menu items QAQ
         navigationView.menu.getItem(1).isChecked = false
@@ -475,7 +466,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                 .commit()
 
         hideToolBarItems(false)
-        if (subjects != null && subjects!!.count() != 0) homeFragment!!.notifyAdapter()
+//        if (subjects != null && subjects!!.count() != 0) homeFragment!!.notifyAdapter()
         navigationView.menu.getItem(index).isChecked = false
         navigationView.menu.getItem(0).isChecked = true
     }

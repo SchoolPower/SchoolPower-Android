@@ -75,10 +75,12 @@ class FoldingCellListAdapter(context: Context, private var subjects: List<Subjec
 
             cell.tag = viewHolder
 
+//            if (cell.width > 0 && cell.height > 0) {
             if (unfoldedIndexes.contains(position)) {
                 cell.unfold(true)
                 popUpFAB(cell, 300)
             } else cell.fold(true)
+//            }
 
         } else {
 

@@ -1,6 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <PreferenceCategory android:title="Theme">
+
+        <Preference
+            android:defaultValue="dark"
+            android:key="list_preference_theme"
+            android:summary="%s"
+            android:title="Accent Color" />
+
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="switch_preference_theme_dark"
+            android:title="Dark Theme" />
+
+    </PreferenceCategory>
+
     <PreferenceCategory android:title="@string/display">
 
         <ListPreference
@@ -32,8 +47,8 @@
 
         <MultiSelectListPreference
             android:defaultValue="@array/empty_array"
-            android:title="@string/list_preference_custom_gpa_select"
-            android:key="list_preference_customize_gpa"/>
+            android:key="list_preference_customize_gpa"
+            android:title="@string/list_preference_custom_gpa_select" />
 
         <ListPreference
             android:defaultValue="all"
@@ -45,21 +60,6 @@
 
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="Theme">
-
-        <SwitchPreference
-            android:defaultValue="false"
-            android:key="sdkhjvbjsvb"
-            android:title="Dark Theme" />
-        <ListPreference
-            android:defaultValue="dark"
-            android:entries="@array/list_preference_gpa_calculate_entries"
-            android:entryValues="@array/list_preference_gpa_calculate_values"
-            android:key="list_preference_custom_gpa_calculate"
-            android:summary="%s"
-            android:title="Accent Color" />
-
-    </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/notification_settings">
 
@@ -84,12 +84,12 @@
             android:key="report_bug"
             android:summary="@string/report_bug_summary"
             android:title="@string/report_bug" />
-<!--
-        <PreferenceScreen
-            android:key="feedback_forum"
-            android:summary="@string/feedback_forum_summary"
-            android:title="@string/feedback_forum" />
--->
+        <!--
+                <PreferenceScreen
+                    android:key="feedback_forum"
+                    android:summary="@string/feedback_forum_summary"
+                    android:title="@string/feedback_forum" />
+        -->
         <PreferenceScreen
             android:key="website"
             android:title="@string/visit_website" />

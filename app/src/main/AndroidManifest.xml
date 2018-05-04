@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.carbonylgroup.schoolpower">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -18,8 +19,7 @@
             android:name=".activities.LoginActivity"
             android:configChanges="locale|orientation"
             android:screenOrientation="portrait"
-            android:theme="@style/AppThemeBase"
-            android:windowSoftInputMode="adjustResize">
+            android:theme="@style/AppThemeBase">
 
             <intent-filter>
 
@@ -34,8 +34,7 @@
             android:name=".activities.MainActivity"
             android:configChanges="locale|orientation"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppThemeBase">
+            android:screenOrientation="portrait">
 
             <intent-filter>
 
@@ -49,8 +48,7 @@
         <activity
             android:name=".activities.SettingsActivity"
             android:label="@string/title_activity_settings"
-            android:parentActivityName=".activities.MainActivity"
-            android:theme="@style/AppThemeBase">
+            android:parentActivityName=".activities.MainActivity">
 
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

@@ -1,13 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.Toolbar
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/toolbar"
-    app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/settings_coordinate_layout"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:minHeight="?attr/actionBarSize"
-    app:navigationContentDescription="@string/abc_action_bar_up_description"
-    android:background="?attr/colorPrimary"
-    app:navigationIcon="?attr/homeAsUpIndicator"
-    app:title="@string/settings" />
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context="com.carbonylgroup.schoolpower.activities.SettingsActivity"
+    tools:menu="@menu/menu_main">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/settings_root_layout">
+
+        <android.support.design.widget.AppBarLayout
+            android:id="@+id/settings_app_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/settings_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?android:attr/colorPrimary"
+                app:layout_scrollFlags="scroll|enterAlways"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                app:titleTextAppearance="@style/Design.TitleTextStyle">
+
+            </android.support.v7.widget.Toolbar>
+
+        </android.support.design.widget.AppBarLayout>
+
+        <FrameLayout
+            android:id="@+id/settings_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/settings_app_bar" />
+
+    </RelativeLayout>
+
+</android.support.design.widget.CoordinatorLayout>

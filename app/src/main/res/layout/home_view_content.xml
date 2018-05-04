@@ -26,6 +26,13 @@
 
     </LinearLayout>
 
+    <!--<ProgressBar-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:id="@+id/dashboard_progress_bar"-->
+        <!--android:layout_centerInParent="true"-->
+        <!--android:indeterminate="true"/>-->
+
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/home_swipe_refresh_layout"
         android:layout_width="match_parent"

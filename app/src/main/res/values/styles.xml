@@ -2,12 +2,6 @@
 
 <resources>
 
-    <style name="AppThemeBase.Light" parent="Base.Theme.AppCompat.Light.DarkActionBar">
-        <item name="windowNoTitle">true</item>
-        <item name="windowActionBar">false</item>
-        <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
-    </style>
-
     <style name="AppThemeBase" parent="Base.Theme.AppCompat.Light.DarkActionBar">
         <item name="android:windowTranslucentNavigation">false</item>
         <item name="android:windowTranslucentStatus">false</item>
@@ -17,15 +11,9 @@
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryDark">@color/primary_dark</item>
         <item name="colorAccent">@color/accent</item>
-    </style>
-
-    <style name="Design" parent="AppThemeBase">
-    </style>
-
-    <style name="AppThemeBase.Dark" parent="Theme.AppCompat">
+        <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
         <item name="windowNoTitle">true</item>
         <item name="windowActionBar">false</item>
-        <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
     </style>
 
     <style name="Design.DrawerArrowStyle" parent="@style/Widget.AppCompat.DrawerArrowToggle">

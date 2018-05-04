@@ -16,7 +16,17 @@
         android:id="@+id/chart_pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/tab_layout">
+        android:layout_below="@id/tab_layout"
+        android:layoutAnimation="@anim/layout_swipe_in">
 
     </android.support.v4.view.ViewPager>
+
+    <!--<ProgressBar-->
+        <!--android:id="@+id/chart_progress_bar"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_centerInParent="true"-->
+        <!--android:indeterminate="true" />-->
+
+
 </RelativeLayout>

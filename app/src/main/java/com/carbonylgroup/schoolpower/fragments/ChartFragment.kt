@@ -3,6 +3,7 @@ package com.carbonylgroup.schoolpower.fragments
 import android.app.Fragment
 import android.app.FragmentManager
 import android.os.Bundle
+import android.os.Handler
 import android.support.design.widget.TabLayout
 import android.support.v13.app.FragmentStatePagerAdapter
 import android.support.v4.view.PagerAdapter
@@ -10,6 +11,7 @@ import android.support.v4.view.ViewPager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import com.carbonylgroup.schoolpower.R
 import com.carbonylgroup.schoolpower.activities.MainActivity
 
@@ -44,13 +46,18 @@ class ChartFragment : Fragment() {
         val view = inflater!!.inflate(R.layout.fragment_chart, container, false)
         MainActivity.of(activity).expandToolBar(true, true)
 
-        // Instantiate a ViewPager and a PagerAdapter.
-        mPager = view.findViewById(R.id.chart_pager) as ViewPager
-        mPagerAdapter = ScreenSlidePagerAdapter(fragmentManager)
-        mPager!!.adapter = mPagerAdapter
+//        Handler().postDelayed({
+            // Instantiate a ViewPager and a PagerAdapter.
+            mPager = view.findViewById(R.id.chart_pager) as ViewPager
+            mPagerAdapter = ScreenSlidePagerAdapter(fragmentManager)
+            mPager!!.adapter = mPagerAdapter
 
-        val tabLayout = view.findViewById(R.id.tab_layout) as TabLayout
-        tabLayout.setupWithViewPager(mPager)
+            val tabLayout = view.findViewById(R.id.tab_layout) as TabLayout
+            tabLayout.setupWithViewPager(mPager)
+
+//            view.findViewById<ProgressBar>(R.id.chart_progress_bar).visibility = View.GONE
+//        }, 200)
+
         return view
     }
 

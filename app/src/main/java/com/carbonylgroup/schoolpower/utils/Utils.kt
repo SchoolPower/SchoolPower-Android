@@ -9,6 +9,7 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.graphics.Color
 import android.media.Image
 import android.net.Uri
 import android.preference.PreferenceManager
@@ -32,9 +33,28 @@ import java.util.*
 class Utils(private val context: Context) {
 
     val THEME = "appTheme"
-    val LIGHT_INDIGO = "Light indigo"
-    val DARK = "Dark"
-    val LIGHT_TEAL = "Light teal"
+    val LIGHT = "LIGHT"
+    val DARK = "DARK"
+
+    val LIGHT_BLUE = 0
+    val BLUE = 1
+    val INDIGO = 2
+    val ORANGE = 3
+
+    val YELLOW = 4
+    val AMBER = 5
+    val GREY = 6
+    val BROWN = 7
+
+    val CYAN = 8
+    val TEAL = 9
+    val LIME = 10
+    val GREEN = 11
+
+    val PINK = 12
+    val RED = 13
+    val PURPLE = 14
+    val DEEP_PURPLE = 15
 
     private val gradeColorIds = intArrayOf(
             R.color.A_score_green,
@@ -100,12 +120,17 @@ class Utils(private val context: Context) {
     private fun indexOfString(searchString: String, domain: Array<String>):
             Int = domain.indices.firstOrNull { searchString == domain[it] } ?: -1
 
+
     fun getDefaultSp(context: Context): SharedPreferences {
         return PreferenceManager.getDefaultSharedPreferences(context)
     }
 
+    fun getTheme(): String {
+        return getDefaultSp(context).getString(THEME, LIGHT)
+    }
+
     operator fun set(key: String, value: Any) {
-        if (key.trim({ it <= ' ' }) == "") {
+        if (StringUtils.isBlank(key) || value == null) {
             throw NullPointerException(String.format("Key and value not be null key=%s, value=%s", key, value))
         }
         val edit = getDefaultSp(context).edit()
@@ -127,19 +152,15 @@ class Utils(private val context: Context) {
         edit.apply()
     }
 
-    /* Theme Handler */
-    fun getTheme(): String {
-        return getDefaultSp(context).getString(THEME, LIGHT_TEAL)
-    }
-
     /* Color Handler */
     fun getColorByLetterGrade(letterGrade: String): Int {
         val colorIndex = indexOfString(letterGrade, arrayOf("A", "B", "C+", "C", "C-", "F", "I", "--"))
         return ContextCompat.getColor(context, if (colorIndex != -1) gradeColorIds[colorIndex] else 7)
     }
 
-    fun getDarkColorByPrimary(originalPrimary: Int) = ContextCompat.getColor(context,
-            gradeDarkColorIdsPlain[gradeColorIdsPlain.takeWhile { originalPrimary != ContextCompat.getColor(context, it) }.count()])
+    fun getDarkColorByPrimary(originalPrimary: Int) = Color.CYAN
+//            ContextCompat.getColor(context,
+//            gradeDarkColorIdsPlain[gradeColorIdsPlain.takeWhile { originalPrimary != ContextCompat.getColor(context, it) }.count()])
 
     fun getColorByAttendance(context: Context, attendanceCode: String) = ContextCompat.getColor(context,
             attendanceColorIds[attendanceCode] ?: R.color.gray)
