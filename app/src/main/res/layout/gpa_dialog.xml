@@ -81,7 +81,7 @@
             app:sbg_ripple="true"
             app:sbg_rippleColor="?attr/colorAccent"
             app:sbg_selectorColor="?attr/colorAccent"
-            app:sbg_selectorTextColor="?android:textColorSecondary"
+            app:sbg_selectorTextColor="@color/white"
             app:sbg_shadow="true"
             app:sbg_shadowElevation="1dp"
             app:sbg_shadowMargin="1dp">
