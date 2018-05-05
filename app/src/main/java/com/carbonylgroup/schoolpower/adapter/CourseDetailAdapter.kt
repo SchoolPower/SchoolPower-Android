@@ -72,13 +72,13 @@ class CourseDetailAdapter(private val context: Context, private val subject: Sub
                     LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
 
             if (assignmentItem.isNew) {
-                normalViewHolder.detail_header_background.setBackgroundColor(ContextCompat.getColor(context, R.color.accent))
+                normalViewHolder.detail_header_background.setBackgroundColor(utils.getAccentColor())
                 normalViewHolder.detail_assignment_name_tv.setTextColor(ContextCompat.getColor(context, R.color.white))
                 normalViewHolder.detail_assignment_date_tv.setTextColor(ContextCompat.getColor(context, R.color.white_0_20))
             } else {
-                normalViewHolder.detail_header_background.setBackgroundColor(ContextCompat.getColor(context, R.color.white))
-                normalViewHolder.detail_assignment_name_tv.setTextColor(ContextCompat.getColor(context, R.color.text_primary_black))
-                normalViewHolder.detail_assignment_date_tv.setTextColor(ContextCompat.getColor(context, R.color.text_tertiary_black))
+                normalViewHolder.detail_header_background.setBackgroundColor(utils.getCardBackground())
+                normalViewHolder.detail_assignment_name_tv.setTextColor(utils.getPrimaryTextColor())
+                normalViewHolder.detail_assignment_date_tv.setTextColor(utils.getSecondaryTextColor())
             }
             normalViewHolder.detail_header_background.setOnClickListener {
                 showAssignmentDialog(assignmentItem)

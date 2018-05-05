@@ -2,12 +2,15 @@ package com.carbonylgroup.schoolpower.fragments
 
 import android.app.Fragment
 import android.os.Bundle
+import android.os.Handler
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
+import android.widget.ProgressBar
 import com.carbonylgroup.schoolpower.R
 import com.carbonylgroup.schoolpower.activities.MainActivity
 import com.carbonylgroup.schoolpower.adapter.AttendanceAdapter
@@ -22,6 +25,8 @@ class AttendanceFragment : Fragment() {
     private var adapter: AttendanceAdapter? = null
     private var attendance: List<Attendance>? = null
     private lateinit var attendanceRecyclerView: RecyclerView
+    private lateinit var no_attendance_view: LinearLayout
+    private lateinit var attendanceProgressBar: ProgressBar
     private var attendance_swipe_refresh_layout: SwipeRefreshLayout? = null
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
@@ -52,6 +57,8 @@ class AttendanceFragment : Fragment() {
         utils = Utils(activity)
         attendance = MainActivity.of(activity).attendances!!
         attendanceRecyclerView = view_private!!.findViewById(R.id.attendance_recycler)
+        attendanceProgressBar = view_private!!.findViewById(R.id.attendance_progress_bar)
+        no_attendance_view = view_private!!.findViewById(R.id.no_attendance_view)
         attendance_swipe_refresh_layout = view_private!!.findViewById(R.id.attendance_swipe_refresh_layout)
         attendance_swipe_refresh_layout!!.setColorSchemeResources(R.color.accent, R.color.A_score_green, R.color.B_score_green,
                 R.color.Cp_score_yellow, R.color.C_score_orange, R.color.Cm_score_red, R.color.primary)
@@ -63,13 +70,20 @@ class AttendanceFragment : Fragment() {
 
     private fun initAdapter() {
 
-        if (attendance != null && attendance!!.count() != 0) attendanceRecyclerView.visibility = View.VISIBLE
+        if (attendance != null && attendance!!.count() != 0) {
+            attendanceRecyclerView.visibility = View.VISIBLE
+            no_attendance_view.visibility = View.GONE
+        }
         attendanceRecyclerView.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
-        attendanceRecyclerView.adapter = AttendanceAdapter(activity, attendance)
+//        Handler().postDelayed({
+            attendanceRecyclerView.adapter = AttendanceAdapter(activity, attendance)
+            attendanceProgressBar.visibility = View.GONE
+//        }, 500)
     }
 
-    fun invisiblizeRecyclerView() {
+    fun visiblizeNoAttendanceView() {
         attendanceRecyclerView.visibility = View.GONE
+        no_attendance_view.visibility = View.VISIBLE
     }
 
     fun setRefreshing(isRefreshing: Boolean) {
@@ -80,7 +94,7 @@ class AttendanceFragment : Fragment() {
 
         attendance = arrayListOf()
         setRefreshing(false)
-        invisiblizeRecyclerView()
+        visiblizeNoAttendanceView()
     }
 
     fun refreshAdapter(newAttendance: List<Attendance>) {

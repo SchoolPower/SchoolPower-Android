@@ -102,13 +102,17 @@ class BarChartFragment : Fragment() {
         barChart.xAxis.axisMinimum = 0f
         barChart.xAxis.axisMaximum = 4f*gradedSubjects.size
         barChart.xAxis.setCenterAxisLabels(true)
+        barChart.xAxis.textColor = utils.getPrimaryTextColor()
         //barChart.xAxis.labelRotationAngle = 40f
         barChart.xAxis.valueFormatter = IAxisValueFormatter { value, _ -> subjectStrings.getOrElse(value.toInt()/4,{_->""}) }
+        barChart.axisLeft.textColor = utils.getPrimaryTextColor()
+        barChart.axisRight.textColor = utils.getPrimaryTextColor()
+        barChart.legend.textColor = utils.getPrimaryTextColor()
 
         val barData = BarData(dataSets)
         barData.setValueTextSize(8f)
         barData.setDrawValues(true)
-        barData.setValueTextColor(ContextCompat.getColor(activity, R.color.primary))
+        barData.setValueTextColor(utils.getAccentColor())
 
         //barChart.legend.isEnabled = false
         barChart.legend.horizontalAlignment = Legend.LegendHorizontalAlignment.CENTER

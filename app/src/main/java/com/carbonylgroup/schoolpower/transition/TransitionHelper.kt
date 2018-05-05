@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity
 import android.transition.Transition
 import android.view.View
 import android.view.ViewTreeObserver
+import com.carbonylgroup.schoolpower.activities.BaseActivity
 import java.util.*
 
 /**
@@ -164,7 +165,7 @@ class TransitionHelper private constructor(internal val activity: Activity, save
         })
     }
 
-    open class MainActivity : AppCompatActivity(), TransitionHelper.Source, TransitionHelper.Listener {
+    open class MainActivity : BaseActivity(), TransitionHelper.Source, TransitionHelper.Listener {
         override var transitionHelper: TransitionHelper? = null
 
         override fun onCreate(savedInstanceState: Bundle?) {

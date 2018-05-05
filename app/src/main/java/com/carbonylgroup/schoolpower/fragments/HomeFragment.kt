@@ -5,7 +5,9 @@
 package com.carbonylgroup.schoolpower.fragments
 
 import android.os.Bundle
+import android.os.Handler
 import android.support.v4.widget.SwipeRefreshLayout
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,7 +15,9 @@ import android.view.animation.Animation
 import android.view.animation.DecelerateInterpolator
 import android.view.animation.ScaleAnimation
 import android.widget.AdapterView
+import android.widget.LinearLayout
 import android.widget.ListView
+import android.widget.ProgressBar
 import com.carbonylgroup.schoolpower.R
 import com.carbonylgroup.schoolpower.activities.MainActivity
 import com.carbonylgroup.schoolpower.adapter.FoldingCellListAdapter
@@ -36,10 +40,12 @@ class HomeFragment : TransitionHelper.BaseFragment() {
     private var adapter: FoldingCellListAdapter? = null
     private var courseDetailFragment: CourseDetailFragment? = null
     private var home_swipe_refresh_layout: SwipeRefreshLayout? = null
+    private lateinit var dashboardProgressBar: ProgressBar
     private lateinit var dashboardListView: ListView
+    private lateinit var no_grade_view: LinearLayout
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-
+Log.d("[][][", "uyhkfcyu")
         view_private = inflater.inflate(R.layout.home_view_content, container, false)
         initAnim()
         initValue()
@@ -74,13 +80,16 @@ class HomeFragment : TransitionHelper.BaseFragment() {
         MainActivity.of(activity).presentFragment = 0
         MainActivity.of(activity).setToolBarElevation()
         MainActivity.of(activity).setToolBarTitle(getString(R.string.dashboard))
+//        dashboardProgressBar = view_private!!.findViewById(R.id.dashboard_progress_bar)
         dashboardListView = view_private!!.findViewById(R.id.mainListView)
+        no_grade_view = view_private!!.findViewById(R.id.no_grade_view)
         home_swipe_refresh_layout = view_private!!.findViewById(R.id.home_swipe_refresh_layout)
         home_swipe_refresh_layout!!.setColorSchemeResources(R.color.accent, R.color.A_score_green, R.color.B_score_green,
                 R.color.Cp_score_yellow, R.color.C_score_orange, R.color.Cm_score_red, R.color.primary)
         home_swipe_refresh_layout!!.setOnRefreshListener { MainActivity.of(activity).fetchStudentDataFromServer() }
         if (subjects == null || subjects!!.count() == 0) refreshAdapterToEmpty()
         else initAdapter()
+
     }
 
     private fun adapterSetFabOnClickListener(adapter: FoldingCellListAdapter) = adapter.setFabOnClickListener(View.OnClickListener { v ->
@@ -97,8 +106,9 @@ class HomeFragment : TransitionHelper.BaseFragment() {
         itemView.findViewById<View>(R.id.floating_action_button).visibility = View.GONE
         gotoCourseDetail(itemView.findViewById(R.id.unfold_header_view), itemView.findViewById(R.id.detail_subject_title_tv), transformedPosition)
     })
+
     private fun adapterSetTermOnClickListener(adapter: FoldingCellListAdapter) =
-            adapter.setTermOnClickListener(object: com.carbonylgroup.schoolpower.adapter.OnItemClickListener {
+            adapter.setTermOnClickListener(object : com.carbonylgroup.schoolpower.adapter.OnItemClickListener {
                 override fun onItemClicked(position: Int, view: View) {
                     adapter.showTermDialog(utils!!.getFilteredSubjects(subjects!!)[dashboardListView.getPositionForView(view)], position)
                 }
@@ -106,25 +116,31 @@ class HomeFragment : TransitionHelper.BaseFragment() {
 
     private fun initAdapter() {
 
-        if (subjects != null && subjects!!.count() != 0) dashboardListView.visibility = View.VISIBLE
-
-        adapter = FoldingCellListAdapter(activity, utils!!.getFilteredSubjects(subjects!!), unfoldedIndexesBackUp, transformedPosition)
-
-        adapterSetFabOnClickListener(adapter!!)
-        adapterSetTermOnClickListener(adapter!!)
-
-        dashboardListView.onItemClickListener = AdapterView.OnItemClickListener { _, view, pos, _ ->
-            adapter!!.registerToggle(pos)
-            (view as FoldingCell).toggle(false)
-            adapter!!.refreshPeriodRecycler(view, pos)
-            unfoldedIndexesBackUp = adapter!!.unfoldedIndexes
+        if (subjects != null && subjects!!.count() != 0) {
+            dashboardListView.visibility = View.VISIBLE
+            no_grade_view.visibility = View.GONE
         }
 
-        dashboardListView.adapter = adapter
+//        Handler().postDelayed({
+
+            adapter = FoldingCellListAdapter(activity, utils!!.getFilteredSubjects(subjects!!), unfoldedIndexesBackUp, transformedPosition)
+            adapterSetFabOnClickListener(adapter!!)
+            adapterSetTermOnClickListener(adapter!!)
+            dashboardListView.onItemClickListener = AdapterView.OnItemClickListener { _, view, pos, _ ->
+                adapter!!.registerToggle(pos)
+                (view as FoldingCell).toggle(false)
+                adapter!!.refreshPeriodRecycler(view, pos)
+                unfoldedIndexesBackUp = adapter!!.unfoldedIndexes
+            }
+            dashboardListView.adapter = adapter
+//            dashboardProgressBar.visibility = View.GONE
+//
+//        }, 200)
     }
 
-    fun invisiblizeListView() {
+    fun visiblizeNoGradeView() {
         dashboardListView.visibility = View.GONE
+        no_grade_view.visibility = View.VISIBLE
     }
 
     fun setRefreshing(isRefreshing: Boolean) {
@@ -135,7 +151,7 @@ class HomeFragment : TransitionHelper.BaseFragment() {
 
         subjects = arrayListOf()
         setRefreshing(false)
-        invisiblizeListView()
+        visiblizeNoGradeView()
     }
 
     fun refreshAdapter(newSubjects: List<Subject>) {
@@ -153,7 +169,6 @@ class HomeFragment : TransitionHelper.BaseFragment() {
     fun notifyAdapter() {
         adapter!!.notifyDataSetChanged()
     }
-
 
 
     private fun getItemViewByPosition(position: Int, listView: ListView): View {
@@ -190,8 +205,7 @@ class HomeFragment : TransitionHelper.BaseFragment() {
     }
 
     private fun preRenderUnfoldCells() {
-
-        for (i in 0..9) (getItemViewByPosition(transformedPosition, dashboardListView) as FoldingCell).toggle(false)
+        (getItemViewByPosition(transformedPosition, dashboardListView) as FoldingCell).toggle(true)
     }
 
     override fun onAfterEnter() {

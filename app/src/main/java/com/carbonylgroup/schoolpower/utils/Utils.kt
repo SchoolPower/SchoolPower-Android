@@ -8,8 +8,11 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
+import android.graphics.Color
 import android.net.Uri
 import android.preference.PreferenceManager
+import android.support.annotation.ColorInt
 import android.support.design.widget.Snackbar
 import android.support.v4.content.ContextCompat
 import android.util.DisplayMetrics
@@ -29,6 +32,31 @@ import java.util.*
 
 class Utils(private val context: Context) {
 
+    val THEME = "appTheme"
+    val ACCENT_COLOR = "accentColor"
+    val LIGHT = "LIGHT"
+    val DARK = "DARK"
+
+    val LIGHT_BLUE = 0
+    val BLUE = 1
+    val INDIGO = 2
+    val ORANGE = 3
+
+    val YELLOW = 4
+    val AMBER = 5
+    val GREY = 6
+    val BROWN = 7
+
+    val CYAN = 8
+    val TEAL = 9
+    val LIME = 10
+    val GREEN = 11
+
+    val PINK = 12
+    val RED = 13
+    val PURPLE = 14
+    val DEEP_PURPLE = 15
+
     private val gradeColorIds = intArrayOf(
             R.color.A_score_green,
             R.color.B_score_green,
@@ -47,7 +75,8 @@ class Utils(private val context: Context) {
             R.color.C_score_orange,
             R.color.Cm_score_red,
             R.color.primary_dark,
-            R.color.primary
+            R.color.primary,
+            R.color.dark_color_primary
     )
 
     private val gradeDarkColorIdsPlain = intArrayOf(
@@ -57,7 +86,8 @@ class Utils(private val context: Context) {
             R.color.C_score_orange_dark,
             R.color.Cm_score_red_dark,
             R.color.primary_darker,
-            R.color.primary_dark
+            R.color.primary_dark,
+            R.color.dark_color_primary_dark
     )
 
     private val attendanceColorIds = mapOf(
@@ -92,6 +122,106 @@ class Utils(private val context: Context) {
 
     private fun indexOfString(searchString: String, domain: Array<String>):
             Int = domain.indices.firstOrNull { searchString == domain[it] } ?: -1
+
+
+    fun getDefaultSp(context: Context): SharedPreferences {
+        return PreferenceManager.getDefaultSharedPreferences(context)
+    }
+
+    fun getTheme(): String {
+        return getDefaultSp(context).getString(THEME, LIGHT)
+    }
+
+    @ColorInt
+    fun getPrimaryColor(): Int {
+        return getColorAttr(R.attr.colorPrimary)
+    }
+
+    @ColorInt
+    fun getPrimaryDarkColor(): Int {
+        return getColorAttr(R.attr.colorPrimaryDark)
+    }
+
+    @ColorInt
+    fun getAccentColor(): Int {
+        return getColorAttr(R.attr.colorAccent)
+    }
+
+    fun getAccentColorIndex(): Int {
+        return getDefaultSp(context).getInt(ACCENT_COLOR, 8)
+    }
+
+    @ColorInt
+    fun getPrimaryTextColor(): Int {
+        return getColorAttr(android.R.attr.textColorPrimary)
+    }
+
+    @ColorInt
+    fun getSecondaryTextColor(): Int {
+        return getColorAttr(android.R.attr.textColorSecondary)
+    }
+
+    @ColorInt
+    fun getWindowBackground(): Int {
+        return getColorAttr(android.R.attr.windowBackground)
+    }
+
+    @ColorInt
+    fun getCardBackground(): Int {
+        return getColorAttr(R.attr.card_background)
+    }
+
+    @ColorInt
+    fun getIconColor(): Int {
+        return getColorAttr(R.attr.icon_color)
+    }
+
+    @ColorInt
+    fun getTitleColor(): Int {
+        return getColorAttr(R.attr.title_color)
+    }
+
+    @ColorInt
+    fun getSubTitleColor(): Int {
+        return getColorAttr(R.attr.subtitle_color)
+    }
+
+    @ColorInt
+    fun getSelectedColor(): Int {
+        return getColorAttr(R.attr.selected_color)
+    }
+
+    @ColorInt
+    private fun getColorAttr(attr: Int): Int {
+        val theme = context.theme
+        val typedArray = theme.obtainStyledAttributes(intArrayOf(attr))
+        val color = typedArray.getColor(0, Color.LTGRAY)
+        typedArray.recycle()
+        return color
+    }
+
+    operator fun set(key: String, value: Any) {
+        if (StringUtils.isBlank(key) || value == null) {
+            throw NullPointerException(String.format("Key and value not be null key=%s, value=%s", key, value))
+        }
+        val edit = getDefaultSp(context).edit()
+        if (value is String) {
+            edit.putString(key, value)
+        } else if (value is Int) {
+            edit.putInt(key, value)
+        } else if (value is Long) {
+            edit.putLong(key, value)
+        } else if (value is Boolean) {
+            edit.putBoolean(key, value)
+        } else if (value is Float) {
+            edit.putFloat(key, value)
+        } else if (value is Set<*>) {
+            edit.putStringSet(key, value as Set<String>)
+        } else {
+            throw IllegalArgumentException(String.format("Type of value unsupported key=%s, value=%s", key, value))
+        }
+        edit.apply()
+    }
 
     /* Color Handler */
     fun getColorByLetterGrade(letterGrade: String): Int {

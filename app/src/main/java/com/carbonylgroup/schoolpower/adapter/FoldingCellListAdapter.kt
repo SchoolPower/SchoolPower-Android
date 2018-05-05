@@ -62,6 +62,7 @@ class FoldingCellListAdapter(context: Context, private var subjects: List<Subjec
             viewHolder.floating_action_button = cell.findViewById(R.id.floating_action_button)
             viewHolder.unfold_teacher_name_tv = cell.findViewById(R.id.unfold_teacher_name_tv)
             viewHolder.unfold_subject_title_tv = cell.findViewById(R.id.detail_subject_title_tv)
+            viewHolder.detail_header_background = cell.findViewById(R.id.detail_header_background)
             viewHolder.fold_percentage_grade_tv = cell.findViewById(R.id.fold_percentage_grade_tv)
             viewHolder.unfold_percentage_grade_tv = cell.findViewById(R.id.unfold_percentage_grade_tv)
             viewHolder.unfolded_grade_recycler_view = cell.findViewById(R.id.unfolded_grade_recycler_view)
@@ -75,10 +76,12 @@ class FoldingCellListAdapter(context: Context, private var subjects: List<Subjec
 
             cell.tag = viewHolder
 
+//            if (cell.width > 0 && cell.height > 0) {
             if (unfoldedIndexes.contains(position)) {
                 cell.unfold(true)
                 popUpFAB(cell, 300)
             } else cell.fold(true)
+//            }
 
         } else {
 
@@ -106,13 +109,14 @@ class FoldingCellListAdapter(context: Context, private var subjects: List<Subjec
         viewHolder.unfold_percentage_grade_tv!!.text = period.percentage
         viewHolder.unfold_header_view!!.setBackgroundColor(utils.getColorByLetterGrade(period.letter))
         viewHolder.fold_grade_background!!.setBackgroundColor(utils.getColorByLetterGrade(period.letter))
+        viewHolder.detail_header_background!!.setBackgroundColor(utils.getCardBackground())
         viewHolder.unfold_trend_card!!.visibility = View.GONE
 
         if (item.assignments.any { it -> it.isNew }) { // if any assignment is marked as new
             viewHolder.fold_subject_title_tv!!.setTextColor(ContextCompat.getColor(context, R.color.white))
             viewHolder.fold_teacher_name_tv!!.setTextColor(ContextCompat.getColor(context, R.color.white_0_10))
             viewHolder.fold_block_letter_tv!!.setTextColor(ContextCompat.getColor(context, R.color.white_0_10))
-            viewHolder.fold_background!!.setBackgroundColor(ContextCompat.getColor(context, R.color.accent))
+            viewHolder.fold_background!!.setBackgroundColor(utils.getAccentColor())
 
             // Show increase/decrease margin badge
             viewHolder.unfold_trend_card!!.visibility = View.VISIBLE
@@ -132,10 +136,10 @@ class FoldingCellListAdapter(context: Context, private var subjects: List<Subjec
             viewHolder.unfold_trend_text!!.text = Math.abs(item.margin).toString()
 
         } else {
-            viewHolder.fold_subject_title_tv!!.setTextColor(ContextCompat.getColor(context, R.color.text_primary_black))
-            viewHolder.fold_teacher_name_tv!!.setTextColor(ContextCompat.getColor(context, R.color.text_tertiary_black))
-            viewHolder.fold_block_letter_tv!!.setTextColor(ContextCompat.getColor(context, R.color.text_tertiary_black))
-            viewHolder.fold_background!!.setBackgroundColor(ContextCompat.getColor(context, R.color.white))
+            viewHolder.fold_subject_title_tv!!.setTextColor(utils.getPrimaryTextColor())
+            viewHolder.fold_teacher_name_tv!!.setTextColor(utils.getSecondaryTextColor())
+            viewHolder.fold_block_letter_tv!!.setTextColor(utils.getSecondaryTextColor())
+            viewHolder.fold_background!!.setBackgroundColor(utils.getCardBackground())
         }
 
         viewHolder.unfolded_grade_recycler_view!!.addOnItemClickListener(termOnClickListener!!)
@@ -245,6 +249,7 @@ class FoldingCellListAdapter(context: Context, private var subjects: List<Subjec
         internal var unfold_header_view: RelativeLayout? = null
         internal var unfold_percentage_grade_tv: TextView? = null
         internal var fold_grade_background: RelativeLayout? = null
+        internal var detail_header_background: RelativeLayout? = null
         internal var unfolded_grade_recycler_view: RecyclerView? = null
         internal var floating_action_button: FloatingActionButton? = null
     }

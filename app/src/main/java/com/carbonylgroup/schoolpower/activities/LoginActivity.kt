@@ -22,19 +22,17 @@ import okhttp3.Response
 import org.json.JSONObject
 import java.io.IOException
 
-class LoginActivity : Activity() {
+class LoginActivity : BaseActivity() {
 
     private lateinit var utils: Utils
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+    override fun initActivity() {
 
-        setTheme(R.style.Design)
-        super.onCreate(savedInstanceState)
+        super.initActivity()
         if (checkIfLoggedIn()) return
         setContentView(R.layout.login_content)
 
         initDialog()
-
         utils = Utils(this)
 
         findViewById<View>(R.id.login_fab).setOnClickListener {
@@ -105,22 +103,23 @@ class LoginActivity : Activity() {
                     }
                     override fun onResponse(call: Call, response: Response) {
 
-                        progressDialog.dismiss()
-
                         val strMessage = response.body()!!.string().replace("\n", "")
 
                         // Error happened. Usually caused by wrong username/password
                         if (strMessage.contains("Something went wrong!")) {
                             utils.showSnackBar(this@LoginActivity, findViewById(R.id.login_coordinate_layout), getString(R.string.wrong_password), true)
                             Log.w("Login", strMessage)
+                            progressDialog.dismiss()
                             return
                         }
                         if (strMessage.contains("\"alert\"")) {
                             utils.showSnackBar(this@LoginActivity, findViewById(R.id.login_coordinate_layout), JSONObject(strMessage)["alert"].toString(), true)
+                            progressDialog.dismiss()
                             return
                         }
                         if (!strMessage.contains("{")) {
                             utils.showSnackBar(this@LoginActivity, findViewById(R.id.login_coordinate_layout), getString(R.string.no_connection), true)
+                            progressDialog.dismiss()
                         }
 
                         val data = StudentData(this@LoginActivity, strMessage)
@@ -136,7 +135,7 @@ class LoginActivity : Activity() {
                         utils.saveHistoryGrade(data.subjects)
 
                         startMainActivity()
-
+                        progressDialog.dismiss()
                     }
                 })
     }

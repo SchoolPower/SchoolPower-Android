@@ -89,8 +89,8 @@ class LineChartFragment : Fragment() {
                 val dataSet = LineDataSet(organizedData[subjectName], subjectName)
                 val intColor = Color.parseColor(Utils.chartColorList[count])
                 dataSet.color = intColor
+                dataSet.valueTextColor = utils.getAccentColor()
                 dataSet.circleColors = List((organizedData[subjectName] as ArrayList<Entry>).size, { intColor })
-                dataSet.valueTextColor = Color.BLACK
                 dataSet.lineWidth = 2.0f
                 dataSet.mode = LineDataSet.Mode.CUBIC_BEZIER
                 lineData.addDataSet(dataSet)
@@ -104,6 +104,7 @@ class LineChartFragment : Fragment() {
             xAxis.setDrawGridLines(true)
             xAxis.enableGridDashedLine(10f, 10f, 0f)
             xAxis.granularity = 1f
+            xAxis.textColor = utils.getPrimaryTextColor()
             xAxis.valueFormatter = object : IAxisValueFormatter {
 
                 private val mFormat = SimpleDateFormat("MM/dd", Locale.CHINA)
@@ -114,13 +115,14 @@ class LineChartFragment : Fragment() {
                 }
             }
 
-            val yAxis = lineChart.axisLeft
-            yAxis.enableGridDashedLine(10f, 10f, 0f)
+            lineChart.axisLeft.enableGridDashedLine(10f, 10f, 0f)
+            lineChart.axisLeft.textColor = utils.getPrimaryTextColor()
             lineChart.axisRight.enableGridDashedLine(10f, 10f, 0f)
+            lineChart.axisRight.textColor = utils.getPrimaryTextColor()
             lineChart.legend.form = Legend.LegendForm.CIRCLE
+            lineChart.legend.textColor = utils.getPrimaryTextColor()
             lineChart.legend.formSize = 8.0f
             lineChart.legend.isWordWrapEnabled = true
-
 
             lineChart.setOnTouchListener({ _, event ->
                 if (event.action == MotionEvent.ACTION_DOWN) {

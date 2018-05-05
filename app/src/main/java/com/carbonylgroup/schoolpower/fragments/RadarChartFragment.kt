@@ -55,6 +55,7 @@ class RadarChartFragment : Fragment() {
                 val xAxis = radarChart.xAxis
                 xAxis.yOffset = 10f
                 xAxis.xOffset = 10f
+                xAxis.textColor = utils.getPrimaryTextColor()
                 xAxis.valueFormatter = object : IAxisValueFormatter {
 
                     private val mSubjectsName = ArrayList<String>()
@@ -81,8 +82,8 @@ class RadarChartFragment : Fragment() {
                 yAxis.setDrawLabels(false)
 
                 val set = RadarDataSet(entries, "Grades")
-                set.color = Color.parseColor("#345995")
-                set.fillColor = Color.parseColor("#345995")
+                set.color = utils.getAccentColor()
+                set.fillColor = utils.getAccentColor()
                 set.setDrawFilled(true)
                 set.fillAlpha = 180
                 set.lineWidth = 2f
@@ -95,7 +96,7 @@ class RadarChartFragment : Fragment() {
                 val radarData = RadarData(sets)
                 radarData.setValueTextSize(8f)
                 radarData.setDrawValues(true)
-                radarData.setValueTextColor(ContextCompat.getColor(activity, R.color.primary))
+                radarData.setValueTextColor(utils.getAccentColor())
 
                 radarChart.legend.isEnabled = false
 

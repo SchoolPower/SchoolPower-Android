@@ -21,7 +21,7 @@
         android:layout_toEndOf="@id/assignment_flag_image"
         android:text="Not included in final grade"
         android:textAppearance="@android:style/TextAppearance.Material.Medium"
-        android:textColor="@color/text_primary_black"
+        android:textColor="?android:textColorPrimary"
         android:textSize="15sp" />
 
 </RelativeLayout>

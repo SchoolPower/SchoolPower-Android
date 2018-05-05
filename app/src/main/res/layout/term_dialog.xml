@@ -5,7 +5,6 @@
     android:id="@+id/term_dialog_root_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
     android:orientation="vertical">
 
     <RelativeLayout
@@ -79,6 +78,7 @@
                     android:layout_height="wrap_content"
                     android:paddingBottom="10dp"
                     android:paddingEnd="15dp"
+                    android:background="?attr/card_background"
                     android:paddingStart="15dp"
                     android:paddingTop="10dp">
 
@@ -88,7 +88,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="5dp"
                         android:text="Evaluation"
-                        android:textColor="@color/text_secondary_black"
+                        android:textColor="?android:textColorSecondary"
                         android:textSize="15sp" />
 
                     <TextView
@@ -98,7 +98,7 @@
                         android:layout_below="@id/term_eval_title_tv"
                         android:layout_marginBottom="5dp"
                         android:text="Meet Expectation"
-                        android:textColor="@color/text_primary_black"
+                        android:textColor="?android:textColorPrimary"
                         android:textSize="15sp" />
 
                 </RelativeLayout>
@@ -117,6 +117,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingBottom="10dp"
+                    android:background="?attr/card_background"
                     android:paddingEnd="15dp"
                     android:paddingStart="15dp"
                     android:paddingTop="10dp">
@@ -127,7 +128,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="5dp"
                         android:text="Comment"
-                        android:textColor="@color/text_secondary_black"
+                        android:textColor="?android:textColorSecondary"
                         android:textSize="15sp" />
 
                     <TextView
@@ -137,7 +138,7 @@
                         android:layout_below="@id/term_comment_title_tv"
                         android:layout_marginBottom="5dp"
                         android:text="Excellent progress to date. Attention to procederal details is contributing to the student's success in this course."
-                        android:textColor="@color/text_primary_black"
+                        android:textColor="?android:textColorPrimary"
                         android:textSize="15sp" />
 
                 </RelativeLayout>

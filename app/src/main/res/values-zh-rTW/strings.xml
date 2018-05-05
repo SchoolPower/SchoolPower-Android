@@ -6,17 +6,17 @@
     <string name="action_gpa">GPA</string>
 
     <string name="dashboard">儀表盤</string>
-    <string name="charts">圖表</string> 
+    <string name="charts">圖表</string>
     <string name="attendance">出勤</string>
-    <string name="course_detail">課程明細</string> 
-    <string name="preference">偏好</string> 
+    <string name="course_detail">課程明細</string>
+    <string name="preference">偏好</string>
     <string name="about">關於</string>
-    <string name="sign_out">登出</string> 
+    <string name="sign_out">登出</string>
     <string name="settings">設置</string>
 
     <string name="username">用戶名</string>
     <string name="password">密碼</string>
-    <string name="copyright">版權所有 © 2017 SchoolPower 工作室</string> 
+    <string name="copyright">版權所有 © 2017 SchoolPower 工作室</string>
     <string name="copyright_short">© 2017 SchoolPower 工作室</string>
 
     <string name="version">版本號</string>
@@ -29,19 +29,19 @@
 
     <string name="evaluation">評估</string>
     <string name="comment">評語</string>
-    <string name="grades">成績</string> 
-    <string name="block">Block</string> 
-    <string name="room">教室</string> 
-    <string name="term">學期</string> 
-    <string name="assignments">作業</string> 
-    <string name="all_terms">所有學期</string> 
-    <string name="unpublished">未公開</string> 
-    <string name="data_updated">數據已更新</string> 
-    <string name="authenticating">驗證中&#8230;</string> 
-    <string name="wrong_password">用戶名或密碼錯誤</string> 
+    <string name="grades">成績</string>
+    <string name="block">Block</string>
+    <string name="room">教室</string>
+    <string name="term">學期</string>
+    <string name="assignments">作業</string>
+    <string name="all_terms">所有學期</string>
+    <string name="unpublished">未公開</string>
+    <string name="data_updated">數據已更新</string>
+    <string name="authenticating">驗證中&#8230;</string>
+    <string name="wrong_password">用戶名或密碼錯誤</string>
     <string name="no_connection">無法連結到伺服器</string>
     <string name="server_problem">遇到了伺服器問題: </string>
-    <string name="user_id_indicator">用戶 ID:</string> 
+    <string name="user_id_indicator">用戶 ID:</string>
     <string name="no_username">用戶名不可用</string>
     <string name="the_end">下面沒了</string>
     <string name="nothing_here">沒東西</string>
@@ -62,10 +62,10 @@
 
     <string name="i_love_open_source">我愛開源軟件。</string>
 
-    <string name="signing_out_dialog_title">正在登出</string> 
-    <string name="signing_out_dialog_message">你確定要登出嗎？</string> 
-    <string name="signing_out_dialog_positive">對</string> 
-    <string name="signing_out_dialog_negative">別</string> 
+    <string name="signing_out_dialog_title">正在登出</string>
+    <string name="signing_out_dialog_message">你確定要登出嗎？</string>
+    <string name="signing_out_dialog_positive">對</string>
+    <string name="signing_out_dialog_negative">別</string>
 
     <string name="navigation_drawer_close">關閉側滑欄</string>
     <string name="navigation_drawer_open">打開側滑欄</string>
@@ -75,17 +75,22 @@
     <string name="display">顯示</string>
     <string name="dashboard_displays">儀表盤顯示</string>
     <string name="language">語言</string>
+<<<<<<< HEAD
     <string name="dashboard_display_preference_summary_prefix" /> 
     <string name="dashboard_display_preference_summary_suffix">&#160;的分數</string>  
+=======
+    <string name="dashboard_display_preference_summary_prefix">\0</string>
+    <string name="dashboard_display_preference_summary_suffix">&#160;的分數</string>
+>>>>>>> theme
 
     <string name="notification">提示</string>
     <string name="notification_settings">通知</string>
     <string name="only_alert">SchoolPower 目前只支持就讀於中國楓葉教育集團楓葉國際學校的學生使用。</string>
     <string name="i_understand">我明白</string>
 
-    <string-array name="list_preference_display_types_entries"> 
-        <item>這個 Term</item> 
-        <item>這個 Semester</item> 
+    <string-array name="list_preference_display_types_entries">
+        <item>這個 Term</item>
+        <item>這個 Semester</item>
     </string-array>
 
     <string-array name="list_preference_language_entries">
@@ -144,6 +149,11 @@
     <string name="chart_line">線圖</string>
     <string name="chart_radar">雷達圖</string>
     <string name="chart_bar">柱狀圖</string>
+
+    <string name="theme">主題</string>
+    <string name="dark_theme">暗主題</string>
+    <string name="accent_color">強調色</string>
+    <string name="choose_accent_color">選擇強調色</string>
 
     <string name="accept">同意</string>
     <string name="decline">拒絕</string>

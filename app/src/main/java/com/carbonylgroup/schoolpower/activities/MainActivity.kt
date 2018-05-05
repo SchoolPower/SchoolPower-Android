@@ -43,6 +43,7 @@ import com.carbonylgroup.schoolpower.transition.DetailsTransition
 import com.carbonylgroup.schoolpower.transition.TransitionHelper
 import com.carbonylgroup.schoolpower.utils.ContextWrapper
 import com.carbonylgroup.schoolpower.utils.GPADialog
+import com.carbonylgroup.schoolpower.utils.ThemeHelper
 import com.carbonylgroup.schoolpower.utils.Utils
 import com.carbonylgroup.schoolpower.utils.Utils.Companion.AccountData
 import com.google.android.gms.ads.AdRequest
@@ -89,6 +90,8 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
     private var aboutFragment: AboutFragment? = null
     private var supportFragment: SupportFragment? = null
 
+    private val SETTINGS_REQUEST_CODE = 233
+
     override fun attachBaseContext(newBase: Context) {
 
         utils = Utils(newBase)
@@ -98,18 +101,16 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
 
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+    override fun initActivity() {
 
         utils = Utils(this)
-        initBase()
-        super.onCreate(savedInstanceState)
+        super.initActivity()
         setContentView(R.layout.nav_drawer)
         initValue()
         initUI()
         initOnClick()
         initScheduler()
         utils.checkApplicationUpdate()
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -150,7 +151,8 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
 
         super.onRestoreInstanceState(savedInstanceState)
         presentFragment = savedInstanceState.getInt("presentFragment")
-        val fragments = intArrayOf(R.id.nav_dashboard, R.id.course_detail_background)
+        val fragments = intArrayOf(R.id.nav_dashboard, R.id.course_detail_background, R.id.nav_charts,
+                R.id.nav_attendance, R.id.nav_settings, R.id.nav_about)
         gotoFragmentWithMenuItemId(fragments[presentFragment])
     }
 
@@ -173,15 +175,10 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
     }
 
     /* Initializer */
-    private fun initBase() {
-
-        setTheme(R.style.Design)
-    }
-
     private fun initValue() {
 
         MobileAds.initialize(this, getString(R.string.adMob_app_id))
-        mAdView = findViewById<AdView>(R.id.adView)
+        mAdView = findViewById(R.id.adView)
         val adRequest = AdRequest.Builder().build()
         mAdView.loadAd(adRequest)
 
@@ -279,7 +276,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
 
     private fun setAvatar() {
 
-        if(utils.getSharedPreference(AccountData).getString("user_avatar","")!="") {
+        if (utils.getSharedPreference(AccountData).getString("user_avatar", "") != "") {
             val alertDialog =
                     AlertDialog.Builder(this)
                             .setAdapter(ArrayAdapter<String>(this, R.layout.simple_list_item,
@@ -292,7 +289,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                 alertDialog.dismiss()
             }
             alertDialog.show()
-        }else{
+        } else {
             modifyAvatar()
         }
     }
@@ -317,7 +314,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
         val header = navigationView.getHeaderView(0)
         header.findViewById<TextView>(R.id.nav_header_username).text = getUsername()
         header.findViewById<TextView>(R.id.nav_header_id).text = getUserID()
-        header.findViewById<ImageView>(R.id.user_avatar).setOnLongClickListener(
+        header.findViewById<ImageView>(R.id.user_avatar).setOnClickListener(
                 { _ -> setAvatar();true }
         )
         updateAvatar()
@@ -434,7 +431,9 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                 .commit()
 
 
-        MainActivity.of(this).setToolBarColor(ContextCompat.getColor(this, R.color.primary), true)
+        MainActivity.of(this).setToolBarColor(
+                utils.getPrimaryColor(), true)
+
         animateDrawerToggle(false)
         hideToolBarItems(false)
         setToolBarElevation(0)
@@ -455,7 +454,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
 
         animateDrawerToggle(false)
         hideToolBarItems(false)
-        if (subjects != null && subjects!!.count() != 0) homeFragment!!.notifyAdapter()
+//        if (subjects != null && subjects!!.count() != 0) homeFragment!!.notifyAdapter()
 
         //TODO Bugs might occur when adding new menu items QAQ
         navigationView.menu.getItem(1).isChecked = false
@@ -478,7 +477,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                 .commit()
 
         hideToolBarItems(false)
-        if (subjects != null && subjects!!.count() != 0) homeFragment!!.notifyAdapter()
+//        if (subjects != null && subjects!!.count() != 0) homeFragment!!.notifyAdapter()
         navigationView.menu.getItem(index).isChecked = false
         navigationView.menu.getItem(0).isChecked = true
     }
@@ -653,20 +652,20 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                 .mapTo(ArrayList<CharSequence>()) { it.name }
         intent.putExtra("subjects", subjectList.toTypedArray())
         intent.putExtra("subjects_values", subjectValueList.toTypedArray())
-        startActivityForResult(intent, 0)
+        startActivityForResult(intent, SETTINGS_REQUEST_CODE)
         // Use startActivityForResult to invoke onActivityResult to apply settings
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (resultCode == SettingsActivity.LANGUAGE_CHANGED) { // language changed. need to restart.
-            finish()
+
+        if (requestCode == SETTINGS_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+            recreate()
             return
         }
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
             val result = CropImage.getActivityResult(data)
             if (resultCode == RESULT_OK) {
                 val file = File(result.uri.path)
-
                 val body = MultipartBody.Builder()
                         .setType(MultipartBody.FORM)
                         .addFormDataPart("smfile", file.name,
