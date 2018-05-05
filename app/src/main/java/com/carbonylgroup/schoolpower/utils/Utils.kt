@@ -142,13 +142,13 @@ class Utils(private val context: Context) {
         return Pair(icon, descrip)
     }
 
-    fun getLatestPeriod(grades: Map<String, Subject.Grade>): String? {
+    fun getLatestPeriod(grades: Map<String, Subject.Grade>, forceLastTerm: Boolean = false): String? {
 
         val termsList = grades.keys
         val forLatestSemester = getSharedPreference(SettingsPreference)
                 .getString("list_preference_dashboard_display", "0") == "1"
 
-        if (forLatestSemester) {
+        if (forLatestSemester && !forceLastTerm) {
             if (termsList.contains("S2") && grades["S2"]!!.letter != "--") return "S2"
             else if (termsList.contains("S1") && grades["S1"]!!.letter != "--") return "S1"
             else if (termsList.contains("T4") && grades["T4"]!!.letter != "--") return "T4"
@@ -237,13 +237,66 @@ class Utils(private val context: Context) {
     @Throws(IOException::class)
     fun saveDataJson(jsonStr: String) = saveStringToFile(StudentDataFileName, jsonStr)
 
-    // 1. read data into brief info
-    // 2. calculate gpa
-    // 3. read history grade from file
-    // 4. update history grade
-    // 5. save history grade
-    fun saveHistoryGrade(data: List<Subject>?) {
+    fun updateStatisticalData(data: List<Subject>?) {
+        // it is organized into a json like {"subject-name": [{"sum": 100, "cat-1":100, ...}, ...], ...}
 
+        if (data == null) return
+
+        val json = JSONObject(readStringFromFile(StatisticalDataFileName) ?: "{}")
+
+        for (subject in data) {
+
+            val term = getLatestPeriod(subject.grades, true) ?: continue
+            if (subject.grades[term]!!.percentage == "--") continue
+            val percentage = subject.grades[term]!!.percentage.toDouble()
+
+            class GradeInfo{
+                var grade: Double = 0.0
+                var maxGrade: Double = 0.0
+            }
+            val categories = HashMap<String, GradeInfo>()
+            for (assignment in subject.assignments) {
+                if(!categories.containsKey(assignment.category)) categories[assignment.category] = GradeInfo()
+                if(assignment.score.toDoubleOrNull()==null) continue
+                if(!assignment.terms.contains(term)) continue
+                categories[assignment.category]!!.grade += assignment.score.toDouble() * assignment.weight.toDouble()
+                categories[assignment.category]!!.maxGrade += assignment.maximumScore.toDouble() * assignment.weight.toDouble()
+            }
+            val sample = JSONObject() // categories {"sum": 100, "cat-1":100, ...}
+
+            for (cat in categories.entries)
+                if(cat.value.maxGrade!=0.0)
+                    sample.put(cat.key, cat.value.grade/cat.value.maxGrade)
+            sample.put("sum", percentage)
+
+            if(!json.has(subject.name)) json.put(subject.name, JSONArray())
+            val jsonSubjectSamples = json.getJSONArray(subject.name) // [sample1, sample2, ...]
+            var duplicate = false
+            for(i in 0 until jsonSubjectSamples.length()){
+                var same = true
+                val tested = jsonSubjectSamples.getJSONObject(i)
+                for(key in tested.keys()) {
+                    if (tested.getDouble(key) != sample.getDouble(key)) {
+                        same = false
+                        break
+                    }
+                }
+                if(same) duplicate = true
+                break
+            }
+            if(duplicate) continue
+            json.getJSONArray(subject.name).put(sample)
+        }
+
+        saveStringToFile(StatisticalDataFileName, json.toString())
+    }
+
+    fun saveHistoryGrade(data: List<Subject>?) {
+        // 1. read data into brief info
+        // 2. calculate gpa
+        // 3. read history grade from file
+        // 4. update history grade
+        // 5. save history grade
         if (data == null) {
             saveStringToFile(HistoryDataFileName, "{}")
         } else {
@@ -357,17 +410,17 @@ class Utils(private val context: Context) {
         return actionBarSize
     }
 
-    private fun checkConnectionToUrl(url:String):Boolean {
+    private fun checkConnectionToUrl(url: String): Boolean {
         try {
             buildNetworkRequest(url, "GET", null).execute()
             return true
-        } catch (e: IOException){
+        } catch (e: IOException) {
             return false
         }
     }
 
     // note that the "https://host/api/" part is not included
-    private fun getRouteFromString(route:String) : String? {
+    private fun getRouteFromString(route: String): String? {
         return when (route) {
             "pull_data_2" -> "2.0/get_data.php"
             "update" -> "update.json"
@@ -379,22 +432,26 @@ class Utils(private val context: Context) {
     // Do NOT call in the main thread
     // Return null when none found
     // See getRouteFromString for valid routes
-    fun getBackupServerUrl(route:String):String? {
-        val serversStr = try{
+    fun getBackupServerUrl(route: String): String? {
+        val serversStr = try {
             buildNetworkRequest(context.getString(R.string.backupServersURL), "GET", null).execute().body()?.string()
-                ?: return null
-        } catch(e: IOException) {
+                    ?: return null
+        } catch (e: IOException) {
             return null
         } // return null when we can't even fetch server list. usually it's because of network issue
 
-        val servers = try{JSONArray(serversStr)}catch(e:JSONException){return null}
+        val servers = try {
+            JSONArray(serversStr)
+        } catch (e: JSONException) {
+            return null
+        }
         for (i in 0 until servers.length()) {
             val server = servers.getJSONObject(i)
-            if(server.has(route) && checkConnectionToUrl(server.getString(route))) // find full match first
+            if (server.has(route) && checkConnectionToUrl(server.getString(route))) // find full match first
                 return server.getString(route)
-            else if (server.has("generic")){ // if failed, try "generic" url
-                val url = server.getString("generic") + (getRouteFromString(route)?:continue)
-                if(checkConnectionToUrl(url)) return url
+            else if (server.has("generic")) { // if failed, try "generic" url
+                val url = server.getString("generic") + (getRouteFromString(route) ?: continue)
+                if (checkConnectionToUrl(url)) return url
             }
         }
         return null
@@ -408,6 +465,8 @@ class Utils(private val context: Context) {
 
         const val StudentDataFileName: String = "dataMap.json"
         const val HistoryDataFileName: String = "history.json"
+        const val StatisticalDataFileName: String = "statistics.json"
+
 
         val chartColorList = arrayOf(
                 "#534550",

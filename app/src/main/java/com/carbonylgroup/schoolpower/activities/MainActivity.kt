@@ -575,7 +575,8 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                     0 -> if (subjects!!.isEmpty()) homeFragment!!.refreshAdapterToEmpty()
                     3 -> if (attendances!!.isEmpty()) attendanceFragment!!.refreshAdapterToEmpty()
                 }
-                utils.saveHistoryGrade(subjects!!)
+                utils.saveHistoryGrade(subjects)
+                utils.updateStatisticalData(subjects)
 
                 // Mark new or changed assignments
                 if (subjects!!.size == oldSubjects.size) {
