@@ -406,7 +406,7 @@ class Utils(private val context: Context) {
                 var same = true
                 val tested = jsonSubjectSamples.getJSONObject(i)
                 for(key in tested.keys()) {
-                    if (tested.getDouble(key) != sample.getDouble(key)) {
+                    if (!sample.has(key) || tested.getDouble(key) != sample.getDouble(key)) {
                         same = false
                         break
                     }
