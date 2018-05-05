@@ -10,9 +10,9 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Color
-import android.media.Image
 import android.net.Uri
 import android.preference.PreferenceManager
+import android.support.annotation.ColorInt
 import android.support.design.widget.Snackbar
 import android.support.v4.content.ContextCompat
 import android.util.DisplayMetrics
@@ -74,7 +74,8 @@ class Utils(private val context: Context) {
             R.color.C_score_orange,
             R.color.Cm_score_red,
             R.color.primary_dark,
-            R.color.primary
+            R.color.primary,
+            R.color.dark_color_primary
     )
 
     private val gradeDarkColorIdsPlain = intArrayOf(
@@ -84,7 +85,8 @@ class Utils(private val context: Context) {
             R.color.C_score_orange_dark,
             R.color.Cm_score_red_dark,
             R.color.primary_darker,
-            R.color.primary_dark
+            R.color.primary_dark,
+            R.color.dark_color_primary_dark
     )
 
     private val attendanceColorIds = mapOf(
@@ -129,6 +131,70 @@ class Utils(private val context: Context) {
         return getDefaultSp(context).getString(THEME, LIGHT)
     }
 
+    @ColorInt
+    fun getPrimaryColor(): Int {
+        return getColorAttr(R.attr.colorPrimary)
+    }
+
+    @ColorInt
+    fun getPrimaryDarkColor(): Int {
+        return getColorAttr(R.attr.colorPrimaryDark)
+    }
+
+    @ColorInt
+    fun getAccentColor(): Int {
+        return getColorAttr(R.attr.colorAccent)
+    }
+
+    @ColorInt
+    fun getPrimaryTextColor(): Int {
+        return getColorAttr(android.R.attr.textColorPrimary)
+    }
+
+    @ColorInt
+    fun getSecondaryTextColor(): Int {
+        return getColorAttr(android.R.attr.textColorSecondary)
+    }
+
+    @ColorInt
+    fun getWindowBackground(): Int {
+        return getColorAttr(android.R.attr.windowBackground)
+    }
+
+    @ColorInt
+    fun getCardBackground(): Int {
+        return getColorAttr(R.attr.card_background)
+    }
+
+    @ColorInt
+    fun getIconColor(): Int {
+        return getColorAttr(R.attr.icon_color)
+    }
+
+    @ColorInt
+    fun getTitleColor(): Int {
+        return getColorAttr(R.attr.title_color)
+    }
+
+    @ColorInt
+    fun getSubTitleColor(): Int {
+        return getColorAttr(R.attr.subtitle_color)
+    }
+
+    @ColorInt
+    fun getSelectedColor(): Int {
+        return getColorAttr(R.attr.selected_color)
+    }
+
+    @ColorInt
+    private fun getColorAttr(attr: Int): Int {
+        val theme = context.theme
+        val typedArray = theme.obtainStyledAttributes(intArrayOf(attr))
+        val color = typedArray.getColor(0, Color.LTGRAY)
+        typedArray.recycle()
+        return color
+    }
+
     operator fun set(key: String, value: Any) {
         if (StringUtils.isBlank(key) || value == null) {
             throw NullPointerException(String.format("Key and value not be null key=%s, value=%s", key, value))
@@ -158,9 +224,8 @@ class Utils(private val context: Context) {
         return ContextCompat.getColor(context, if (colorIndex != -1) gradeColorIds[colorIndex] else 7)
     }
 
-    fun getDarkColorByPrimary(originalPrimary: Int) = Color.CYAN
-//            ContextCompat.getColor(context,
-//            gradeDarkColorIdsPlain[gradeColorIdsPlain.takeWhile { originalPrimary != ContextCompat.getColor(context, it) }.count()])
+    fun getDarkColorByPrimary(originalPrimary: Int) = ContextCompat.getColor(context,
+            gradeDarkColorIdsPlain[gradeColorIdsPlain.takeWhile { originalPrimary != ContextCompat.getColor(context, it) }.count()])
 
     fun getColorByAttendance(context: Context, attendanceCode: String) = ContextCompat.getColor(context,
             attendanceColorIds[attendanceCode] ?: R.color.gray)

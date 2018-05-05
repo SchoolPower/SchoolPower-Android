@@ -2,6 +2,7 @@ package com.carbonylgroup.schoolpower.fragments
 
 import android.app.Fragment
 import android.app.FragmentManager
+import android.content.Context
 import android.os.Bundle
 import android.os.Handler
 import android.support.design.widget.TabLayout
@@ -46,17 +47,12 @@ class ChartFragment : Fragment() {
         val view = inflater!!.inflate(R.layout.fragment_chart, container, false)
         MainActivity.of(activity).expandToolBar(true, true)
 
-//        Handler().postDelayed({
-            // Instantiate a ViewPager and a PagerAdapter.
-            mPager = view.findViewById(R.id.chart_pager) as ViewPager
-            mPagerAdapter = ScreenSlidePagerAdapter(fragmentManager)
-            mPager!!.adapter = mPagerAdapter
+        mPager = view.findViewById(R.id.chart_pager) as ViewPager
+        mPagerAdapter = ScreenSlidePagerAdapter(fragmentManager)
+        mPager!!.adapter = mPagerAdapter
 
-            val tabLayout = view.findViewById(R.id.tab_layout) as TabLayout
-            tabLayout.setupWithViewPager(mPager)
-
-//            view.findViewById<ProgressBar>(R.id.chart_progress_bar).visibility = View.GONE
-//        }, 200)
+        val tabLayout = view.findViewById(R.id.tab_layout) as TabLayout
+        tabLayout.setupWithViewPager(mPager)
 
         return view
     }

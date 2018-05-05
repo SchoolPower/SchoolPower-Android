@@ -105,7 +105,7 @@ class SettingsFragment : PreferenceFragment(), SharedPreferences.OnSharedPrefere
             }
             "list_preference_language" -> {
                 utils!!.setSharedPreference(Utils.SettingsPreference, "lang", sharedPreferences!!.getString(key, "0"))
-                restart()
+                recreateMain()
             }
             "preference_enable_notification" -> {
                 val jobScheduler = activity.getSystemService(Context.JOB_SCHEDULER_SERVICE) as JobScheduler
@@ -144,12 +144,5 @@ class SettingsFragment : PreferenceFragment(), SharedPreferences.OnSharedPrefere
 
     private fun recreateMain() {
         callBack!!.onRecreate()
-    }
-
-    private fun restart() {
-
-        startActivity(Intent(activity, MainActivity::class.java))
-        activity.setResult(SettingsActivity.LANGUAGE_CHANGED)
-        activity.finish()
     }
 }

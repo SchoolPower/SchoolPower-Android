@@ -5,6 +5,8 @@
 package com.carbonylgroup.schoolpower.activities
 
 import android.animation.Animator
+
+
 import android.animation.AnimatorListenerAdapter
 import android.app.Activity
 import android.app.job.JobScheduler
@@ -21,9 +23,11 @@ import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.ContentFrameLayout
 import android.support.v7.widget.Toolbar
+import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewAnimationUtils
+import android.widget.RelativeLayout
 import butterknife.ButterKnife
 import com.carbonylgroup.schoolpower.R
 import com.carbonylgroup.schoolpower.fragments.SettingsFragment
@@ -33,17 +37,14 @@ import com.carbonylgroup.schoolpower.utils.Utils
 import kotterknife.bindView
 import java.util.*
 
+private var recreated = false
 
 class SettingsActivity : BaseActivity(), SettingsFragment.SettingsCallBack {
 
-    private var recreated = false
     private val settingsToolBar: Toolbar by bindView(R.id.settings_toolbar)
-    private val rootLayout: Toolbar by bindView(R.id.settings_root_layout)
+    private val rootLayout: RelativeLayout by bindView(R.id.settings_root_layout)
     private val localeSet = arrayListOf(Resources.getSystem().configuration.locale, Locale.ENGLISH, Locale.TRADITIONAL_CHINESE, Locale.SIMPLIFIED_CHINESE)
 
-    companion object {
-        const val LANGUAGE_CHANGED = Activity.RESULT_FIRST_USER
-    }
 
     override fun attachBaseContext(newBase: Context) {
 
@@ -55,6 +56,7 @@ class SettingsActivity : BaseActivity(), SettingsFragment.SettingsCallBack {
 
     override fun onRecreate() {
         recreated = true
+        setResult(Activity.RESULT_OK)
         recreate()
     }
 
@@ -68,12 +70,13 @@ class SettingsActivity : BaseActivity(), SettingsFragment.SettingsCallBack {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = getString(R.string.settings)
 
-//        if (recreated) {
-//            rootLayout.post( { startAnimation() })
-//            setResult(Activity.RESULT_OK)
-//            recreated = false
-//        }
-        setResult(RESULT_OK) // to invoke onActivityResult to apply settings
+        setResult(Activity.RESULT_OK)
+        if (recreated) {
+            Log.d("[][][", "juortubfdhni")
+            rootLayout.post( { startAnimation() })
+            // to invoke onActivityResult to apply settings
+            recreated = false
+        }
     }
 
     private fun startAnimation() {

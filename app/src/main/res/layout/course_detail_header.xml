@@ -20,7 +20,7 @@
             android:id="@+id/detail_header_background"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/white">
+            android:background="?attr/card_background">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -91,7 +91,7 @@
                                 android:layout_marginEnd="8dp"
                                 android:layout_toStartOf="@id/detail_header_email_image"
                                 android:text="Grainne Hamal-Smith"
-                                android:textColor="@color/black"
+                                android:textColor="?android:textColorPrimary"
                                 android:textSize="20sp"
                                 android:textStyle="bold" />
 
@@ -104,7 +104,7 @@
                             android:layout_below="@id/detail_header_profile_inner_upper_view"
                             android:layout_marginTop="10dp"
                             android:text="Block A(1)"
-                            android:textColor="@color/text_secondary_black"
+                            android:textColor="?android:textColorSecondary"
                             android:textSize="13sp" />
 
                         <TextView
@@ -115,7 +115,7 @@
                             android:layout_marginStart="15dp"
                             android:layout_toEndOf="@id/detail_header_block_tv"
                             android:text="Room 311"
-                            android:textColor="@color/text_primary_black"
+                            android:textColor="?android:textColorPrimary"
                             android:textSize="13sp" />
 
                     </RelativeLayout>
@@ -138,7 +138,7 @@
         android:layout_marginStart="15dp"
         android:layout_marginTop="20dp"
         android:text="@string/assignments"
-        android:textColor="@color/black"
+        android:textColor="?android:textColorPrimary"
         android:textSize="20sp" />
 
     <android.support.v7.widget.AppCompatSpinner

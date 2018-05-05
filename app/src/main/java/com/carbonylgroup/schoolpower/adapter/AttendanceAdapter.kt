@@ -42,16 +42,16 @@ class AttendanceAdapter(private val context: Context, private var attendanceList
 
             if (attendanceItem.isNew) {
 
-                holder.fold_background.setBackgroundColor(ContextCompat.getColor(context, R.color.accent))
+                holder.fold_background.setBackgroundColor(utils.getAccentColor())
                 holder.attendance_description_tv.setTextColor(ContextCompat.getColor(context, R.color.white))
                 holder.attendance_subject_tv.setTextColor(ContextCompat.getColor(context, R.color.white_0_20))
                 holder.attendance_date_tv.setTextColor(ContextCompat.getColor(context, R.color.white_0_20))
             }else{
 
-                holder.fold_background.setBackgroundColor(ContextCompat.getColor(context, R.color.white))
-                holder.attendance_description_tv.setTextColor(ContextCompat.getColor(context, R.color.text_primary_black))
-                holder.attendance_subject_tv.setTextColor(ContextCompat.getColor(context, R.color.text_tertiary_black))
-                holder.attendance_date_tv.setTextColor(ContextCompat.getColor(context, R.color.text_tertiary_black))
+                holder.fold_background.setBackgroundColor(utils.getCardBackground())
+                holder.attendance_description_tv.setTextColor(utils.getPrimaryTextColor())
+                holder.attendance_subject_tv.setTextColor(utils.getSecondaryTextColor())
+                holder.attendance_date_tv.setTextColor(utils.getSecondaryTextColor())
             }
 
             holder.attendance_code_background.setBackgroundColor(utils.getColorByAttendance(context, attendanceItem.code))

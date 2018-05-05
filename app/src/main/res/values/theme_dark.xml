@@ -18,7 +18,7 @@
     <color name="dark_subtitle_color">@color/material_grey_500</color>
     <color name="dark_selected_color">#3f3f3f</color>
 
-    <style name="ThemeDark" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="ThemeDark" parent="Theme.AppCompat.NoActionBar">
         <item name="colorPrimary">@color/dark_color_primary</item>
         <item name="colorPrimaryDark">@color/dark_color_primary_dark</item>
         <item name="colorAccent">@color/dark_color_accent</item>

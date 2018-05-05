@@ -46,6 +46,7 @@ import com.carbonylgroup.schoolpower.transition.DetailsTransition
 import com.carbonylgroup.schoolpower.transition.TransitionHelper
 import com.carbonylgroup.schoolpower.utils.ContextWrapper
 import com.carbonylgroup.schoolpower.utils.GPADialog
+import com.carbonylgroup.schoolpower.utils.ThemeHelper
 import com.carbonylgroup.schoolpower.utils.Utils
 import com.carbonylgroup.schoolpower.utils.Utils.Companion.AccountData
 import com.google.android.gms.ads.AdRequest
@@ -91,7 +92,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
     private var attendanceFragment: AttendanceFragment? = null
     private var aboutFragment: AboutFragment? = null
 
-    private var darkModeCache = true
+    private val SETTINGS_REQUEST_CODE = 233
 
     override fun attachBaseContext(newBase: Context) {
 
@@ -152,7 +153,8 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
 
         super.onRestoreInstanceState(savedInstanceState)
         presentFragment = savedInstanceState.getInt("presentFragment")
-        val fragments = intArrayOf(R.id.nav_dashboard, R.id.course_detail_background)
+        val fragments = intArrayOf(R.id.nav_dashboard, R.id.course_detail_background, R.id.nav_charts,
+                R.id.nav_attendance, R.id.nav_settings, R.id.nav_about)
         gotoFragmentWithMenuItemId(fragments[presentFragment])
     }
 
@@ -422,7 +424,9 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                 .commit()
 
 
-        MainActivity.of(this).setToolBarColor(ContextCompat.getColor(this, R.color.primary), true)
+        MainActivity.of(this).setToolBarColor(
+                utils.getPrimaryColor(), true)
+
         animateDrawerToggle(false)
         hideToolBarItems(false)
         setToolBarElevation(0)
@@ -640,20 +644,20 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                 .mapTo(ArrayList<CharSequence>()) { it.name }
         intent.putExtra("subjects", subjectList.toTypedArray())
         intent.putExtra("subjects_values", subjectValueList.toTypedArray())
-        startActivityForResult(intent, 0)
+        startActivityForResult(intent, SETTINGS_REQUEST_CODE)
         // Use startActivityForResult to invoke onActivityResult to apply settings
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (resultCode == SettingsActivity.LANGUAGE_CHANGED) { // language changed. need to restart.
-            finish()
+
+        if (requestCode == SETTINGS_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+            recreate()
             return
         }
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
             val result = CropImage.getActivityResult(data)
             if (resultCode == RESULT_OK) {
                 val file = File(result.uri.path)
-
                 val body = MultipartBody.Builder()
                         .setType(MultipartBody.FORM)
                         .addFormDataPart("smfile", file.name,
