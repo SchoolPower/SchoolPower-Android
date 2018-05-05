@@ -211,6 +211,11 @@
     <string name="chart_radar">Radar</string>
     <string name="chart_bar">Bar</string>
 
+    <string name="theme">Theme</string>
+    <string name="dark_theme">Dark Theme</string>
+    <string name="accent_color">Accent Color</string>
+    <string name="choose_accent_color">Choose accent color</string>
+
     <string name="accept">Accept</string>
     <string name="decline">Decline</string>
 

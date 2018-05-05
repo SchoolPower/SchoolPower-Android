@@ -75,8 +75,8 @@ class ColorChooserPreference : Preference, ColorChooserDialog.ColorCallback {
     override fun onClick() {
         super.onClick()
         oriColor = selectedColor
-        ColorChooserDialog.Builder(BaseActivity.getCurActivity(), this, R.string.search_menu_title)
-                .titleSub(R.string.search_menu_title)
+        ColorChooserDialog.Builder(BaseActivity.getCurActivity(), this, R.string.choose_accent_color)
+                .titleSub(R.string.choose_accent_color)
                 .customColors(accentColors, null)
                 .preselect(oriColor)
                 .customButton(0)

@@ -145,6 +145,11 @@
     <string name="chart_radar">雷达图</string>
     <string name="chart_bar">柱状图</string>
 
+    <string name="theme">主题</string>
+    <string name="dark_theme">暗主题</string>
+    <string name="accent_color">强调色</string>
+    <string name="choose_accent_color">选择强调色</string>
+
     <string name="accept">同意</string>
     <string name="decline">拒绝</string>
 
