@@ -311,7 +311,7 @@ class Utils(private val context: Context) {
                         val message = response.body()!!.string()
                         if (!message.contains("{")) return
                         val updateJSON = JSONObject(message)
-
+                        setSharedPreference(OtherData, "app_download_url", updateJSON.getString("url"))
                         if (updateJSON.getString("version") != getAppVersion()) {
                             val builder = AlertDialog.Builder(context)
                             builder.setTitle(context.getString(R.string.upgrade_title))
@@ -404,6 +404,7 @@ class Utils(private val context: Context) {
 
         const val SettingsPreference: String = "Settings"
         const val AccountData: String = "accountData"
+        const val OtherData: String = "other"
 
         const val StudentDataFileName: String = "dataMap.json"
         const val HistoryDataFileName: String = "history.json"

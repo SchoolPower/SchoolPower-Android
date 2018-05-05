@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="30dp"
+    android:layout_alignParentStart="true">
+
+    <ImageView
+        android:id="@+id/qr_code"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:src="@color/primary"
+        android:contentDescription="@string/qr_code" />
+
+    <co.ceryle.segmentedbutton.SegmentedButtonGroup
+        android:id="@+id/promotion_segmented"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@id/qr_code"
+        android:layout_alignStart="@id/qr_code"
+        android:layout_below="@id/qr_code"
+        android:layout_marginTop="10dp"
+        app:sbg_animateSelector="decelerate"
+        app:sbg_animateSelectorDuration="200"
+        app:sbg_backgroundColor="@color/white"
+        app:sbg_dividerSize="0dp"
+        app:sbg_position="1"
+        app:sbg_radius="2dp"
+        app:sbg_ripple="true"
+        app:sbg_rippleColor="@color/primary"
+        app:sbg_selectorColor="@color/primary"
+        app:sbg_selectorTextColor="@color/white"
+        app:sbg_shadow="true"
+        app:sbg_shadowElevation="1dp"
+        app:sbg_shadowMargin="1dp">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minHeight="10dp"
+            android:text="@string/Android"
+            android:textAllCaps="false" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minHeight="10dp"
+            android:text="@string/iOS"
+            android:textAllCaps="false" />
+
+    </co.ceryle.segmentedbutton.SegmentedButtonGroup>
+</RelativeLayout>

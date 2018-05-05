@@ -46,6 +46,8 @@
     <string name="website_address" translatable="false">https://schoolpower.tech</string>
     <string name="feedback_forum_address" translatable="false">https://feedback.schoolpower.studio</string>
     <string name="source_code_address" translatable="false">https://github.com/SchoolPower</string>
+    <string name="default_android_download_address" translatable="false">https://api.schoolpower.tech/dist/latest.php</string>
+    <string name="ios_download_address" translatable="false">https://itunes.apple.com/cn/app/schoolpower/id1255370309</string>
 
     <!-- DO TRANSLATE THESE -->
     <string name="app_name">SchoolPower</string>
@@ -234,4 +236,10 @@ SchoolPower does not guarantee that the user\'s picture will be permanently save
     <string name="change_avatar">Change avatar</string>
     <string name="remove_avatar">Remove avatar</string>
 
+    <string name="support_us">Support Us</string>
+    <string name="promotion">Promotion</string>
+    <string name="Android">Android</string>
+    <string name="iOS">iOS</string>
+    <string name="donation">Donation</string>
+    <string name="qr_code">QR Code</string>
 </resources>

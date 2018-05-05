@@ -14,22 +14,22 @@ import com.carbonylgroup.schoolpower.R
 import com.carbonylgroup.schoolpower.activities.MainActivity
 
 
-class ChartFragment : Fragment() {
+class SupportFragment : Fragment() {
+
 
     private var mPager: ViewPager? = null
     private var mPagerAdapter: PagerAdapter? = null
-    private val PagesNumber = 3
+    private val PagesNumber = 2
 
     private inner class ScreenSlidePagerAdapter(fm: FragmentManager) : FragmentStatePagerAdapter(fm) {
 
-        val titles = arrayOf(R.string.chart_line, R.string.chart_radar, R.string.chart_bar)
+        val titles = arrayOf(R.string.promotion, R.string.donation)
 
         override fun getItem(position: Int): Fragment {
             return when (position) {
-                0 -> LineChartFragment()
-                1 -> RadarChartFragment()
-                2 -> BarChartFragment()
-                else -> LineChartFragment() // you shouldn't be here though
+                0 -> PromotionFragment()
+                1 -> DonationFragment()
+                else -> PromotionFragment() // you shouldn't be here though
             }
         }
 
@@ -53,5 +53,4 @@ class ChartFragment : Fragment() {
         tabLayout.setupWithViewPager(mPager)
         return view
     }
-
 }

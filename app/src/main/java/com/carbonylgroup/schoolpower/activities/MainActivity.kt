@@ -37,10 +37,7 @@ import com.carbonylgroup.schoolpower.data.Attendance
 import com.carbonylgroup.schoolpower.data.StudentData
 import com.carbonylgroup.schoolpower.data.StudentInformation
 import com.carbonylgroup.schoolpower.data.Subject
-import com.carbonylgroup.schoolpower.fragments.AboutFragment
-import com.carbonylgroup.schoolpower.fragments.AttendanceFragment
-import com.carbonylgroup.schoolpower.fragments.ChartFragment
-import com.carbonylgroup.schoolpower.fragments.HomeFragment
+import com.carbonylgroup.schoolpower.fragments.*
 import com.carbonylgroup.schoolpower.service.PullDataJob
 import com.carbonylgroup.schoolpower.transition.DetailsTransition
 import com.carbonylgroup.schoolpower.transition.TransitionHelper
@@ -90,6 +87,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
     private var chartFragment: ChartFragment? = null
     private var attendanceFragment: AttendanceFragment? = null
     private var aboutFragment: AboutFragment? = null
+    private var supportFragment: SupportFragment? = null
 
     override fun attachBaseContext(newBase: Context) {
 
@@ -364,6 +362,15 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                 chartFragment = ChartFragment()
                 transaction.replace(R.id.content_view, chartFragment)
                 setToolBarTitle(getString(R.string.charts))
+                setToolBarElevation(0)
+                expandToolBar(true, true)
+                hideToolBarItems(true)
+                presentFragment = 2
+            }
+            R.id.nav_support -> {
+                supportFragment = SupportFragment()
+                transaction.replace(R.id.content_view, supportFragment)
+                setToolBarTitle(getString(R.string.support_us))
                 setToolBarElevation(0)
                 expandToolBar(true, true)
                 hideToolBarItems(true)
