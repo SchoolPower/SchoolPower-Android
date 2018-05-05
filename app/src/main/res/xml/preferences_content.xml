@@ -3,16 +3,14 @@
 
     <PreferenceCategory android:title="Theme">
 
-        <Preference
-            android:defaultValue="dark"
-            android:key="list_preference_theme"
-            android:summary="%s"
-            android:title="Accent Color" />
-
         <SwitchPreference
             android:defaultValue="false"
             android:key="switch_preference_theme_dark"
             android:title="Dark Theme" />
+
+        <com.carbonylgroup.schoolpower.utils.colorChooser.ColorChooserPreference
+            android:key="list_preference_accent_color"
+            android:title="Accent_Color" />
 
     </PreferenceCategory>
 

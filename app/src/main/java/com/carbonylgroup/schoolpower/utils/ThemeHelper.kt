@@ -22,7 +22,7 @@ class ThemeHelper(private val activity: BaseActivity) {
     internal fun apply() {
         val theme = utils.getTheme()
 //        val accentColor = utils.getAccentColor()
-        activity.setTheme(getTheme(theme, 11))
+        activity.setTheme(getTheme(theme, utils.getAccentColorIndex()))
     }
 
 //    fun applyForAboutActivity(activity: Activity) {

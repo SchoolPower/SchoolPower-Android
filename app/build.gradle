@@ -57,6 +57,9 @@ dependencies {
     implementation 'com.theartofdev.edmodo:android-image-cropper:2.7.0'
     implementation 'com.squareup.okhttp3:okhttp:3.10.0'
     implementation 'com.squareup.picasso:picasso:2.71828'
+    implementation "de.hdodenhof:circleimageview:2.1.0"
+    implementation "com.afollestad.material-dialogs:core:0.9.4.5"
+    implementation "com.afollestad.material-dialogs:commons:0.9.4.5"
     kapt 'com.jakewharton:butterknife-compiler:8.8.1'
     testImplementation 'junit:junit:4.12'
     implementation project(':foldingcell')

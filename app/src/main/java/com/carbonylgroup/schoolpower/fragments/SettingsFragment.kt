@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
+import android.support.annotation.ColorInt
 import android.support.v14.preference.MultiSelectListPreference
 import android.support.v14.preference.PreferenceFragment
 import android.support.v14.preference.SwitchPreference
@@ -17,12 +18,18 @@ import com.carbonylgroup.schoolpower.R
 import com.carbonylgroup.schoolpower.activities.MainActivity
 import com.carbonylgroup.schoolpower.activities.SettingsActivity
 import com.carbonylgroup.schoolpower.utils.Utils
+import com.carbonylgroup.schoolpower.utils.colorChooser.ColorChooserPreference
 import java.util.*
 
-class SettingsFragment : PreferenceFragment(), SharedPreferences.OnSharedPreferenceChangeListener {
+class SettingsFragment : PreferenceFragment(),
+        SharedPreferences.OnSharedPreferenceChangeListener,
+        ColorChooserPreference.ColorChooserCallback{
+
+    override fun onColorChanged(@ColorInt oriColor: Int, @ColorInt selectedColor: Int) {
+        recreateMain()
+    }
 
     interface SettingsCallBack {
-//        fun onLogout()
         fun onRecreate()
     }
     private var callBack: SettingsCallBack? = null
@@ -56,16 +63,15 @@ class SettingsFragment : PreferenceFragment(), SharedPreferences.OnSharedPrefere
 
     private fun initPreferences() {
 
+        (findPreference("list_preference_accent_color") as ColorChooserPreference)
+                .setColorChooserCallback(this)
+
         val dashboardDisplay = (findPreference("list_preference_dashboard_display") as ListPreference)
         dashboardDisplay.summary = activity.getString(R.string.dashboard_display_preference_summary_prefix) + dashboardDisplay.entry + activity.getString(R.string.dashboard_display_preference_summary_suffix)
 
         val gpaRule = findPreference("list_preference_custom_gpa_calculate") as ListPreference
         gpaRule.summary = getString(R.string.dashboard_gpa_rule_summary_prefix) + gpaRule.entry.toString().toLowerCase() + activity.getString(R.string.dashboard_gpa_rule_summary_suffix)
 
-        findPreference("list_preference_theme").onPreferenceClickListener = Preference.OnPreferenceClickListener {
-            showThemeChooser()
-            true
-        }
 
         findPreference("report_bug").onPreferenceClickListener = Preference.OnPreferenceClickListener {
             val uri = Uri.parse(getString(R.string.bug_report_email))

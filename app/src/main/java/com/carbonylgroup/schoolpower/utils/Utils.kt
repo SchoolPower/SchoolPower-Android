@@ -33,6 +33,7 @@ import java.util.*
 class Utils(private val context: Context) {
 
     val THEME = "appTheme"
+    val ACCENT_COLOR = "accentColor"
     val LIGHT = "LIGHT"
     val DARK = "DARK"
 
@@ -144,6 +145,10 @@ class Utils(private val context: Context) {
     @ColorInt
     fun getAccentColor(): Int {
         return getColorAttr(R.attr.colorAccent)
+    }
+
+    fun getAccentColorIndex(): Int {
+        return getDefaultSp(context).getInt(ACCENT_COLOR, 8)
     }
 
     @ColorInt
