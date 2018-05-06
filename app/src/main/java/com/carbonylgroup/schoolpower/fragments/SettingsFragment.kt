@@ -15,8 +15,6 @@ import android.support.v7.preference.ListPreference
 import android.support.v7.preference.Preference
 import android.support.v7.preference.PreferenceManager
 import com.carbonylgroup.schoolpower.R
-import com.carbonylgroup.schoolpower.activities.MainActivity
-import com.carbonylgroup.schoolpower.activities.SettingsActivity
 import com.carbonylgroup.schoolpower.utils.Utils
 import com.carbonylgroup.schoolpower.utils.colorChooser.ColorChooserPreference
 import java.util.*
@@ -82,12 +80,10 @@ class SettingsFragment : PreferenceFragment(),
             startActivity(Intent.createChooser(intent, getString(R.string.choose_email_app)))
             true
         }
-        /*
-        findPreference("feedback_forum").onPreferenceClickListener = Preference.OnPreferenceClickListener {
-            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.feedback_forum_address))))
+        findPreference("status").onPreferenceClickListener = Preference.OnPreferenceClickListener {
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.server_status_address))))
             true
         }
-        */
         findPreference("website").onPreferenceClickListener = Preference.OnPreferenceClickListener {
             startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.website_address))))
             true

@@ -82,12 +82,11 @@
             android:key="report_bug"
             android:summary="@string/report_bug_summary"
             android:title="@string/report_bug" />
-        <!--
-                <PreferenceScreen
-                    android:key="feedback_forum"
-                    android:summary="@string/feedback_forum_summary"
-                    android:title="@string/feedback_forum" />
-        -->
+
+        <PreferenceScreen
+            android:key="status"
+            android:title="@string/server_status" />
+
         <PreferenceScreen
             android:key="website"
             android:title="@string/visit_website" />
