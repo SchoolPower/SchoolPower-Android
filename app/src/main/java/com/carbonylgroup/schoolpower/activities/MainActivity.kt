@@ -19,7 +19,6 @@ import android.os.Bundle
 import android.preference.PreferenceManager
 import android.support.design.widget.AppBarLayout
 import android.support.design.widget.NavigationView
-import android.support.v4.content.ContextCompat
 import android.support.v4.view.GravityCompat
 import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.ActionBarDrawerToggle
@@ -43,7 +42,6 @@ import com.carbonylgroup.schoolpower.transition.DetailsTransition
 import com.carbonylgroup.schoolpower.transition.TransitionHelper
 import com.carbonylgroup.schoolpower.utils.ContextWrapper
 import com.carbonylgroup.schoolpower.utils.GPADialog
-import com.carbonylgroup.schoolpower.utils.ThemeHelper
 import com.carbonylgroup.schoolpower.utils.Utils
 import com.carbonylgroup.schoolpower.utils.Utils.Companion.AccountData
 import com.google.android.gms.ads.AdRequest
@@ -103,14 +101,43 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
 
     override fun initActivity() {
 
-        utils = Utils(this)
         super.initActivity()
+        utils = Utils(this)
         setContentView(R.layout.nav_drawer)
         initValue()
         initUI()
         initOnClick()
         initScheduler()
         utils.checkApplicationUpdate()
+
+        // Shortcuts could bring users to main activity directly.
+        // In this case, bring users to login activity if they are not logged in
+        if(!utils.getSharedPreference(AccountData).getBoolean(getString(R.string.loggedIn), false)){
+            startLoginActivity()
+            return
+        }
+
+        when(intent.action) {
+            "com.carbonylgroup.schoolpower.custom.attendance" -> {
+                navigationView.menu.getItem(2).isChecked = true
+                gotoFragmentWithMenuItemId(R.id.nav_attendance)
+            }
+            "com.carbonylgroup.schoolpower.custom.charts" -> {
+                navigationView.menu.getItem(1).isChecked = true
+                gotoFragmentWithMenuItemId(R.id.nav_charts)
+            }
+            "com.carbonylgroup.schoolpower.custom.gpa" -> {
+                if (subjects == null || subjects!!.count() == 0) {
+
+                    val builder = AlertDialog.Builder(this)
+                    builder.setMessage(getString(R.string.gpa_not_available_because))
+                    builder.setTitle(getString(R.string.gpa_not_available))
+                    builder.setPositiveButton(getString(R.string.alright), null)
+                    builder.create().show()
+
+                } else GPADialog(this, subjects!!, studentInformation!!.GPA).show()
+            }
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
