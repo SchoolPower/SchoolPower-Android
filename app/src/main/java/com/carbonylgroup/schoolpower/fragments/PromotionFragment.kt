@@ -18,7 +18,7 @@ class PromotionFragment : Fragment() {
 
     private fun generateQRCode(url: String) = QRCode.from(url)
             .withSize(utils.dpToPx(250), utils.dpToPx(250))
-            .withColor(0xff09314b.toInt(), 0xfffffffff.toInt())
+            .withColor(utils.getPrimaryColor(), 0xFFFFFFFF.toInt())
             .bitmap()!!
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,

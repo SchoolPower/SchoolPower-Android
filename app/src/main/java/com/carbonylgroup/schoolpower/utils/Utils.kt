@@ -132,64 +132,19 @@ class Utils(private val context: Context) {
         return getDefaultSp(context).getString(THEME, LIGHT)
     }
 
-    @ColorInt
-    fun getPrimaryColor(): Int {
-        return getColorAttr(R.attr.colorPrimary)
-    }
+    fun getAccentColorIndex() =  getDefaultSp(context).getInt(ACCENT_COLOR, 8)
 
-    @ColorInt
-    fun getPrimaryDarkColor(): Int {
-        return getColorAttr(R.attr.colorPrimaryDark)
-    }
-
-    @ColorInt
-    fun getAccentColor(): Int {
-        return getColorAttr(R.attr.colorAccent)
-    }
-
-    fun getAccentColorIndex(): Int {
-        return getDefaultSp(context).getInt(ACCENT_COLOR, 8)
-    }
-
-    @ColorInt
-    fun getPrimaryTextColor(): Int {
-        return getColorAttr(android.R.attr.textColorPrimary)
-    }
-
-    @ColorInt
-    fun getSecondaryTextColor(): Int {
-        return getColorAttr(android.R.attr.textColorSecondary)
-    }
-
-    @ColorInt
-    fun getWindowBackground(): Int {
-        return getColorAttr(android.R.attr.windowBackground)
-    }
-
-    @ColorInt
-    fun getCardBackground(): Int {
-        return getColorAttr(R.attr.card_background)
-    }
-
-    @ColorInt
-    fun getIconColor(): Int {
-        return getColorAttr(R.attr.icon_color)
-    }
-
-    @ColorInt
-    fun getTitleColor(): Int {
-        return getColorAttr(R.attr.title_color)
-    }
-
-    @ColorInt
-    fun getSubTitleColor(): Int {
-        return getColorAttr(R.attr.subtitle_color)
-    }
-
-    @ColorInt
-    fun getSelectedColor(): Int {
-        return getColorAttr(R.attr.selected_color)
-    }
+    @ColorInt fun getPrimaryColor() = getColorAttr(R.attr.colorPrimary)
+    @ColorInt fun getPrimaryDarkColor() = getColorAttr(R.attr.colorPrimaryDark)
+    @ColorInt fun getAccentColor() = getColorAttr(R.attr.colorAccent)
+    @ColorInt fun getPrimaryTextColor() = getColorAttr(android.R.attr.textColorPrimary)
+    @ColorInt fun getSecondaryTextColor() = getColorAttr(android.R.attr.textColorSecondary)
+    @ColorInt fun getWindowBackground() = getColorAttr(android.R.attr.windowBackground)
+    @ColorInt fun getCardBackground() = getColorAttr(R.attr.card_background)
+    @ColorInt fun getIconColor() = getColorAttr(R.attr.icon_color)
+    @ColorInt fun getTitleColor() = getColorAttr(R.attr.title_color)
+    @ColorInt fun getSubTitleColor() = getColorAttr(R.attr.subtitle_color)
+    @ColorInt fun getSelectedColor() = getColorAttr(R.attr.selected_color)
 
     @ColorInt
     private fun getColorAttr(attr: Int): Int {
@@ -201,24 +156,18 @@ class Utils(private val context: Context) {
     }
 
     operator fun set(key: String, value: Any) {
-        if (StringUtils.isBlank(key) || value == null) {
+        if (StringUtils.isBlank(key)) {
             throw NullPointerException(String.format("Key and value not be null key=%s, value=%s", key, value))
         }
         val edit = getDefaultSp(context).edit()
-        if (value is String) {
-            edit.putString(key, value)
-        } else if (value is Int) {
-            edit.putInt(key, value)
-        } else if (value is Long) {
-            edit.putLong(key, value)
-        } else if (value is Boolean) {
-            edit.putBoolean(key, value)
-        } else if (value is Float) {
-            edit.putFloat(key, value)
-        } else if (value is Set<*>) {
-            edit.putStringSet(key, value as Set<String>)
-        } else {
-            throw IllegalArgumentException(String.format("Type of value unsupported key=%s, value=%s", key, value))
+        when (value) {
+            is String -> edit.putString(key, value)
+            is Int -> edit.putInt(key, value)
+            is Long -> edit.putLong(key, value)
+            is Boolean -> edit.putBoolean(key, value)
+            is Float -> edit.putFloat(key, value)
+            is Set<*> -> edit.putStringSet(key, value as Set<String>)
+            else -> throw IllegalArgumentException(String.format("Type of value unsupported key=%s, value=%s", key, value))
         }
         edit.apply()
     }
