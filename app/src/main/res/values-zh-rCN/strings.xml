@@ -171,4 +171,9 @@ SchoolPower 不保证上述网站的服务稳定性，不保证用户头像会�
     <string name="avatar_upload_failed">头像上传失败，请重试</string>
     <string name="change_avatar">修改头像</string>
     <string name="remove_avatar">删除头像</string>
+    <string name="support_us">支持我们</string>
+    <string name="promotion">推广</string>
+    <string name="donation">赞助</string>
+    <string name="qr_code">二维码</string>
+    <string name="server_status">服务器状态</string>
 </resources>

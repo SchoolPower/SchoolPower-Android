@@ -244,8 +244,8 @@ SchoolPower does not guarantee that the user\'s picture will be permanently save
 
     <string name="support_us">Support Us</string>
     <string name="promotion">Promotion</string>
-    <string name="Android">Android</string>
-    <string name="iOS">iOS</string>
+    <string name="Android" translatable="false">Android</string>
+    <string name="iOS" translatable="false">iOS</string>
     <string name="donation">Donation</string>
     <string name="qr_code">QR Code</string>
     <string name="server_status">Server Status</string>
