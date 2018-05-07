@@ -178,4 +178,9 @@ SchoolPower does not guarantee that the user\'s picture will be permanently save
     <string name="avatar_upload_failed">Avatar upload failed. Please try again.</string>
     <string name="change_avatar">Change avatar</string>
     <string name="remove_avatar">Remove avatar</string>
+    <string name="support_us">Support Us</string>
+    <string name="promotion">Promotion</string>
+    <string name="donation">Donation</string>
+    <string name="qr_code">QR Code</string>
+    <string name="server_status">Server Status</string>
 </resources>
