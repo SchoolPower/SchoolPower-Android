@@ -454,7 +454,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
 
         animateDrawerToggle(false)
         hideToolBarItems(false)
-//        if (subjects != null && subjects!!.count() != 0) homeFragment!!.notifyAdapter()
+        if (subjects != null && subjects!!.count() != 0) homeFragment!!.notifyAdapter()
 
         //TODO Bugs might occur when adding new menu items QAQ
         navigationView.menu.getItem(1).isChecked = false
@@ -477,7 +477,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                 .commit()
 
         hideToolBarItems(false)
-//        if (subjects != null && subjects!!.count() != 0) homeFragment!!.notifyAdapter()
+        if (subjects != null && subjects!!.count() != 0) homeFragment!!.notifyAdapter()
         navigationView.menu.getItem(index).isChecked = false
         navigationView.menu.getItem(0).isChecked = true
     }

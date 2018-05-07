@@ -45,7 +45,7 @@ class HomeFragment : TransitionHelper.BaseFragment() {
     private lateinit var no_grade_view: LinearLayout
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-Log.d("[][][", "uyhkfcyu")
+        Log.d("[][][", "uyhkfcyu")
         view_private = inflater.inflate(R.layout.home_view_content, container, false)
         initAnim()
         initValue()
@@ -121,21 +121,16 @@ Log.d("[][][", "uyhkfcyu")
             no_grade_view.visibility = View.GONE
         }
 
-//        Handler().postDelayed({
-
-            adapter = FoldingCellListAdapter(activity, utils!!.getFilteredSubjects(subjects!!), unfoldedIndexesBackUp, transformedPosition)
-            adapterSetFabOnClickListener(adapter!!)
-            adapterSetTermOnClickListener(adapter!!)
-            dashboardListView.onItemClickListener = AdapterView.OnItemClickListener { _, view, pos, _ ->
-                adapter!!.registerToggle(pos)
-                (view as FoldingCell).toggle(false)
-                adapter!!.refreshPeriodRecycler(view, pos)
-                unfoldedIndexesBackUp = adapter!!.unfoldedIndexes
-            }
-            dashboardListView.adapter = adapter
-//            dashboardProgressBar.visibility = View.GONE
-//
-//        }, 200)
+        adapter = FoldingCellListAdapter(activity, utils!!.getFilteredSubjects(subjects!!), unfoldedIndexesBackUp, transformedPosition)
+        adapterSetFabOnClickListener(adapter!!)
+        adapterSetTermOnClickListener(adapter!!)
+        dashboardListView.onItemClickListener = AdapterView.OnItemClickListener { _, view, pos, _ ->
+            adapter!!.registerToggle(pos)
+            (view as FoldingCell).toggle(false)
+            adapter!!.refreshPeriodRecycler(view, pos)
+            unfoldedIndexesBackUp = adapter!!.unfoldedIndexes
+        }
+        dashboardListView.adapter = adapter
     }
 
     fun visiblizeNoGradeView() {
@@ -169,7 +164,6 @@ Log.d("[][][", "uyhkfcyu")
     fun notifyAdapter() {
         adapter!!.notifyDataSetChanged()
     }
-
 
     private fun getItemViewByPosition(position: Int, listView: ListView): View {
 

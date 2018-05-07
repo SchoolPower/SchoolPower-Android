@@ -19,10 +19,12 @@ import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
 import com.carbonylgroup.schoolpower.R
+import com.carbonylgroup.schoolpower.activities.BaseActivity
 import com.carbonylgroup.schoolpower.data.Subject
 import com.carbonylgroup.schoolpower.utils.Utils
 import com.ramotion.foldingcell.FoldingCell
 import java.util.*
+import android.os.Handler
 
 
 /**
@@ -76,12 +78,10 @@ class FoldingCellListAdapter(context: Context, private var subjects: List<Subjec
 
             cell.tag = viewHolder
 
-//            if (cell.width > 0 && cell.height > 0) {
             if (unfoldedIndexes.contains(position)) {
                 cell.unfold(true)
                 popUpFAB(cell, 300)
             } else cell.fold(true)
-//            }
 
         } else {
 
@@ -144,6 +144,8 @@ class FoldingCellListAdapter(context: Context, private var subjects: List<Subjec
 
         viewHolder.unfolded_grade_recycler_view!!.addOnItemClickListener(termOnClickListener!!)
 
+        Handler().post { refreshPeriodRecycler(cell, position) }
+
         return cell
     }
 
@@ -159,6 +161,7 @@ class FoldingCellListAdapter(context: Context, private var subjects: List<Subjec
 
         val items = subjects!![transformedPosition].grades
         val adapter = PeriodGradeAdapter(context, items)
+        adapter.notifyDataSetChanged()
         (_cell.findViewById<RecyclerView>(R.id.unfolded_grade_recycler_view)).adapter = adapter
     }
 
