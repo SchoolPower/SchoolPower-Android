@@ -92,7 +92,7 @@ class LineChartFragment : Fragment() {
                 dataSet.valueTextColor = utils.getAccentColor()
                 dataSet.circleColors = List((organizedData[subjectName] as ArrayList<Entry>).size, { intColor })
                 dataSet.lineWidth = 2.0f
-                dataSet.mode = LineDataSet.Mode.CUBIC_BEZIER
+                dataSet.mode = LineDataSet.Mode.HORIZONTAL_BEZIER
                 lineData.addDataSet(dataSet)
             }
 
