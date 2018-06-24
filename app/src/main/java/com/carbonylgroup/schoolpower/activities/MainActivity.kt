@@ -145,6 +145,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
         menuInflater.inflate(R.menu.menu_main, menu)
         menu.findItem(R.id.action_gpa).isVisible = !hideToolBarItemFlag
         menu.findItem(R.id.action_refresh).isVisible = !hideToolBarItemFlag
+        if (utils.isBirthDay()) menu.findItem(R.id.action_gpa).icon = getDrawable(R.drawable.ic_cake_tall)
         return true
     }
 
@@ -593,6 +594,9 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                 studentInformation = data.studentInfo
                 subjects = data.subjects
                 attendances = data.attendances
+
+                utils.setSharedPreference(AccountData, "dob", Utils.convertDateToTimestamp(data.studentInfo.dob))
+
                 val extraInfo = data.extraInfo
 
                 utils.setSharedPreference(AccountData, "user_avatar", extraInfo.avatar)
@@ -622,7 +626,11 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                     }
 
                     updateAvatar()
-                    utils.showSnackBar(this@MainActivity, findViewById(R.id.main_coordinate_layout), getString(R.string.data_updated), false)
+                    if (!utils.isBirthDay())
+                        utils.showSnackBar(this@MainActivity, findViewById(R.id.main_coordinate_layout), getString(R.string.data_updated), false)
+                    else
+                        utils.showSnackBar(this@MainActivity, findViewById(R.id.main_coordinate_layout), getString(R.string.happy_birth), false)
+
                 }
             }
         }

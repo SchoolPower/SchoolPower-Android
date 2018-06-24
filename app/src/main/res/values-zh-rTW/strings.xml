@@ -179,4 +179,5 @@ SchoolPower 不保證上述網站的服務穩定性，不保證用戶頭像會�
     <string name="donation">贊助</string>
     <string name="qr_code">二維碼</string>
     <string name="server_status">伺服器狀態</string>
+    <string name="happy_birth">生日快樂！</string>
 </resources>

@@ -63,7 +63,6 @@ class StudentData(context: Context, jsonStr: String) {
             ExtraInfo(avatar = "")
         }
     }
-
 }
 
 class ExtraInfo(val avatar: String)

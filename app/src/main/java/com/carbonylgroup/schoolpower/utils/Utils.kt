@@ -277,6 +277,12 @@ class Utils(private val context: Context) {
         spEditor.apply()
     }
 
+    fun setSharedPreference(database: String, key: String, value: Long) {
+        val spEditor = context.getSharedPreferences(database, Activity.MODE_PRIVATE).edit()
+        spEditor.putLong(key, value)
+        spEditor.apply()
+    }
+
     @Throws(IOException::class)
     fun readStringFromFile(fileName: String): String? {
 
@@ -534,6 +540,17 @@ class Utils(private val context: Context) {
             }
         }
         return null
+    }
+
+    fun isBirthDay() : Boolean {
+        val fmt = SimpleDateFormat("yyyyMMdd", Locale.CHINA)
+        val dat = getSharedPreference(AccountData).getLong("dob", 0)
+        if (dat == 0L) return false
+        val cal1 = Calendar.getInstance()
+        val cal2 = Calendar.getInstance()
+        cal1.time = Date()
+        cal2.time = Date(dat)
+        return cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR)
     }
 
     companion object {
