@@ -74,7 +74,7 @@ class HomeFragment : TransitionHelper.BaseFragment() {
 
     private fun initValue() {
 
-        utils = Utils(activity)
+        utils = Utils(context)
         subjects = MainActivity.of(activity).subjects
         MainActivity.of(activity).presentFragment = 0
         MainActivity.of(activity).setToolBarElevation()
@@ -191,7 +191,6 @@ class HomeFragment : TransitionHelper.BaseFragment() {
                 .addToBackStack(null)
                 .commit()
 
-        MainActivity.of(activity).presentFragment = 1
         MainActivity.of(activity).animateDrawerToggle(true)
         MainActivity.of(activity).setToolBarElevation(0)
     }
