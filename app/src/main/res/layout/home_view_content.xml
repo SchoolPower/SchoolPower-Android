@@ -15,6 +15,7 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:id="@+id/no_grade_image_view"
             android:src="@drawable/no_grades" />
 
         <TextView

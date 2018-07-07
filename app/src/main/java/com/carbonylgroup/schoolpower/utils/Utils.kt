@@ -563,7 +563,6 @@ class Utils(private val context: Context) {
         const val HistoryDataFileName: String = "history.json"
         const val StatisticalDataFileName: String = "statistics.json"
 
-
         val chartColorList = arrayOf(
                 "#534550",
                 "#c0de32",

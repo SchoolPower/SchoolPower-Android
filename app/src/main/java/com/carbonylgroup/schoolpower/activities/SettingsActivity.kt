@@ -4,35 +4,21 @@
 
 package com.carbonylgroup.schoolpower.activities
 
-import android.animation.Animator
-
-
 import android.animation.AnimatorListenerAdapter
 import android.app.Activity
-import android.app.job.JobScheduler
 import android.content.Context
-import android.content.Intent
-import android.content.SharedPreferences
 import android.content.res.Resources
-import android.net.Uri
 import android.os.Bundle
-import android.preference.*
-import android.support.design.widget.AppBarLayout
 import android.support.v4.app.NavUtils
-import android.support.v7.app.AlertDialog
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.ContentFrameLayout
 import android.support.v7.widget.Toolbar
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewAnimationUtils
 import android.widget.RelativeLayout
-import butterknife.ButterKnife
 import com.carbonylgroup.schoolpower.R
 import com.carbonylgroup.schoolpower.fragments.SettingsFragment
 import com.carbonylgroup.schoolpower.utils.ContextWrapper
-import com.carbonylgroup.schoolpower.utils.ThemeHelper
 import com.carbonylgroup.schoolpower.utils.Utils
 import kotterknife.bindView
 import java.util.*
@@ -44,7 +30,6 @@ class SettingsActivity : BaseActivity(), SettingsFragment.SettingsCallBack {
     private val settingsToolBar: Toolbar by bindView(R.id.settings_toolbar)
     private val rootLayout: RelativeLayout by bindView(R.id.settings_root_layout)
     private val localeSet = arrayListOf(Resources.getSystem().configuration.locale, Locale.ENGLISH, Locale.TRADITIONAL_CHINESE, Locale.SIMPLIFIED_CHINESE)
-
 
     override fun attachBaseContext(newBase: Context) {
 

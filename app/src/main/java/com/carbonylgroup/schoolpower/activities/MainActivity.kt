@@ -231,6 +231,11 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                 mainAppBar.viewTreeObserver.removeOnGlobalLayoutListener(this)
                 if (!noConnection) homeFragment!!.setRefreshing(true)
                 else noConnection = false
+
+                // Remove toolbar elevation if at Chart Fragment
+                if (presentFragment == 2) {
+                    setToolBarElevation(0)
+                }
             }
         })
     }
@@ -392,15 +397,6 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                 hideToolBarItems(true)
                 presentFragment = 2
             }
-            R.id.nav_support -> {
-                supportFragment = SupportFragment()
-                transaction.replace(R.id.content_view, supportFragment)
-                setToolBarTitle(getString(R.string.support_us))
-                setToolBarElevation(0)
-                expandToolBar(true, true)
-                hideToolBarItems(true)
-                presentFragment = 2
-            }
             R.id.nav_attendance -> {
                 attendanceFragment = AttendanceFragment()
                 transaction.replace(R.id.content_view, attendanceFragment)
@@ -411,6 +407,18 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                 presentFragment = 3
             }
             R.id.nav_settings -> startSettingsActivity()
+
+            R.id.nav_support -> {
+                supportFragment = SupportFragment()
+                transaction.setCustomAnimations(R.animator.slide_from_right_in, R.animator.slide_to_left_out)
+                        .replace(R.id.content_view, supportFragment)
+                setToolBarTitle(getString(R.string.support_us))
+                setToolBarElevation(0)
+                expandToolBar(true, true)
+                animateDrawerToggle(true)
+                hideToolBarItems(true)
+                presentFragment = 5
+            }
 
             R.id.nav_about -> {
                 aboutFragment = AboutFragment()
@@ -482,7 +490,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
 
         animateDrawerToggle(false)
         hideToolBarItems(false)
-        if (subjects != null && subjects!!.count() != 0) homeFragment!!.notifyAdapter()
+        if (subjects != null && utils.getFilteredSubjects(subjects!!).count() != 0) homeFragment!!.notifyAdapter()
 
         //TODO Bugs might occur when adding new menu items QAQ
         navigationView.menu.getItem(1).isChecked = false
@@ -505,7 +513,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                 .commit()
 
         hideToolBarItems(false)
-        if (subjects != null && subjects!!.count() != 0) homeFragment!!.notifyAdapter()
+        if (subjects != null && utils.getFilteredSubjects(subjects!!).count() != 0) homeFragment!!.notifyAdapter()
         navigationView.menu.getItem(index).isChecked = false
         navigationView.menu.getItem(0).isChecked = true
     }
