@@ -15,6 +15,7 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:id="@+id/perfect_attendance_image_view"
             android:src="@drawable/perfect_attendance" />
 
         <TextView

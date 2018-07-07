@@ -6,6 +6,8 @@ package com.carbonylgroup.schoolpower.fragments
 
 import android.os.Bundle
 import android.os.Handler
+import android.support.v4.content.res.ResourcesCompat
+import android.support.v4.content.res.ResourcesCompat.getDrawable
 import android.support.v4.widget.SwipeRefreshLayout
 import android.util.Log
 import android.view.LayoutInflater
@@ -14,10 +16,7 @@ import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.DecelerateInterpolator
 import android.view.animation.ScaleAnimation
-import android.widget.AdapterView
-import android.widget.LinearLayout
-import android.widget.ListView
-import android.widget.ProgressBar
+import android.widget.*
 import com.carbonylgroup.schoolpower.R
 import com.carbonylgroup.schoolpower.activities.MainActivity
 import com.carbonylgroup.schoolpower.adapter.FoldingCellListAdapter
@@ -40,7 +39,6 @@ class HomeFragment : TransitionHelper.BaseFragment() {
     private var adapter: FoldingCellListAdapter? = null
     private var courseDetailFragment: CourseDetailFragment? = null
     private var home_swipe_refresh_layout: SwipeRefreshLayout? = null
-    private lateinit var dashboardProgressBar: ProgressBar
     private lateinit var dashboardListView: ListView
     private lateinit var no_grade_view: LinearLayout
 
@@ -74,19 +72,26 @@ class HomeFragment : TransitionHelper.BaseFragment() {
 
     private fun initValue() {
 
-        utils = Utils(context)
+        utils = Utils(activity)
         subjects = MainActivity.of(activity).subjects
         MainActivity.of(activity).presentFragment = 0
         MainActivity.of(activity).setToolBarElevation()
         MainActivity.of(activity).setToolBarTitle(getString(R.string.dashboard))
-//        dashboardProgressBar = view_private!!.findViewById(R.id.dashboard_progress_bar)
         dashboardListView = view_private!!.findViewById(R.id.mainListView)
         no_grade_view = view_private!!.findViewById(R.id.no_grade_view)
+        view_private!!.findViewById<ImageView>(R.id.no_grade_image_view).setImageDrawable(
+                getDrawable(resources,
+                        when (utils!!.getTheme()) {
+                            utils!!.LIGHT -> R.drawable.no_grades
+                            utils!!.DARK -> R.drawable.no_grades_dark
+                            else -> R.drawable.no_grades
+                        }, null)
+        )
         home_swipe_refresh_layout = view_private!!.findViewById(R.id.home_swipe_refresh_layout)
         home_swipe_refresh_layout!!.setColorSchemeResources(R.color.accent, R.color.A_score_green, R.color.B_score_green,
                 R.color.Cp_score_yellow, R.color.C_score_orange, R.color.Cm_score_red, R.color.primary)
         home_swipe_refresh_layout!!.setOnRefreshListener { MainActivity.of(activity).fetchStudentDataFromServer() }
-        if (subjects == null || utils!!.getFilteredSubjects(subjects!!).count() == 0) refreshAdapterToEmpty()
+         if (subjects == null || utils!!.getFilteredSubjects(subjects!!).count() == 0) refreshAdapterToEmpty()
         else initAdapter()
 
     }

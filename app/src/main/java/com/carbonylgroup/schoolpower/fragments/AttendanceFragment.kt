@@ -3,12 +3,14 @@ package com.carbonylgroup.schoolpower.fragments
 import android.app.Fragment
 import android.os.Bundle
 import android.os.Handler
+import android.support.v4.content.res.ResourcesCompat
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.ProgressBar
 import com.carbonylgroup.schoolpower.R
@@ -59,6 +61,14 @@ class AttendanceFragment : Fragment() {
         attendanceRecyclerView = view_private!!.findViewById(R.id.attendance_recycler)
         attendanceProgressBar = view_private!!.findViewById(R.id.attendance_progress_bar)
         no_attendance_view = view_private!!.findViewById(R.id.no_attendance_view)
+        view_private!!.findViewById<ImageView>(R.id.perfect_attendance_image_view).setImageDrawable(
+                ResourcesCompat.getDrawable(resources,
+                        when (Utils(activity).getTheme()) {
+                            Utils(activity).LIGHT -> R.drawable.perfect_attendance
+                            Utils(activity).DARK -> R.drawable.perfect_attendance_dark
+                            else -> R.drawable.perfect_attendance
+                        }, null)
+        )
         attendance_swipe_refresh_layout = view_private!!.findViewById(R.id.attendance_swipe_refresh_layout)
         attendance_swipe_refresh_layout!!.setColorSchemeResources(R.color.accent, R.color.A_score_green, R.color.B_score_green,
                 R.color.Cp_score_yellow, R.color.C_score_orange, R.color.Cm_score_red, R.color.primary)
