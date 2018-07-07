@@ -3,6 +3,7 @@ package com.carbonylgroup.schoolpower.fragments
 import android.graphics.Color
 import android.os.Bundle
 import android.app.Fragment
+import android.preference.PreferenceManager
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.CardView
 import android.view.LayoutInflater
@@ -42,9 +43,17 @@ class RadarChartFragment : Fragment() {
 
             val gradedSubjects = ArrayList<Subject>() // Subjects that have grades
 
-            MainActivity.of(activity).subjects!!.forEach {
-                val grade = utils.getLatestPeriodGrade(it)
-                if (grade != null && grade.letter != "--") gradedSubjects.add(it)
+            for (subjectNow in MainActivity.of(activity).subjects!!) {
+
+                if (!PreferenceManager.getDefaultSharedPreferences(activity.applicationContext)
+                                .getBoolean("list_preference_dashboard_show_inactive", false)) {
+                    val currentTime = System.currentTimeMillis()
+                    val it = MainActivity.of(activity).subjects!!.find { it.name == subjectNow.name }
+                            ?: continue
+                    if (currentTime < it.startDate || currentTime > it.endDate) continue
+                }
+                val grade = utils.getLatestPeriodGrade(subjectNow)
+                if (grade != null && grade.letter != "--") gradedSubjects.add(subjectNow)
             }
 
             run {

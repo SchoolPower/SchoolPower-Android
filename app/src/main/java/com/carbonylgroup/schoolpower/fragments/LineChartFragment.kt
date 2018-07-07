@@ -46,19 +46,18 @@ class LineChartFragment : Fragment() {
             //TODO: Improve the charts display when there is nothing QVQ
         } else {
 
-            val historyData = utils.readHistoryGrade()
-
             val lineChart: LineChart = view.findViewById(R.id.line_chart)
             lineChart.description.isEnabled = false
 
-            // Map<SubjectName, Array<Entry<Date, Grade>>>
+            val historyData = utils.readHistoryGrade()
             val organizedData = HashMap<String, ArrayList<Entry>>()
             val lastData = HashMap<String, Entry>()
-
             val lineData = LineData()
+
             for (date in historyData.keys()) {
                 val floatDate = (SimpleDateFormat("yyyy-MM-dd", Locale.CHINA).parse(date).time / 1000.0f / 60.0f / 60.0f / 24.0f).toInt().toFloat()
                 val subjects = historyData.getJSONArray(date)
+
                 for (i in 0 until subjects.length()) {
                     val subjectNow = subjects.getJSONObject(i)
                     val subjectName = subjectNow.getString("name")

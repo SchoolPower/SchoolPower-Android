@@ -3,6 +3,7 @@ package com.carbonylgroup.schoolpower.fragments
 import android.app.Fragment
 import android.graphics.Color
 import android.os.Bundle
+import android.preference.PreferenceManager
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.CardView
 import android.view.LayoutInflater
@@ -82,7 +83,13 @@ class BarChartFragment : Fragment() {
             val group = ArrayList<BarEntry>()
 
             for (subject in gradedSubjects) {
-
+                if (!PreferenceManager.getDefaultSharedPreferences(activity.applicationContext)
+                                .getBoolean("list_preference_dashboard_show_inactive", false)) {
+                    val currentTime = System.currentTimeMillis()
+                    val it = MainActivity.of(activity).subjects!!.find { it.name == subject.name }
+                            ?: continue
+                    if (currentTime < it.startDate || currentTime > it.endDate) continue
+                }
                 subjectStrings.add(subject.name)
                 if (subject.grades[term] != null && subject.grades[term]!!.percentage!="0") {
                     group.add(BarEntry((subjectStrings.size - 1).toFloat(),
