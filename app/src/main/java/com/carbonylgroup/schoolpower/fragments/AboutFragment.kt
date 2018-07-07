@@ -3,30 +3,16 @@ package com.carbonylgroup.schoolpower.fragments
 import android.app.Activity
 import android.app.Fragment
 import android.content.Intent
-import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
-import android.support.v4.content.ContextCompat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
 import com.carbonylgroup.schoolpower.R
 import com.carbonylgroup.schoolpower.activities.MainActivity
-import com.carbonylgroup.schoolpower.data.Subject
 import com.carbonylgroup.schoolpower.utils.Utils
-import com.github.mikephil.charting.charts.LineChart
-import com.github.mikephil.charting.charts.RadarChart
-import com.github.mikephil.charting.components.AxisBase
-import com.github.mikephil.charting.components.Legend
-import com.github.mikephil.charting.data.*
-import com.github.mikephil.charting.formatter.IAxisValueFormatter
-import com.github.mikephil.charting.interfaces.datasets.IRadarDataSet
 import com.mikepenz.aboutlibraries.LibsBuilder
-import java.text.SimpleDateFormat
-import java.util.*
-import java.util.concurrent.TimeUnit
 
 class AboutFragment : Fragment() {
 
@@ -50,7 +36,7 @@ class AboutFragment : Fragment() {
             val spEditor = pref.edit()
             spEditor.putBoolean("developer_mode", !pref.getBoolean("developer_mode", false))
             spEditor.apply()
-            utils.showSnackBar(activity, view.findViewById(R.id.about_content_parent), "Developer Mode: "+pref.getBoolean("developer_mode", false).toString(), false)
+            utils.showSnackBar(view.findViewById(R.id.about_content_parent), "Developer Mode: "+pref.getBoolean("developer_mode", false).toString(), false)
             true
         }
 

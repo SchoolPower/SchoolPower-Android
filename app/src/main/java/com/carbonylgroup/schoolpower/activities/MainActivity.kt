@@ -289,7 +289,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                     override fun onResponse(call: Call, response: Response) {
                         val res = response.body()?.string()
                         if (res?.contains("error") != false) {
-                            utils.showSnackBar(this@MainActivity, findViewById(R.id.main_coordinate_layout),
+                            utils.showSnackBar(findViewById(R.id.main_coordinate_layout),
                                     JSONObject(res)["error"].toString(), true)
                         } else {
                             utils.setSharedPreference(AccountData, "user_avatar", "")
@@ -552,7 +552,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                     }
                     return
                 }
-                utils.showSnackBar(this@MainActivity, findViewById(R.id.main_coordinate_layout), getString(R.string.no_connection), true)
+                utils.showSnackBar(findViewById(R.id.main_coordinate_layout), getString(R.string.no_connection), true)
                 when (presentFragment) {
                     0 -> homeFragment?.setRefreshing(false)
                     3 -> attendanceFragment?.setRefreshing(false)
@@ -566,14 +566,14 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
 
                 // Error happened. Usually caused by wrong username/password
                 if (strMessage.contains("Something went wrong!")) {
-                    utils.showSnackBar(this@MainActivity, findViewById(R.id.main_coordinate_layout), getString(R.string.wrong_password), true)
+                    utils.showSnackBar(findViewById(R.id.main_coordinate_layout), getString(R.string.wrong_password), true)
                     signOut()
                     return
                 }
 
                 // Get response but not a valid JSON
                 if (!strMessage.contains("{")) {
-                    utils.showSnackBar(this@MainActivity, findViewById(R.id.main_coordinate_layout), getString(R.string.server_problem) + strMessage, true)
+                    utils.showSnackBar(findViewById(R.id.main_coordinate_layout), getString(R.string.server_problem) + strMessage, true)
                     when (presentFragment) {
                         0 -> homeFragment!!.setRefreshing(false)
                         3 -> attendanceFragment!!.setRefreshing(false)
@@ -627,9 +627,9 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
 
                     updateAvatar()
                     if (!utils.isBirthDay())
-                        utils.showSnackBar(this@MainActivity, findViewById(R.id.main_coordinate_layout), getString(R.string.data_updated), false)
+                        utils.showSnackBar(findViewById(R.id.main_coordinate_layout), getString(R.string.data_updated), false)
                     else
-                        utils.showSnackBar(this@MainActivity, findViewById(R.id.main_coordinate_layout), getString(R.string.happy_birth), false)
+                        utils.showSnackBar(findViewById(R.id.main_coordinate_layout), getString(R.string.happy_birth), false)
 
                 }
             }
@@ -709,7 +709,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
 
                 utils.buildNetworkRequest(getString(R.string.imageUploadURL), "POST", body).enqueue(object : Callback {
                     override fun onFailure(call: Call, e: IOException) {
-                        utils.showSnackBar(this@MainActivity, findViewById(R.id.main_coordinate_layout), getString(R.string.avatar_upload_failed), true)
+                        utils.showSnackBar(findViewById(R.id.main_coordinate_layout), getString(R.string.avatar_upload_failed), true)
                         e.printStackTrace()
                     }
 
@@ -718,7 +718,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                         Log.d("avatar", res)
                         val responseJson = JSONObject(res)
                         if (responseJson["code"] != "success") {
-                            utils.showSnackBar(this@MainActivity, findViewById(R.id.main_coordinate_layout), getString(R.string.avatar_upload_failed), true)
+                            utils.showSnackBar(findViewById(R.id.main_coordinate_layout), getString(R.string.avatar_upload_failed), true)
                             return
                         }
                         val avatarUrl = responseJson.getJSONObject("data")["url"].toString()
@@ -736,7 +736,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                         ).execute().body()?.string()
 
                         if (responseAvatar?.contains("error") != false) {
-                            utils.showSnackBar(this@MainActivity, findViewById(R.id.main_coordinate_layout),
+                            utils.showSnackBar(findViewById(R.id.main_coordinate_layout),
                                     JSONObject(responseAvatar)["error"].toString(), true)
                         }
 

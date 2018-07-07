@@ -259,7 +259,7 @@ class Utils(private val context: Context) {
         }
     }
 
-    fun showSnackBar(context: Context, view: View, msg: String, colorRed: Boolean) {
+    fun showSnackBar(view: View, msg: String, colorRed: Boolean) {
         val snackBar = Snackbar.make(view, msg, Snackbar.LENGTH_SHORT)
         if (colorRed) snackBar.view.setBackgroundColor(ContextCompat.getColor(context, R.color.Cm_score_red_dark))
         else snackBar.view.setBackgroundColor(ContextCompat.getColor(context, R.color.accent))

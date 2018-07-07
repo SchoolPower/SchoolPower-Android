@@ -249,6 +249,9 @@ SchoolPower does not guarantee that the user\'s picture will be permanently save
     <string name="donation">Donation</string>
     <string name="qr_code">QR Code</string>
     <string name="server_status">Server Status</string>
-
+    <string name="Alipay">Alipay</string>
+    <string name="Wechat">Wechat</string>
+    <string name="AlipayNotFound">Alipay not found</string>
+    <string name="WechatNotFound">Wechat not found</string>
     <string name="happy_birth">Happy Birthday!</string>
 </resources>

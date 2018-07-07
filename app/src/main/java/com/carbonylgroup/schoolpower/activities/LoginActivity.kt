@@ -8,7 +8,6 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.app.ProgressDialog
 import android.content.Intent
-import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.EditText
@@ -99,7 +98,7 @@ class LoginActivity : BaseActivity() {
                             return
                         }
                         progressDialog.dismiss()
-                        utils.showSnackBar(this@LoginActivity, findViewById(R.id.login_coordinate_layout), getString(R.string.no_connection), true)
+                        utils.showSnackBar(findViewById(R.id.login_coordinate_layout), getString(R.string.no_connection), true)
                     }
                     override fun onResponse(call: Call, response: Response) {
 
@@ -107,18 +106,18 @@ class LoginActivity : BaseActivity() {
 
                         // Error happened. Usually caused by wrong username/password
                         if (strMessage.contains("Something went wrong!")) {
-                            utils.showSnackBar(this@LoginActivity, findViewById(R.id.login_coordinate_layout), getString(R.string.wrong_password), true)
+                            utils.showSnackBar(findViewById(R.id.login_coordinate_layout), getString(R.string.wrong_password), true)
                             Log.w("Login", strMessage)
                             progressDialog.dismiss()
                             return
                         }
                         if (strMessage.contains("\"alert\"")) {
-                            utils.showSnackBar(this@LoginActivity, findViewById(R.id.login_coordinate_layout), JSONObject(strMessage)["alert"].toString(), true)
+                            utils.showSnackBar(findViewById(R.id.login_coordinate_layout), JSONObject(strMessage)["alert"].toString(), true)
                             progressDialog.dismiss()
                             return
                         }
                         if (!strMessage.contains("{")) {
-                            utils.showSnackBar(this@LoginActivity, findViewById(R.id.login_coordinate_layout), getString(R.string.no_connection), true)
+                            utils.showSnackBar(findViewById(R.id.login_coordinate_layout), getString(R.string.no_connection), true)
                             progressDialog.dismiss()
                         }
 
