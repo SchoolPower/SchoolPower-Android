@@ -45,7 +45,6 @@ class HomeFragment : TransitionHelper.BaseFragment() {
     private lateinit var no_grade_view: LinearLayout
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        Log.d("[][][", "uyhkfcyu")
         view_private = inflater.inflate(R.layout.home_view_content, container, false)
         initAnim()
         initValue()
@@ -87,7 +86,7 @@ class HomeFragment : TransitionHelper.BaseFragment() {
         home_swipe_refresh_layout!!.setColorSchemeResources(R.color.accent, R.color.A_score_green, R.color.B_score_green,
                 R.color.Cp_score_yellow, R.color.C_score_orange, R.color.Cm_score_red, R.color.primary)
         home_swipe_refresh_layout!!.setOnRefreshListener { MainActivity.of(activity).fetchStudentDataFromServer() }
-        if (subjects == null || subjects!!.count() == 0) refreshAdapterToEmpty()
+        if (subjects == null || utils!!.getFilteredSubjects(subjects!!).count() == 0) refreshAdapterToEmpty()
         else initAdapter()
 
     }
@@ -116,7 +115,7 @@ class HomeFragment : TransitionHelper.BaseFragment() {
 
     private fun initAdapter() {
 
-        if (subjects != null && subjects!!.count() != 0) {
+        if (subjects != null && utils!!.getFilteredSubjects(subjects!!).count() != 0) {
             dashboardListView.visibility = View.VISIBLE
             no_grade_view.visibility = View.GONE
         }
@@ -143,7 +142,6 @@ class HomeFragment : TransitionHelper.BaseFragment() {
     }
 
     fun refreshAdapterToEmpty() {
-
         subjects = arrayListOf()
         setRefreshing(false)
         visiblizeNoGradeView()

@@ -4,7 +4,6 @@ import android.app.Fragment
 import android.graphics.Color
 import android.os.Bundle
 import android.preference.PreferenceManager
-import android.support.v4.content.ContextCompat
 import android.support.v7.widget.CardView
 import android.view.LayoutInflater
 import android.view.MotionEvent
@@ -25,7 +24,6 @@ import com.github.mikephil.charting.interfaces.datasets.IBarDataSet
 import java.util.*
 
 
-
 class BarChartFragment : Fragment() {
 
     private lateinit var utils: Utils
@@ -43,15 +41,11 @@ class BarChartFragment : Fragment() {
         layoutParams.setMargins(0, 0, 0, utils.getActionBarSizePx() + utils.dpToPx(58))
         barChartCardView.requestLayout()
 
-        //TODO: Improve the charts display when there is nothing QVQ
-        if (MainActivity.of(activity).subjects == null)
+        if (MainActivity.of(activity).subjects == null ||
+                utils.getFilteredSubjects(MainActivity.of(activity).subjects!!).count() == 0)
             return view
 
         val subjects = MainActivity.of(activity).subjects!!
-
-        if (subjects.isEmpty())
-            return view
-
         val gradedSubjects = ArrayList<Subject>() // Subjects that have grades
 
         subjects.forEach {
