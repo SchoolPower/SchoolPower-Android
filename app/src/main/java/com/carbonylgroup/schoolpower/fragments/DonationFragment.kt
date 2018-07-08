@@ -37,45 +37,31 @@ class DonationFragment : Fragment() {
                               savedInstanceState: Bundle?): View? {
 
         val view = inflater!!.inflate(R.layout.fragment_donation, container, false)
-
         utils = Utils(activity)
 
-//        val view_content = view.findViewById<LinearLayout>(R.id.donation_view_content)
-//        view_content.findViewById<Button>(R.id.dismiss_qitao_button).setOnClickListener {
-//            TransitionManager.beginDelayedTransition(view_content)
-//            view_content.findViewById<CardView>(R.id.qitao_card).visibility = View.GONE
-//        }
-
-//        val segmented: SegmentedButtonGroup = view.findViewById(R.id.donation_segmented)
-//
-//        segmented.setPosition(0, 0)
-//
-//        val callback = { position: Int ->
-//            when (position) {
 //                0 -> qrCode.setImageBitmap(generateQRCode(AlipayQR).bitmap())
 //                1 -> qrCode.setImageBitmap(generateQRCode(WeChatQR).bitmap())
-//            }
-//        }
 
-        fun gotoAlipay() {
-            if (AlipayDonate.hasInstalledAlipayClient(activity)) {
-                AlipayDonate.startAlipayClient(activity, AlipayToken)
-            } else {
-                utils.showSnackBar(view.findViewById(R.id.donation_fragment), getString(R.string.AlipayNotFound), true)
-            }
-        }
-
-        fun gotoWechatPay() {
-            if (WeiXinDonate.hasInstalledWeiXinClient(activity)) {
-                val weixinQrIs = resources.openRawResource(R.raw.sp_wechat)
-                val qrPath = Environment.getExternalStorageDirectory().absolutePath + File.separator +
-                        "SchoolPowerDonate" + File.separator + "sp_wechat.png"
-                WeiXinDonate.saveDonateQrImage2SDCard(qrPath, BitmapFactory.decodeStream(weixinQrIs))
-                WeiXinDonate.donateViaWeiXin(activity, qrPath)
-            }else{
-                utils.showSnackBar(view.findViewById(R.id.donation_fragment), getString(R.string.WechatNotFound), true)
-            }
-        }
         return view
+    }
+
+    fun gotoAlipay() {
+        if (AlipayDonate.hasInstalledAlipayClient(activity)) {
+            AlipayDonate.startAlipayClient(activity, AlipayToken)
+        } else {
+            utils.showSnackBar(view.findViewById(R.id.donation_fragment), getString(R.string.AlipayNotFound), true)
+        }
+    }
+
+    fun gotoWechatPay() {
+        if (WeiXinDonate.hasInstalledWeiXinClient(activity)) {
+            val weixinQrIs = resources.openRawResource(R.raw.sp_wechat)
+            val qrPath = Environment.getExternalStorageDirectory().absolutePath + File.separator +
+                    "SchoolPowerDonate" + File.separator + "sp_wechat.png"
+            WeiXinDonate.saveDonateQrImage2SDCard(qrPath, BitmapFactory.decodeStream(weixinQrIs))
+            WeiXinDonate.donateViaWeiXin(activity, qrPath)
+        }else{
+            utils.showSnackBar(view.findViewById(R.id.donation_fragment), getString(R.string.WechatNotFound), true)
+        }
     }
 }

@@ -29,6 +29,7 @@ import com.carbonylgroup.schoolpower.transition.DetailsTransition
 import com.carbonylgroup.schoolpower.transition.TransitionHelper
 import com.carbonylgroup.schoolpower.utils.Utils
 import com.ramotion.foldingcell.FoldingCell
+import java.text.SimpleDateFormat
 import java.util.*
 
 class HomeFragment : TransitionHelper.BaseFragment() {
@@ -95,10 +96,11 @@ class HomeFragment : TransitionHelper.BaseFragment() {
         home_swipe_refresh_layout!!.setColorSchemeResources(R.color.accent, R.color.A_score_green, R.color.B_score_green,
                 R.color.Cp_score_yellow, R.color.C_score_orange, R.color.Cm_score_red, R.color.primary)
         home_swipe_refresh_layout!!.setOnRefreshListener { MainActivity.of(activity).fetchStudentDataFromServer() }
-         if (subjects == null || utils!!.getFilteredSubjects(subjects!!).count() == 0) refreshAdapterToEmpty()
+        if (subjects == null || utils!!.getFilteredSubjects(subjects!!).count() == 0) refreshAdapterToEmpty()
         else initAdapter()
 
-        initDonate()
+        if (needToShowDonate())
+            initDonate()
     }
 
     private fun adapterSetFabOnClickListener(adapter: FoldingCellListAdapter) = adapter.setFabOnClickListener(View.OnClickListener { v ->
@@ -119,7 +121,7 @@ class HomeFragment : TransitionHelper.BaseFragment() {
     private fun adapterSetTermOnClickListener(adapter: FoldingCellListAdapter) =
             adapter.setTermOnClickListener(object : OnItemClickListener {
                 override fun onItemClicked(position: Int, view: View) {
-                    adapter.showTermDialog(utils!!.getFilteredSubjects(subjects!!)[dashboardListView.getPositionForView(view)- dashboardListView.headerViewsCount], position)
+                    adapter.showTermDialog(utils!!.getFilteredSubjects(subjects!!)[dashboardListView.getPositionForView(view) - dashboardListView.headerViewsCount], position)
                 }
             })
 
@@ -134,9 +136,9 @@ class HomeFragment : TransitionHelper.BaseFragment() {
         adapterSetFabOnClickListener(adapter!!)
         adapterSetTermOnClickListener(adapter!!)
         dashboardListView.onItemClickListener = AdapterView.OnItemClickListener { _, view, pos, _ ->
-            adapter!!.registerToggle(pos- dashboardListView.headerViewsCount)
+            adapter!!.registerToggle(pos - dashboardListView.headerViewsCount)
             (view as FoldingCell).toggle(false)
-            adapter!!.refreshPeriodRecycler(view, pos- dashboardListView.headerViewsCount)
+            adapter!!.refreshPeriodRecycler(view, pos - dashboardListView.headerViewsCount)
             unfoldedIndexesBackUp = adapter!!.unfoldedIndexes
         }
         dashboardListView.adapter = adapter
@@ -148,15 +150,44 @@ class HomeFragment : TransitionHelper.BaseFragment() {
         header.findViewById<Button>(R.id.donate_button).setOnClickListener {
             MainActivity.of(activity).gotoFragmentWithMenuItemId(R.id.nav_support)
             utils!!.setSharedPreference("Tmp", "ImComingForDonation", true)
+            removeDonateHeader(header)
         }
         header.findViewById<Button>(R.id.promote_button).setOnClickListener {
             MainActivity.of(activity).gotoFragmentWithMenuItemId(R.id.nav_support)
+            removeDonateHeader(header)
         }
         header.findViewById<Button>(R.id.dismiss_donate_button).setOnClickListener {
-            TransitionManager.beginDelayedTransition(dashboardListView)
-            dashboardListView.removeHeaderView(header)
+            removeDonateHeader(header)
         }
         dashboardListView.addHeaderView(header, null, false)
+    }
+
+    private fun removeDonateHeader(header: ViewGroup) {
+        TransitionManager.beginDelayedTransition(dashboardListView)
+        dashboardListView.removeHeaderView(header)
+        setLastDonateShowedDate(Date())
+    }
+
+    private fun needToShowDonate(): Boolean {
+        val lastDate = getLastDonateShowedDate()
+        // Show donate every 30 days
+        return ((Date().time - lastDate.time) / 1000.0 / 60.0 / 60.0 / 24.0 >= 30.0)
+    }
+
+    private fun setLastDonateShowedDate(date: Date) {
+        Utils(activity).setSharedPreference("Tmp", "LastTimeDonateShowed",
+                SimpleDateFormat("yyyy-MM-dd", Locale.CHINA).format(date))
+    }
+
+    private fun getLastDonateShowedDate(): Date {
+        val dateStr = Utils(activity)
+                .getSharedPreference("Tmp")
+                .getString("LastTimeDonateShowed", "")
+
+        if (dateStr != "")
+            return SimpleDateFormat("yyyy-MM-dd", Locale.CHINA).parse(dateStr)
+
+        return Date(0)
     }
 
     fun visiblizeNoGradeView() {
