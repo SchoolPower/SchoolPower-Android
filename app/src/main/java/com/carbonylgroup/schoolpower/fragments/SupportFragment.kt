@@ -58,7 +58,6 @@ class SupportFragment : Fragment() {
         val tabLayout = view.findViewById(R.id.tab_layout) as TabLayout
         tabLayout.setupWithViewPager(mPager)
 
-
         return view
     }
 }

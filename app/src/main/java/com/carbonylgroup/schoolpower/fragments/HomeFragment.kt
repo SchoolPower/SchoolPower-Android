@@ -23,6 +23,7 @@ import android.widget.*
 import com.carbonylgroup.schoolpower.R
 import com.carbonylgroup.schoolpower.activities.MainActivity
 import com.carbonylgroup.schoolpower.adapter.FoldingCellListAdapter
+import com.carbonylgroup.schoolpower.adapter.OnItemClickListener
 import com.carbonylgroup.schoolpower.data.Subject
 import com.carbonylgroup.schoolpower.transition.DetailsTransition
 import com.carbonylgroup.schoolpower.transition.TransitionHelper
@@ -102,13 +103,13 @@ class HomeFragment : TransitionHelper.BaseFragment() {
 
     private fun adapterSetFabOnClickListener(adapter: FoldingCellListAdapter) = adapter.setFabOnClickListener(View.OnClickListener { v ->
 
-        MainActivity.of(activity).subjectTransporter = utils!!.getFilteredSubjects(subjects!!)[dashboardListView.getPositionForView(v)]
+        MainActivity.of(activity).subjectTransporter = utils!!.getFilteredSubjects(subjects!!)[dashboardListView.getPositionForView(v) - dashboardListView.headerViewsCount]
         if (transformedPosition != -1) {
             val itemView = getItemViewByPosition(transformedPosition, dashboardListView)
             itemView.findViewById<View>(R.id.unfold_header_view).transitionName = ""
             itemView.findViewById<View>(R.id.detail_subject_title_tv).transitionName = ""
         }
-        transformedPosition = dashboardListView.getPositionForView(v)
+        transformedPosition = dashboardListView.getPositionForView(v) - dashboardListView.headerViewsCount
         val itemView = getItemViewByPosition(dashboardListView.getPositionForView(v), dashboardListView)
         itemView.findViewById<View>(R.id.floating_action_button).startAnimation(fab_out)
         itemView.findViewById<View>(R.id.floating_action_button).visibility = View.GONE
@@ -116,9 +117,9 @@ class HomeFragment : TransitionHelper.BaseFragment() {
     })
 
     private fun adapterSetTermOnClickListener(adapter: FoldingCellListAdapter) =
-            adapter.setTermOnClickListener(object : com.carbonylgroup.schoolpower.adapter.OnItemClickListener {
+            adapter.setTermOnClickListener(object : OnItemClickListener {
                 override fun onItemClicked(position: Int, view: View) {
-                    adapter.showTermDialog(utils!!.getFilteredSubjects(subjects!!)[dashboardListView.getPositionForView(view)], position)
+                    adapter.showTermDialog(utils!!.getFilteredSubjects(subjects!!)[dashboardListView.getPositionForView(view)- dashboardListView.headerViewsCount], position)
                 }
             })
 
@@ -133,9 +134,9 @@ class HomeFragment : TransitionHelper.BaseFragment() {
         adapterSetFabOnClickListener(adapter!!)
         adapterSetTermOnClickListener(adapter!!)
         dashboardListView.onItemClickListener = AdapterView.OnItemClickListener { _, view, pos, _ ->
-            adapter!!.registerToggle(pos)
+            adapter!!.registerToggle(pos- dashboardListView.headerViewsCount)
             (view as FoldingCell).toggle(false)
-            adapter!!.refreshPeriodRecycler(view, pos)
+            adapter!!.refreshPeriodRecycler(view, pos- dashboardListView.headerViewsCount)
             unfoldedIndexesBackUp = adapter!!.unfoldedIndexes
         }
         dashboardListView.adapter = adapter
