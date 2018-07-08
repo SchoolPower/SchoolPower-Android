@@ -254,4 +254,11 @@ SchoolPower does not guarantee that the user\'s picture will be permanently save
     <string name="AlipayNotFound">Alipay not found</string>
     <string name="WechatNotFound">Wechat not found</string>
     <string name="happy_birth">Happy Birthday!</string>
+
+    <string name="donation_title">Lorem ipsum dolor</string>
+    <string name="donation_message">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vitae nibh vel justo dignissim scelerisque. </string>
+    <string name="donation_cancel">NO THANKS</string>
+    <string name="donation_ok">DONATE</string>
+    <string name="donation_promote">PROMOTE</string>
+
 </resources>

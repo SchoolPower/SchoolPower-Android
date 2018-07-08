@@ -15,6 +15,10 @@ import com.carbonylgroup.schoolpower.utils.Utils
 import net.glxn.qrgen.android.QRCode
 import java.io.File
 import android.graphics.BitmapFactory
+import android.support.transition.TransitionManager
+import android.support.v7.widget.CardView
+import android.widget.Button
+import android.widget.LinearLayout
 
 
 class DonationFragment : Fragment() {
@@ -35,6 +39,12 @@ class DonationFragment : Fragment() {
         val view = inflater!!.inflate(R.layout.fragment_donation, container, false)
 
         utils = Utils(activity)
+
+//        val view_content = view.findViewById<LinearLayout>(R.id.donation_view_content)
+//        view_content.findViewById<Button>(R.id.dismiss_qitao_button).setOnClickListener {
+//            TransitionManager.beginDelayedTransition(view_content)
+//            view_content.findViewById<CardView>(R.id.qitao_card).visibility = View.GONE
+//        }
 
 //        val segmented: SegmentedButtonGroup = view.findViewById(R.id.donation_segmented)
 //

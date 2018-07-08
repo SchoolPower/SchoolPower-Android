@@ -12,10 +12,11 @@ import android.view.View
 import android.view.ViewGroup
 import com.carbonylgroup.schoolpower.R
 import com.carbonylgroup.schoolpower.activities.MainActivity
+import com.carbonylgroup.schoolpower.utils.Utils
+import okhttp3.internal.Util
 
 
 class SupportFragment : Fragment() {
-
 
     private var mPager: ViewPager? = null
     private var mPagerAdapter: PagerAdapter? = null
@@ -49,8 +50,15 @@ class SupportFragment : Fragment() {
         mPagerAdapter = ScreenSlidePagerAdapter(fragmentManager)
         mPager!!.adapter = mPagerAdapter
 
+        if (Utils(activity).getSharedPreference("Tmp").getBoolean("ImComingForDonation", false)) {
+            mPager!!.setCurrentItem(2, true)
+            Utils(activity).setSharedPreference("Tmp", "ImComingForDonation", false)
+        }
+
         val tabLayout = view.findViewById(R.id.tab_layout) as TabLayout
         tabLayout.setupWithViewPager(mPager)
+
+
         return view
     }
 }

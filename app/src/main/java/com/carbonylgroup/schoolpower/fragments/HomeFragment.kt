@@ -6,6 +6,9 @@ package com.carbonylgroup.schoolpower.fragments
 
 import android.os.Bundle
 import android.os.Handler
+import android.preference.Preference
+import android.support.transition.TransitionManager
+import android.support.v4.content.ContextCompat
 import android.support.v4.content.res.ResourcesCompat
 import android.support.v4.content.res.ResourcesCompat.getDrawable
 import android.support.v4.widget.SwipeRefreshLayout
@@ -94,6 +97,7 @@ class HomeFragment : TransitionHelper.BaseFragment() {
          if (subjects == null || utils!!.getFilteredSubjects(subjects!!).count() == 0) refreshAdapterToEmpty()
         else initAdapter()
 
+        initDonate()
     }
 
     private fun adapterSetFabOnClickListener(adapter: FoldingCellListAdapter) = adapter.setFabOnClickListener(View.OnClickListener { v ->
@@ -135,6 +139,23 @@ class HomeFragment : TransitionHelper.BaseFragment() {
             unfoldedIndexesBackUp = adapter!!.unfoldedIndexes
         }
         dashboardListView.adapter = adapter
+    }
+
+    private fun initDonate() {
+        val inflater = activity.layoutInflater
+        val header = inflater.inflate(R.layout.begging_dialog, dashboardListView, false) as ViewGroup
+        header.findViewById<Button>(R.id.donate_button).setOnClickListener {
+            MainActivity.of(activity).gotoFragmentWithMenuItemId(R.id.nav_support)
+            utils!!.setSharedPreference("Tmp", "ImComingForDonation", true)
+        }
+        header.findViewById<Button>(R.id.promote_button).setOnClickListener {
+            MainActivity.of(activity).gotoFragmentWithMenuItemId(R.id.nav_support)
+        }
+        header.findViewById<Button>(R.id.dismiss_donate_button).setOnClickListener {
+            TransitionManager.beginDelayedTransition(dashboardListView)
+            dashboardListView.removeHeaderView(header)
+        }
+        dashboardListView.addHeaderView(header, null, false)
     }
 
     fun visiblizeNoGradeView() {

@@ -373,7 +373,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
     }
 
     /* Fragments Handler */
-    private fun gotoFragmentWithMenuItemId(id: Int) {
+    fun gotoFragmentWithMenuItemId(id: Int) {
 
         val fm = fragmentManager
         val transaction = fm.beginTransaction()
