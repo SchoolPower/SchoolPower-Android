@@ -11,7 +11,13 @@
     <color name="Soil_grey">#333333</color>
     <color name="black">#111111</color>
     <color name="black_overlay">#66000000</color>
-    <color name="black_light">#212121</color>
+
+    <color name="alipay_blue">#1296db</color>
+    <color name="wechat_green">#22AC38</color>
+    <color name="paypal_blue">#253B80</color>
+    <color name="bitcoin_orange">#F7931A</color>
+    <color name="ethereum_black">#282828</color>
+
 
     <!--Panzer themeTheme-->
     <color name="primary">#09314b</color>

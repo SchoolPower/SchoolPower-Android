@@ -1,19 +1,20 @@
 package com.carbonylgroup.schoolpower.fragments
 
 import android.app.Fragment
+import android.content.Context
 import android.didikee.donate.AlipayDonate
 import android.didikee.donate.WeiXinDonate
+import android.graphics.Bitmap
 import android.os.Bundle
 import android.os.Environment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ImageView
-import co.ceryle.segmentedbutton.SegmentedButtonGroup
 import com.carbonylgroup.schoolpower.R
 import com.carbonylgroup.schoolpower.utils.Utils
 import net.glxn.qrgen.android.QRCode
+import java.io.File
+import android.graphics.BitmapFactory
 
 
 class DonationFragment : Fragment() {
@@ -35,37 +36,34 @@ class DonationFragment : Fragment() {
 
         utils = Utils(activity)
 
-        val qrCode = view.findViewById(R.id.qr_code) as ImageView
+//        val segmented: SegmentedButtonGroup = view.findViewById(R.id.donation_segmented)
+//
+//        segmented.setPosition(0, 0)
+//
+//        val callback = { position: Int ->
+//            when (position) {
+//                0 -> qrCode.setImageBitmap(generateQRCode(AlipayQR).bitmap())
+//                1 -> qrCode.setImageBitmap(generateQRCode(WeChatQR).bitmap())
+//            }
+//        }
 
-        val segmented: SegmentedButtonGroup = view.findViewById(R.id.donation_segmented)
-
-        segmented.setPosition(0, 0)
-
-        val callback = { position: Int ->
-            when (position) {
-                0 -> qrCode.setImageBitmap(generateQRCode(AlipayQR).bitmap())
-                1 -> qrCode.setImageBitmap(generateQRCode(WeChatQR).bitmap())
+        fun gotoAlipay() {
+            if (AlipayDonate.hasInstalledAlipayClient(activity)) {
+                AlipayDonate.startAlipayClient(activity, AlipayToken)
+            } else {
+                utils.showSnackBar(view.findViewById(R.id.donation_fragment), getString(R.string.AlipayNotFound), true)
             }
         }
 
-        segmented.setOnClickedButtonPosition(callback)
-        callback(segmented.position)
-
-        view.findViewById<Button>(R.id.donate_button).setOnClickListener {
-            if(segmented.position==0) {
-                if (AlipayDonate.hasInstalledAlipayClient(activity)) {
-                    AlipayDonate.startAlipayClient(activity, AlipayToken)
-                } else {
-                    utils.showSnackBar(view.findViewById(R.id.donation_fragment), getString(R.string.AlipayNotFound), true)
-                }
+        fun gotoWechatPay() {
+            if (WeiXinDonate.hasInstalledWeiXinClient(activity)) {
+                val weixinQrIs = resources.openRawResource(R.raw.sp_wechat)
+                val qrPath = Environment.getExternalStorageDirectory().absolutePath + File.separator +
+                        "SchoolPowerDonate" + File.separator + "sp_wechat.png"
+                WeiXinDonate.saveDonateQrImage2SDCard(qrPath, BitmapFactory.decodeStream(weixinQrIs))
+                WeiXinDonate.donateViaWeiXin(activity, qrPath)
             }else{
-                if (WeiXinDonate.hasInstalledWeiXinClient(activity)) {
-                    val qrPath = Environment.getExternalStorageDirectory().absolutePath + "tmp/sp_wechat.png"
-                    generateQRCode(WeChatQR).file(qrPath)
-                    WeiXinDonate.donateViaWeiXin(activity, qrPath)
-                }else{
-                    utils.showSnackBar(view.findViewById(R.id.donation_fragment), getString(R.string.WechatNotFound), true)
-                }
+                utils.showSnackBar(view.findViewById(R.id.donation_fragment), getString(R.string.WechatNotFound), true)
             }
         }
         return view
