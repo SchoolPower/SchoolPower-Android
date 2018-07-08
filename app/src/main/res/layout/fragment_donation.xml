@@ -11,9 +11,9 @@
         android:id="@+id/donation_view_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="?android:windowBackground"
         android:orientation="vertical"
-        android:padding="5dp"
-        android:background="?android:windowBackground">
+        android:padding="5dp">
 
         <Space
             android:layout_width="match_parent"
@@ -26,15 +26,16 @@
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:layout_weight="4">
+                android:layout_weight="4"
+                android:orientation="vertical">
 
                 <android.support.v7.widget.CardView
                     android:id="@+id/alipay_card"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_weight="1"
                     android:layout_marginStart="3dp"
+                    android:layout_weight="1"
+                    android:foreground="?selectableItemBackgroundBorderless"
                     app:cardBackgroundColor="@color/alipay_blue"
                     app:cardCornerRadius="2dp"
                     app:cardElevation="3dp"
@@ -44,7 +45,7 @@
                     <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:src="@drawable/ic_alipay"/>
+                        android:src="@drawable/ic_alipay" />
 
                 </android.support.v7.widget.CardView>
 
@@ -52,8 +53,9 @@
                     android:id="@+id/wechat_card"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_weight="1"
                     android:layout_marginStart="3dp"
+                    android:layout_weight="1"
+                    android:foreground="?selectableItemBackgroundBorderless"
                     app:cardBackgroundColor="@color/wechat_green"
                     app:cardCornerRadius="2dp"
                     app:cardElevation="3dp"
@@ -63,7 +65,7 @@
                     <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:src="@drawable/ic_wechat_pay"/>
+                        android:src="@drawable/ic_wechat_pay" />
 
                 </android.support.v7.widget.CardView>
 
@@ -72,15 +74,17 @@
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:layout_weight="3">
+                android:layout_weight="3"
+                android:orientation="vertical">
+
                 <android.support.v7.widget.CardView
                     android:id="@+id/paypal_card"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_weight="1"
                     android:layout_marginLeft="3dp"
                     android:layout_marginRight="3dp"
+                    android:layout_weight="1"
+                    android:foreground="?selectableItemBackgroundBorderless"
                     app:cardBackgroundColor="@color/paypal_blue"
                     app:cardCornerRadius="2dp"
                     app:cardElevation="3dp"
@@ -90,7 +94,7 @@
                     <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:src="@drawable/ic_paypal"/>
+                        android:src="@drawable/ic_paypal" />
 
                 </android.support.v7.widget.CardView>
 
@@ -98,9 +102,10 @@
                     android:id="@+id/bitcoin_card"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_weight="1"
                     android:layout_marginLeft="3dp"
                     android:layout_marginRight="3dp"
+                    android:layout_weight="1"
+                    android:foreground="?selectableItemBackgroundBorderless"
                     app:cardBackgroundColor="@color/bitcoin_orange"
                     app:cardCornerRadius="2dp"
                     app:cardElevation="3dp"
@@ -110,7 +115,7 @@
                     <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:src="@drawable/ic_bitcoin"/>
+                        android:src="@drawable/ic_bitcoin" />
 
                 </android.support.v7.widget.CardView>
 
@@ -118,9 +123,10 @@
                     android:id="@+id/eth_card"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_weight="1"
                     android:layout_marginLeft="3dp"
                     android:layout_marginRight="3dp"
+                    android:layout_weight="1"
+                    android:foreground="?selectableItemBackgroundBorderless"
                     app:cardBackgroundColor="@color/ethereum_black"
                     app:cardCornerRadius="2dp"
                     app:cardElevation="3dp"
@@ -130,7 +136,7 @@
                     <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:src="@drawable/ic_ethereum"/>
+                        android:src="@drawable/ic_ethereum" />
 
                 </android.support.v7.widget.CardView>
 

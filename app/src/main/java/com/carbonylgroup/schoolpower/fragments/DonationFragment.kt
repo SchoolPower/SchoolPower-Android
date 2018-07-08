@@ -42,6 +42,8 @@ class DonationFragment : Fragment() {
 //                0 -> qrCode.setImageBitmap(generateQRCode(AlipayQR).bitmap())
 //                1 -> qrCode.setImageBitmap(generateQRCode(WeChatQR).bitmap())
 
+        view.findViewById<CardView>(R.id.alipay_card).setOnClickListener { gotoAlipay() }
+        view.findViewById<CardView>(R.id.wechat_card).setOnClickListener { gotoWechatPay() }
         return view
     }
 
