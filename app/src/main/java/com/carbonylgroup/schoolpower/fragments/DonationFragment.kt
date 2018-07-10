@@ -2,6 +2,7 @@ package com.carbonylgroup.schoolpower.fragments
 
 import android.app.Fragment
 import android.content.Context
+import android.content.Intent
 import android.didikee.donate.AlipayDonate
 import android.didikee.donate.WeiXinDonate
 import android.graphics.Bitmap
@@ -19,6 +20,8 @@ import android.support.transition.TransitionManager
 import android.support.v7.widget.CardView
 import android.widget.Button
 import android.widget.LinearLayout
+import com.carbonylgroup.schoolpower.activities.LoginActivity
+import com.carbonylgroup.schoolpower.activities.WechatIntroActivity
 
 
 class DonationFragment : Fragment() {
@@ -56,14 +59,7 @@ class DonationFragment : Fragment() {
     }
 
     fun gotoWechatPay() {
-        if (WeiXinDonate.hasInstalledWeiXinClient(activity)) {
-            val weixinQrIs = resources.openRawResource(R.raw.sp_wechat)
-            val qrPath = Environment.getExternalStorageDirectory().absolutePath + File.separator +
-                    "SchoolPowerDonate" + File.separator + "sp_wechat.png"
-            WeiXinDonate.saveDonateQrImage2SDCard(qrPath, BitmapFactory.decodeStream(weixinQrIs))
-            WeiXinDonate.donateViaWeiXin(activity, qrPath)
-        }else{
-            utils.showSnackBar(view.findViewById(R.id.donation_fragment), getString(R.string.WechatNotFound), true)
-        }
+        startActivity(Intent(activity, WechatIntroActivity::class.java))
+
     }
 }

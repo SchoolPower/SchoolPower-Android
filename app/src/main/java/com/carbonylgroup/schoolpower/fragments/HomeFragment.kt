@@ -77,7 +77,7 @@ class HomeFragment : TransitionHelper.BaseFragment() {
 
     private fun initValue() {
 
-        utils = Utils(activity)
+        utils = Utils(MainActivity.of(activity))
         subjects = MainActivity.of(activity).subjects
         MainActivity.of(activity).presentFragment = 0
         MainActivity.of(activity).setToolBarElevation()
@@ -169,9 +169,8 @@ class HomeFragment : TransitionHelper.BaseFragment() {
     }
 
     private fun needToShowDonate(): Boolean {
-        val lastDate = getLastDonateShowedDate()
         // Show donate every 30 days
-        return ((Date().time - lastDate.time) / 1000.0 / 60.0 / 60.0 / 24.0 >= 30.0)
+        return ((Date().time - getLastDonateShowedDate().time) / 1000.0 / 60.0 / 60.0 / 24.0 >= 30.0)
     }
 
     private fun setLastDonateShowedDate(date: Date) {
@@ -184,10 +183,7 @@ class HomeFragment : TransitionHelper.BaseFragment() {
                 .getSharedPreference("Tmp")
                 .getString("LastTimeDonateShowed", "")
 
-        if (dateStr != "")
-            return SimpleDateFormat("yyyy-MM-dd", Locale.CHINA).parse(dateStr)
-
-        return Date(0)
+        return if (dateStr != "") SimpleDateFormat("yyyy-MM-dd", Locale.CHINA).parse(dateStr) else Date(0)
     }
 
     fun visiblizeNoGradeView() {

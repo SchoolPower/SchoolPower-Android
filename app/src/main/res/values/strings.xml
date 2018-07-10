@@ -261,4 +261,13 @@ SchoolPower does not guarantee that the user\'s picture will be permanently save
     <string name="donation_ok">DONATE</string>
     <string name="donation_promote">PROMOTE</string>
 
+    <string name="wechat_instruction_page1_title">How to donate with Wechat Pay</string>
+    <string name="wechat_instruction_page1_des">We will need store our payment QR code in your machine, so that you can pay us</string>
+    <string name="wechat_instruction_page2_des">We will redirect you to the QR scanning view in Wechat App</string>
+    <string name="wechat_instruction_page3_des">Tap the menu button top right</string>
+    <string name="wechat_instruction_page4_des">Tap "Choose QR Code from Album"</string>
+    <string name="wechat_instruction_page5_des">Choose our QR code, which should be the first image in the list</string>
+    <string name="storage_permission_denied">Sorry, we cannot store our QR code without permission</string>
+    <string name="storage_permission_exp_title">We need permission</string>
+
 </resources>

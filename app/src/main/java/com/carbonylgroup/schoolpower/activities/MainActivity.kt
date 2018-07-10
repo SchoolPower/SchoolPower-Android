@@ -96,7 +96,6 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
         val newLocale = utils.getSharedPreference(Utils.SettingsPreference).getString("lang", "0").toInt()
         val context = ContextWrapper.wrap(newBase, localeSet[newLocale])
         super.attachBaseContext(context)
-
     }
 
     override fun initActivity() {

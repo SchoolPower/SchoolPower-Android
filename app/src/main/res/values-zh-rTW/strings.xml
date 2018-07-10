@@ -180,4 +180,19 @@ SchoolPower 不保證上述網站的服務穩定性，不保證用戶頭像會�
     <string name="qr_code">二維碼</string>
     <string name="server_status">伺服器狀態</string>
     <string name="happy_birth">生日快樂！</string>
+
+    <string name="donation_title">Lorem ipsum dolor</string>
+    <string name="donation_message">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vitae nibh vel justo dignissim scelerisque. </string>
+    <string name="donation_cancel">才不幫你們呢哼-^-</string>
+    <string name="donation_ok">贊助我們</string>
+    <string name="donation_promote">宣傳 APP</string>
+
+    <string name="wechat_instruction_page1_title">怎麼用「微信支付」贊助我們</string>
+    <string name="wechat_instruction_page1_des">為了你能支付，我們需要在你的手機裡儲存我們的支付碼</string>
+    <string name="wechat_instruction_page2_des">我們將彈出微信應用的掃碼界面</string>
+    <string name="wechat_instruction_page3_des">點擊右上角的菜單按鈕</string>
+    <string name="wechat_instruction_page4_des">點擊「從相簿中選擇 QR Code」</string>
+    <string name="wechat_instruction_page5_des">選擇我們的支付碼（應該是第一個）</string>
+    <string name="storage_permission_denied">抱歉，沒有權限我們不能儲存我們的支付碼</string>
+    <string name="storage_permission_exp_title">需要權限</string>
 </resources>

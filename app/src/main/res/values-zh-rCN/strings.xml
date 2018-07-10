@@ -178,4 +178,19 @@ SchoolPower 不保证上述网站的服务稳定性，不保证用户头像会�
     <string name="server_status">服务器状态</string>
 
     <string name="happy_birth">生日快乐！</string>
+
+    <string name="donation_title">Lorem ipsum dolor</string>
+    <string name="donation_message">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vitae nibh vel justo dignissim scelerisque. </string>
+    <string name="donation_cancel">才不帮你们呢哼-^-</string>
+    <string name="donation_ok">赞助我们</string>
+    <string name="donation_promote">宣传应用</string>
+
+    <string name="wechat_instruction_page1_title">怎么用「微信支付」赞助我们</string>
+    <string name="wechat_instruction_page1_des">为了你能支付，我们需要在你的手机里储存我们的支付码</string>
+    <string name="wechat_instruction_page2_des">我们将弹出微信应用的扫码界面</string>
+    <string name="wechat_instruction_page3_des">点击右上角的菜单按钮</string>
+    <string name="wechat_instruction_page4_des">点击「从相册选取二维码」</string>
+    <string name="wechat_instruction_page5_des">选择我们的支付码（应该是第一个）</string>
+    <string name="storage_permission_denied">抱歉，没有权限我们不能储存我们的支付码</string>
+    <string name="storage_permission_exp_title">需要权限</string>
 </resources>
