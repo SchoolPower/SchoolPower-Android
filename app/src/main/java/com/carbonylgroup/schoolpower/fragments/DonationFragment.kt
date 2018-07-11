@@ -33,7 +33,7 @@ class DonationFragment : Fragment() {
             .withColor(utils.getPrimaryColor(), 0xFFFFFFFF.toInt())
 
     private val AlipayToken = "tsx09230fuwngogndwbkg3b"
-    private val AlipayQR = "https://qr.alipay.com/$AlipayToken"
+    private val AlipayQR = "https://qr.alipay.com/tsx09230fuwngogndwbkg3b"
     private val WeChatQR = "wxp://f2f0cTQAZ3_D0IW8psZSCq0EhuJcUIJcr0hE"
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
