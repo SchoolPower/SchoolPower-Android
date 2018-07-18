@@ -1,7 +1,6 @@
 package com.carbonylgroup.schoolpower.activities
 
 import android.Manifest
-import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
@@ -9,27 +8,22 @@ import android.content.pm.PackageManager
 import android.content.res.Resources
 import android.didikee.donate.WeiXinDonate
 import android.graphics.BitmapFactory
-import android.graphics.Color
-import android.graphics.Color.parseColor
-import com.github.paolorotolo.appintro.AppIntroFragment
 import android.os.Bundle
 import android.os.Environment
 import android.support.annotation.Nullable
+import android.support.v13.app.ActivityCompat
 import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
-import com.carbonylgroup.schoolpower.R
-import com.carbonylgroup.schoolpower.utils.Utils
-import com.github.paolorotolo.appintro.AppIntro
-import com.github.paolorotolo.appintro.AppIntro2
-import com.github.paolorotolo.appintro.ISlideBackgroundColorHolder
-import java.io.File
-import java.util.*
-import android.support.annotation.ColorInt
-import android.support.v13.app.ActivityCompat
 import android.view.WindowManager
 import android.widget.Toast
+import com.carbonylgroup.schoolpower.R
 import com.carbonylgroup.schoolpower.utils.ContextWrapper
+import com.carbonylgroup.schoolpower.utils.Utils
+import com.github.paolorotolo.appintro.AppIntro
+import com.github.paolorotolo.appintro.AppIntroFragment
 import com.github.paolorotolo.appintro.model.SliderPage
+import java.io.File
+import java.util.*
 
 
 class WechatIntroActivity : AppIntro() {
@@ -120,7 +114,7 @@ class WechatIntroActivity : AppIntro() {
                 explanation.setPositiveButton(R.string.alright, listener)
                 explanation.show()
             } else {
-                // No explanation neede
+                // No explanation needed
                 ActivityCompat.requestPermissions(this,
                         arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
                         MY_PERMISSIONS_WRITE_EXTERNAL_STORAGE)

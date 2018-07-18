@@ -5,14 +5,9 @@
 package com.carbonylgroup.schoolpower.fragments
 
 import android.os.Bundle
-import android.os.Handler
-import android.preference.Preference
 import android.support.transition.TransitionManager
-import android.support.v4.content.ContextCompat
-import android.support.v4.content.res.ResourcesCompat
 import android.support.v4.content.res.ResourcesCompat.getDrawable
 import android.support.v4.widget.SwipeRefreshLayout
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -99,7 +94,7 @@ class HomeFragment : TransitionHelper.BaseFragment() {
         if (subjects == null || utils!!.getFilteredSubjects(subjects!!).count() == 0) refreshAdapterToEmpty()
         else initAdapter()
 
-        if (needToShowDonate())
+        if (needToShowDonate()||true)
             initDonate()
     }
 

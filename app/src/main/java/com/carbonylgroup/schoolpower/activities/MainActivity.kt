@@ -570,7 +570,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
 
             override fun onResponse(call: Call, response: Response) {
                 val strMessage = response.body()!!.string().replace("\n", "")
-
+                Log.d("okhttp",response.networkResponse()!!.toString())
                 // Error happened. Usually caused by wrong username/password
                 if (strMessage.contains("Something went wrong!")) {
                     utils.showSnackBar(findViewById(R.id.main_coordinate_layout), getString(R.string.wrong_password), true)

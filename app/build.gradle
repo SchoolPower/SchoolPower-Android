@@ -55,7 +55,7 @@ dependencies {
     implementation 'com.github.ceryle:SegmentedButton:v1.2.2'
     implementation 'com.jakewharton:butterknife:8.8.1'
     implementation 'com.theartofdev.edmodo:android-image-cropper:2.7.0'
-    implementation 'com.squareup.okhttp3:okhttp:3.10.0'
+    implementation 'com.squareup.okhttp3:okhttp:3.11.0'
     implementation 'com.squareup.picasso:picasso:2.71828'
     implementation 'com.github.kenglxn.QRGen:android:2.4.0'
     implementation "de.hdodenhof:circleimageview:2.1.0"

@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/qitao_card"
     android:layout_width="match_parent"
-    android:layout_height="382dp"
+    android:layout_height="472dp"
     android:layout_marginStart="3dp"
     app:cardBackgroundColor="?card_background"
     app:cardCornerRadius="2dp"

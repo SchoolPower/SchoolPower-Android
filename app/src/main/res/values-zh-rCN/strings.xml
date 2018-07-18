@@ -179,8 +179,9 @@ SchoolPower 不保证上述网站的服务稳定性，不保证用户头像会�
 
     <string name="happy_birth">生日快乐！</string>
 
-    <string name="donation_title">Lorem ipsum dolor</string>
-    <string name="donation_message">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vitae nibh vel justo dignissim scelerisque. </string>
+    <string name="donation_title">我们快没钱了…</string>
+    <string name="donation_message">抛开大量的时间成本不计，仅是高昂的苹果开发者年费和服务器服务器费用就达数千元。而我们的唯一收入，广告收入运营一年以来合计仅118.78美元。截止至今我们已经净亏损上千元。
+\n\n如果您觉得这款App帮到了您，想要支持我们一下，或希望能尽快摆脱广告的话，欢迎您使用下面的方式赞助我们，或者将其介绍给您身边的人。感激不尽 (´,,•ω•,,)♡。</string>
     <string name="donation_cancel">才不帮你们呢哼-^-</string>
     <string name="donation_ok">赞助我们</string>
     <string name="donation_promote">宣传应用</string>
