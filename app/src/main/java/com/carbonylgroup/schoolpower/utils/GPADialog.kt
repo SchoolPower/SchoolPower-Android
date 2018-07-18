@@ -29,11 +29,12 @@ class GPADialog(private val activity: Activity, private val subjects: List<Subje
         val latestPeriods = HashMap<String, Subject.Grade>()
         val allPeriods = HashSet<String>()
         subjects.indices.forEach { i ->
-            val key = utils.getLatestPeriod(subjects[i].grades)?: return@forEach
+            val key = utils.getLatestPeriod(subjects[i].grades) ?: return@forEach
             latestPeriods[key] = subjects[i].grades[key]!!
-            subjects[i].grades.keys.filterTo(allPeriods) { subjects[i].grades[it]!!.letter!="--" }
+            subjects[i].grades.keys.filterTo(allPeriods) { subjects[i].grades[it]!!.letter != "--" }
         }
-        val latestPeriod = utils.getLatestPeriod(latestPeriods) ?: return // overall latest period, usually indicate the current term
+        val latestPeriod = utils.getLatestPeriod(latestPeriods)
+                ?: return // overall latest period, usually indicate the current term
 
         constructView(latestPeriod, allPeriods.toList())
         updateData(calculateGPA(latestPeriod),
@@ -41,7 +42,8 @@ class GPADialog(private val activity: Activity, private val subjects: List<Subje
                 officialGPA?.toFloat())
 
     }
-    private fun customGPANotAvailable(){
+
+    private fun customGPANotAvailable() {
         val builder = AlertDialog.Builder(activity)
         builder.setMessage(activity.getString(R.string.custom_gpa_not_available_because))
         builder.setTitle(activity.getString(R.string.custom_gpa_not_available))
@@ -49,30 +51,36 @@ class GPADialog(private val activity: Activity, private val subjects: List<Subje
         builder.create().show()
     }
 
-    private fun updateData(GPAAll:Float, GPACustom:Float, GPAOfficial:Float?){
+    private fun updateData(GPAAll: Float, GPACustom: Float, GPAOfficial: Float?) {
         gpaDialogSegmented.setOnClickedButtonPosition({ position: Int ->
             when (position) {
-                0 -> animateWaveAndText(waveView.waterLevelRatio, GPAAll)
-                1 -> if(GPACustom.isNaN()) customGPANotAvailable() else
-                    animateWaveAndText(waveView.waterLevelRatio, GPACustom)
+                0 -> animateWaveAndText(waveView.waterLevelRatio, GPAAll / 100.0f)
+                1 -> if (GPACustom.isNaN()) customGPANotAvailable() else
+                    animateWaveAndText(waveView.waterLevelRatio, GPACustom / 100.0f)
                 2 -> animateWaveAndText(waveView.waterLevelRatio, GPAOfficial!! / 4.0f)
             }
         })
 
         when (gpaDialogSegmented.position) {
-            0 -> animateWaveAndText(waveView.waterLevelRatio, GPAAll)
-            1 -> if(GPACustom.isNaN()) customGPANotAvailable() else
-                animateWaveAndText(waveView.waterLevelRatio, GPACustom)
+            0 -> animateWaveAndText(waveView.waterLevelRatio, GPAAll / 100.0f)
+            1 -> if (GPACustom.isNaN()) customGPANotAvailable() else
+                animateWaveAndText(waveView.waterLevelRatio, GPACustom / 100.0f)
             2 -> animateWaveAndText(waveView.waterLevelRatio, GPAOfficial!! / 4.0f)
         }
     }
 
-    private fun constructView(latestPeriod:String, allPeriods:List<String>) {
+    private fun constructView(latestPeriod: String, allPeriods: List<String>) {
 
         // construct view
         val gpaDialog = activity.layoutInflater.inflate(R.layout.gpa_dialog, null)
         val gpaDialogView = gpaDialog.findViewById<View>(R.id.gpa_dialog_rootView)
-        gpaDialogSegmented = gpaDialogView.findViewById(R.id.gpa_dialog_segmented)
+        if (officialGPA?.toFloat()?.isNaN() == true) {
+            gpaDialogSegmented = gpaDialogView.findViewById(R.id.gpa_dialog_segmented_without_official)
+            gpaDialogView.findViewById<View>(R.id.gpa_dialog_segmented).visibility = View.GONE
+        } else {
+            gpaDialogSegmented = gpaDialogView.findViewById(R.id.gpa_dialog_segmented)
+            gpaDialogView.findViewById<View>(R.id.gpa_dialog_segmented_without_official).visibility = View.GONE
+        }
         gpa_dialog_percentage_front = gpaDialogView.findViewById(R.id.gpa_dialog_percentage_front)
         gpa_dialog_percentage_back = gpaDialogView.findViewById(R.id.gpa_dialog_percentage_back)
         gpa_dialog_percentage_front.setFormatter({ _, suffix, value -> String.format("%.3f", value) + suffix })
@@ -107,11 +115,12 @@ class GPADialog(private val activity: Activity, private val subjects: List<Subje
                         calculateCustomGPA(allPeriods[pos]),
                         officialGPA?.toFloat())
             }
+
             override fun onNothingSelected(parent: AdapterView<*>) {}
         }
     }
 
-    private fun calculateGPA(term : String) : Float {
+    private fun calculateGPA(term: String): Float {
         var sumGPA = 0.0f
         var num = 0
         for (subject in subjects) {
@@ -122,13 +131,13 @@ class GPADialog(private val activity: Activity, private val subjects: List<Subje
             num += 1
 
         }
-        return sumGPA/num
+        return sumGPA / num
     }
 
-    private fun calculateCustomGPA(term : String) : Float {
+    private fun calculateCustomGPA(term: String): Float {
         val customRule = utils.getSharedPreference(Utils.SettingsPreference).getString("list_preference_custom_gpa_calculate", "all")
         val customSubjects = PreferenceManager.getDefaultSharedPreferences(activity).getStringSet("list_preference_customize_gpa", HashSet())
-        if(customSubjects.isEmpty()) return Float.NaN
+        if (customSubjects.isEmpty()) return Float.NaN
 
         val grades = ArrayList<Float>()
         for (subject in subjects) {
@@ -140,33 +149,34 @@ class GPADialog(private val activity: Activity, private val subjects: List<Subje
 
         }
 
-        return if(customRule == "all"){
+        return if (customRule == "all") {
             grades.average().toFloat()
-        }else{
+        } else {
             grades.sortedDescending().take(customRule.toInt()).average().toFloat()
         }
     }
 
-    private fun animateWaveAndText(rawStartValue: Float, endValue: Float) {
+    private fun animateWaveAndText(rawStartValue: Float, rawEndValue: Float) {
 
-        val startValue = if(rawStartValue.isNaN()) 0.0f else rawStartValue
+        val startValue = if (rawStartValue.isNaN()) 0.0f else rawStartValue * 100
+        val endValue = if (rawEndValue.isNaN()) 0.0f else rawEndValue * 100
 
-        val waveLightColor = utils.getColorByLetterGrade(utils.getLetterGradeByPercentageGrade(endValue))
+        val waveLightColor = utils.getColorByLetterGrade(utils.getLetterGradeByPercentageGrade(endValue * 100))
         val waveDarkColor = utils.getDarkColorByPrimary(waveLightColor)
 
-        gpa_dialog_percentage_front.setStartValue(startValue * 100)
+        gpa_dialog_percentage_front.setStartValue(startValue)
         gpa_dialog_percentage_front.setEndValue(endValue)
-        gpa_dialog_percentage_front.setIncrement((endValue - startValue * 100) / 25f) // the amount the number increments at each time interval
+        gpa_dialog_percentage_front.setIncrement((endValue - startValue) / 25f) // the amount the number increments at each time interval
         gpa_dialog_percentage_front.setTimeInterval(2) // the time interval (ms) at which the text changes
-        gpa_dialog_percentage_back.setStartValue(startValue * 100)
+        gpa_dialog_percentage_back.setStartValue(startValue)
         gpa_dialog_percentage_back.setEndValue(endValue)
-        gpa_dialog_percentage_back.setIncrement((endValue - startValue * 100) / 25f) // the amount the number increments at each time interval
+        gpa_dialog_percentage_back.setIncrement((endValue - startValue) / 25f) // the amount the number increments at each time interval
         gpa_dialog_percentage_back.setTimeInterval(2) // the time interval (ms) at which the text changes
         gpa_dialog_percentage_front.start()
         gpa_dialog_percentage_back.start()
 
         waveView.setWaveColor(waveLightColor, waveDarkColor)
         waveView.waterLevelRatio = (endValue / 100)
-        WaveHelper(waveView, startValue, waveView.waveShiftRatio).start()
+        WaveHelper(waveView, (startValue / 100), waveView.waveShiftRatio).start()
     }
 }
