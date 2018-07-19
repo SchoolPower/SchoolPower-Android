@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/qitao_card"
     android:layout_width="match_parent"
-    android:layout_height="472dp"
+    android:layout_height="wrap_content"
     android:layout_marginStart="3dp"
     app:cardBackgroundColor="?card_background"
     app:cardCornerRadius="2dp"
@@ -26,7 +26,6 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
             android:layout_below="@id/donate_image_view"
             android:padding="8dp">
 
@@ -58,7 +57,8 @@
                 style="?android:attr/borderlessButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
+                android:layout_marginTop="8dp"
+                android:layout_below="@+id/donate_message"
                 android:layout_alignParentEnd="true"
                 android:text="@string/donation_ok"
                 android:textColor="?colorAccent" />
