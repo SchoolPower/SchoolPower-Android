@@ -292,6 +292,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
 
                     override fun onResponse(call: Call, response: Response) {
                         val res = response.body()?.string()
+                        response.close()
                         if (res?.contains("error") != false) {
                             utils.showSnackBar(findViewById(R.id.main_coordinate_layout),
                                     JSONObject(res)["error"].toString(), true)
@@ -570,6 +571,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
 
             override fun onResponse(call: Call, response: Response) {
                 val strMessage = response.body()!!.string().replace("\n", "")
+                response.close()
                 // Error happened. Usually caused by wrong username/password
                 if (strMessage.contains("Something went wrong!")) {
                     utils.showSnackBar(findViewById(R.id.main_coordinate_layout), getString(R.string.wrong_password), true)
@@ -721,7 +723,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
 
                     override fun onResponse(call: Call, response: Response) {
                         val res = response.body()?.string()
-                        Log.d("avatar", res)
+                        response.close()
                         val responseJson = JSONObject(res)
                         if (responseJson["code"] != "success") {
                             utils.showSnackBar(findViewById(R.id.main_coordinate_layout), getString(R.string.avatar_upload_failed), true)

@@ -147,7 +147,7 @@ class PullDataJob : JobService() {
 
                     override fun onResponse(call: Call, response: Response) {
                         val strMessage = response.body()!!.string().replace("\n", "")
-
+                        response.close()
                         if (strMessage.contains("Something went wrong!") // incorrect username or password
                                 || !strMessage.contains("{")) { // unknown error
 

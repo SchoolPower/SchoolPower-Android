@@ -103,6 +103,7 @@ class LoginActivity : BaseActivity() {
                     override fun onResponse(call: Call, response: Response) {
 
                         val strMessage = response.body()!!.string().replace("\n", "")
+                        response.close()
 
                         // Error happened. Usually caused by wrong username/password
                         if (strMessage.contains("Something went wrong!")) {

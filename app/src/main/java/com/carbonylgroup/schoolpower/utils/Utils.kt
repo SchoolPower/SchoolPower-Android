@@ -453,6 +453,7 @@ class Utils(private val context: Context) {
 
                     override fun onResponse(call: Call, response: Response) {
                         val message = response.body()!!.string()
+                        response.close()
                         if (!message.contains("{")) return
                         val updateJSON = JSONObject(message)
                         setSharedPreference(OtherData, "app_download_url", updateJSON.getString("url"))
