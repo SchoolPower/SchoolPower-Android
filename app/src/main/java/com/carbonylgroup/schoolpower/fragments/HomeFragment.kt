@@ -94,7 +94,7 @@ class HomeFragment : TransitionHelper.BaseFragment() {
         if (subjects == null || utils!!.getFilteredSubjects(subjects!!).count() == 0) refreshAdapterToEmpty()
         else initAdapter()
 
-        if (needToShowDonate()||true)
+        if (needToShowDonate())
             initDonate()
     }
 
