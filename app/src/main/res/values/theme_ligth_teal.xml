@@ -46,7 +46,7 @@
         <item name="colorPrimary">@color/light_teal_color_primary</item>
         <item name="colorPrimaryDark">@color/light_teal_color_primary_dark</item>
         <item name="colorAccent">@color/light_teal_color_accent</item>
-        <item name="android:windowBackground">@color/light_teal_window_background</item>
+        <item name="android:backgroundTint">@color/light_teal_window_background</item>
     </style>
 
     <style name="AppbarThemeLightTeal" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
