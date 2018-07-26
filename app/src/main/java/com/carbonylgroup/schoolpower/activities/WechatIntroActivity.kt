@@ -29,6 +29,7 @@ import java.util.*
 class WechatIntroActivity : AppIntro() {
 
     val MY_PERMISSIONS_WRITE_EXTERNAL_STORAGE = 233
+    val WECHAT_NOT_FOUND = 1
     private val localeSet = arrayListOf(Resources.getSystem().configuration.locale, Locale.ENGLISH, Locale.TRADITIONAL_CHINESE, Locale.SIMPLIFIED_CHINESE)
 
     override fun attachBaseContext(newBase: Context) {
@@ -134,7 +135,8 @@ class WechatIntroActivity : AppIntro() {
             WeiXinDonate.donateViaWeiXin(this, qrPath)
             this.finish()
         } else {
-            Utils(this).showSnackBar(this.findViewById(R.id.donation_fragment), getString(R.string.WechatNotFound), true)
+            setResult(WECHAT_NOT_FOUND)
+            this.finish()
         }
     }
 
