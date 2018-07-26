@@ -15,6 +15,7 @@
     <string name="flag_badge" translatable="false">flag badge</string>
     <string name="trend_indicator" translatable="false">trend_indicator</string>
     <string name="KEY_DARK_MODE" translatable="false">KEY_DARK_MODE</string>
+    <string name="user_avatar" translatable="false">user_avatar</string>
 
     <string name="shared_element_course_header" translatable="false">SHARE://COURSE_HEADER</string>
     <string name="shared_element_course_fab" translatable="false">SHARE://COURSE_FAB</string>
@@ -253,11 +254,16 @@ SchoolPower does not guarantee that the user\'s picture will be permanently save
     <string name="Wechat">Wechat</string>
     <string name="AlipayNotFound">Alipay not found</string>
     <string name="WechatNotFound">Wechat not found</string>
+
     <string name="happy_birth">Happy Birthday!</string>
+    <string name="happy_birth_title_builder" formatted="false">Happy %s Birthday!</string>
+    <string name="happy_birth_message">Happy birthday to you, happy birthday to you.
+        \nHappy birthday to you, happy birthday to you!</string>
+    <string name="happy_birth_thank">Thx</string>
 
     <string name="donation_title">We are running out of money…</string>
-    <string name="donation_message">The expensive Apple developers fee and server costed thousands of yuan every year, not to mention the enormous time cost. Our only income, advertising, brought us merely about $100 a year. We have a net loss of thousands of yuan so far.
-\n\nIf you feel that this app has helped you or you hope to get rid of the ads sooner, you are more than welcome to donate us, or introduce the app to the people around you. Any help would be much appreciated ( ́,,•ω•,,)♡.
+    <string name="donation_message">The expensive Apple developers fee and server costs thousands of yuan every year, not to mention the enormous time cost. Our only income, displaying ads, brought us merely $118.78 (¥804.25) the last year. We have had a net loss over a thousand yuan so far.
+\n\nIf you feel that this app has helped you or you hope to get rid of the ads soon, you are more than welcome to donate us, or introduce this app to the students around you. Any help would be much appreciated ( ́,,•ω•,,)♡.
 </string>
     <string name="donation_cancel">NO THANKS</string>
     <string name="donation_ok">DONATE</string>

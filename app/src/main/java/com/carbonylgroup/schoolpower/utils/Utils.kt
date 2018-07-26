@@ -132,19 +132,40 @@ class Utils(private val context: Context) {
         return getDefaultSp(context).getString(THEME, LIGHT)
     }
 
-    fun getAccentColorIndex() =  getDefaultSp(context).getInt(ACCENT_COLOR, 8)
+    fun getAccentColorIndex() = getDefaultSp(context).getInt(ACCENT_COLOR, 8)
 
-    @ColorInt fun getPrimaryColor() = getColorAttr(R.attr.colorPrimary)
-    @ColorInt fun getPrimaryDarkColor() = getColorAttr(R.attr.colorPrimaryDark)
-    @ColorInt fun getAccentColor() = getColorAttr(R.attr.colorAccent)
-    @ColorInt fun getPrimaryTextColor() = getColorAttr(android.R.attr.textColorPrimary)
-    @ColorInt fun getSecondaryTextColor() = getColorAttr(android.R.attr.textColorSecondary)
-    @ColorInt fun getWindowBackground() = getColorAttr(android.R.attr.windowBackground)
-    @ColorInt fun getCardBackground() = getColorAttr(R.attr.card_background)
-    @ColorInt fun getIconColor() = getColorAttr(R.attr.icon_color)
-    @ColorInt fun getTitleColor() = getColorAttr(R.attr.title_color)
-    @ColorInt fun getSubTitleColor() = getColorAttr(R.attr.subtitle_color)
-    @ColorInt fun getSelectedColor() = getColorAttr(R.attr.selected_color)
+    @ColorInt
+    fun getPrimaryColor() = getColorAttr(R.attr.colorPrimary)
+
+    @ColorInt
+    fun getPrimaryDarkColor() = getColorAttr(R.attr.colorPrimaryDark)
+
+    @ColorInt
+    fun getAccentColor() = getColorAttr(R.attr.colorAccent)
+
+    @ColorInt
+    fun getPrimaryTextColor() = getColorAttr(android.R.attr.textColorPrimary)
+
+    @ColorInt
+    fun getSecondaryTextColor() = getColorAttr(android.R.attr.textColorSecondary)
+
+    @ColorInt
+    fun getWindowBackground() = getColorAttr(android.R.attr.windowBackground)
+
+    @ColorInt
+    fun getCardBackground() = getColorAttr(R.attr.card_background)
+
+    @ColorInt
+    fun getIconColor() = getColorAttr(R.attr.icon_color)
+
+    @ColorInt
+    fun getTitleColor() = getColorAttr(R.attr.title_color)
+
+    @ColorInt
+    fun getSubTitleColor() = getColorAttr(R.attr.subtitle_color)
+
+    @ColorInt
+    fun getSelectedColor() = getColorAttr(R.attr.selected_color)
 
     @ColorInt
     private fun getColorAttr(attr: Int): Int {
@@ -341,41 +362,42 @@ class Utils(private val context: Context) {
             if (subject.grades[term]!!.percentage == "--") continue
             val percentage = subject.grades[term]!!.percentage.toDouble()
 
-            class GradeInfo{
+            class GradeInfo {
                 var grade: Double = 0.0
                 var maxGrade: Double = 0.0
             }
+
             val categories = HashMap<String, GradeInfo>()
             for (assignment in subject.assignments) {
-                if(!categories.containsKey(assignment.category)) categories[assignment.category] = GradeInfo()
-                if(assignment.score.toDoubleOrNull()==null) continue
-                if(!assignment.terms.contains(term)) continue
+                if (!categories.containsKey(assignment.category)) categories[assignment.category] = GradeInfo()
+                if (assignment.score.toDoubleOrNull() == null) continue
+                if (!assignment.terms.contains(term)) continue
                 categories[assignment.category]!!.grade += assignment.score.toDouble() * assignment.weight.toDouble()
                 categories[assignment.category]!!.maxGrade += assignment.maximumScore.toDouble() * assignment.weight.toDouble()
             }
             val sample = JSONObject() // categories {"sum": 100, "cat-1":100, ...}
 
             for (cat in categories.entries)
-                if(cat.value.maxGrade!=0.0)
-                    sample.put(cat.key, cat.value.grade/cat.value.maxGrade)
+                if (cat.value.maxGrade != 0.0)
+                    sample.put(cat.key, cat.value.grade / cat.value.maxGrade)
             sample.put("sum", percentage)
 
-            if(!json.has(subject.name)) json.put(subject.name, JSONArray())
+            if (!json.has(subject.name)) json.put(subject.name, JSONArray())
             val jsonSubjectSamples = json.getJSONArray(subject.name) // [sample1, sample2, ...]
             var duplicate = false
-            for(i in 0 until jsonSubjectSamples.length()){
+            for (i in 0 until jsonSubjectSamples.length()) {
                 var same = true
                 val tested = jsonSubjectSamples.getJSONObject(i)
-                for(key in tested.keys()) {
+                for (key in tested.keys()) {
                     if (!sample.has(key) || tested.getDouble(key) != sample.getDouble(key)) {
                         same = false
                         break
                     }
                 }
-                if(same) duplicate = true
+                if (same) duplicate = true
                 break
             }
-            if(duplicate) continue
+            if (duplicate) continue
             json.getJSONArray(subject.name).put(sample)
         }
 
@@ -549,15 +571,39 @@ class Utils(private val context: Context) {
         return null
     }
 
-    fun isBirthDay() : Boolean {
-        val fmt = SimpleDateFormat("yyyyMMdd", Locale.CHINA)
+    fun isBirthDay(): Boolean {
+        val data = getSharedPreference(AccountData).getLong("dob", 0)
+        if (data == 0L) return false
+        val now = Calendar.getInstance()
+        val dob = Calendar.getInstance()
+        now.time = Date()
+        dob.time = Date(data)
+        return isSameDayAndMonth(now, dob)
+    }
+
+    private fun isSameDayAndMonth(cal1: Calendar, cal2: Calendar): Boolean {
+        return cal1.get(Calendar.MONTH) == cal2.get(Calendar.MONTH) &&
+                cal1.get(Calendar.DAY_OF_MONTH) == cal2.get(Calendar.DAY_OF_MONTH)
+    }
+
+    fun getAge(withSuffix: Boolean): String {
         val dat = getSharedPreference(AccountData).getLong("dob", 0)
-        if (dat == 0L) return false
+        if (dat == 0L) return ""
         val cal1 = Calendar.getInstance()
         val cal2 = Calendar.getInstance()
         cal1.time = Date()
         cal2.time = Date(dat)
-        return cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR)
+        val ageStr = cal1.get(Calendar.YEAR) - cal2.get(Calendar.YEAR)
+        return ageStr.toString() + if (withSuffix) getSuffixForNumber(ageStr) else ""
+    }
+
+    fun getSuffixForNumber(num: Int): String {
+        return when (num % 10) {
+            1 -> "st"
+            2 -> "nd"
+            3 -> "rd"
+            else -> "th"
+        }
     }
 
     companion object {

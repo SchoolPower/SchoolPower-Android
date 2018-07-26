@@ -47,7 +47,7 @@
         <item name="colorPrimary">@color/light_color_primary</item>
         <item name="colorPrimaryDark">@color/light_color_primary_dark</item>
         <item name="colorAccent">@color/light_color_accent</item>
-        <item name="android:windowBackground">@color/light_window_background</item>
+        <item name="android:backgroundTint">@color/light_window_background</item>
     </style>
 
     <style name="AppbarThemeLight" parent="ThemeOverlay.AppCompat.Dark.ActionBar">

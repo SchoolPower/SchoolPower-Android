@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <resources>
+    <dimen name="menu_item_size">46dp</dimen>
+    <dimen name="menu_wrapper_size">28dp</dimen>
+    <dimen name="menu_item_icon_size">24dp</dimen>
     <dimen name="actionbar_dimen">56dp</dimen>
     <dimen name="start_button_width">200dp</dimen>
     <dimen name="start_button_height">200dp</dimen>

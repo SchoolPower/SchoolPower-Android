@@ -40,7 +40,6 @@ class GPADialog(private val activity: Activity, private val subjects: List<Subje
         updateData(calculateGPA(latestPeriod),
                 calculateCustomGPA(latestPeriod),
                 officialGPA?.toFloat())
-
     }
 
     private fun customGPANotAvailable() {
@@ -161,7 +160,7 @@ class GPADialog(private val activity: Activity, private val subjects: List<Subje
         val startValue = if (rawStartValue.isNaN()) 0.0f else rawStartValue * 100
         val endValue = if (rawEndValue.isNaN()) 0.0f else rawEndValue * 100
 
-        val waveLightColor = utils.getColorByLetterGrade(utils.getLetterGradeByPercentageGrade(endValue * 100))
+        val waveLightColor = utils.getColorByLetterGrade(utils.getLetterGradeByPercentageGrade(endValue))
         val waveDarkColor = utils.getDarkColorByPrimary(waveLightColor)
 
         gpa_dialog_percentage_front.setStartValue(startValue)

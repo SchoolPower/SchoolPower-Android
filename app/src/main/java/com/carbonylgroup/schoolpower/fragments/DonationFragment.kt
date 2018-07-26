@@ -28,13 +28,13 @@ class DonationFragment : Fragment() {
 
     private lateinit var utils: Utils
 
-    private fun generateQRCode(url: String) = QRCode.from(url)
-            .withSize(utils.dpToPx(250), utils.dpToPx(250))
-            .withColor(utils.getPrimaryColor(), 0xFFFFFFFF.toInt())
+//    private fun generateQRCode(url: String) = QRCode.from(url)
+//            .withSize(utils.dpToPx(250), utils.dpToPx(250))
+//            .withColor(utils.getPrimaryColor(), 0xFFFFFFFF.toInt())
 
     private val AlipayToken = "tsx09230fuwngogndwbkg3b"
-    private val AlipayQR = "https://qr.alipay.com/tsx09230fuwngogndwbkg3b"
-    private val WeChatQR = "wxp://f2f0cTQAZ3_D0IW8psZSCq0EhuJcUIJcr0hE"
+//    private val AlipayQR = "https://qr.alipay.com/tsx09230fuwngogndwbkg3b"
+//    private val WeChatQR = "wxp://f2f0cTQAZ3_D0IW8psZSCq0EhuJcUIJcr0hE"
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -60,6 +60,5 @@ class DonationFragment : Fragment() {
 
     fun gotoWechatPay() {
         startActivity(Intent(activity, WechatIntroActivity::class.java))
-
     }
 }

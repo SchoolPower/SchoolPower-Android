@@ -19,18 +19,24 @@ import android.os.Bundle
 import android.preference.PreferenceManager
 import android.support.design.widget.AppBarLayout
 import android.support.design.widget.NavigationView
+import android.support.v4.content.ContextCompat
 import android.support.v4.view.GravityCompat
 import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.graphics.drawable.DrawerArrowDrawable
+import android.support.v7.view.menu.ActionMenuItem
+import android.support.v7.view.menu.ActionMenuItemView
+import android.support.v7.widget.ActionMenuView
 import android.support.v7.widget.Toolbar
+import android.support.v7.widget.TooltipCompat
 import android.util.Log
 import android.view.*
 import android.view.animation.DecelerateInterpolator
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.ImageView
-import android.widget.TextView
+import android.webkit.WebView
+import android.widget.*
+import com.airbnb.lottie.LottieAnimationView
+import com.airbnb.lottie.LottieComposition
+import com.airbnb.lottie.LottieDrawable
 import com.carbonylgroup.schoolpower.R
 import com.carbonylgroup.schoolpower.data.Attendance
 import com.carbonylgroup.schoolpower.data.StudentData
@@ -40,6 +46,7 @@ import com.carbonylgroup.schoolpower.fragments.*
 import com.carbonylgroup.schoolpower.service.PullDataJob
 import com.carbonylgroup.schoolpower.transition.DetailsTransition
 import com.carbonylgroup.schoolpower.transition.TransitionHelper
+import com.carbonylgroup.schoolpower.utils.BirthdayDialog
 import com.carbonylgroup.schoolpower.utils.ContextWrapper
 import com.carbonylgroup.schoolpower.utils.GPADialog
 import com.carbonylgroup.schoolpower.utils.Utils
@@ -111,12 +118,12 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
 
         // Shortcuts could bring users to main activity directly.
         // In this case, bring users to login activity if they are not logged in
-        if(!utils.getSharedPreference(AccountData).getBoolean(getString(R.string.loggedIn), false)){
+        if (!utils.getSharedPreference(AccountData).getBoolean(getString(R.string.loggedIn), false)) {
             startLoginActivity()
             return
         }
 
-        when(intent.action) {
+        when (intent.action) {
             "com.carbonylgroup.schoolpower.custom.attendance" -> {
                 navigationView.menu.getItem(2).isChecked = true
                 gotoFragmentWithMenuItemId(R.id.nav_attendance)
@@ -144,7 +151,13 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
         menuInflater.inflate(R.menu.menu_main, menu)
         menu.findItem(R.id.action_gpa).isVisible = !hideToolBarItemFlag
         menu.findItem(R.id.action_refresh).isVisible = !hideToolBarItemFlag
-        if (utils.isBirthDay()) menu.findItem(R.id.action_gpa).icon = getDrawable(R.drawable.ic_cake_tall)
+        menu.findItem(R.id.action_birthday).isVisible = (!hideToolBarItemFlag && utils.isBirthDay())
+
+        val birthdayClickable = menu.findItem(R.id.action_birthday).actionView
+                .findViewById<RelativeLayout>(R.id.birthday_cheer_animation_wrapper)
+        TooltipCompat.setTooltipText(birthdayClickable, getString(R.string.happy_birth))
+        birthdayClickable.setOnClickListener { BirthdayDialog(this).show() }
+
         return true
     }
 
@@ -297,7 +310,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                             utils.showSnackBar(findViewById(R.id.main_coordinate_layout),
                                     JSONObject(res)["error"].toString(), true)
                         } else {
-                            utils.setSharedPreference(AccountData, "user_avatar", "")
+                            utils.setSharedPreference(AccountData, getString(R.string.user_avatar), "")
                             val header = navigationView.getHeaderView(0)
                             header.findViewById<ImageView>(R.id.user_avatar).post {
                                 header.findViewById<ImageView>(R.id.user_avatar).setImageDrawable(getDrawable(R.drawable.icon))
@@ -309,7 +322,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
 
     private fun setAvatar() {
 
-        if (utils.getSharedPreference(AccountData).getString("user_avatar", "") != "") {
+        if (utils.getSharedPreference(AccountData).getString(getString(R.string.user_avatar), "") != "") {
             val alertDialog =
                     AlertDialog.Builder(this)
                             .setAdapter(ArrayAdapter<String>(this, R.layout.simple_list_item,
@@ -329,7 +342,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
 
     private fun updateAvatar() {
         val header = navigationView.getHeaderView(0)
-        val avatarUrl = utils.getSharedPreference(AccountData).getString("user_avatar", "")
+        val avatarUrl = utils.getSharedPreference(AccountData).getString(getString(R.string.user_avatar), "")
         if (avatarUrl != "")
             Picasso.get().load(avatarUrl).placeholder(R.drawable.icon).into(header.findViewById<ImageView>(R.id.user_avatar))
 
@@ -607,7 +620,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
 
                 val extraInfo = data.extraInfo
 
-                utils.setSharedPreference(AccountData, "user_avatar", extraInfo.avatar)
+                utils.setSharedPreference(AccountData, getString(R.string.user_avatar), extraInfo.avatar)
 
                 when (presentFragment) {
                     0 -> if (subjects!!.isEmpty()) homeFragment!!.refreshAdapterToEmpty()
@@ -675,6 +688,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                 .putString(getString(R.string.usernameKEY), "")
                 .putString(getString(R.string.passwordKEY), "")
                 .putBoolean(getString(R.string.loggedIn), false)
+                .putString(getString(R.string.user_avatar), "")
                 .apply()
         utils.saveHistoryGrade(null)
         utils.saveDataJson("")
@@ -748,7 +762,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                                     JSONObject(responseAvatar)["error"].toString(), true)
                         }
 
-                        utils.setSharedPreference(AccountData, "user_avatar", avatarUrl)
+                        utils.setSharedPreference(AccountData, getString(R.string.user_avatar), avatarUrl)
 
                         val header = navigationView.getHeaderView(0)
                         header.findViewById<ImageView>(R.id.user_avatar).post {
