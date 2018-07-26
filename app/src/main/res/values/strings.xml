@@ -27,6 +27,7 @@
     <string name="updateURL" translatable="false">https://api.schoolpower.tech/api/update.json</string>
     <string name="backupServersURL" translatable="false">https://coding.net/u/nullptr_t/p/schoolpower/git/raw/master/server_list.json</string>
     <string name="imageUploadURL" translatable="false">https://sm.ms/api/upload</string>
+    <string name="paypalDonationURL" translatable="false">https://paypal.me/GWang828</string>
 
     <string-array name="list_preference_display_types_values" translatable="false">
         <item>0</item>
