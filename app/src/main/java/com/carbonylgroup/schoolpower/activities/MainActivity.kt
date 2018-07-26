@@ -310,7 +310,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                             utils.showSnackBar(findViewById(R.id.main_coordinate_layout),
                                     JSONObject(res)["error"].toString(), true)
                         } else {
-                            utils.setSharedPreference(AccountData, "user_avatar", "")
+                            utils.setSharedPreference(AccountData, getString(R.string.user_avatar), "")
                             val header = navigationView.getHeaderView(0)
                             header.findViewById<ImageView>(R.id.user_avatar).post {
                                 header.findViewById<ImageView>(R.id.user_avatar).setImageDrawable(getDrawable(R.drawable.icon))
@@ -322,7 +322,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
 
     private fun setAvatar() {
 
-        if (utils.getSharedPreference(AccountData).getString("user_avatar", "") != "") {
+        if (utils.getSharedPreference(AccountData).getString(getString(R.string.user_avatar), "") != "") {
             val alertDialog =
                     AlertDialog.Builder(this)
                             .setAdapter(ArrayAdapter<String>(this, R.layout.simple_list_item,
@@ -342,7 +342,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
 
     private fun updateAvatar() {
         val header = navigationView.getHeaderView(0)
-        val avatarUrl = utils.getSharedPreference(AccountData).getString("user_avatar", "")
+        val avatarUrl = utils.getSharedPreference(AccountData).getString(getString(R.string.user_avatar), "")
         if (avatarUrl != "")
             Picasso.get().load(avatarUrl).placeholder(R.drawable.icon).into(header.findViewById<ImageView>(R.id.user_avatar))
 
@@ -620,7 +620,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
 
                 val extraInfo = data.extraInfo
 
-                utils.setSharedPreference(AccountData, "user_avatar", extraInfo.avatar)
+                utils.setSharedPreference(AccountData, getString(R.string.user_avatar), extraInfo.avatar)
 
                 when (presentFragment) {
                     0 -> if (subjects!!.isEmpty()) homeFragment!!.refreshAdapterToEmpty()
@@ -688,6 +688,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                 .putString(getString(R.string.usernameKEY), "")
                 .putString(getString(R.string.passwordKEY), "")
                 .putBoolean(getString(R.string.loggedIn), false)
+                .putString(getString(R.string.user_avatar), "")
                 .apply()
         utils.saveHistoryGrade(null)
         utils.saveDataJson("")
@@ -761,7 +762,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                                     JSONObject(responseAvatar)["error"].toString(), true)
                         }
 
-                        utils.setSharedPreference(AccountData, "user_avatar", avatarUrl)
+                        utils.setSharedPreference(AccountData, getString(R.string.user_avatar), avatarUrl)
 
                         val header = navigationView.getHeaderView(0)
                         header.findViewById<ImageView>(R.id.user_avatar).post {
