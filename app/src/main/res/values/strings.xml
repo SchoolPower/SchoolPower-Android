@@ -27,6 +27,9 @@
     <string name="updateURL" translatable="false">https://files.schoolpower.tech/update.json</string>
     <string name="backupServersURL" translatable="false">https://coding.net/u/nullptr_t/p/schoolpower/git/raw/master/server_list.json</string>
     <string name="imageUploadURL" translatable="false">https://sm.ms/api/upload</string>
+    <string name="paypalDonationURL" translatable="false">https://paypal.me/GWang828</string>
+    <string name="bitcoin_address" translatable="false">1NRdAgeRdapbRe3JQRmNCRfWHR3T664jKf</string>
+    <string name="ether_address" translatable="false">0x3C170f8dd9A2B28554f8bA034B0fF72FfF92FBa7</string>
 
     <string-array name="list_preference_display_types_values" translatable="false">
         <item>0</item>
@@ -254,6 +257,9 @@ SchoolPower does not guarantee that the user\'s picture will be permanently save
     <string name="Wechat">Wechat</string>
     <string name="AlipayNotFound">Alipay not found</string>
     <string name="WechatNotFound">Wechat not found</string>
+    <string name="donate_via_bitcoin">Donate via Bitcoin</string>
+    <string name="donate_via_eth">Donate via Ethereum</string>
+    <string name="copied">Copied</string>
 
     <string name="happy_birth">Happy Birthday!</string>
     <string name="happy_birth_title_builder" formatted="false">Happy %s Birthday!</string>

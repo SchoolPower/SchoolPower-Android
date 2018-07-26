@@ -1,52 +1,34 @@
 package com.carbonylgroup.schoolpower.fragments
 
 import android.app.Fragment
-import android.content.Context
 import android.content.Intent
 import android.didikee.donate.AlipayDonate
-import android.didikee.donate.WeiXinDonate
-import android.graphics.Bitmap
 import android.os.Bundle
-import android.os.Environment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.carbonylgroup.schoolpower.R
 import com.carbonylgroup.schoolpower.utils.Utils
-import net.glxn.qrgen.android.QRCode
-import java.io.File
-import android.graphics.BitmapFactory
-import android.support.transition.TransitionManager
 import android.support.v7.widget.CardView
-import android.widget.Button
-import android.widget.LinearLayout
-import com.carbonylgroup.schoolpower.activities.LoginActivity
 import com.carbonylgroup.schoolpower.activities.WechatIntroActivity
+import com.carbonylgroup.schoolpower.utils.CryptoDonationDialog
 
 
 class DonationFragment : Fragment() {
 
+    val WECHAT_INTRO = 1
     private lateinit var utils: Utils
-
-//    private fun generateQRCode(url: String) = QRCode.from(url)
-//            .withSize(utils.dpToPx(250), utils.dpToPx(250))
-//            .withColor(utils.getPrimaryColor(), 0xFFFFFFFF.toInt())
-
     private val AlipayToken = "tsx09230fuwngogndwbkg3b"
-//    private val AlipayQR = "https://qr.alipay.com/tsx09230fuwngogndwbkg3b"
-//    private val WeChatQR = "wxp://f2f0cTQAZ3_D0IW8psZSCq0EhuJcUIJcr0hE"
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-
         val view = inflater!!.inflate(R.layout.fragment_donation, container, false)
         utils = Utils(activity)
-
-//                0 -> qrCode.setImageBitmap(generateQRCode(AlipayQR).bitmap())
-//                1 -> qrCode.setImageBitmap(generateQRCode(WeChatQR).bitmap())
-
         view.findViewById<CardView>(R.id.alipay_card).setOnClickListener { gotoAlipay() }
         view.findViewById<CardView>(R.id.wechat_card).setOnClickListener { gotoWechatPay() }
+        view.findViewById<CardView>(R.id.paypal_card).setOnClickListener { gotoPaypal() }
+        view.findViewById<CardView>(R.id.bitcoin_card).setOnClickListener { gotoCrypto(CryptoDonationDialog.CRYPTO_TYPE.BITCOIN) }
+        view.findViewById<CardView>(R.id.eth_card).setOnClickListener { gotoCrypto(CryptoDonationDialog.CRYPTO_TYPE.ETHER) }
         return view
     }
 
@@ -59,6 +41,21 @@ class DonationFragment : Fragment() {
     }
 
     fun gotoWechatPay() {
-        startActivity(Intent(activity, WechatIntroActivity::class.java))
+        startActivityForResult(Intent(activity, WechatIntroActivity::class.java), WECHAT_INTRO)
+    }
+
+    fun gotoPaypal() {
+        AlipayDonate.startIntentUrl(activity, getString(R.string.paypalDonationURL))
+    }
+
+    fun gotoCrypto(crypto: CryptoDonationDialog.CRYPTO_TYPE) {
+        CryptoDonationDialog(activity, crypto).show()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == WECHAT_INTRO && resultCode == WechatIntroActivity().WECHAT_NOT_FOUND) {
+            Utils(activity).showSnackBar(activity.findViewById(R.id.donation_fragment), getString(R.string.WechatNotFound), true)
+        }
     }
 }
