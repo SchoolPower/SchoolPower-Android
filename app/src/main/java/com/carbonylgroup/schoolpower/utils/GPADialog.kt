@@ -40,7 +40,6 @@ class GPADialog(private val activity: Activity, private val subjects: List<Subje
         updateData(calculateGPA(latestPeriod),
                 calculateCustomGPA(latestPeriod),
                 officialGPA?.toFloat())
-
     }
 
     private fun customGPANotAvailable() {

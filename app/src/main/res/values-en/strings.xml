@@ -183,8 +183,16 @@ SchoolPower does not guarantee that the user\'s picture will be permanently save
     <string name="donation">Donation</string>
     <string name="qr_code">QR Code</string>
     <string name="server_status">Server Status</string>
+    <string name="Alipay">Alipay</string>
+    <string name="Wechat">Wechat</string>
+    <string name="AlipayNotFound">Alipay not found</string>
+    <string name="WechatNotFound">Wechat not found</string>
 
     <string name="happy_birth">Happy Birthday!</string>
+    <string name="happy_birth_title_builder" formatted="false">Happy %s Birthday!</string>
+    <string name="happy_birth_message">Happy birthday to you, happy birthday to you.
+        \nHappy birthday to you, happy birthday to you!</string>
+    <string name="happy_birth_thank">Thx</string>
 
     <string name="donation_title">We are running out of money…</string>
     <string name="donation_message">The expensive Apple developers fee and server costed thousands of yuan every year, not to mention the enormous time cost. Our only income, advertising, brought us merely about $100 a year. We have a net loss of thousands of yuan so far.
