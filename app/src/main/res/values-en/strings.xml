@@ -187,6 +187,9 @@ SchoolPower does not guarantee that the user\'s picture will be permanently save
     <string name="Wechat">Wechat</string>
     <string name="AlipayNotFound">Alipay not found</string>
     <string name="WechatNotFound">Wechat not found</string>
+    <string name="donate_via_bitcoin">Donate via Bitcoin</string>
+    <string name="donate_via_eth">Donate via Ethereum</string>
+    <string name="copied">Copied</string>
 
     <string name="happy_birth">Happy Birthday!</string>
     <string name="happy_birth_title_builder" formatted="false">Happy %s Birthday!</string>

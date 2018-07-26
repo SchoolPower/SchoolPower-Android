@@ -183,6 +183,9 @@ SchoolPower 不保證上述網站的服務穩定性，不保證用戶頭像會�
     <string name="Wechat">微信支付</string>
     <string name="AlipayNotFound">​​你好像沒有安裝支付寶</string>
     <string name="WechatNotFound">​​你好像沒有安裝微信</string>
+    <string name="donate_via_bitcoin">使用比特幣捐助我們</string>
+    <string name="donate_via_eth">使用以太坊捐助我們</string>
+    <string name="copied">已拷貝</string>
 
     <string name="happy_birth">生日快樂！</string>
     <string name="happy_birth_title_builder" formatted="false">%s 歲生日快樂！ </string>
