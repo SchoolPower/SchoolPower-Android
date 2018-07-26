@@ -21,7 +21,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="540dp">
+            android:layout_height="640dp">
 
             <LinearLayout
                 android:layout_width="0dp"
