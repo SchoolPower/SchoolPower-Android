@@ -578,12 +578,27 @@ class Utils(private val context: Context) {
         val dob = Calendar.getInstance()
         now.time = Date()
         dob.time = Date(data)
+        if (isThisYearLeapYear()) {
+            val feb29 = Calendar.getInstance()
+            feb29.set(Calendar.MONTH, 2)
+            feb29.set(Calendar.DAY_OF_MONTH, 29)
+            if (isSameDayAndMonth(dob, feb29)) {
+                val mar1 = Calendar.getInstance()
+                mar1.set(Calendar.MONTH, 3)
+                mar1.set(Calendar.DAY_OF_MONTH, 1)
+                return isSameDayAndMonth(now, mar1)
+            }
+        }
         return isSameDayAndMonth(now, dob)
     }
 
     private fun isSameDayAndMonth(cal1: Calendar, cal2: Calendar): Boolean {
         return cal1.get(Calendar.MONTH) == cal2.get(Calendar.MONTH) &&
                 cal1.get(Calendar.DAY_OF_MONTH) == cal2.get(Calendar.DAY_OF_MONTH)
+    }
+
+    fun isThisYearLeapYear(): Boolean {
+        return Calendar.getInstance().getActualMaximum(Calendar.DAY_OF_YEAR) > 365
     }
 
     fun getAge(withSuffix: Boolean): String {
