@@ -480,18 +480,20 @@ class Utils(private val context: Context) {
                         val updateJSON = JSONObject(message)
                         setSharedPreference(OtherData, "app_download_url", updateJSON.getString("url"))
                         if (updateJSON.getString("version") != getAppVersion()) {
-                            val builder = AlertDialog.Builder(context)
-                            builder.setTitle(context.getString(R.string.upgrade_title))
-                            builder.setMessage(updateJSON.getString("description"))
-                            builder.setPositiveButton(context.getString(R.string.upgrade_pos)) { dialog, _ ->
-                                run {
-                                    dialog.dismiss()
-                                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(updateJSON.getString("url")))
-                                    context.startActivity(intent)
+                            (context as Activity).runOnUiThread {
+                                val builder = AlertDialog.Builder(context)
+                                builder.setTitle(context.getString(R.string.upgrade_title))
+                                builder.setMessage(updateJSON.getString("description"))
+                                builder.setPositiveButton(context.getString(R.string.upgrade_pos)) { dialog, _ ->
+                                    run {
+                                        dialog.dismiss()
+                                        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(updateJSON.getString("url")))
+                                        context.startActivity(intent)
+                                    }
                                 }
+                                builder.setNegativeButton(context.getString(R.string.upgrade_neg), null)
+                                builder.create().show()
                             }
-                            builder.setNegativeButton(context.getString(R.string.upgrade_neg), null)
-                            builder.create().show()
                         }
                     }
                 })
