@@ -592,7 +592,7 @@ class Utils(private val context: Context) {
         return isSameDayAndMonth(now, dob)
     }
 
-    private fun isSameDayAndMonth(cal1: Calendar, cal2: Calendar): Boolean {
+    fun isSameDayAndMonth(cal1: Calendar, cal2: Calendar): Boolean {
         return cal1.get(Calendar.MONTH) == cal2.get(Calendar.MONTH) &&
                 cal1.get(Calendar.DAY_OF_MONTH) == cal2.get(Calendar.DAY_OF_MONTH)
     }
