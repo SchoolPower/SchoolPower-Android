@@ -28,7 +28,6 @@ class AttendanceFragment : Fragment() {
     private var attendance: List<Attendance>? = null
     private lateinit var attendanceRecyclerView: RecyclerView
     private lateinit var no_attendance_view: LinearLayout
-    private lateinit var attendanceProgressBar: ProgressBar
     private var attendance_swipe_refresh_layout: SwipeRefreshLayout? = null
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
@@ -59,7 +58,6 @@ class AttendanceFragment : Fragment() {
         utils = Utils(activity)
         attendance = MainActivity.of(activity).attendances!!
         attendanceRecyclerView = view_private!!.findViewById(R.id.attendance_recycler)
-        attendanceProgressBar = view_private!!.findViewById(R.id.attendance_progress_bar)
         no_attendance_view = view_private!!.findViewById(R.id.no_attendance_view)
         view_private!!.findViewById<ImageView>(R.id.perfect_attendance_image_view).setImageDrawable(
                 ResourcesCompat.getDrawable(resources,
@@ -87,7 +85,6 @@ class AttendanceFragment : Fragment() {
         attendanceRecyclerView.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
 //        Handler().postDelayed({
             attendanceRecyclerView.adapter = AttendanceAdapter(activity, attendance)
-            attendanceProgressBar.visibility = View.GONE
 //        }, 500)
     }
 
