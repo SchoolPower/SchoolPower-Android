@@ -25,7 +25,9 @@ class GPADialog(private val activity: Activity, private val subjects: List<Subje
     private lateinit var gpa_dialog_percentage_front: CounterView
     private lateinit var gpaDialogSegmented: SegmentedButtonGroup
 
-    fun show() {
+    fun show() : Boolean {
+        if(subjects.count() == 0) return false
+
         val latestPeriods = HashMap<String, Subject.Grade>()
         val allPeriods = HashSet<String>()
         subjects.indices.forEach { i ->
@@ -34,12 +36,13 @@ class GPADialog(private val activity: Activity, private val subjects: List<Subje
             subjects[i].grades.keys.filterTo(allPeriods) { subjects[i].grades[it]!!.letter != "--" }
         }
         val latestPeriod = utils.getLatestPeriod(latestPeriods)
-                ?: return // overall latest period, usually indicate the current term
+                ?: return false // overall latest period, usually indicate the current term
 
         constructView(latestPeriod, allPeriods.toList())
         updateData(calculateGPA(latestPeriod),
                 calculateCustomGPA(latestPeriod),
                 officialGPA?.toFloat())
+        return true
     }
 
     private fun customGPANotAvailable() {
@@ -51,14 +54,16 @@ class GPADialog(private val activity: Activity, private val subjects: List<Subje
     }
 
     private fun updateData(GPAAll: Float, GPACustom: Float, GPAOfficial: Float?) {
-        gpaDialogSegmented.setOnClickedButtonPosition({ position: Int ->
+        gpaDialogSegmented.setOnClickedButtonPosition { position: Int ->
             when (position) {
                 0 -> animateWaveAndText(waveView.waterLevelRatio, GPAAll / 100.0f)
                 1 -> if (GPACustom.isNaN()) customGPANotAvailable() else
                     animateWaveAndText(waveView.waterLevelRatio, GPACustom / 100.0f)
-                2 -> animateWaveAndText(waveView.waterLevelRatio, GPAOfficial!! / 4.0f)
+                2 -> {
+                    animateWaveAndText(waveView.waterLevelRatio, GPAOfficial!! / 4.0f)
+                }
             }
-        })
+        }
 
         when (gpaDialogSegmented.position) {
             0 -> animateWaveAndText(waveView.waterLevelRatio, GPAAll / 100.0f)

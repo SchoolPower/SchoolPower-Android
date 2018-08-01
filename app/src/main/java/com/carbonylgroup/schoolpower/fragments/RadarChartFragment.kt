@@ -1,7 +1,7 @@
 package com.carbonylgroup.schoolpower.fragments
 
-import android.os.Bundle
 import android.app.Fragment
+import android.os.Bundle
 import android.preference.PreferenceManager
 import android.support.v7.widget.CardView
 import android.view.LayoutInflater
@@ -13,7 +13,9 @@ import com.carbonylgroup.schoolpower.data.Subject
 import com.carbonylgroup.schoolpower.utils.Utils
 import com.github.mikephil.charting.charts.RadarChart
 import com.github.mikephil.charting.components.AxisBase
-import com.github.mikephil.charting.data.*
+import com.github.mikephil.charting.data.RadarData
+import com.github.mikephil.charting.data.RadarDataSet
+import com.github.mikephil.charting.data.RadarEntry
 import com.github.mikephil.charting.formatter.IAxisValueFormatter
 import com.github.mikephil.charting.interfaces.datasets.IRadarDataSet
 import java.util.*
@@ -52,7 +54,7 @@ class RadarChartFragment : Fragment() {
             val grade = utils.getLatestPeriodGrade(subjectNow)
             if (grade != null && grade.letter != "--") gradedSubjects.add(subjectNow)
         }
-
+        if(gradedSubjects.isEmpty()) return view
         run {
 
             val radarChart: RadarChart = view.findViewById(R.id.radar_chart)

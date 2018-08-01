@@ -19,24 +19,16 @@ import android.os.Bundle
 import android.preference.PreferenceManager
 import android.support.design.widget.AppBarLayout
 import android.support.design.widget.NavigationView
-import android.support.v4.content.ContextCompat
 import android.support.v4.view.GravityCompat
 import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.graphics.drawable.DrawerArrowDrawable
-import android.support.v7.view.menu.ActionMenuItem
-import android.support.v7.view.menu.ActionMenuItemView
-import android.support.v7.widget.ActionMenuView
 import android.support.v7.widget.Toolbar
 import android.support.v7.widget.TooltipCompat
 import android.util.Log
 import android.view.*
 import android.view.animation.DecelerateInterpolator
-import android.webkit.WebView
 import android.widget.*
-import com.airbnb.lottie.LottieAnimationView
-import com.airbnb.lottie.LottieComposition
-import com.airbnb.lottie.LottieDrawable
 import com.carbonylgroup.schoolpower.R
 import com.carbonylgroup.schoolpower.data.Attendance
 import com.carbonylgroup.schoolpower.data.StudentData
@@ -133,15 +125,13 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                 gotoFragmentWithMenuItemId(R.id.nav_charts)
             }
             "com.carbonylgroup.schoolpower.custom.gpa" -> {
-                if (subjects == null || subjects!!.count() == 0) {
-
+                if (subjects == null || !GPADialog(this, subjects!!, studentInformation!!.GPA).show()) {
                     val builder = AlertDialog.Builder(this)
                     builder.setMessage(getString(R.string.gpa_not_available_because))
                     builder.setTitle(getString(R.string.gpa_not_available))
                     builder.setPositiveButton(getString(R.string.alright), null)
                     builder.create().show()
-
-                } else GPADialog(this, subjects!!, studentInformation!!.GPA).show()
+                }
             }
         }
     }
@@ -173,7 +163,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
             }
             R.id.action_gpa -> {
 
-                if (subjects == null || subjects!!.count() == 0) {
+                if (subjects == null || !GPADialog(this, subjects!!, studentInformation!!.GPA).show()) {
 
                     val builder = AlertDialog.Builder(this)
                     builder.setMessage(getString(R.string.gpa_not_available_because))
@@ -181,7 +171,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                     builder.setPositiveButton(getString(R.string.alright), null)
                     builder.create().show()
 
-                } else GPADialog(this, subjects!!, studentInformation!!.GPA).show()
+                }
             }
         }
         return super.onOptionsItemSelected(item)

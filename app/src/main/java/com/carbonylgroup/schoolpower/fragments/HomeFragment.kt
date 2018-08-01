@@ -109,7 +109,7 @@ class HomeFragment : TransitionHelper.BaseFragment() {
                         "Please stay calm and report this to the developers, we will resolve the issue ASAP.\n\n Error message: \n" +
                         e.printStackTrace()
                 )
-                val sendEmail = DialogInterface.OnClickListener {
+                val sendEmail = DialogInterface.OnClickListener {_,_ ->
                     val version = activity.packageManager.getPackageInfo("com.carbonylgroup.schoolpower", 0).versionName
                     val uri = Uri.parse(getString(R.string.bug_report_email))
                     val intent = Intent(Intent.ACTION_SENDTO, uri)
