@@ -104,11 +104,8 @@ class HomeFragment : TransitionHelper.BaseFragment() {
                 refreshAdapterToEmpty()
 
                 val emergencyDialogBuilder = AlertDialog.Builder(activity)
-                emergencyDialogBuilder.setTitle("Unknown Fatal Error")
-                emergencyDialogBuilder.setMessage("We've just encountered an unknown fatal error while loading your courses.\n" +
-                        "Please stay calm and report this to the developers, we will resolve the issue ASAP.\n\n Error message: \n" +
-                        e.printStackTrace()
-                )
+                emergencyDialogBuilder.setTitle(getString(R.string.fatel_error))
+                emergencyDialogBuilder.setMessage(getString(R.string.fatel_error_message) + e.printStackTrace())
                 val sendEmail = DialogInterface.OnClickListener {_,_ ->
                     val version = activity.packageManager.getPackageInfo("com.carbonylgroup.schoolpower", 0).versionName
                     val uri = Uri.parse(getString(R.string.bug_report_email))

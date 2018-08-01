@@ -284,4 +284,7 @@ SchoolPower does not guarantee that the user\'s picture will be permanently save
     <string name="storage_permission_denied">Sorry, we cannot store our QR code without permission</string>
     <string name="storage_permission_exp_title">We need permission</string>
 
+    <string name="fatel_error">Unknown Fatal Error</string>
+    <string name="fatel_error_message">We\'ve just encountered an unknown fatal error while loading your courses.
+\nPlease stay calm and report this to the developers. We will resolve the issue ASAP.\n\n Error message: \n</string>
 </resources>

@@ -4,7 +4,6 @@
 
 package com.carbonylgroup.schoolpower.utils
 
-import android.accounts.NetworkErrorException
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
@@ -654,9 +653,12 @@ class Utils(private val context: Context) {
 
         // convert date like "2018-01-21T16:00:00.000Z" to timestamp (unit: MILLISECOND)
         fun convertDateToTimestamp(date: String): Long {
-            val temp = SimpleDateFormat("yyyy-MM-dd", Locale.CHINA).parse(date.replace("T16:00:00.000Z", ""))
-            temp.time += 24 * 60 * 60 * 1000
-            return temp.time
+            try {
+                val temp = SimpleDateFormat("yyyy-MM-dd", Locale.CHINA).parse(date.replace("T16:00:00.000Z", ""))
+
+                temp.time += 24 * 60 * 60 * 1000
+                return temp.time
+            }catch(e: Exception){return 0}
         }
 
         fun getShortName(subjectTitle: String): String {
