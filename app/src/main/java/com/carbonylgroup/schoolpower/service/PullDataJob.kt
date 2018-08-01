@@ -127,7 +127,7 @@ class PullDataJob : JobService() {
                 .addFormDataPart("os", "android")
                 .build()
         var retried = false
-        utils.buildNetworkRequest(getString(R.string.avatarURL), "POST", body)
+        utils.buildNetworkRequest(getString(R.string.postURL), "POST", body)
                 .enqueue(object : Callback {
                     override fun onFailure(call: Call, e: IOException) {
                         e.printStackTrace()

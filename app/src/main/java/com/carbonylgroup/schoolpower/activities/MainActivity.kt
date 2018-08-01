@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2017 SchoolPower Studio
+ * Copyright (C) 2018 SchoolPower Studio
  */
 
 package com.carbonylgroup.schoolpower.activities

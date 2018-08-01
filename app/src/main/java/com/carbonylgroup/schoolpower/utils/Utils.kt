@@ -1,9 +1,10 @@
 /**
- * Copyright (C) 2017 Gustav Wang
+ * Copyright (C) 2018 SchoolPower Studio
  */
 
 package com.carbonylgroup.schoolpower.utils
 
+import android.accounts.NetworkErrorException
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
@@ -480,18 +481,20 @@ class Utils(private val context: Context) {
                         val updateJSON = JSONObject(message)
                         setSharedPreference(OtherData, "app_download_url", updateJSON.getString("url"))
                         if (updateJSON.getString("version") != getAppVersion()) {
-                            val builder = AlertDialog.Builder(context)
-                            builder.setTitle(context.getString(R.string.upgrade_title))
-                            builder.setMessage(updateJSON.getString("description"))
-                            builder.setPositiveButton(context.getString(R.string.upgrade_pos)) { dialog, _ ->
-                                run {
-                                    dialog.dismiss()
-                                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(updateJSON.getString("url")))
-                                    context.startActivity(intent)
+                            (context as Activity).runOnUiThread {
+                                val builder = AlertDialog.Builder(context)
+                                builder.setTitle(context.getString(R.string.upgrade_title))
+                                builder.setMessage(updateJSON.getString("description"))
+                                builder.setPositiveButton(context.getString(R.string.upgrade_pos)) { dialog, _ ->
+                                    run {
+                                        dialog.dismiss()
+                                        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(updateJSON.getString("url")))
+                                        context.startActivity(intent)
+                                    }
                                 }
+                                builder.setNegativeButton(context.getString(R.string.upgrade_neg), null)
+                                builder.create().show()
                             }
-                            builder.setNegativeButton(context.getString(R.string.upgrade_neg), null)
-                            builder.create().show()
                         }
                     }
                 })
@@ -578,12 +581,27 @@ class Utils(private val context: Context) {
         val dob = Calendar.getInstance()
         now.time = Date()
         dob.time = Date(data)
+        if (isThisYearLeapYear()) {
+            val feb29 = Calendar.getInstance()
+            feb29.set(Calendar.MONTH, 2)
+            feb29.set(Calendar.DAY_OF_MONTH, 29)
+            if (isSameDayAndMonth(dob, feb29)) {
+                val mar1 = Calendar.getInstance()
+                mar1.set(Calendar.MONTH, 3)
+                mar1.set(Calendar.DAY_OF_MONTH, 1)
+                return isSameDayAndMonth(now, mar1)
+            }
+        }
         return isSameDayAndMonth(now, dob)
     }
 
-    private fun isSameDayAndMonth(cal1: Calendar, cal2: Calendar): Boolean {
+    fun isSameDayAndMonth(cal1: Calendar, cal2: Calendar): Boolean {
         return cal1.get(Calendar.MONTH) == cal2.get(Calendar.MONTH) &&
                 cal1.get(Calendar.DAY_OF_MONTH) == cal2.get(Calendar.DAY_OF_MONTH)
+    }
+
+    fun isThisYearLeapYear(): Boolean {
+        return Calendar.getInstance().getActualMaximum(Calendar.DAY_OF_YEAR) > 365
     }
 
     fun getAge(withSuffix: Boolean): String {

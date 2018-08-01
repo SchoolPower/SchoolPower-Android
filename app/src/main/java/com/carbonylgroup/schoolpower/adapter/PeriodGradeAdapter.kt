@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2017 Gustav Wang
+ * Copyright (C) 2018 SchoolPower Studio
  */
 
 package com.carbonylgroup.schoolpower.adapter

@@ -25,15 +25,10 @@ class PromotionFragment : Fragment() {
                               savedInstanceState: Bundle?): View? {
 
         val view = inflater!!.inflate(R.layout.fragment_promotion, container, false)
-
         utils = Utils(activity)
-
         val androidDownloadUrl = utils.getSharedPreference(Utils.OtherData).getString("app_download_url", getString(R.string.default_android_download_address))
-
         val qrCode = view.findViewById(R.id.qr_code) as ImageView
-
         val segmented: SegmentedButtonGroup = view.findViewById(R.id.promotion_segmented)
-
         segmented.setPosition(0, 0)
 
         val callback = { position: Int ->

@@ -1,9 +1,13 @@
 /**
- * Copyright (C) 2017 Gustav Wang
+ * Copyright (C) 2018 SchoolPower Studio
  */
 
 package com.carbonylgroup.schoolpower.fragments
 
+import android.app.AlertDialog
+import android.content.DialogInterface
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.support.transition.TransitionManager
 import android.support.v4.content.res.ResourcesCompat.getDrawable
@@ -92,7 +96,34 @@ class HomeFragment : TransitionHelper.BaseFragment() {
                 R.color.Cp_score_yellow, R.color.C_score_orange, R.color.Cm_score_red, R.color.primary)
         home_swipe_refresh_layout!!.setOnRefreshListener { MainActivity.of(activity).fetchStudentDataFromServer() }
         if (subjects == null || utils!!.getFilteredSubjects(subjects!!).count() == 0) refreshAdapterToEmpty()
-        else initAdapter()
+        else {
+            try {
+                initAdapter()
+            } catch (e: ExceptionInInitializerError) {
+                e.printStackTrace()
+                refreshAdapterToEmpty()
+
+                val emergencyDialogBuilder = AlertDialog.Builder(activity)
+                emergencyDialogBuilder.setTitle("Unknown Fatal Error")
+                emergencyDialogBuilder.setMessage("We've just encountered an unknown fatal error while loading your courses.\n" +
+                        "Please stay calm and report this to the developers, we will resolve the issue ASAP.\n\n Error message: \n" +
+                        e.printStackTrace()
+                )
+                val sendEmail = DialogInterface.OnClickListener {
+                    val version = activity.packageManager.getPackageInfo("com.carbonylgroup.schoolpower", 0).versionName
+                    val uri = Uri.parse(getString(R.string.bug_report_email))
+                    val intent = Intent(Intent.ACTION_SENDTO, uri)
+                    intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.bug_report_email_subject))
+                    intent.putExtra(Intent.EXTRA_TEXT, String.format(getString(R.string.bug_report_email_content), version) +
+                            "\n\nError message: \n" + e.printStackTrace())
+                    startActivity(Intent.createChooser(intent, getString(R.string.choose_email_app)))
+                }
+                emergencyDialogBuilder.setPositiveButton("email",  sendEmail)
+                emergencyDialogBuilder.setNegativeButton("cancel", null)
+                emergencyDialogBuilder.create().setCanceledOnTouchOutside(false)
+                emergencyDialogBuilder.create().show()
+            }
+        }
 
         if (needToShowDonate())
             initDonate()
