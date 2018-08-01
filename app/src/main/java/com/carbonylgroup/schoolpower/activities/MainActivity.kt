@@ -680,8 +680,8 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                 .putBoolean(getString(R.string.loggedIn), false)
                 .putString(getString(R.string.user_avatar), "")
                 .apply()
-        //utils.saveHistoryGrade(null)
-        //utils.saveDataJson("")
+        utils.saveHistoryGrade(null)
+        utils.saveDataJson("")
 
         val jobScheduler = getSystemService(Context.JOB_SCHEDULER_SERVICE) as JobScheduler
         jobScheduler.cancelAll()
