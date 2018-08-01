@@ -205,4 +205,10 @@ SchoolPower 不保证上述网站的服务稳定性，不保证用户头像会�
     <string name="wechat_instruction_page5_des">选择我们的支付码（应该是第一个）</string>
     <string name="storage_permission_denied">抱歉，没有权限我们不能储存我们的支付码</string>
     <string name="storage_permission_exp_title">需要权限</string>
+
+    <string name="fatel_error">未知错误</string>
+    <string name="fatel_error_message">我们刚刚遇到了未知错误。这通常是我们的锅。您可以尝试稍后重试或我们强烈建议您将此错误反馈给我们\n\n错误信息: \n</string>
+
+    <string name="cancel">取消</string>
+    <string name="email">发送</string>
 </resources>

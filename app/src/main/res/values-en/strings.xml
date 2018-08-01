@@ -213,4 +213,11 @@ SchoolPower does not guarantee that the user\'s picture will be permanently save
     <string name="wechat_instruction_page5_des">Choose our QR code, which should be the first image in the list</string>
     <string name="storage_permission_denied">Sorry, we cannot store our QR code without permission</string>
     <string name="storage_permission_exp_title">We need permission</string>
+
+    <string name="fatel_error">Unknown Fatal Error</string>
+    <string name="fatel_error_message">We\'ve just encountered an unknown fatal error.
+\nPlease stay calm and report this to the developers. We will resolve the issue ASAP.\n\nError message: \n</string>
+    <string name="cancel">Cancel</string>
+    <string name="email">Email</string>
+
 </resources>

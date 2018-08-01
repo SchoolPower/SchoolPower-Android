@@ -132,12 +132,13 @@ class PullDataJob : JobService() {
                     override fun onFailure(call: Call, e: IOException) {
                         e.printStackTrace()
                         val backupServer = utils.getBackupServerUrl("pull_data_2")
-                        if(!retried && backupServer!=null) { // automatically retry when failed
+                        if (!retried && backupServer != null) { // automatically retry when failed
                             retried = true
                             try {
                                 val response = utils.buildNetworkRequest(backupServer, "POST", body).execute()
                                 onResponse(call, response)
-                            }catch(e:IOException){}
+                            } catch (e: IOException) {
+                            }
                             return
                         }
                         // no connection, try to run the job again later.
@@ -156,12 +157,13 @@ class PullDataJob : JobService() {
                             return
 
                         }
-                        val newData = try{StudentData(this@PullDataJob, strMessage)}
-                            catch(e:IllegalArgumentException){
-                                Log.d("PullDataJob", "Job Finished Early $strMessage, ${e.message}")
-                                jobFinished(params, false)
-                                return
-                            }
+                        val newData = try {
+                            StudentData(this@PullDataJob, strMessage)
+                        } catch (e: Exception) {
+                            Log.d("PullDataJob", "Job Finished Early $strMessage, ${e.message}")
+                            jobFinished(params, false)
+                            return
+                        }
                         val oldData = utils.readDataArrayList()
 
                         diffSubjects(oldData.subjects, newData.subjects)

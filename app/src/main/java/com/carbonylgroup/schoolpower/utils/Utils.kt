@@ -7,6 +7,7 @@ package com.carbonylgroup.schoolpower.utils
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Color
@@ -24,9 +25,7 @@ import okhttp3.*
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
-import java.io.BufferedReader
-import java.io.IOException
-import java.io.InputStreamReader
+import java.io.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -620,6 +619,29 @@ class Utils(private val context: Context) {
             2 -> "nd"
             3 -> "rd"
             else -> "th"
+        }
+    }
+
+    fun errorHandler(e:Exception){
+        val sw = StringWriter()
+        e.printStackTrace(PrintWriter(sw))
+        (context as Activity).runOnUiThread {
+            val emergencyDialogBuilder = AlertDialog.Builder(context)
+            emergencyDialogBuilder.setTitle(context.getString(R.string.fatel_error))
+            emergencyDialogBuilder.setMessage(context.getString(R.string.fatel_error_message) + sw.toString())
+            val sendEmail = DialogInterface.OnClickListener { _, _ ->
+                val version = context.packageManager.getPackageInfo("com.carbonylgroup.schoolpower", 0).versionName
+                val uri = Uri.parse(context.getString(R.string.bug_report_email))
+                val intent = Intent(Intent.ACTION_SENDTO, uri)
+                intent.putExtra(Intent.EXTRA_SUBJECT, context.getString(R.string.bug_report_email_subject))
+                intent.putExtra(Intent.EXTRA_TEXT, String.format(context.getString(R.string.bug_report_email_content), version) +
+                        "\n\nError message: \n" + sw.toString())
+                context.startActivity(Intent.createChooser(intent, context.getString(R.string.choose_email_app)))
+            }
+            emergencyDialogBuilder.setPositiveButton(context.getString(R.string.email), sendEmail)
+            emergencyDialogBuilder.setNegativeButton(context.getString(R.string.cancel), null)
+            emergencyDialogBuilder.create().setCanceledOnTouchOutside(false)
+            emergencyDialogBuilder.create().show()
         }
     }
 

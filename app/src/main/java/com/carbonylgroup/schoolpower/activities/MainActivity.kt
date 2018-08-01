@@ -100,6 +100,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
     override fun initActivity() {
 
         super.initActivity()
+
         utils = Utils(this)
         setContentView(R.layout.nav_drawer)
         initValue()
@@ -577,71 +578,82 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                 response.close()
                 // Error happened. Usually caused by wrong username/password
                 if (strMessage.contains("Something went wrong!")) {
-                    utils.showSnackBar(findViewById(R.id.main_coordinate_layout), getString(R.string.wrong_password), true)
-                    signOut()
+                    runOnUiThread {
+                        utils.showSnackBar(findViewById(R.id.main_coordinate_layout), getString(R.string.wrong_password), true)
+                        signOut()
+                    }
                     return
                 }
 
                 // Get response but not a valid JSON
                 if (!strMessage.contains("{")) {
-                    utils.showSnackBar(findViewById(R.id.main_coordinate_layout), getString(R.string.server_problem) + strMessage, true)
-                    when (presentFragment) {
-                        0 -> homeFragment!!.setRefreshing(false)
-                        3 -> attendanceFragment!!.setRefreshing(false)
+                    runOnUiThread {
+                        utils.showSnackBar(findViewById(R.id.main_coordinate_layout), getString(R.string.server_problem) + strMessage, true)
+                        when (presentFragment) {
+                            0 -> homeFragment!!.setRefreshing(false)
+                            3 -> attendanceFragment!!.setRefreshing(false)
+                        }
+                        noConnection = true
                     }
-                    noConnection = true
                     return
                 }
-
-                utils.saveDataJson(strMessage)
-                val data = StudentData(this@MainActivity, strMessage)
-                if (data.disabled) {
-                    val builder = AlertDialog.Builder(this@MainActivity)
-                    builder.setMessage(data.disabledMessage)
-                    builder.setTitle(data.disabledTitle)
-                    builder.setPositiveButton(getString(R.string.alright), null)
-                    builder.create().show()
-                }
-                studentInformation = data.studentInfo
-                subjects = data.subjects
-                attendances = data.attendances
-
-                utils.setSharedPreference(AccountData, "dob", Utils.convertDateToTimestamp(data.studentInfo.dob))
-
-                val extraInfo = data.extraInfo
-
-                utils.setSharedPreference(AccountData, getString(R.string.user_avatar), extraInfo.avatar)
-
-                when (presentFragment) {
-                    0 -> if (subjects!!.isEmpty()) homeFragment!!.refreshAdapterToEmpty()
-                    3 -> if (attendances!!.isEmpty()) attendanceFragment!!.refreshAdapterToEmpty()
-                }
-                utils.saveHistoryGrade(subjects)
-                utils.updateStatisticalData(subjects)
-
-                // Mark new or changed assignments
-                if (subjects!!.size == oldSubjects.size) {
-                    for (i in subjects!!.indices) {
-                        subjects!![i].markNewAssignments(oldSubjects[i], this@MainActivity)
+                try {
+                    utils.saveDataJson(strMessage)
+                    val data = StudentData(this@MainActivity, strMessage)
+                    if (data.disabled) {
+                        val builder = AlertDialog.Builder(this@MainActivity)
+                        builder.setMessage(data.disabledMessage)
+                        builder.setTitle(data.disabledTitle)
+                        builder.setPositiveButton(getString(R.string.alright), null)
+                        builder.create().show()
                     }
-                }
-                // Mark new or changed attendances
-                for (item in attendances!!) {
-                    val found = oldAttendances.any { it -> it.name == item.name && it.date == item.date && it.code == item.code && !it.isNew }
-                    if (!found) item.isNew = true
-                }
-                runOnUiThread {
+                    studentInformation = data.studentInfo
+                    subjects = data.subjects
+                    attendances = data.attendances
+
+                    utils.setSharedPreference(AccountData, "dob", Utils.convertDateToTimestamp(data.studentInfo.dob))
+
+                    val extraInfo = data.extraInfo
+
+                    utils.setSharedPreference(AccountData, getString(R.string.user_avatar), extraInfo.avatar)
+
                     when (presentFragment) {
-                        0 -> homeFragment!!.refreshAdapter(subjects!!)
-                        3 -> attendanceFragment!!.refreshAdapter(attendances!!)
+                        0 -> if (subjects!!.isEmpty()) homeFragment!!.refreshAdapterToEmpty()
+                        3 -> if (attendances!!.isEmpty()) attendanceFragment!!.refreshAdapterToEmpty()
+                    }
+                    utils.saveHistoryGrade(subjects)
+                    utils.updateStatisticalData(subjects)
+
+                    // Mark new or changed assignments
+                    if (subjects!!.size == oldSubjects.size) {
+                        for (i in subjects!!.indices) {
+                            subjects!![i].markNewAssignments(oldSubjects[i], this@MainActivity)
+                        }
+                    }
+                    // Mark new or changed attendances
+                    for (item in attendances!!) {
+                        val found = oldAttendances.any { it -> it.name == item.name && it.date == item.date && it.code == item.code && !it.isNew }
+                        if (!found) item.isNew = true
                     }
 
-                    updateAvatar()
-                    if (!utils.isBirthDay())
-                        utils.showSnackBar(findViewById(R.id.main_coordinate_layout), getString(R.string.data_updated), false)
-                    else
-                        utils.showSnackBar(findViewById(R.id.main_coordinate_layout), getString(R.string.happy_birth), false)
+                    runOnUiThread {
+                        when (presentFragment) {
+                            0 -> homeFragment!!.refreshAdapter(subjects!!)
+                            3 -> attendanceFragment!!.refreshAdapter(attendances!!)
+                        }
 
+                        updateAvatar()
+                        if (!utils.isBirthDay())
+                            utils.showSnackBar(findViewById(R.id.main_coordinate_layout), getString(R.string.data_updated), false)
+                        else
+                            utils.showSnackBar(findViewById(R.id.main_coordinate_layout), getString(R.string.happy_birth), false)
+
+                    }
+                }catch(e:Exception){
+                    runOnUiThread {
+                        utils.showSnackBar(findViewById(R.id.main_coordinate_layout), getString(R.string.server_problem) + strMessage, true)
+                    }
+                    utils.errorHandler(e)
                 }
             }
         }

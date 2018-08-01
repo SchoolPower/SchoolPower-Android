@@ -4,10 +4,6 @@
 
 package com.carbonylgroup.schoolpower.fragments
 
-import android.app.AlertDialog
-import android.content.DialogInterface
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.support.transition.TransitionManager
 import android.support.v4.content.res.ResourcesCompat.getDrawable
@@ -96,31 +92,7 @@ class HomeFragment : TransitionHelper.BaseFragment() {
                 R.color.Cp_score_yellow, R.color.C_score_orange, R.color.Cm_score_red, R.color.primary)
         home_swipe_refresh_layout!!.setOnRefreshListener { MainActivity.of(activity).fetchStudentDataFromServer() }
         if (subjects == null || utils!!.getFilteredSubjects(subjects!!).count() == 0) refreshAdapterToEmpty()
-        else {
-            try {
-                initAdapter()
-            } catch (e: ExceptionInInitializerError) {
-                e.printStackTrace()
-                refreshAdapterToEmpty()
-
-                val emergencyDialogBuilder = AlertDialog.Builder(activity)
-                emergencyDialogBuilder.setTitle(getString(R.string.fatel_error))
-                emergencyDialogBuilder.setMessage(getString(R.string.fatel_error_message) + e.printStackTrace())
-                val sendEmail = DialogInterface.OnClickListener {_,_ ->
-                    val version = activity.packageManager.getPackageInfo("com.carbonylgroup.schoolpower", 0).versionName
-                    val uri = Uri.parse(getString(R.string.bug_report_email))
-                    val intent = Intent(Intent.ACTION_SENDTO, uri)
-                    intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.bug_report_email_subject))
-                    intent.putExtra(Intent.EXTRA_TEXT, String.format(getString(R.string.bug_report_email_content), version) +
-                            "\n\nError message: \n" + e.printStackTrace())
-                    startActivity(Intent.createChooser(intent, getString(R.string.choose_email_app)))
-                }
-                emergencyDialogBuilder.setPositiveButton("email",  sendEmail)
-                emergencyDialogBuilder.setNegativeButton("cancel", null)
-                emergencyDialogBuilder.create().setCanceledOnTouchOutside(false)
-                emergencyDialogBuilder.create().show()
-            }
-        }
+        else try{initAdapter()}catch(e:Exception){utils!!.errorHandler(e)}
 
         if (needToShowDonate())
             initDonate()

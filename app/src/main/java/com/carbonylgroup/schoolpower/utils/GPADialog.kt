@@ -87,8 +87,8 @@ class GPADialog(private val activity: Activity, private val subjects: List<Subje
         }
         gpa_dialog_percentage_front = gpaDialogView.findViewById(R.id.gpa_dialog_percentage_front)
         gpa_dialog_percentage_back = gpaDialogView.findViewById(R.id.gpa_dialog_percentage_back)
-        gpa_dialog_percentage_front.setFormatter({ _, suffix, value -> String.format("%.3f", value) + suffix })
-        gpa_dialog_percentage_back.setFormatter({ _, suffix, value -> String.format("%.3f", value) + suffix })
+        gpa_dialog_percentage_front.setFormatter { _, suffix, value -> String.format("%.3f", value) + suffix }
+        gpa_dialog_percentage_back.setFormatter { _, suffix, value -> String.format("%.3f", value) + suffix }
         gpa_dialog_percentage_front.setAutoStart(false)
         gpa_dialog_percentage_front.setPrefix("")
         gpa_dialog_percentage_front.setSuffix("%")
