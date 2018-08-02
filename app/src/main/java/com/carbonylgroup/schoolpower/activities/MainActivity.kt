@@ -617,9 +617,11 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
 
                     utils.setSharedPreference(AccountData, getString(R.string.user_avatar), extraInfo.avatar)
 
-                    when (presentFragment) {
-                        0 -> if (subjects!!.isEmpty()) homeFragment!!.refreshAdapterToEmpty()
-                        3 -> if (attendances!!.isEmpty()) attendanceFragment!!.refreshAdapterToEmpty()
+                    runOnUiThread {
+                        when (presentFragment) {
+                            0 -> if (subjects!!.isEmpty()) homeFragment!!.refreshAdapterToEmpty()
+                            3 -> if (attendances!!.isEmpty()) attendanceFragment!!.refreshAdapterToEmpty()
+                        }
                     }
                     utils.saveHistoryGrade(subjects)
                     utils.updateStatisticalData(subjects)
