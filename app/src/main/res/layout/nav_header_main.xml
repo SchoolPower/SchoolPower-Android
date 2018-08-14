@@ -30,6 +30,7 @@
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:contentDescription="@string/app_name"
+            android:foreground="?attr/selectableItemBackgroundBorderless"
             android:src="@drawable/icon" />
 
     </android.support.v7.widget.CardView>
