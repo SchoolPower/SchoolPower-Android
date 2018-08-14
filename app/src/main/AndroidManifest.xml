@@ -13,13 +13,13 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/ThemeLight.Cyan">
+        android:theme="@style/ThemeLight.Cyan.500">
 
         <activity
             android:name=".activities.LoginActivity"
             android:configChanges="locale|orientation"
             android:screenOrientation="portrait"
-            android:theme="@style/ThemeLight.Cyan">
+            android:theme="@style/ThemeLight.Cyan.500">
 
             <intent-filter>
 

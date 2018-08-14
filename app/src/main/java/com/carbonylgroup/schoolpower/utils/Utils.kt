@@ -36,26 +36,6 @@ class Utils(private val context: Context) {
     val LIGHT = "LIGHT"
     val DARK = "DARK"
 
-    val LIGHT_BLUE = 0
-    val BLUE = 1
-    val INDIGO = 2
-    val ORANGE = 3
-
-    val YELLOW = 4
-    val AMBER = 5
-    val GREY = 6
-    val BROWN = 7
-
-    val CYAN = 8
-    val TEAL = 9
-    val LIME = 10
-    val GREEN = 11
-
-    val PINK = 12
-    val RED = 13
-    val PURPLE = 14
-    val DEEP_PURPLE = 15
-
     private val gradeColorIds = intArrayOf(
             R.color.A_score_green,
             R.color.B_score_green,
