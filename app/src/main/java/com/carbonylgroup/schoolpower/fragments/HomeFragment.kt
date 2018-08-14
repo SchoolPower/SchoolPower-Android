@@ -92,7 +92,11 @@ class HomeFragment : TransitionHelper.BaseFragment() {
                 R.color.Cp_score_yellow, R.color.C_score_orange, R.color.Cm_score_red, R.color.primary)
         home_swipe_refresh_layout!!.setOnRefreshListener { MainActivity.of(activity).fetchStudentDataFromServer() }
         if (subjects == null || utils!!.getFilteredSubjects(subjects!!).count() == 0) refreshAdapterToEmpty()
-        else try{initAdapter()}catch(e:Exception){utils!!.errorHandler(e)}
+        else try {
+            initAdapter()
+        } catch (e: Exception) {
+            utils!!.errorHandler(e)
+        }
 
         if (needToShowDonate())
             initDonate()
@@ -164,8 +168,13 @@ class HomeFragment : TransitionHelper.BaseFragment() {
     }
 
     private fun needToShowDonate(): Boolean {
-        // Show donate every 30 days
-        return ((Date().time - getLastDonateShowedDate().time) / 1000.0 / 60.0 / 60.0 / 24.0 >= 30.0)
+        // Show donate every 30 days, if haven't donated
+        return if (isDonated()) false
+        else ((Date().time - getLastDonateShowedDate().time) / 1000.0 / 60.0 / 60.0 / 24.0 >= 30.0)
+    }
+
+    private fun isDonated(): Boolean {
+        return Utils(activity).getSharedPreference("Tmp").getBoolean("Donated", false)
     }
 
     private fun setLastDonateShowedDate(date: Date) {

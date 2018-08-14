@@ -35,6 +35,7 @@ class DonationFragment : Fragment() {
     fun gotoAlipay() {
         if (AlipayDonate.hasInstalledAlipayClient(activity)) {
             AlipayDonate.startAlipayClient(activity, AlipayToken)
+            setIsDonated(true)
         } else {
             utils.showSnackBar(view.findViewById(R.id.donation_fragment), getString(R.string.AlipayNotFound), true)
         }
@@ -42,14 +43,21 @@ class DonationFragment : Fragment() {
 
     fun gotoWechatPay() {
         startActivityForResult(Intent(activity, WechatIntroActivity::class.java), WECHAT_INTRO)
+        setIsDonated(true)
     }
 
     fun gotoPaypal() {
         AlipayDonate.startIntentUrl(activity, getString(R.string.paypalDonationURL))
+        setIsDonated(true)
     }
 
     fun gotoCrypto(crypto: CryptoDonationDialog.CRYPTO_TYPE) {
         CryptoDonationDialog(activity, crypto).show()
+        setIsDonated(true)
+    }
+
+    private fun setIsDonated(donated: Boolean) {
+        Utils(activity).setSharedPreference("Tmp", "Donated", donated)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
