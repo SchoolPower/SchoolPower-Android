@@ -34,12 +34,14 @@
         <item name="subtitle_color">@color/light_subtitle_color</item>
         <item name="selected_color">@color/light_selected_color</item>
         <item name="color_primary_blur">@color/light_color_primary_blur</item>
-        <item name="popup_theme">@style/PopupThemeLight</item>
-        <item name="appbar_theme">@style/AppbarThemeLight</item>
+        <item name="android:popupTheme">@style/PopupThemeLight</item>
+        <item name="android:actionBarPopupTheme">@style/PopupThemeLight</item>
+        <item name="android:actionBarStyle">@style/AppbarThemeLight</item>
+        <item name="actionOverflowButtonStyle">@style/ActionButtonOverflowLight</item>
         <item name="android:contextPopupMenuStyle" tools:targetApi="n">
             @style/ContextPopupThemeLight
         </item>
-        <item name="popup_menu_theme">@style/PopupMenuLight</item>
+        <item name="android:popupMenuStyle">@style/PopupMenuLight</item>
     </style>
 
     <style name="DialogThemeLight" parent="Theme.AppCompat.Light.Dialog.Alert">
@@ -52,8 +54,16 @@
         <item name="android:backgroundTint">@color/light_window_background</item>
     </style>
 
-    <style name="AppbarThemeLight" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+    <style name="ActionButtonOverflowLight" parent="@style/Widget.AppCompat.ActionButton.Overflow">
+        <item name="android:tint">@color/white</item>
+    </style>
 
+    <style name="AppbarThemeLight" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="android:titleTextStyle">@style/TitleThemeLight</item>
+    </style>
+
+    <style name="TitleThemeLight" parent="TextAppearance.AppCompat.Title">
+        <item name="android:color">@color/white</item>
     </style>
 
     <style name="PopupMenuLight" parent="Widget.AppCompat.Light.PopupMenu">
@@ -78,416 +88,499 @@
         <item name="alertDialogTheme">@style/DialogThemeLight.Pink.200</item>
         <item name="android:alertDialogTheme">@style/DialogThemeLight.Pink.200</item>
     </style>
+
     <style name="ThemeLight.Pink.300" parent="ThemeLight">
         <item name="colorAccent">@color/material_pink_300</item>
         <item name="alertDialogTheme">@style/DialogThemeLight.Pink.300</item>
         <item name="android:alertDialogTheme">@style/DialogThemeLight.Pink.300</item>
     </style>
+
     <style name="ThemeLight.Pink.400" parent="ThemeLight">
         <item name="colorAccent">@color/material_pink_400</item>
         <item name="alertDialogTheme">@style/DialogThemeLight.Pink.400</item>
         <item name="android:alertDialogTheme">@style/DialogThemeLight.Pink.400</item>
     </style>
+
     <style name="ThemeLight.Pink.500" parent="ThemeLight">
         <item name="colorAccent">@color/material_pink_500</item>
         <item name="alertDialogTheme">@style/DialogThemeLight.Pink.500</item>
         <item name="android:alertDialogTheme">@style/DialogThemeLight.Pink.500</item>
     </style>
+
     <style name="ThemeLight.Pink.600" parent="ThemeLight">
         <item name="colorAccent">@color/material_pink_600</item>
         <item name="alertDialogTheme">@style/DialogThemeLight.Pink.600</item>
         <item name="android:alertDialogTheme">@style/DialogThemeLight.Pink.600</item>
     </style>
+
     <style name="ThemeLight.Pink.700" parent="ThemeLight">
         <item name="colorAccent">@color/material_pink_700</item>
         <item name="alertDialogTheme">@style/DialogThemeLight.Pink.700</item>
         <item name="android:alertDialogTheme">@style/DialogThemeLight.Pink.700</item>
     </style>
+
     <style name="ThemeLight.Red.200" parent="ThemeLight">
         <item name="colorAccent">@color/material_red_200</item>
         <item name="alertDialogTheme">@style/DialogThemeLight.Red.200</item>
         <item name="android:alertDialogTheme">@style/DialogThemeLight.Red.200</item>
     </style>
+
     <style name="ThemeLight.Red.300" parent="ThemeLight">
         <item name="colorAccent">@color/material_red_300</item>
         <item name="alertDialogTheme">@style/DialogThemeLight.Red.300</item>
         <item name="android:alertDialogTheme">@style/DialogThemeLight.Red.300</item>
     </style>
+
     <style name="ThemeLight.Red.400" parent="ThemeLight">
         <item name="colorAccent">@color/material_red_400</item>
         <item name="alertDialogTheme">@style/DialogThemeLight.Red.400</item>
         <item name="android:alertDialogTheme">@style/DialogThemeLight.Red.400</item>
     </style>
+
     <style name="ThemeLight.Red.500" parent="ThemeLight">
         <item name="colorAccent">@color/material_red_500</item>
         <item name="alertDialogTheme">@style/DialogThemeLight.Red.500</item>
         <item name="android:alertDialogTheme">@style/DialogThemeLight.Red.500</item>
     </style>
+
     <style name="ThemeLight.Red.600" parent="ThemeLight">
         <item name="colorAccent">@color/material_red_600</item>
         <item name="alertDialogTheme">@style/DialogThemeLight.Red.600</item>
         <item name="android:alertDialogTheme">@style/DialogThemeLight.Red.600</item>
     </style>
+
     <style name="ThemeLight.Red.700" parent="ThemeLight">
         <item name="colorAccent">@color/material_red_700</item>
         <item name="alertDialogTheme">@style/DialogThemeLight.Red.700</item>
         <item name="android:alertDialogTheme">@style/DialogThemeLight.Red.700</item>
     </style>
+
     <style name="ThemeLight.Purple.200" parent="ThemeLight">
         <item name="colorAccent">@color/material_purple_200</item>
         <item name="alertDialogTheme">@style/DialogThemeLight.Purple.200</item>
         <item name="android:alertDialogTheme">@style/DialogThemeLight.Purple.200</item>
     </style>
+
     <style name="ThemeLight.Purple.300" parent="ThemeLight">
         <item name="colorAccent">@color/material_purple_300</item>
         <item name="alertDialogTheme">@style/DialogThemeLight.Purple.300</item>
         <item name="android:alertDialogTheme">@style/DialogThemeLight.Purple.300</item>
     </style>
+
     <style name="ThemeLight.Purple.400" parent="ThemeLight">
         <item name="colorAccent">@color/material_purple_400</item>
         <item name="alertDialogTheme">@style/DialogThemeLight.Purple.400</item>
         <item name="android:alertDialogTheme">@style/DialogThemeLight.Purple.400</item>
     </style>
+
     <style name="ThemeLight.Purple.500" parent="ThemeLight">
         <item name="colorAccent">@color/material_purple_500</item>
         <item name="alertDialogTheme">@style/DialogThemeLight.Purple.500</item>
         <item name="android:alertDialogTheme">@style/DialogThemeLight.Purple.500</item>
     </style>
+
     <style name="ThemeLight.Purple.600" parent="ThemeLight">
         <item name="colorAccent">@color/material_purple_600</item>
         <item name="alertDialogTheme">@style/DialogThemeLight.Purple.600</item>
         <item name="android:alertDialogTheme">@style/DialogThemeLight.Purple.600</item>
     </style>
+
     <style name="ThemeLight.Purple.700" parent="ThemeLight">
         <item name="colorAccent">@color/material_purple_700</item>
         <item name="alertDialogTheme">@style/DialogThemeLight.Purple.700</item>
         <item name="android:alertDialogTheme">@style/DialogThemeLight.Purple.700</item>
     </style>
+
     <style name="ThemeLight.Blue.200" parent="ThemeLight">
         <item name="colorAccent">@color/material_blue_200</item>
         <item name="alertDialogTheme">@style/DialogThemeLight.Blue.200</item>
         <item name="android:alertDialogTheme">@style/DialogThemeLight.Blue.200</item>
     </style>
+
     <style name="ThemeLight.Blue.300" parent="ThemeLight">
         <item name="colorAccent">@color/material_blue_300</item>
         <item name="alertDialogTheme">@style/DialogThemeLight.Blue.300</item>
         <item name="android:alertDialogTheme">@style/DialogThemeLight.Blue.300</item>
     </style>
+
     <style name="ThemeLight.Blue.400" parent="ThemeLight">
         <item name="colorAccent">@color/material_blue_400</item>
         <item name="alertDialogTheme">@style/DialogThemeLight.Blue.400</item>
         <item name="android:alertDialogTheme">@style/DialogThemeLight.Blue.400</item>
     </style>
+
     <style name="ThemeLight.Blue.500" parent="ThemeLight">
         <item name="colorAccent">@color/material_blue_500</item>
         <item name="alertDialogTheme">@style/DialogThemeLight.Blue.500</item>
         <item name="android:alertDialogTheme">@style/DialogThemeLight.Blue.500</item>
     </style>
+
     <style name="ThemeLight.Blue.600" parent="ThemeLight">
         <item name="colorAccent">@color/material_blue_600</item>
         <item name="alertDialogTheme">@style/DialogThemeLight.Blue.600</item>
         <item name="android:alertDialogTheme">@style/DialogThemeLight.Blue.600</item>
     </style>
+
     <style name="ThemeLight.Blue.700" parent="ThemeLight">
         <item name="colorAccent">@color/material_blue_700</item>
         <item name="alertDialogTheme">@style/DialogThemeLight.Blue.700</item>
         <item name="android:alertDialogTheme">@style/DialogThemeLight.Blue.700</item>
     </style>
+
     <style name="ThemeLight.Cyan.200" parent="ThemeLight">
         <item name="colorAccent">@color/material_cyan_200</item>
         <item name="alertDialogTheme">@style/DialogThemeLight.Cyan.200</item>
         <item name="android:alertDialogTheme">@style/DialogThemeLight.Cyan.200</item>
     </style>
+
     <style name="ThemeLight.Cyan.300" parent="ThemeLight">
         <item name="colorAccent">@color/material_cyan_300</item>
         <item name="alertDialogTheme">@style/DialogThemeLight.Cyan.300</item>
         <item name="android:alertDialogTheme">@style/DialogThemeLight.Cyan.300</item>
     </style>
+
     <style name="ThemeLight.Cyan.400" parent="ThemeLight">
         <item name="colorAccent">@color/material_cyan_400</item>
         <item name="alertDialogTheme">@style/DialogThemeLight.Cyan.400</item>
         <item name="android:alertDialogTheme">@style/DialogThemeLight.Cyan.400</item>
     </style>
+
     <style name="ThemeLight.Cyan.500" parent="ThemeLight">
         <item name="colorAccent">@color/material_cyan_500</item>
         <item name="alertDialogTheme">@style/DialogThemeLight.Cyan.500</item>
         <item name="android:alertDialogTheme">@style/DialogThemeLight.Cyan.500</item>
     </style>
+
     <style name="ThemeLight.Cyan.600" parent="ThemeLight">
         <item name="colorAccent">@color/material_cyan_600</item>
         <item name="alertDialogTheme">@style/DialogThemeLight.Cyan.600</item>
         <item name="android:alertDialogTheme">@style/DialogThemeLight.Cyan.600</item>
     </style>
+
     <style name="ThemeLight.Cyan.700" parent="ThemeLight">
         <item name="colorAccent">@color/material_cyan_700</item>
         <item name="alertDialogTheme">@style/DialogThemeLight.Cyan.700</item>
         <item name="android:alertDialogTheme">@style/DialogThemeLight.Cyan.700</item>
     </style>
+
     <style name="ThemeLight.Teal.200" parent="ThemeLight">
         <item name="colorAccent">@color/material_teal_200</item>
         <item name="alertDialogTheme">@style/DialogThemeLight.Teal.200</item>
         <item name="android:alertDialogTheme">@style/DialogThemeLight.Teal.200</item>
     </style>
+
     <style name="ThemeLight.Teal.300" parent="ThemeLight">
         <item name="colorAccent">@color/material_teal_300</item>
         <item name="alertDialogTheme">@style/DialogThemeLight.Teal.300</item>
         <item name="android:alertDialogTheme">@style/DialogThemeLight.Teal.300</item>
     </style>
+
     <style name="ThemeLight.Teal.400" parent="ThemeLight">
         <item name="colorAccent">@color/material_teal_400</item>
         <item name="alertDialogTheme">@style/DialogThemeLight.Teal.400</item>
         <item name="android:alertDialogTheme">@style/DialogThemeLight.Teal.400</item>
     </style>
+
     <style name="ThemeLight.Teal.500" parent="ThemeLight">
         <item name="colorAccent">@color/material_teal_500</item>
         <item name="alertDialogTheme">@style/DialogThemeLight.Teal.500</item>
         <item name="android:alertDialogTheme">@style/DialogThemeLight.Teal.500</item>
     </style>
+
     <style name="ThemeLight.Teal.600" parent="ThemeLight">
         <item name="colorAccent">@color/material_teal_600</item>
         <item name="alertDialogTheme">@style/DialogThemeLight.Teal.600</item>
         <item name="android:alertDialogTheme">@style/DialogThemeLight.Teal.600</item>
     </style>
+
     <style name="ThemeLight.Teal.700" parent="ThemeLight">
         <item name="colorAccent">@color/material_teal_700</item>
         <item name="alertDialogTheme">@style/DialogThemeLight.Teal.700</item>
         <item name="android:alertDialogTheme">@style/DialogThemeLight.Teal.700</item>
     </style>
+
     <style name="ThemeLight.Green.200" parent="ThemeLight">
         <item name="colorAccent">@color/material_green_200</item>
         <item name="alertDialogTheme">@style/DialogThemeLight.Green.200</item>
         <item name="android:alertDialogTheme">@style/DialogThemeLight.Green.200</item>
     </style>
+
     <style name="ThemeLight.Green.300" parent="ThemeLight">
         <item name="colorAccent">@color/material_green_300</item>
         <item name="alertDialogTheme">@style/DialogThemeLight.Green.300</item>
         <item name="android:alertDialogTheme">@style/DialogThemeLight.Green.300</item>
     </style>
+
     <style name="ThemeLight.Green.400" parent="ThemeLight">
         <item name="colorAccent">@color/material_green_400</item>
         <item name="alertDialogTheme">@style/DialogThemeLight.Green.400</item>
         <item name="android:alertDialogTheme">@style/DialogThemeLight.Green.400</item>
     </style>
+
     <style name="ThemeLight.Green.500" parent="ThemeLight">
         <item name="colorAccent">@color/material_green_500</item>
         <item name="alertDialogTheme">@style/DialogThemeLight.Green.500</item>
         <item name="android:alertDialogTheme">@style/DialogThemeLight.Green.500</item>
     </style>
+
     <style name="ThemeLight.Green.600" parent="ThemeLight">
         <item name="colorAccent">@color/material_green_600</item>
         <item name="alertDialogTheme">@style/DialogThemeLight.Green.600</item>
         <item name="android:alertDialogTheme">@style/DialogThemeLight.Green.600</item>
     </style>
+
     <style name="ThemeLight.Green.700" parent="ThemeLight">
         <item name="colorAccent">@color/material_green_700</item>
         <item name="alertDialogTheme">@style/DialogThemeLight.Green.700</item>
         <item name="android:alertDialogTheme">@style/DialogThemeLight.Green.700</item>
     </style>
+
     <style name="ThemeLight.LightGreen.200" parent="ThemeLight">
         <item name="colorAccent">@color/material_light_green_200</item>
         <item name="alertDialogTheme">@style/DialogThemeLight.LightGreen.200</item>
         <item name="android:alertDialogTheme">@style/DialogThemeLight.LightGreen.200</item>
     </style>
+
     <style name="ThemeLight.LightGreen.300" parent="ThemeLight">
         <item name="colorAccent">@color/material_light_green_300</item>
         <item name="alertDialogTheme">@style/DialogThemeLight.LightGreen.300</item>
         <item name="android:alertDialogTheme">@style/DialogThemeLight.LightGreen.300</item>
     </style>
+
     <style name="ThemeLight.LightGreen.400" parent="ThemeLight">
         <item name="colorAccent">@color/material_light_green_400</item>
         <item name="alertDialogTheme">@style/DialogThemeLight.LightGreen.400</item>
         <item name="android:alertDialogTheme">@style/DialogThemeLight.LightGreen.400</item>
     </style>
+
     <style name="ThemeLight.LightGreen.500" parent="ThemeLight">
         <item name="colorAccent">@color/material_light_green_500</item>
         <item name="alertDialogTheme">@style/DialogThemeLight.LightGreen.500</item>
         <item name="android:alertDialogTheme">@style/DialogThemeLight.LightGreen.500</item>
     </style>
+
     <style name="ThemeLight.LightGreen.600" parent="ThemeLight">
         <item name="colorAccent">@color/material_light_green_600</item>
         <item name="alertDialogTheme">@style/DialogThemeLight.LightGreen.600</item>
         <item name="android:alertDialogTheme">@style/DialogThemeLight.LightGreen.600</item>
     </style>
+
     <style name="ThemeLight.LightGreen.700" parent="ThemeLight">
         <item name="colorAccent">@color/material_light_green_700</item>
         <item name="alertDialogTheme">@style/DialogThemeLight.LightGreen.700</item>
         <item name="android:alertDialogTheme">@style/DialogThemeLight.LightGreen.700</item>
     </style>
+
     <style name="ThemeLight.Yellow.200" parent="ThemeLight">
         <item name="colorAccent">@color/material_yellow_200</item>
         <item name="alertDialogTheme">@style/DialogThemeLight.Yellow.200</item>
         <item name="android:alertDialogTheme">@style/DialogThemeLight.Yellow.200</item>
     </style>
+
     <style name="ThemeLight.Yellow.300" parent="ThemeLight">
         <item name="colorAccent">@color/material_yellow_300</item>
         <item name="alertDialogTheme">@style/DialogThemeLight.Yellow.300</item>
         <item name="android:alertDialogTheme">@style/DialogThemeLight.Yellow.300</item>
     </style>
+
     <style name="ThemeLight.Yellow.400" parent="ThemeLight">
         <item name="colorAccent">@color/material_yellow_400</item>
         <item name="alertDialogTheme">@style/DialogThemeLight.Yellow.400</item>
         <item name="android:alertDialogTheme">@style/DialogThemeLight.Yellow.400</item>
     </style>
+
     <style name="ThemeLight.Yellow.500" parent="ThemeLight">
         <item name="colorAccent">@color/material_yellow_500</item>
         <item name="alertDialogTheme">@style/DialogThemeLight.Yellow.500</item>
         <item name="android:alertDialogTheme">@style/DialogThemeLight.Yellow.500</item>
     </style>
+
     <style name="ThemeLight.Yellow.600" parent="ThemeLight">
         <item name="colorAccent">@color/material_yellow_600</item>
         <item name="alertDialogTheme">@style/DialogThemeLight.Yellow.600</item>
         <item name="android:alertDialogTheme">@style/DialogThemeLight.Yellow.600</item>
     </style>
+
     <style name="ThemeLight.Yellow.700" parent="ThemeLight">
         <item name="colorAccent">@color/material_yellow_700</item>
         <item name="alertDialogTheme">@style/DialogThemeLight.Yellow.700</item>
         <item name="android:alertDialogTheme">@style/DialogThemeLight.Yellow.700</item>
     </style>
+
     <style name="ThemeLight.Orange.200" parent="ThemeLight">
         <item name="colorAccent">@color/material_orange_200</item>
         <item name="alertDialogTheme">@style/DialogThemeLight.Orange.200</item>
         <item name="android:alertDialogTheme">@style/DialogThemeLight.Orange.200</item>
     </style>
+
     <style name="ThemeLight.Orange.300" parent="ThemeLight">
         <item name="colorAccent">@color/material_orange_300</item>
         <item name="alertDialogTheme">@style/DialogThemeLight.Orange.300</item>
         <item name="android:alertDialogTheme">@style/DialogThemeLight.Orange.300</item>
     </style>
+
     <style name="ThemeLight.Orange.400" parent="ThemeLight">
         <item name="colorAccent">@color/material_orange_400</item>
         <item name="alertDialogTheme">@style/DialogThemeLight.Orange.400</item>
         <item name="android:alertDialogTheme">@style/DialogThemeLight.Orange.400</item>
     </style>
+
     <style name="ThemeLight.Orange.500" parent="ThemeLight">
         <item name="colorAccent">@color/material_orange_500</item>
         <item name="alertDialogTheme">@style/DialogThemeLight.Orange.500</item>
         <item name="android:alertDialogTheme">@style/DialogThemeLight.Orange.500</item>
     </style>
+
     <style name="ThemeLight.Orange.600" parent="ThemeLight">
         <item name="colorAccent">@color/material_orange_600</item>
         <item name="alertDialogTheme">@style/DialogThemeLight.Orange.600</item>
         <item name="android:alertDialogTheme">@style/DialogThemeLight.Orange.600</item>
     </style>
+
     <style name="ThemeLight.Orange.700" parent="ThemeLight">
         <item name="colorAccent">@color/material_orange_700</item>
         <item name="alertDialogTheme">@style/DialogThemeLight.Orange.700</item>
         <item name="android:alertDialogTheme">@style/DialogThemeLight.Orange.700</item>
     </style>
+
     <style name="ThemeLight.DeepOrange.200" parent="ThemeLight">
         <item name="colorAccent">@color/material_deep_orange_200</item>
         <item name="alertDialogTheme">@style/DialogThemeLight.DeepOrange.200</item>
         <item name="android:alertDialogTheme">@style/DialogThemeLight.DeepOrange.200</item>
     </style>
+
     <style name="ThemeLight.DeepOrange.300" parent="ThemeLight">
         <item name="colorAccent">@color/material_deep_orange_300</item>
         <item name="alertDialogTheme">@style/DialogThemeLight.DeepOrange.300</item>
         <item name="android:alertDialogTheme">@style/DialogThemeLight.DeepOrange.300</item>
     </style>
+
     <style name="ThemeLight.DeepOrange.400" parent="ThemeLight">
         <item name="colorAccent">@color/material_deep_orange_400</item>
         <item name="alertDialogTheme">@style/DialogThemeLight.DeepOrange.400</item>
         <item name="android:alertDialogTheme">@style/DialogThemeLight.DeepOrange.400</item>
     </style>
+
     <style name="ThemeLight.DeepOrange.500" parent="ThemeLight">
         <item name="colorAccent">@color/material_deep_orange_500</item>
         <item name="alertDialogTheme">@style/DialogThemeLight.DeepOrange.500</item>
         <item name="android:alertDialogTheme">@style/DialogThemeLight.DeepOrange.500</item>
     </style>
+
     <style name="ThemeLight.DeepOrange.600" parent="ThemeLight">
         <item name="colorAccent">@color/material_deep_orange_600</item>
         <item name="alertDialogTheme">@style/DialogThemeLight.DeepOrange.600</item>
         <item name="android:alertDialogTheme">@style/DialogThemeLight.DeepOrange.600</item>
     </style>
+
     <style name="ThemeLight.DeepOrange.700" parent="ThemeLight">
         <item name="colorAccent">@color/material_deep_orange_700</item>
         <item name="alertDialogTheme">@style/DialogThemeLight.DeepOrange.700</item>
         <item name="android:alertDialogTheme">@style/DialogThemeLight.DeepOrange.700</item>
     </style>
+
     <style name="ThemeLight.Brown.200" parent="ThemeLight">
         <item name="colorAccent">@color/material_brown_200</item>
         <item name="alertDialogTheme">@style/DialogThemeLight.Brown.200</item>
         <item name="android:alertDialogTheme">@style/DialogThemeLight.Brown.200</item>
     </style>
+
     <style name="ThemeLight.Brown.300" parent="ThemeLight">
         <item name="colorAccent">@color/material_brown_300</item>
         <item name="alertDialogTheme">@style/DialogThemeLight.Brown.300</item>
         <item name="android:alertDialogTheme">@style/DialogThemeLight.Brown.300</item>
     </style>
+
     <style name="ThemeLight.Brown.400" parent="ThemeLight">
         <item name="colorAccent">@color/material_brown_400</item>
         <item name="alertDialogTheme">@style/DialogThemeLight.Brown.400</item>
         <item name="android:alertDialogTheme">@style/DialogThemeLight.Brown.400</item>
     </style>
+
     <style name="ThemeLight.Brown.500" parent="ThemeLight">
         <item name="colorAccent">@color/material_brown_500</item>
         <item name="alertDialogTheme">@style/DialogThemeLight.Brown.500</item>
         <item name="android:alertDialogTheme">@style/DialogThemeLight.Brown.500</item>
     </style>
+
     <style name="ThemeLight.Brown.600" parent="ThemeLight">
         <item name="colorAccent">@color/material_brown_600</item>
         <item name="alertDialogTheme">@style/DialogThemeLight.Brown.600</item>
         <item name="android:alertDialogTheme">@style/DialogThemeLight.Brown.600</item>
     </style>
+
     <style name="ThemeLight.Brown.700" parent="ThemeLight">
         <item name="colorAccent">@color/material_brown_700</item>
         <item name="alertDialogTheme">@style/DialogThemeLight.Brown.700</item>
         <item name="android:alertDialogTheme">@style/DialogThemeLight.Brown.700</item>
     </style>
+
     <style name="ThemeLight.Grey.200" parent="ThemeLight">
         <item name="colorAccent">@color/material_grey_200</item>
         <item name="alertDialogTheme">@style/DialogThemeLight.Grey.200</item>
         <item name="android:alertDialogTheme">@style/DialogThemeLight.Grey.200</item>
     </style>
+
     <style name="ThemeLight.Grey.300" parent="ThemeLight">
         <item name="colorAccent">@color/material_grey_300</item>
         <item name="alertDialogTheme">@style/DialogThemeLight.Grey.300</item>
         <item name="android:alertDialogTheme">@style/DialogThemeLight.Grey.300</item>
     </style>
+
     <style name="ThemeLight.Grey.400" parent="ThemeLight">
         <item name="colorAccent">@color/material_grey_400</item>
         <item name="alertDialogTheme">@style/DialogThemeLight.Grey.400</item>
         <item name="android:alertDialogTheme">@style/DialogThemeLight.Grey.400</item>
     </style>
+
     <style name="ThemeLight.Grey.500" parent="ThemeLight">
         <item name="colorAccent">@color/material_grey_500</item>
         <item name="alertDialogTheme">@style/DialogThemeLight.Grey.500</item>
         <item name="android:alertDialogTheme">@style/DialogThemeLight.Grey.500</item>
     </style>
+
     <style name="ThemeLight.Grey.600" parent="ThemeLight">
         <item name="colorAccent">@color/material_grey_600</item>
         <item name="alertDialogTheme">@style/DialogThemeLight.Grey.600</item>
         <item name="android:alertDialogTheme">@style/DialogThemeLight.Grey.600</item>
     </style>
+
     <style name="ThemeLight.Grey.700" parent="ThemeLight">
         <item name="colorAccent">@color/material_grey_700</item>
         <item name="alertDialogTheme">@style/DialogThemeLight.Grey.700</item>
         <item name="android:alertDialogTheme">@style/DialogThemeLight.Grey.700</item>
     </style>
+
     <style name="ThemeLight.BlueGrey.200" parent="ThemeLight">
         <item name="colorAccent">@color/material_blue_grey_200</item>
         <item name="alertDialogTheme">@style/DialogThemeLight.BlueGrey.200</item>
         <item name="android:alertDialogTheme">@style/DialogThemeLight.BlueGrey.200</item>
     </style>
+
     <style name="ThemeLight.BlueGrey.300" parent="ThemeLight">
         <item name="colorAccent">@color/material_blue_grey_300</item>
         <item name="alertDialogTheme">@style/DialogThemeLight.BlueGrey.300</item>
         <item name="android:alertDialogTheme">@style/DialogThemeLight.BlueGrey.300</item>
     </style>
+
     <style name="ThemeLight.BlueGrey.400" parent="ThemeLight">
         <item name="colorAccent">@color/material_blue_grey_400</item>
         <item name="alertDialogTheme">@style/DialogThemeLight.BlueGrey.400</item>
         <item name="android:alertDialogTheme">@style/DialogThemeLight.BlueGrey.400</item>
     </style>
+
     <style name="ThemeLight.BlueGrey.500" parent="ThemeLight">
         <item name="colorAccent">@color/material_blue_grey_500</item>
         <item name="alertDialogTheme">@style/DialogThemeLight.BlueGrey.500</item>
         <item name="android:alertDialogTheme">@style/DialogThemeLight.BlueGrey.500</item>
     </style>
+
     <style name="ThemeLight.BlueGrey.600" parent="ThemeLight">
         <item name="colorAccent">@color/material_blue_grey_600</item>
         <item name="alertDialogTheme">@style/DialogThemeLight.BlueGrey.600</item>
         <item name="android:alertDialogTheme">@style/DialogThemeLight.BlueGrey.600</item>
     </style>
+
     <style name="ThemeLight.BlueGrey.700" parent="ThemeLight">
         <item name="colorAccent">@color/material_blue_grey_700</item>
         <item name="alertDialogTheme">@style/DialogThemeLight.BlueGrey.700</item>
@@ -497,251 +590,339 @@
     <style name="DialogThemeLight.Pink.200" parent="DialogThemeLight">
         <item name="colorAccent">@color/material_pink_200</item>
     </style>
+
     <style name="DialogThemeLight.Pink.300" parent="DialogThemeLight">
         <item name="colorAccent">@color/material_pink_300</item>
     </style>
+
     <style name="DialogThemeLight.Pink.400" parent="DialogThemeLight">
         <item name="colorAccent">@color/material_pink_400</item>
     </style>
+
     <style name="DialogThemeLight.Pink.500" parent="DialogThemeLight">
         <item name="colorAccent">@color/material_pink_500</item>
     </style>
+
     <style name="DialogThemeLight.Pink.600" parent="DialogThemeLight">
         <item name="colorAccent">@color/material_pink_600</item>
     </style>
+
     <style name="DialogThemeLight.Pink.700" parent="DialogThemeLight">
         <item name="colorAccent">@color/material_pink_700</item>
-    </style><style name="DialogThemeLight.Red.200" parent="DialogThemeLight">
-    <item name="colorAccent">@color/material_red_200</item>
-</style>
+    </style>
+
+    <style name="DialogThemeLight.Red.200" parent="DialogThemeLight">
+        <item name="colorAccent">@color/material_red_200</item>
+    </style>
+
     <style name="DialogThemeLight.Red.300" parent="DialogThemeLight">
         <item name="colorAccent">@color/material_red_300</item>
     </style>
+
     <style name="DialogThemeLight.Red.400" parent="DialogThemeLight">
         <item name="colorAccent">@color/material_red_400</item>
     </style>
+
     <style name="DialogThemeLight.Red.500" parent="DialogThemeLight">
         <item name="colorAccent">@color/material_red_500</item>
     </style>
+
     <style name="DialogThemeLight.Red.600" parent="DialogThemeLight">
         <item name="colorAccent">@color/material_red_600</item>
     </style>
+
     <style name="DialogThemeLight.Red.700" parent="DialogThemeLight">
         <item name="colorAccent">@color/material_red_700</item>
-    </style><style name="DialogThemeLight.Purple.200" parent="DialogThemeLight">
-    <item name="colorAccent">@color/material_purple_200</item>
-</style>
+    </style>
+
+    <style name="DialogThemeLight.Purple.200" parent="DialogThemeLight">
+        <item name="colorAccent">@color/material_purple_200</item>
+    </style>
+
     <style name="DialogThemeLight.Purple.300" parent="DialogThemeLight">
         <item name="colorAccent">@color/material_purple_300</item>
     </style>
+
     <style name="DialogThemeLight.Purple.400" parent="DialogThemeLight">
         <item name="colorAccent">@color/material_purple_400</item>
     </style>
+
     <style name="DialogThemeLight.Purple.500" parent="DialogThemeLight">
         <item name="colorAccent">@color/material_purple_500</item>
     </style>
+
     <style name="DialogThemeLight.Purple.600" parent="DialogThemeLight">
         <item name="colorAccent">@color/material_purple_600</item>
     </style>
+
     <style name="DialogThemeLight.Purple.700" parent="DialogThemeLight">
         <item name="colorAccent">@color/material_purple_700</item>
-    </style><style name="DialogThemeLight.Blue.200" parent="DialogThemeLight">
-    <item name="colorAccent">@color/material_blue_200</item>
-</style>
+    </style>
+
+    <style name="DialogThemeLight.Blue.200" parent="DialogThemeLight">
+        <item name="colorAccent">@color/material_blue_200</item>
+    </style>
+
     <style name="DialogThemeLight.Blue.300" parent="DialogThemeLight">
         <item name="colorAccent">@color/material_blue_300</item>
     </style>
+
     <style name="DialogThemeLight.Blue.400" parent="DialogThemeLight">
         <item name="colorAccent">@color/material_blue_400</item>
     </style>
+
     <style name="DialogThemeLight.Blue.500" parent="DialogThemeLight">
         <item name="colorAccent">@color/material_blue_500</item>
     </style>
+
     <style name="DialogThemeLight.Blue.600" parent="DialogThemeLight">
         <item name="colorAccent">@color/material_blue_600</item>
     </style>
+
     <style name="DialogThemeLight.Blue.700" parent="DialogThemeLight">
         <item name="colorAccent">@color/material_blue_700</item>
     </style>
+
     <style name="DialogThemeLight.Cyan.200" parent="DialogThemeLight">
         <item name="colorAccent">@color/material_cyan_200</item>
     </style>
+
     <style name="DialogThemeLight.Cyan.300" parent="DialogThemeLight">
         <item name="colorAccent">@color/material_cyan_300</item>
     </style>
+
     <style name="DialogThemeLight.Cyan.400" parent="DialogThemeLight">
         <item name="colorAccent">@color/material_cyan_400</item>
     </style>
+
     <style name="DialogThemeLight.Cyan.500" parent="DialogThemeLight">
         <item name="colorAccent">@color/material_cyan_500</item>
     </style>
+
     <style name="DialogThemeLight.Cyan.600" parent="DialogThemeLight">
         <item name="colorAccent">@color/material_cyan_600</item>
     </style>
+
     <style name="DialogThemeLight.Cyan.700" parent="DialogThemeLight">
         <item name="colorAccent">@color/material_cyan_700</item>
-    </style><style name="DialogThemeLight.Blue" parent="DialogThemeLight">
+    </style>
+
+    <style name="DialogThemeLight.Blue" parent="DialogThemeLight">
         <item name="colorAccent">@color/material_blue_accent_700</item>
     </style>
+
     <style name="DialogThemeLight.Teal.200" parent="DialogThemeLight">
         <item name="colorAccent">@color/material_teal_200</item>
     </style>
+
     <style name="DialogThemeLight.Teal.300" parent="DialogThemeLight">
         <item name="colorAccent">@color/material_teal_300</item>
     </style>
+
     <style name="DialogThemeLight.Teal.400" parent="DialogThemeLight">
         <item name="colorAccent">@color/material_teal_400</item>
     </style>
+
     <style name="DialogThemeLight.Teal.500" parent="DialogThemeLight">
         <item name="colorAccent">@color/material_teal_500</item>
     </style>
+
     <style name="DialogThemeLight.Teal.600" parent="DialogThemeLight">
         <item name="colorAccent">@color/material_teal_600</item>
     </style>
+
     <style name="DialogThemeLight.Teal.700" parent="DialogThemeLight">
         <item name="colorAccent">@color/material_teal_700</item>
     </style>
+
     <style name="DialogThemeLight.Green.200" parent="DialogThemeLight">
         <item name="colorAccent">@color/material_green_200</item>
     </style>
+
     <style name="DialogThemeLight.Green.300" parent="DialogThemeLight">
         <item name="colorAccent">@color/material_green_300</item>
     </style>
+
     <style name="DialogThemeLight.Green.400" parent="DialogThemeLight">
         <item name="colorAccent">@color/material_green_400</item>
     </style>
+
     <style name="DialogThemeLight.Green.500" parent="DialogThemeLight">
         <item name="colorAccent">@color/material_green_500</item>
     </style>
+
     <style name="DialogThemeLight.Green.600" parent="DialogThemeLight">
         <item name="colorAccent">@color/material_green_600</item>
     </style>
+
     <style name="DialogThemeLight.Green.700" parent="DialogThemeLight">
         <item name="colorAccent">@color/material_green_700</item>
     </style>
+
     <style name="DialogThemeLight.LightGreen.200" parent="DialogThemeLight">
         <item name="colorAccent">@color/material_light_green_200</item>
     </style>
+
     <style name="DialogThemeLight.LightGreen.300" parent="DialogThemeLight">
         <item name="colorAccent">@color/material_light_green_300</item>
     </style>
+
     <style name="DialogThemeLight.LightGreen.400" parent="DialogThemeLight">
         <item name="colorAccent">@color/material_light_green_400</item>
     </style>
+
     <style name="DialogThemeLight.LightGreen.500" parent="DialogThemeLight">
         <item name="colorAccent">@color/material_light_green_500</item>
     </style>
+
     <style name="DialogThemeLight.LightGreen.600" parent="DialogThemeLight">
         <item name="colorAccent">@color/material_light_green_600</item>
     </style>
+
     <style name="DialogThemeLight.LightGreen.700" parent="DialogThemeLight">
         <item name="colorAccent">@color/material_light_green_700</item>
     </style>
+
     <style name="DialogThemeLight.Yellow.200" parent="DialogThemeLight">
         <item name="colorAccent">@color/material_yellow_200</item>
     </style>
+
     <style name="DialogThemeLight.Yellow.300" parent="DialogThemeLight">
         <item name="colorAccent">@color/material_yellow_300</item>
     </style>
+
     <style name="DialogThemeLight.Yellow.400" parent="DialogThemeLight">
         <item name="colorAccent">@color/material_yellow_400</item>
     </style>
+
     <style name="DialogThemeLight.Yellow.500" parent="DialogThemeLight">
         <item name="colorAccent">@color/material_yellow_500</item>
     </style>
+
     <style name="DialogThemeLight.Yellow.600" parent="DialogThemeLight">
         <item name="colorAccent">@color/material_yellow_600</item>
     </style>
+
     <style name="DialogThemeLight.Yellow.700" parent="DialogThemeLight">
         <item name="colorAccent">@color/material_yellow_700</item>
     </style>
+
     <style name="DialogThemeLight.Orange.200" parent="DialogThemeLight">
         <item name="colorAccent">@color/material_orange_200</item>
     </style>
+
     <style name="DialogThemeLight.Orange.300" parent="DialogThemeLight">
         <item name="colorAccent">@color/material_orange_300</item>
     </style>
+
     <style name="DialogThemeLight.Orange.400" parent="DialogThemeLight">
         <item name="colorAccent">@color/material_orange_400</item>
     </style>
+
     <style name="DialogThemeLight.Orange.500" parent="DialogThemeLight">
         <item name="colorAccent">@color/material_orange_500</item>
     </style>
+
     <style name="DialogThemeLight.Orange.600" parent="DialogThemeLight">
         <item name="colorAccent">@color/material_orange_600</item>
     </style>
+
     <style name="DialogThemeLight.Orange.700" parent="DialogThemeLight">
         <item name="colorAccent">@color/material_orange_700</item>
     </style>
+
     <style name="DialogThemeLight.DeepOrange.200" parent="DialogThemeLight">
         <item name="colorAccent">@color/material_deep_orange_200</item>
     </style>
+
     <style name="DialogThemeLight.DeepOrange.300" parent="DialogThemeLight">
         <item name="colorAccent">@color/material_deep_orange_300</item>
     </style>
+
     <style name="DialogThemeLight.DeepOrange.400" parent="DialogThemeLight">
         <item name="colorAccent">@color/material_deep_orange_400</item>
     </style>
+
     <style name="DialogThemeLight.DeepOrange.500" parent="DialogThemeLight">
         <item name="colorAccent">@color/material_deep_orange_500</item>
     </style>
+
     <style name="DialogThemeLight.DeepOrange.600" parent="DialogThemeLight">
         <item name="colorAccent">@color/material_deep_orange_600</item>
     </style>
+
     <style name="DialogThemeLight.DeepOrange.700" parent="DialogThemeLight">
         <item name="colorAccent">@color/material_deep_orange_700</item>
     </style>
+
     <style name="DialogThemeLight.Brown.200" parent="DialogThemeLight">
         <item name="colorAccent">@color/material_brown_200</item>
     </style>
+
     <style name="DialogThemeLight.Brown.300" parent="DialogThemeLight">
         <item name="colorAccent">@color/material_brown_300</item>
     </style>
+
     <style name="DialogThemeLight.Brown.400" parent="DialogThemeLight">
         <item name="colorAccent">@color/material_brown_400</item>
     </style>
+
     <style name="DialogThemeLight.Brown.500" parent="DialogThemeLight">
         <item name="colorAccent">@color/material_brown_500</item>
     </style>
+
     <style name="DialogThemeLight.Brown.600" parent="DialogThemeLight">
         <item name="colorAccent">@color/material_brown_600</item>
     </style>
+
     <style name="DialogThemeLight.Brown.700" parent="DialogThemeLight">
         <item name="colorAccent">@color/material_brown_700</item>
     </style>
+
     <style name="DialogThemeLight.Grey.200" parent="DialogThemeLight">
         <item name="colorAccent">@color/material_grey_200</item>
     </style>
+
     <style name="DialogThemeLight.Grey.300" parent="DialogThemeLight">
         <item name="colorAccent">@color/material_grey_300</item>
     </style>
+
     <style name="DialogThemeLight.Grey.400" parent="DialogThemeLight">
         <item name="colorAccent">@color/material_grey_400</item>
     </style>
+
     <style name="DialogThemeLight.Grey.500" parent="DialogThemeLight">
         <item name="colorAccent">@color/material_grey_500</item>
     </style>
+
     <style name="DialogThemeLight.Grey.600" parent="DialogThemeLight">
         <item name="colorAccent">@color/material_grey_600</item>
     </style>
+
     <style name="DialogThemeLight.Grey.700" parent="DialogThemeLight">
         <item name="colorAccent">@color/material_grey_700</item>
     </style>
+
     <style name="DialogThemeLight.BlueGrey.200" parent="DialogThemeLight">
         <item name="colorAccent">@color/material_blue_grey_200</item>
     </style>
+
     <style name="DialogThemeLight.BlueGrey.300" parent="DialogThemeLight">
         <item name="colorAccent">@color/material_blue_grey_300</item>
     </style>
+
     <style name="DialogThemeLight.BlueGrey.400" parent="DialogThemeLight">
         <item name="colorAccent">@color/material_blue_grey_400</item>
     </style>
+
     <style name="DialogThemeLight.BlueGrey.500" parent="DialogThemeLight">
         <item name="colorAccent">@color/material_blue_grey_500</item>
     </style>
+
     <style name="DialogThemeLight.BlueGrey.600" parent="DialogThemeLight">
         <item name="colorAccent">@color/material_blue_grey_600</item>
     </style>
+
     <style name="DialogThemeLight.BlueGrey.700" parent="DialogThemeLight">
         <item name="colorAccent">@color/material_blue_grey_700</item>
     </style>
