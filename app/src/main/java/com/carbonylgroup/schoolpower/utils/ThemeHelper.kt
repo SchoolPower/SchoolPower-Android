@@ -1,8 +1,8 @@
 package com.carbonylgroup.schoolpower.utils
 
+import android.content.Context
 import android.support.annotation.StyleRes
 import com.carbonylgroup.schoolpower.R
-import com.carbonylgroup.schoolpower.activities.BaseActivity
 
 
 /**
@@ -11,13 +11,13 @@ import com.carbonylgroup.schoolpower.activities.BaseActivity
  * Modified by Copyright (C) 2018 SchoolPower Studio.
  */
 
-class ThemeHelper(private val activity: BaseActivity) {
+class ThemeHelper(private val context: Context) {
 
-    val utils = Utils(activity)
+    val utils = Utils(context)
 
     internal fun apply() {
         val theme = utils.getTheme()
-        activity.setTheme(getTheme(theme, utils.getAccentColorIndex()))
+        context.setTheme(getTheme(theme, utils.getAccentColorIndex()))
     }
 
     @StyleRes

@@ -111,7 +111,9 @@ class Utils(private val context: Context) {
         return getDefaultSp(context).getString(THEME, LIGHT)
     }
 
-    fun getAccentColorIndex() = getDefaultSp(context).getInt(ACCENT_COLOR, 8)
+    fun getAccentColorIndex() = getDefaultSp(context).getInt(ACCENT_COLOR,
+            ThemeHelper(context).lightArray.indexOf(R.style.ThemeLight_Cyan_500)
+    )
 
     @ColorInt
     fun getPrimaryColor() = getColorAttr(R.attr.colorPrimary)
@@ -602,7 +604,7 @@ class Utils(private val context: Context) {
         }
     }
 
-    fun errorHandler(e:Exception){
+    fun errorHandler(e: Exception) {
         val sw = StringWriter()
         e.printStackTrace(PrintWriter(sw))
         (context as Activity).runOnUiThread {
@@ -660,7 +662,9 @@ class Utils(private val context: Context) {
 
                 temp.time += 24 * 60 * 60 * 1000
                 return temp.time
-            }catch(e: Exception){return 0}
+            } catch (e: Exception) {
+                return 0
+            }
         }
 
         fun getShortName(subjectTitle: String): String {
