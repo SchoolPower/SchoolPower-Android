@@ -298,8 +298,10 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                         val res = response.body()?.string()
                         response.close()
                         if (res?.contains("error") != false) {
-                            utils.showSnackBar(findViewById(R.id.main_coordinate_layout),
-                                    JSONObject(res)["error"].toString(), true)
+                            runOnUiThread {
+                                utils.showSnackBar(findViewById(R.id.main_coordinate_layout),
+                                        JSONObject(res)["error"].toString(), true)
+                            }
                         } else {
                             utils.setSharedPreference(AccountData, getString(R.string.user_avatar), "")
                             val header = navigationView.getHeaderView(0)
@@ -617,9 +619,11 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
 
                     utils.setSharedPreference(AccountData, getString(R.string.user_avatar), extraInfo.avatar)
 
-                    when (presentFragment) {
-                        0 -> if (subjects!!.isEmpty()) homeFragment!!.refreshAdapterToEmpty()
-                        3 -> if (attendances!!.isEmpty()) attendanceFragment!!.refreshAdapterToEmpty()
+                    runOnUiThread {
+                        when (presentFragment) {
+                            0 -> if (subjects!!.isEmpty()) homeFragment!!.refreshAdapterToEmpty()
+                            3 -> if (attendances!!.isEmpty()) attendanceFragment!!.refreshAdapterToEmpty()
+                        }
                     }
                     utils.saveHistoryGrade(subjects)
                     utils.updateStatisticalData(subjects)
@@ -649,7 +653,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                             utils.showSnackBar(findViewById(R.id.main_coordinate_layout), getString(R.string.happy_birth), false)
 
                     }
-                }catch(e:Exception){
+                } catch (e: Exception) {
                     runOnUiThread {
                         utils.showSnackBar(findViewById(R.id.main_coordinate_layout), getString(R.string.server_problem) + strMessage, true)
                     }
@@ -760,12 +764,13 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                         ).execute().body()?.string()
 
                         if (responseAvatar?.contains("error") != false) {
-                            utils.showSnackBar(findViewById(R.id.main_coordinate_layout),
-                                    JSONObject(responseAvatar)["error"].toString(), true)
+                            runOnUiThread {
+                                utils.showSnackBar(findViewById(R.id.main_coordinate_layout),
+                                        JSONObject(responseAvatar)["error"].toString(), true)
+                            }
                         }
 
                         utils.setSharedPreference(AccountData, getString(R.string.user_avatar), avatarUrl)
-
                         val header = navigationView.getHeaderView(0)
                         header.findViewById<ImageView>(R.id.user_avatar).post {
                             updateAvatar()

@@ -89,39 +89,43 @@ class LoginActivity : BaseActivity() {
                     override fun onFailure(call: Call, e: IOException) {
                         e.printStackTrace()
                         val backupServer = utils.getBackupServerUrl("pull_data_2")
-                        if(!retried && backupServer!=null) {
+                        if (!retried && backupServer != null) {
                             retried = true
                             try {
                                 val response = utils.buildNetworkRequest(backupServer, "POST", body).execute()
                                 onResponse(call, response)
-                            }catch(e:IOException){}
+                            } catch (e: IOException) {
+                            }
                             return
                         }
                         progressDialog.dismiss()
                         utils.showSnackBar(findViewById(R.id.login_coordinate_layout), getString(R.string.no_connection), true)
                     }
+
                     override fun onResponse(call: Call, response: Response) {
 
                         val strMessage = response.body()!!.string().replace("\n", "")
                         response.close()
-
                         // Error happened. Usually caused by wrong username/password
                         if (strMessage.contains("Something went wrong!")) {
-                            utils.showSnackBar(findViewById(R.id.login_coordinate_layout), getString(R.string.wrong_password), true)
-                            Log.w("Login", strMessage)
-                            progressDialog.dismiss()
-                            return
+                            runOnUiThread {
+                                utils.showSnackBar(findViewById(R.id.login_coordinate_layout), getString(R.string.wrong_password), true)
+                                Log.w("Login", strMessage)
+                                progressDialog.dismiss()
+                            }
                         }
                         if (strMessage.contains("\"alert\"")) {
-                            utils.showSnackBar(findViewById(R.id.login_coordinate_layout), JSONObject(strMessage)["alert"].toString(), true)
-                            progressDialog.dismiss()
-                            return
+                            runOnUiThread {
+                                utils.showSnackBar(findViewById(R.id.login_coordinate_layout), JSONObject(strMessage)["alert"].toString(), true)
+                                progressDialog.dismiss()
+                            }
                         }
                         if (!strMessage.contains("{")) {
-                            utils.showSnackBar(findViewById(R.id.login_coordinate_layout), getString(R.string.no_connection), true)
-                            progressDialog.dismiss()
+                            runOnUiThread {
+                                utils.showSnackBar(findViewById(R.id.login_coordinate_layout), getString(R.string.no_connection), true)
+                                progressDialog.dismiss()
+                            }
                         }
-
                         val data = StudentData(this@LoginActivity, strMessage)
 
                         utils.getSharedPreference(Utils.AccountData).edit()
@@ -135,7 +139,10 @@ class LoginActivity : BaseActivity() {
                         utils.saveHistoryGrade(data.subjects)
 
                         startMainActivity()
-                        progressDialog.dismiss()
+
+                        runOnUiThread {
+                            progressDialog.dismiss()
+                        }
                     }
                 })
     }
