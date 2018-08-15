@@ -19,6 +19,7 @@ import android.os.Bundle
 import android.preference.PreferenceManager
 import android.support.design.widget.AppBarLayout
 import android.support.design.widget.NavigationView
+import android.support.v4.content.ContextCompat
 import android.support.v4.view.GravityCompat
 import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.ActionBarDrawerToggle
@@ -353,9 +354,8 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
         val header = navigationView.getHeaderView(0)
         header.findViewById<TextView>(R.id.nav_header_username).text = getUsername()
         header.findViewById<TextView>(R.id.nav_header_id).text = getUserID().replace("\n", ".")
-        header.findViewById<ImageView>(R.id.user_avatar).setOnClickListener(
-                { _ -> setAvatar();true }
-        )
+        header.findViewById<ImageView>(R.id.user_avatar).setOnClickListener { setAvatar() }
+
         updateAvatar()
     }
 
@@ -609,6 +609,17 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                         builder.setPositiveButton(getString(R.string.alright), null)
                         builder.create().show()
                     }
+                    if (homeFragment != null)
+                        runOnUiThread {
+                            homeFragment!!.removeAllILD()
+                            homeFragment!!.initInListDialog(
+                                    ContextCompat.getDrawable(this@MainActivity, R.drawable.ic_donation)!!,
+                                    "", "",
+                                    "", "", "",
+                                    true, true,
+                                    View.OnClickListener {}, View.OnClickListener {}, View.OnClickListener {}
+                            )
+                        }
                     studentInformation = data.studentInfo
                     subjects = data.subjects
                     attendances = data.attendances

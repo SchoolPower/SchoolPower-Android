@@ -198,7 +198,6 @@ class FoldingCellListAdapter(context: Context, private var subjects: List<Subjec
     }
 
     fun showTermDialog(subject: Subject, position: Int) {
-
         val objects = subject.grades
         val gradeMap: Map<String, Subject.Grade> = objects
         val keys = objects.keys.toTypedArray()
@@ -237,7 +236,6 @@ class FoldingCellListAdapter(context: Context, private var subjects: List<Subjec
     }
 
     private class ViewHolder {
-
         internal var unfold_trend_card: CardView? = null
         internal var unfold_trend_text: TextView? = null
         internal var unfold_trend_image: ImageView? = null

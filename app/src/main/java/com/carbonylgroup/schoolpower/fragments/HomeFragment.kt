@@ -29,6 +29,7 @@ import com.carbonylgroup.schoolpower.utils.Utils
 import com.ramotion.foldingcell.FoldingCell
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 class HomeFragment : TransitionHelper.BaseFragment() {
@@ -39,6 +40,7 @@ class HomeFragment : TransitionHelper.BaseFragment() {
     private var fabIn: ScaleAnimation? = null
     private var fabOut: ScaleAnimation? = null
     private var subjects: List<Subject>? = null
+    private var allILDs: ArrayList<ViewGroup> = ArrayList()
     private var unfoldedIndexesBackUp = HashSet<Int>()
     private var adapter: FoldingCellListAdapter? = null
     private var courseDetailFragment: CourseDetailFragment? = null
@@ -75,6 +77,7 @@ class HomeFragment : TransitionHelper.BaseFragment() {
     private fun initValue() {
         utils = Utils(MainActivity.of(activity))
         subjects = MainActivity.of(activity).subjects
+        allILDs = arrayListOf()
         MainActivity.of(activity).presentFragment = 0
         MainActivity.of(activity).setToolBarElevation()
         MainActivity.of(activity).setToolBarTitle(getString(R.string.dashboard))
@@ -117,6 +120,9 @@ class HomeFragment : TransitionHelper.BaseFragment() {
                         ContextCompat.getDrawable(activity, R.drawable.ic_donation)!!,
                         getString(R.string.donation_title),
                         getString(R.string.donation_message),
+                        getString(R.string.donation_ok),
+                        getString(R.string.donation_promote),
+                        getString(R.string.donation_cancel),
                         false, false,
                         po, ps, pd
                 )
@@ -179,10 +185,13 @@ class HomeFragment : TransitionHelper.BaseFragment() {
      * @param secondaryOnClickListener
      * @param dismissOnClickListener
      */
-    private fun initInListDialog(
+    fun initInListDialog(
             headerImage: Drawable,
             title: String,
             message: String,
+            primaryText: String,
+            secondaryText: String,
+            dismissText: String,
             hideDismiss: Boolean,
             hideSecondary: Boolean,
             primaryOnClickListener: View.OnClickListener,
@@ -195,6 +204,10 @@ class HomeFragment : TransitionHelper.BaseFragment() {
         self.findViewById<ImageView>(R.id.ild_image_view).setImageDrawable(headerImage)
         self.findViewById<TextView>(R.id.ild_title).text = title
         self.findViewById<TextView>(R.id.ild_message).text = message
+
+        self.findViewById<Button>(R.id.ild_primary_button).text = primaryText
+        self.findViewById<Button>(R.id.ild_secondary_button).text = secondaryText
+        self.findViewById<Button>(R.id.ild_dismiss_button).text = dismissText
 
         val po = CompositeOnClickListener()
         val ps = CompositeOnClickListener()
@@ -217,20 +230,29 @@ class HomeFragment : TransitionHelper.BaseFragment() {
             self.findViewById<Button>(R.id.ild_dismiss_button).visibility = View.VISIBLE
             self.findViewById<Button>(R.id.ild_dismiss_button).setOnClickListener(pd)
         }
+        addILD(self)
+    }
 
-        dashboardListView.addHeaderView(self, null, false)
+    private fun addILD(ild: ViewGroup) {
+        dashboardListView.addHeaderView(ild, null, false)
+        allILDs.add(ild)
     }
 
     private fun removeILD(ild: ViewGroup) {
         TransitionManager.beginDelayedTransition(dashboardListView)
         dashboardListView.removeHeaderView(ild)
+        allILDs.remove(ild)
+    }
+
+    fun removeAllILD() {
+        for (ild in allILDs) removeILD(ild)
     }
 
     private fun needToShowDonate(): Boolean {
         // Show donate every 30 days, if haven't donated
 //        return if (isDonated()) false
 //        else ((Date().time - getLastDonateShowedDate().time) / 1000.0 / 60.0 / 60.0 / 24.0 >= 30.0)
-        return true
+        return false
     }
 
     private fun isDonated(): Boolean {
