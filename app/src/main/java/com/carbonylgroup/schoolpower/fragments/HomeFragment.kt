@@ -117,6 +117,7 @@ class HomeFragment : TransitionHelper.BaseFragment() {
                         ContextCompat.getDrawable(activity, R.drawable.ic_donation)!!,
                         getString(R.string.donation_title),
                         getString(R.string.donation_message),
+                        false, false,
                         po, ps, pd
                 )
     }
@@ -164,7 +165,7 @@ class HomeFragment : TransitionHelper.BaseFragment() {
      * Generates an InListDialog with maximum of three buttons
      * as the header of the dashboard listView
      *
-     * Primary and Dismiss buttons are mandatorily shown
+     * Primary button is mandatorily shown
      *
      * When each button is clicked, dialog will be automatically dismissed after
      * executing the assigned OnClickListener
@@ -172,14 +173,18 @@ class HomeFragment : TransitionHelper.BaseFragment() {
      * @param headerImage
      * @param title
      * @param message
+     * @param hideDismiss if true - dismiss button will not be shown
+     * @param hideSecondary if true - secondary button will not be shown
      * @param primaryOnClickListener
-     * @param secondaryOnClickListener if empty ({}) - secondary button will not be shown
+     * @param secondaryOnClickListener
      * @param dismissOnClickListener
      */
     private fun initInListDialog(
             headerImage: Drawable,
             title: String,
             message: String,
+            hideDismiss: Boolean,
+            hideSecondary: Boolean,
             primaryOnClickListener: View.OnClickListener,
             secondaryOnClickListener: View.OnClickListener,
             dismissOnClickListener: View.OnClickListener
@@ -204,10 +209,13 @@ class HomeFragment : TransitionHelper.BaseFragment() {
         ps.addOnClickListener(dismiss)
         pd.addOnClickListener(dismiss)
         self.findViewById<Button>(R.id.ild_primary_button).setOnClickListener(po)
-        self.findViewById<Button>(R.id.ild_dismiss_button).setOnClickListener(pd)
-        if (secondaryOnClickListener != {}) {
+        if (!hideSecondary) {
             self.findViewById<Button>(R.id.ild_secondary_button).visibility = View.VISIBLE
             self.findViewById<Button>(R.id.ild_secondary_button).setOnClickListener(ps)
+        }
+        if (!hideDismiss) {
+            self.findViewById<Button>(R.id.ild_dismiss_button).visibility = View.VISIBLE
+            self.findViewById<Button>(R.id.ild_dismiss_button).setOnClickListener(pd)
         }
 
         dashboardListView.addHeaderView(self, null, false)
