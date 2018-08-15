@@ -22,6 +22,7 @@ import java.util.*
 }
  */
 class StudentData(context: Context, jsonStr: String) {
+    
     val studentInfo: StudentInformation
     val attendances: List<Attendance>
     val subjects: List<Subject>

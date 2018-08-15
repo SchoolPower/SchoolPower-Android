@@ -107,25 +107,29 @@ class LoginActivity : BaseActivity() {
                         val strMessage = response.body()!!.string().replace("\n", "")
                         response.close()
                         // Error happened. Usually caused by wrong username/password
-                        if (strMessage.contains("Something went wrong!")) {
+                        if (strMessage.contains("Something went wrong")) {
                             runOnUiThread {
                                 utils.showSnackBar(findViewById(R.id.login_coordinate_layout), getString(R.string.wrong_password), true)
                                 Log.w("Login", strMessage)
                                 progressDialog.dismiss()
                             }
+                            return
                         }
                         if (strMessage.contains("\"alert\"")) {
                             runOnUiThread {
                                 utils.showSnackBar(findViewById(R.id.login_coordinate_layout), JSONObject(strMessage)["alert"].toString(), true)
                                 progressDialog.dismiss()
                             }
+                            return
                         }
                         if (!strMessage.contains("{")) {
                             runOnUiThread {
                                 utils.showSnackBar(findViewById(R.id.login_coordinate_layout), getString(R.string.no_connection), true)
                                 progressDialog.dismiss()
                             }
+                            return
                         }
+
                         val data = StudentData(this@LoginActivity, strMessage)
 
                         utils.getSharedPreference(Utils.AccountData).edit()
