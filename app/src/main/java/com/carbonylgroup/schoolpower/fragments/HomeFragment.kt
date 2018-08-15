@@ -89,8 +89,7 @@ class HomeFragment : TransitionHelper.BaseFragment() {
                         }, null)
         )
         homeSwipeRefreshLayout = viewPrivate!!.findViewById(R.id.home_swipe_refresh_layout)
-        homeSwipeRefreshLayout!!.setColorSchemeResources(R.color.accent, R.color.A_score_green, R.color.B_score_green,
-                R.color.Cp_score_yellow, R.color.C_score_orange, R.color.Cm_score_red, R.color.primary)
+        homeSwipeRefreshLayout!!.setColorSchemeColors(utils!!.getAccentColor())
         homeSwipeRefreshLayout!!.setOnRefreshListener { MainActivity.of(activity).fetchStudentDataFromServer() }
         if (subjects == null || utils!!.getFilteredSubjects(subjects!!).count() == 0) refreshAdapterToEmpty()
         else try {
