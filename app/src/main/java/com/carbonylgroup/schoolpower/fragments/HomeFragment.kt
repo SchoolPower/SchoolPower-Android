@@ -4,8 +4,10 @@
 
 package com.carbonylgroup.schoolpower.fragments
 
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.support.transition.TransitionManager
+import android.support.v4.content.ContextCompat
 import android.support.v4.content.res.ResourcesCompat.getDrawable
 import android.support.v4.widget.SwipeRefreshLayout
 import android.view.LayoutInflater
@@ -22,64 +24,63 @@ import com.carbonylgroup.schoolpower.adapter.OnItemClickListener
 import com.carbonylgroup.schoolpower.data.Subject
 import com.carbonylgroup.schoolpower.transition.DetailsTransition
 import com.carbonylgroup.schoolpower.transition.TransitionHelper
+import com.carbonylgroup.schoolpower.utils.CompositeOnClickListener
 import com.carbonylgroup.schoolpower.utils.Utils
 import com.ramotion.foldingcell.FoldingCell
 import java.text.SimpleDateFormat
 import java.util.*
 
+
 class HomeFragment : TransitionHelper.BaseFragment() {
 
     private var utils: Utils? = null
     private var transformedPosition = -1
-    private var view_private: View? = null
-    private var fab_in: ScaleAnimation? = null
-    private var fab_out: ScaleAnimation? = null
+    private var viewPrivate: View? = null
+    private var fabIn: ScaleAnimation? = null
+    private var fabOut: ScaleAnimation? = null
     private var subjects: List<Subject>? = null
     private var unfoldedIndexesBackUp = HashSet<Int>()
     private var adapter: FoldingCellListAdapter? = null
     private var courseDetailFragment: CourseDetailFragment? = null
-    private var home_swipe_refresh_layout: SwipeRefreshLayout? = null
+    private var homeSwipeRefreshLayout: SwipeRefreshLayout? = null
     private lateinit var dashboardListView: ListView
-    private lateinit var no_grade_view: LinearLayout
+    private lateinit var noGradeView: LinearLayout
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        view_private = inflater.inflate(R.layout.home_view_content, container, false)
+        viewPrivate = inflater.inflate(R.layout.home_view_content, container, false)
         initAnim()
         initValue()
-        return view_private
+        return viewPrivate
     }
 
     override fun onPause() {
-
         super.onPause()
         //To prevent freezing during fragment transaction
-        if (home_swipe_refresh_layout != null) {
-            home_swipe_refresh_layout!!.isRefreshing = false
-            home_swipe_refresh_layout!!.destroyDrawingCache()
-            home_swipe_refresh_layout!!.clearAnimation()
+        if (homeSwipeRefreshLayout != null) {
+            homeSwipeRefreshLayout!!.isRefreshing = false
+            homeSwipeRefreshLayout!!.destroyDrawingCache()
+            homeSwipeRefreshLayout!!.clearAnimation()
         }
     }
 
     private fun initAnim() {
-
-        fab_in = ScaleAnimation(0.0f, 1.0f, 0.0f, 1.0f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f)
-        fab_in!!.duration = 200
-        fab_in!!.interpolator = DecelerateInterpolator()
-        fab_out = ScaleAnimation(1.0f, 0.0f, 1.0f, 0.0f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f)
-        fab_out!!.duration = 200
-        fab_out!!.interpolator = DecelerateInterpolator()
+        fabIn = ScaleAnimation(0.0f, 1.0f, 0.0f, 1.0f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f)
+        fabIn!!.duration = 200
+        fabIn!!.interpolator = DecelerateInterpolator()
+        fabOut = ScaleAnimation(1.0f, 0.0f, 1.0f, 0.0f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f)
+        fabOut!!.duration = 200
+        fabOut!!.interpolator = DecelerateInterpolator()
     }
 
     private fun initValue() {
-
         utils = Utils(MainActivity.of(activity))
         subjects = MainActivity.of(activity).subjects
         MainActivity.of(activity).presentFragment = 0
         MainActivity.of(activity).setToolBarElevation()
         MainActivity.of(activity).setToolBarTitle(getString(R.string.dashboard))
-        dashboardListView = view_private!!.findViewById(R.id.mainListView)
-        no_grade_view = view_private!!.findViewById(R.id.no_grade_view)
-        view_private!!.findViewById<ImageView>(R.id.no_grade_image_view).setImageDrawable(
+        dashboardListView = viewPrivate!!.findViewById(R.id.mainListView)
+        noGradeView = viewPrivate!!.findViewById(R.id.no_grade_view)
+        viewPrivate!!.findViewById<ImageView>(R.id.no_grade_image_view).setImageDrawable(
                 getDrawable(resources,
                         when (utils!!.getTheme()) {
                             utils!!.LIGHT -> R.drawable.no_grades
@@ -87,10 +88,10 @@ class HomeFragment : TransitionHelper.BaseFragment() {
                             else -> R.drawable.no_grades
                         }, null)
         )
-        home_swipe_refresh_layout = view_private!!.findViewById(R.id.home_swipe_refresh_layout)
-        home_swipe_refresh_layout!!.setColorSchemeResources(R.color.accent, R.color.A_score_green, R.color.B_score_green,
+        homeSwipeRefreshLayout = viewPrivate!!.findViewById(R.id.home_swipe_refresh_layout)
+        homeSwipeRefreshLayout!!.setColorSchemeResources(R.color.accent, R.color.A_score_green, R.color.B_score_green,
                 R.color.Cp_score_yellow, R.color.C_score_orange, R.color.Cm_score_red, R.color.primary)
-        home_swipe_refresh_layout!!.setOnRefreshListener { MainActivity.of(activity).fetchStudentDataFromServer() }
+        homeSwipeRefreshLayout!!.setOnRefreshListener { MainActivity.of(activity).fetchStudentDataFromServer() }
         if (subjects == null || utils!!.getFilteredSubjects(subjects!!).count() == 0) refreshAdapterToEmpty()
         else try {
             initAdapter()
@@ -98,12 +99,30 @@ class HomeFragment : TransitionHelper.BaseFragment() {
             utils!!.errorHandler(e)
         }
 
+        val po = View.OnClickListener {
+            MainActivity.of(activity).gotoFragmentWithMenuItemId(R.id.nav_support)
+            utils!!.setSharedPreference("Tmp", "ImComingForDonation", true)
+            setLastDonateShowedDate(Date())
+        }
+        val ps = View.OnClickListener {
+            MainActivity.of(activity).gotoFragmentWithMenuItemId(R.id.nav_support)
+            setLastDonateShowedDate(Date())
+        }
+        val pd = View.OnClickListener {
+            setLastDonateShowedDate(Date())
+        }
         if (needToShowDonate())
-            initDonate()
+        // If other ILDs are being displayed, don't show the donation
+            if (dashboardListView.headerViewsCount == 0)
+                initInListDialog(
+                        ContextCompat.getDrawable(activity, R.drawable.ic_donation)!!,
+                        getString(R.string.donation_title),
+                        getString(R.string.donation_message),
+                        po, ps, pd
+                )
     }
 
     private fun adapterSetFabOnClickListener(adapter: FoldingCellListAdapter) = adapter.setFabOnClickListener(View.OnClickListener { v ->
-
         MainActivity.of(activity).subjectTransporter = utils!!.getFilteredSubjects(subjects!!)[dashboardListView.getPositionForView(v) - dashboardListView.headerViewsCount]
         if (transformedPosition != -1) {
             val itemView = getItemViewByPosition(transformedPosition, dashboardListView)
@@ -112,7 +131,7 @@ class HomeFragment : TransitionHelper.BaseFragment() {
         }
         transformedPosition = dashboardListView.getPositionForView(v) - dashboardListView.headerViewsCount
         val itemView = getItemViewByPosition(dashboardListView.getPositionForView(v), dashboardListView)
-        itemView.findViewById<View>(R.id.floating_action_button).startAnimation(fab_out)
+        itemView.findViewById<View>(R.id.floating_action_button).startAnimation(fabOut)
         itemView.findViewById<View>(R.id.floating_action_button).visibility = View.GONE
         gotoCourseDetail(itemView.findViewById(R.id.unfold_header_view), itemView.findViewById(R.id.detail_subject_title_tv), transformedPosition)
     })
@@ -125,10 +144,9 @@ class HomeFragment : TransitionHelper.BaseFragment() {
             })
 
     private fun initAdapter() {
-
         if (subjects != null && utils!!.getFilteredSubjects(subjects!!).count() != 0) {
             dashboardListView.visibility = View.VISIBLE
-            no_grade_view.visibility = View.GONE
+            noGradeView.visibility = View.GONE
         }
 
         adapter = FoldingCellListAdapter(activity, utils!!.getFilteredSubjects(subjects!!), unfoldedIndexesBackUp, transformedPosition)
@@ -143,34 +161,69 @@ class HomeFragment : TransitionHelper.BaseFragment() {
         dashboardListView.adapter = adapter
     }
 
-    private fun initDonate() {
+    /**
+     * Generates an InListDialog with maximum of three buttons
+     * as the header of the dashboard listView
+     *
+     * Primary and Dismiss buttons are mandatorily shown
+     *
+     * When each button is clicked, dialog will be automatically dismissed after
+     * executing the assigned OnClickListener
+     *
+     * @param headerImage
+     * @param title
+     * @param message
+     * @param primaryOnClickListener
+     * @param secondaryOnClickListener if empty ({}) - secondary button will not be shown
+     * @param dismissOnClickListener
+     */
+    private fun initInListDialog(
+            headerImage: Drawable,
+            title: String,
+            message: String,
+            primaryOnClickListener: View.OnClickListener,
+            secondaryOnClickListener: View.OnClickListener,
+            dismissOnClickListener: View.OnClickListener
+    ) {
         val inflater = activity.layoutInflater
-        val header = inflater.inflate(R.layout.begging_dialog, dashboardListView, false) as ViewGroup
-        header.findViewById<Button>(R.id.donate_button).setOnClickListener {
-            MainActivity.of(activity).gotoFragmentWithMenuItemId(R.id.nav_support)
-            utils!!.setSharedPreference("Tmp", "ImComingForDonation", true)
-            removeDonateHeader(header)
+        val self = inflater.inflate(R.layout.in_list_dialog, dashboardListView, false) as ViewGroup
+
+        self.findViewById<ImageView>(R.id.ild_image_view).setImageDrawable(headerImage)
+        self.findViewById<TextView>(R.id.ild_title).text = title
+        self.findViewById<TextView>(R.id.ild_message).text = message
+
+        val po = CompositeOnClickListener()
+        val ps = CompositeOnClickListener()
+        val pd = CompositeOnClickListener()
+        val dismiss = View.OnClickListener {
+            removeILD(self)
         }
-        header.findViewById<Button>(R.id.promote_button).setOnClickListener {
-            MainActivity.of(activity).gotoFragmentWithMenuItemId(R.id.nav_support)
-            removeDonateHeader(header)
+        po.addOnClickListener(primaryOnClickListener)
+        ps.addOnClickListener(secondaryOnClickListener)
+        pd.addOnClickListener(dismissOnClickListener)
+        po.addOnClickListener(dismiss)
+        ps.addOnClickListener(dismiss)
+        pd.addOnClickListener(dismiss)
+        self.findViewById<Button>(R.id.ild_primary_button).setOnClickListener(po)
+        self.findViewById<Button>(R.id.ild_dismiss_button).setOnClickListener(pd)
+        if (secondaryOnClickListener != {}) {
+            self.findViewById<Button>(R.id.ild_secondary_button).visibility = View.VISIBLE
+            self.findViewById<Button>(R.id.ild_secondary_button).setOnClickListener(ps)
         }
-        header.findViewById<Button>(R.id.dismiss_donate_button).setOnClickListener {
-            removeDonateHeader(header)
-        }
-        dashboardListView.addHeaderView(header, null, false)
+
+        dashboardListView.addHeaderView(self, null, false)
     }
 
-    private fun removeDonateHeader(header: ViewGroup) {
+    private fun removeILD(ild: ViewGroup) {
         TransitionManager.beginDelayedTransition(dashboardListView)
-        dashboardListView.removeHeaderView(header)
-        setLastDonateShowedDate(Date())
+        dashboardListView.removeHeaderView(ild)
     }
 
     private fun needToShowDonate(): Boolean {
         // Show donate every 30 days, if haven't donated
-        return if (isDonated()) false
-        else ((Date().time - getLastDonateShowedDate().time) / 1000.0 / 60.0 / 60.0 / 24.0 >= 30.0)
+//        return if (isDonated()) false
+//        else ((Date().time - getLastDonateShowedDate().time) / 1000.0 / 60.0 / 60.0 / 24.0 >= 30.0)
+        return true
     }
 
     private fun isDonated(): Boolean {
@@ -190,23 +243,22 @@ class HomeFragment : TransitionHelper.BaseFragment() {
         return if (dateStr != "") SimpleDateFormat("yyyy-MM-dd", Locale.CHINA).parse(dateStr) else Date(0)
     }
 
-    fun visiblizeNoGradeView() {
+    private fun visibleNoGradeView() {
         dashboardListView.visibility = View.GONE
-        no_grade_view.visibility = View.VISIBLE
+        noGradeView.visibility = View.VISIBLE
     }
 
     fun setRefreshing(isRefreshing: Boolean) {
-        home_swipe_refresh_layout?.isRefreshing = isRefreshing
+        homeSwipeRefreshLayout?.isRefreshing = isRefreshing
     }
 
     fun refreshAdapterToEmpty() {
         subjects = arrayListOf()
         setRefreshing(false)
-        visiblizeNoGradeView()
+        visibleNoGradeView()
     }
 
     fun refreshAdapter(newSubjects: List<Subject>) {
-
         subjects = newSubjects
         if (adapter == null) initValue()
         else {
@@ -222,15 +274,13 @@ class HomeFragment : TransitionHelper.BaseFragment() {
     }
 
     private fun getItemViewByPosition(position: Int, listView: ListView): View {
-
         val firstItemPos = listView.firstVisiblePosition
         val lastItemPos = listView.lastVisiblePosition
-        if (position < firstItemPos || position > lastItemPos) return listView.adapter.getView(position, null, listView)
-        else return listView.getChildAt(position - firstItemPos)
+        return if (position < firstItemPos || position > lastItemPos) listView.adapter.getView(position, null, listView)
+        else listView.getChildAt(position - firstItemPos)
     }
 
     private fun gotoCourseDetail(_header: View, _subject_title: View, transformedPosition: Int) {
-
         courseDetailFragment = CourseDetailFragment()
         courseDetailFragment!!.sharedElementEnterTransition = DetailsTransition()
         courseDetailFragment!!.sharedElementReturnTransition = DetailsTransition()
@@ -258,7 +308,6 @@ class HomeFragment : TransitionHelper.BaseFragment() {
     }
 
     override fun onAfterEnter() {
-
         super.onAfterEnter()
         preRenderUnfoldCells()
     }
