@@ -353,7 +353,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
 
         val header = navigationView.getHeaderView(0)
         header.findViewById<TextView>(R.id.nav_header_username).text = getUsername()
-        header.findViewById<TextView>(R.id.nav_header_id).text = getUserID().replace("\n", ".")
+        header.findViewById<TextView>(R.id.nav_header_id).text = getUserID().replace("\n", "")
         header.findViewById<ImageView>(R.id.user_avatar).setOnClickListener { setAvatar() }
 
         updateAvatar()
