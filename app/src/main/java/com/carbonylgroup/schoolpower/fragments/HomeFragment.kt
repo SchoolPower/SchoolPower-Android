@@ -250,9 +250,9 @@ class HomeFragment : TransitionHelper.BaseFragment() {
 
     private fun needToShowDonate(): Boolean {
         // Show donate every 30 days, if haven't donated
-//        return if (isDonated()) false
-//        else ((Date().time - getLastDonateShowedDate().time) / 1000.0 / 60.0 / 60.0 / 24.0 >= 30.0)
-        return false
+        return if (isDonated()) false
+        else ((Date().time - getLastDonateShowedDate().time) / 1000.0 / 60.0 / 60.0 / 24.0 >= 30.0)
+//        return false
     }
 
     private fun isDonated(): Boolean {
