@@ -117,13 +117,14 @@ class HomeFragment : TransitionHelper.BaseFragment() {
         // If other ILDs are being displayed, don't show the donation
             if (dashboardListView.headerViewsCount == 0)
                 initInListDialog(
+                        "",
                         ContextCompat.getDrawable(activity, R.drawable.ic_donation)!!,
                         getString(R.string.donation_title),
                         getString(R.string.donation_message),
                         getString(R.string.donation_ok),
                         getString(R.string.donation_promote),
                         getString(R.string.donation_cancel),
-                        false, false,
+                        false, false, false,
                         po, ps, pd
                 )
     }
@@ -186,6 +187,7 @@ class HomeFragment : TransitionHelper.BaseFragment() {
      * @param dismissOnClickListener
      */
     fun initInListDialog(
+            uuid: String,
             headerImage: Drawable,
             title: String,
             message: String,
@@ -194,6 +196,7 @@ class HomeFragment : TransitionHelper.BaseFragment() {
             dismissText: String,
             hideDismiss: Boolean,
             hideSecondary: Boolean,
+            onlyOnce: Boolean,
             primaryOnClickListener: View.OnClickListener,
             secondaryOnClickListener: View.OnClickListener,
             dismissOnClickListener: View.OnClickListener
@@ -202,6 +205,7 @@ class HomeFragment : TransitionHelper.BaseFragment() {
         val self = inflater.inflate(R.layout.in_list_dialog, dashboardListView, false) as ViewGroup
 
         self.findViewById<ImageView>(R.id.ild_image_view).setImageDrawable(headerImage)
+
         self.findViewById<TextView>(R.id.ild_title).text = title
         self.findViewById<TextView>(R.id.ild_message).text = message
 
@@ -213,6 +217,12 @@ class HomeFragment : TransitionHelper.BaseFragment() {
         val ps = CompositeOnClickListener()
         val pd = CompositeOnClickListener()
         val dismiss = View.OnClickListener {
+            if (onlyOnce) {
+                // mark the ILD as displayed
+                val displayedILDs = utils!!.getSharedPreference("Tmp").getStringSet("doNotDisplayTheseILDs", null)
+                displayedILDs.add(uuid)
+                utils!!.setSharedPreference("Tmp", "doNotDisplayTheseILDs", displayedILDs)
+            }
             removeILD(self)
         }
         po.addOnClickListener(primaryOnClickListener)
@@ -234,6 +244,7 @@ class HomeFragment : TransitionHelper.BaseFragment() {
     }
 
     private fun addILD(ild: ViewGroup) {
+        TransitionManager.beginDelayedTransition(dashboardListView)
         dashboardListView.addHeaderView(ild, null, false)
         allILDs.add(ild)
     }
@@ -252,7 +263,7 @@ class HomeFragment : TransitionHelper.BaseFragment() {
         // Show donate every 30 days, if haven't donated
         return if (isDonated()) false
         else ((Date().time - getLastDonateShowedDate().time) / 1000.0 / 60.0 / 60.0 / 24.0 >= 30.0)
-//        return false
+//        return true
     }
 
     private fun isDonated(): Boolean {

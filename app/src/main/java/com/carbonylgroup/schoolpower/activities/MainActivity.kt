@@ -15,6 +15,8 @@ import android.content.Context
 import android.content.Intent
 import android.content.res.Resources
 import android.graphics.drawable.ColorDrawable
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.preference.PreferenceManager
 import android.support.design.widget.AppBarLayout
@@ -47,6 +49,7 @@ import com.carbonylgroup.schoolpower.utils.Utils.Companion.AccountData
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.MobileAds
+import com.pixplicity.sharp.Sharp
 import com.squareup.picasso.Picasso
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
@@ -55,6 +58,8 @@ import okhttp3.*
 import org.json.JSONObject
 import java.io.File
 import java.io.IOException
+import java.net.HttpURLConnection
+import java.net.URL
 import java.net.URLConnection
 import java.util.*
 
@@ -609,17 +614,6 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                         builder.setPositiveButton(getString(R.string.alright), null)
                         builder.create().show()
                     }
-                    if (homeFragment != null)
-                        runOnUiThread {
-                            homeFragment!!.removeAllILD()
-                            homeFragment!!.initInListDialog(
-                                    ContextCompat.getDrawable(this@MainActivity, R.drawable.ic_donation)!!,
-                                    "", "",
-                                    "", "", "",
-                                    true, true,
-                                    View.OnClickListener {}, View.OnClickListener {}, View.OnClickListener {}
-                            )
-                        }
                     studentInformation = data.studentInfo
                     subjects = data.subjects
                     attendances = data.attendances
@@ -662,8 +656,57 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                             utils.showSnackBar(findViewById(R.id.main_coordinate_layout), getString(R.string.data_updated), false)
                         else
                             utils.showSnackBar(findViewById(R.id.main_coordinate_layout), getString(R.string.happy_birth), false)
-
                     }
+
+                    // Display ILD message if received
+                    Thread(Runnable {
+                        // Network thread
+                        if (data.ildNotification.present) {
+                            val displayedILDs = utils.getSharedPreference("Tmp").getStringSet("doNotDisplayTheseILDs", null)
+                            if (!displayedILDs.contains(data.ildNotification.uuid))
+                                // display if haven't been marked as displayed
+                                if (homeFragment != null) {
+                                    val notification = data.ildNotification
+                                    val connection = URL(notification.headerImageURL).openConnection() as HttpURLConnection
+                                    connection.setRequestProperty("User-agent", "Mozilla/4.0")
+                                    connection.connect()
+                                    runOnUiThread {
+                                        // UI thread
+                                        val input = connection.getInputStream()
+                                        val langIndex =
+                                                when (
+                                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                                                        this@MainActivity.resources.configuration.locales[0]
+                                                    } else {
+                                                        this@MainActivity.resources.configuration.locale
+                                                    }) {
+                                                    Locale.ENGLISH -> 0
+                                                    Locale.SIMPLIFIED_CHINESE -> 1
+                                                    Locale.SIMPLIFIED_CHINESE -> 2
+                                                    else -> 0
+                                                }
+                                        homeFragment!!.removeAllILD()
+                                        homeFragment!!.initInListDialog(
+                                                notification.uuid,
+                                                Sharp.loadInputStream(input).drawable,
+                                                notification.titles[langIndex],
+                                                notification.messages[langIndex],
+                                                notification.primaryTexts[langIndex],
+                                                notification.secondaryTexts[langIndex],
+                                                notification.dismissTexts[langIndex],
+                                                notification.hideDismiss,
+                                                notification.hideSecondary,
+                                                notification.onlyOnce,
+                                                View.OnClickListener {},
+                                                View.OnClickListener {},
+                                                View.OnClickListener {}
+                                        )
+                                        input.close()
+                                        connection.disconnect()
+                                    }
+                                }
+                        }
+                    }).start()
                 } catch (e: Exception) {
                     runOnUiThread {
                         utils.showSnackBar(findViewById(R.id.main_coordinate_layout), getString(R.string.server_problem) + strMessage, true)

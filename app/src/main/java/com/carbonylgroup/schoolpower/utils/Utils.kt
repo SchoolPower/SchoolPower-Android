@@ -291,6 +291,12 @@ class Utils(private val context: Context) {
         spEditor.apply()
     }
 
+    fun setSharedPreference(database: String, key: String, value: Set<String>) {
+        val spEditor = context.getSharedPreferences(database, Activity.MODE_PRIVATE).edit()
+        spEditor.putStringSet(key, value)
+        spEditor.apply()
+    }
+
     @Throws(IOException::class)
     fun readStringFromFile(fileName: String): String? {
 

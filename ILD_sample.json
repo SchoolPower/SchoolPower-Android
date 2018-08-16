@@ -1,0 +1,33 @@
+"idlNotification": {
+    "uuid": "9d8e55d4-f75b-4cc4-86d4-d66bfd8d4d11",
+    "image": "https://dev.w3.org/SVG/tools/svgweb/samples/svg-files/android.svg",
+    "titles": [
+        "Title",
+        "标题",
+        "標題",
+    ],
+    "messages": [
+        "Message",
+        "消息",
+        "消息",
+    ],
+    "primaryTexts": [
+        "OK",
+        "好的",
+        "好的",
+    ],
+    "secondaryTexts": [
+        "",
+        "",
+        "",
+    ],
+    "dismissTexts": [
+        "",
+        "",
+        "",
+    ],
+    "hideDismiss": "true",
+    "hideSecondary": "true",
+    "onlyOnce": "true",
+    "primaryOnClick": "-1"
+}
