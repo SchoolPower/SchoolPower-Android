@@ -25,6 +25,7 @@
     <string name="postURL" translatable="false">https://api.schoolpower.tech/api/2.0/get_data.php</string>
     <string name="avatarURL" translatable="false">https://api.schoolpower.tech/api/2.0/set_avatar.php</string>
     <string name="updateURL" translatable="false">https://files.schoolpower.tech/update.json</string>
+    <string name="ildURL" translatable="false">https://files.schoolpower.tech/ild.json</string>
     <string name="backupServersURL" translatable="false">https://coding.net/u/nullptr_t/p/schoolpower/git/raw/master/server_list.json</string>
     <string name="imageUploadURL" translatable="false">https://sm.ms/api/upload</string>
     <string name="paypalDonationURL" translatable="false">https://paypal.me/GWang828</string>
