@@ -67,8 +67,8 @@ class StudentData(context: Context, jsonStr: String) {
         } else {
             ExtraInfo(avatar = "")
         }
-        ildNotification = if (studentData.has("idl_notification")) {
-            val notification = studentData.getJSONObject("idlNotification")
+        ildNotification = if (studentData.has("ild_notification")) {
+            val notification = studentData.getJSONObject("ildNotification")
             ILDNotification(
                     present = true,
                     uuid = notification["uuid"].toString(),
