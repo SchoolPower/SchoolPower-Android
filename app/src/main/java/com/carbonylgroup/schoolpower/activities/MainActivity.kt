@@ -111,7 +111,6 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
         initOnClick()
         initScheduler()
         utils.checkApplicationUpdate()
-        fetchILD()
 
         // Shortcuts could bring users to main activity directly.
         // In this case, bring users to login activity if they are not logged in
@@ -230,6 +229,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
             e.printStackTrace()
         }
         fetchStudentDataFromServer()
+        fetchILD()
 
         //Start refreshing animation on startup refreshing data
         //Don't when there is no connection
@@ -668,7 +668,6 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
     }
 
     private fun fetchILD() {
-
         // ILD = In List Dialog
         // will be displayed as the header of the dashboard ListView
         utils.buildNetworkRequest(getString(R.string.ildURL), "GET", null)
@@ -684,19 +683,19 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                         if (!message.contains("{")) return
                         val data = ILDNotification(message)
                         if (data.show) {
-                            val displayedILDs = utils.getSharedPreference("Tmp").getStringSet("doNotDisplayTheseILDs", null)
+                            val displayedILDs = utils.getSharedPreference("Tmp").getStringSet("doNotDisplayTheseILDs", setOf())
                             if (!displayedILDs.contains(data.uuid))
+                            // display if haven't been marked as displayed
                                 Thread(Runnable {
                                     // Network thread
-                                    // display if haven't been marked as displayed
                                     if (homeFragment != null) {
                                         val notification = data
                                         val connection = URL(notification.headerImageURL).openConnection() as HttpURLConnection
                                         connection.setRequestProperty("User-agent", "Mozilla/4.0")
                                         connection.connect()
+                                        val input = connection.getInputStream()
                                         runOnUiThread {
                                             // UI thread
-                                            val input = connection.getInputStream()
                                             val langIndex =
                                                     when (
                                                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -706,7 +705,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                                                         }) {
                                                         Locale.ENGLISH -> 0
                                                         Locale.SIMPLIFIED_CHINESE -> 1
-                                                        Locale.SIMPLIFIED_CHINESE -> 2
+                                                        Locale.TRADITIONAL_CHINESE -> 2
                                                         else -> 0
                                                     }
                                             homeFragment!!.removeAllILD()

@@ -219,7 +219,7 @@ class HomeFragment : TransitionHelper.BaseFragment() {
         val dismiss = View.OnClickListener {
             if (onlyOnce) {
                 // mark the ILD as displayed
-                val displayedILDs = utils!!.getSharedPreference("Tmp").getStringSet("doNotDisplayTheseILDs", null)
+                val displayedILDs = utils!!.getSharedPreference("Tmp").getStringSet("doNotDisplayTheseILDs", mutableSetOf())
                 displayedILDs.add(uuid)
                 utils!!.setSharedPreference("Tmp", "doNotDisplayTheseILDs", displayedILDs)
             }

@@ -38,7 +38,7 @@ class ILDNotification(jsonStr: String) {
     private fun JSONArray.toArrayList(): ArrayList<String> {
         val list = ArrayList<String>()
         val jArray = this
-        for (i in 0 until jArray.length()) {
+        for (i in 0 until jArray.length() - 1) {
             list.add(jArray.getString(i))
         }
         return list
