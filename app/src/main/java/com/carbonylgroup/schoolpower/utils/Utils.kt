@@ -224,7 +224,6 @@ class Utils(private val context: Context) {
     }
 
     fun getLatestPeriod(grades: Map<String, Subject.Grade>, forceLastTerm: Boolean = false): String? {
-
         val termsList = grades.keys
         val forLatestSemester = getSharedPreference(SettingsPreference)
                 .getString("list_preference_dashboard_display", "0") == "1"
@@ -249,7 +248,6 @@ class Utils(private val context: Context) {
     fun getLatestPeriodGrade(subject: Subject) = subject.grades[getLatestPeriod(subject.grades)]
 
     fun getLetterGradeByPercentageGrade(percentageGrade: Float): String {
-
         val letterGrades = arrayOf("A", "B", "C+", "C", "C-", "F", "I", "--")
         return when {
             percentageGrade >= 86 -> letterGrades[0]
@@ -514,11 +512,11 @@ class Utils(private val context: Context) {
     }
 
     private fun checkConnectionToUrl(url: String): Boolean {
-        try {
+        return try {
             buildNetworkRequest(url, "GET", null).execute()
-            return true
+            true
         } catch (e: IOException) {
-            return false
+            false
         }
     }
 
@@ -663,13 +661,13 @@ class Utils(private val context: Context) {
 
         // convert date like "2018-01-21T16:00:00.000Z" to timestamp (unit: MILLISECOND)
         fun convertDateToTimestamp(date: String): Long {
-            try {
+            return try {
                 val temp = SimpleDateFormat("yyyy-MM-dd", Locale.CHINA).parse(date.replace("T16:00:00.000Z", ""))
 
                 temp.time += 24 * 60 * 60 * 1000
-                return temp.time
+                temp.time
             } catch (e: Exception) {
-                return 0
+                0
             }
         }
 
@@ -688,14 +686,14 @@ class Utils(private val context: Context) {
                     "Exercise" to "EXE",
                     "Social" to "SS"
             )
-            val splitedSubject = subjectTitle.split(" ")
-            var short = shorts[splitedSubject[0]]
+            val splitSubject = subjectTitle.split(" ")
+            var short = shorts[splitSubject[0]]
             if (short != null) {
-                if (splitedSubject[splitedSubject.size - 1] == "Music") short += "M"
-                if (splitedSubject[splitedSubject.size - 1] == "Politics") short += "P"
-                if (splitedSubject[splitedSubject.size - 1] == "Sci") short += "S"
-                if (splitedSubject[splitedSubject.size - 1] == "Humanities") short += "H"
-                if (splitedSubject[splitedSubject.size - 1] == "Arts") short += "A"
+                if (splitSubject[splitSubject.size - 1] == "Music") short += "M"
+                if (splitSubject[splitSubject.size - 1] == "Politics") short += "P"
+                if (splitSubject[splitSubject.size - 1] == "Sci") short += "S"
+                if (splitSubject[splitSubject.size - 1] == "Humanities") short += "H"
+                if (splitSubject[splitSubject.size - 1] == "Arts") short += "A"
                 for (c in subjectTitle) {
                     if (c.isDigit()) short += c
                 }
@@ -703,14 +701,14 @@ class Utils(private val context: Context) {
             }
 
 
-            if (subjectTitle.length > 3) {
+            return if (subjectTitle.length > 3) {
                 var ret = subjectTitle.substring(0, 3).capitalize()
                 for (c in subjectTitle.substring(3)) {
                     if (c.isUpperCase() || c.isDigit()) ret += c
                 }
-                return ret
+                ret
             } else {
-                return subjectTitle
+                subjectTitle
             }
         }
 

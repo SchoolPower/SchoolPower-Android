@@ -91,7 +91,6 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
     private val SETTINGS_REQUEST_CODE = 233
 
     override fun attachBaseContext(newBase: Context) {
-
         utils = Utils(newBase)
         val newLocale = utils.getSharedPreference(Utils.SettingsPreference).getString("lang", "0").toInt()
         val context = ContextWrapper.wrap(newBase, localeSet[newLocale])
@@ -99,9 +98,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
     }
 
     override fun initActivity() {
-
         super.initActivity()
-
         utils = Utils(this)
         setContentView(R.layout.nav_drawer)
         initValue()
@@ -139,7 +136,6 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-
         menuInflater.inflate(R.menu.menu_main, menu)
         menu.findItem(R.id.action_gpa).isVisible = !hideToolBarItemFlag
         menu.findItem(R.id.action_refresh).isVisible = !hideToolBarItemFlag
@@ -154,7 +150,6 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-
         when (item.itemId) {
             R.id.action_refresh -> {
                 fetchStudentDataFromServer()
@@ -180,7 +175,6 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-
         super.onRestoreInstanceState(savedInstanceState)
         presentFragment = savedInstanceState.getInt("presentFragment")
         val fragments = intArrayOf(R.id.nav_dashboard, R.id.course_detail_background, R.id.nav_charts,
@@ -189,13 +183,11 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
-
         super.onSaveInstanceState(outState)
         outState.putInt("presentFragment", presentFragment)
     }
 
     override fun onBackPressed() {
-
         when (presentFragment) {
             1 -> returnFromDetail()
             2 -> returnFromPrimaryFragments(1)
@@ -208,7 +200,6 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
 
     /* Initializer */
     private fun initValue() {
-
         MobileAds.initialize(this, getString(R.string.adMob_app_id))
         mAdView = findViewById(R.id.adView)
         val adRequest = AdRequest.Builder().build()
@@ -246,13 +237,11 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
     }
 
     private fun initUI() {
-
         initDrawer()
         setDefaultFragment()
     }
 
     private fun initOnClick() {
-
         toggle.toolbarNavigationClickListener = View.OnClickListener {
             when {
                 menuOpenDrawer -> drawer.openDrawer(GravityCompat.START)
@@ -316,7 +305,6 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
     }
 
     private fun setAvatar() {
-
         if (utils.getSharedPreference(AccountData).getString(getString(R.string.user_avatar), "") != "") {
             val alertDialog =
                     AlertDialog.Builder(this)
@@ -614,7 +602,8 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                     subjects = data.subjects
                     attendances = data.attendances
 
-                    utils.setSharedPreference(AccountData, "dob", Utils.convertDateToTimestamp(data.studentInfo.dob))
+                    utils.setSharedPreference(AccountData, "dob",
+                            Utils.convertDateToTimestamp(data.studentInfo.dob))
 
                     val extraInfo = data.extraInfo
 
@@ -637,7 +626,12 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                     }
                     // Mark new or changed attendances
                     for (item in attendances!!) {
-                        val found = oldAttendances.any { it -> it.name == item.name && it.date == item.date && it.code == item.code && !it.isNew }
+                        val found = oldAttendances.any { it ->
+                            it.name == item.name &&
+                                    it.date == item.date &&
+                                    it.code == item.code &&
+                                    !it.isNew
+                        }
                         if (!found) item.isNew = true
                     }
 
