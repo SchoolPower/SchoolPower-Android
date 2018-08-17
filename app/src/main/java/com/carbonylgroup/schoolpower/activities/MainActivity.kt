@@ -15,13 +15,11 @@ import android.content.Context
 import android.content.Intent
 import android.content.res.Resources
 import android.graphics.drawable.ColorDrawable
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.preference.PreferenceManager
 import android.support.design.widget.AppBarLayout
 import android.support.design.widget.NavigationView
-import android.support.v4.content.ContextCompat
 import android.support.v4.view.GravityCompat
 import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.ActionBarDrawerToggle
@@ -680,58 +678,64 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                         // Display ILD message if received
                         val message = response.body()!!.string()
                         response.close()
-                        if (!message.contains("{")) return
-                        val data = ILDNotification(message)
-                        if (data.show) {
-                            val displayedILDs = utils.getSharedPreference("Tmp").getStringSet("doNotDisplayTheseILDs", setOf())
-                            if (!displayedILDs.contains(data.uuid))
-                            // display if haven't been marked as displayed
-                                Thread(Runnable {
-                                    // Network thread
-                                    if (homeFragment != null) {
-                                        val notification = data
-                                        val connection = URL(notification.headerImageURL).openConnection() as HttpURLConnection
-                                        connection.setRequestProperty("User-agent", "Mozilla/4.0")
-                                        connection.connect()
-                                        val input = connection.getInputStream()
-                                        runOnUiThread {
-                                            // UI thread
-                                            val langIndex =
-                                                    when (
-                                                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                                                            this@MainActivity.resources.configuration.locales[0]
-                                                        } else {
-                                                            this@MainActivity.resources.configuration.locale
-                                                        }) {
-                                                        Locale.ENGLISH -> 0
-                                                        Locale.SIMPLIFIED_CHINESE -> 1
-                                                        Locale.TRADITIONAL_CHINESE -> 2
-                                                        else -> 0
-                                                    }
-                                            homeFragment!!.removeAllILD()
-                                            homeFragment!!.initInListDialog(
-                                                    notification.uuid,
-                                                    Sharp.loadInputStream(input).drawable,
-                                                    notification.titles[langIndex],
-                                                    notification.messages[langIndex],
-                                                    notification.primaryTexts[langIndex],
-                                                    notification.secondaryTexts[langIndex],
-                                                    notification.dismissTexts[langIndex],
-                                                    notification.hideDismiss,
-                                                    notification.hideSecondary,
-                                                    notification.onlyOnce,
-                                                    View.OnClickListener {},
-                                                    View.OnClickListener {},
-                                                    View.OnClickListener {}
-                                            )
-                                            input.close()
-                                            connection.disconnect()
-                                        }
-                                    }
-                                }).start()
+                        if (!message.contains("{")) {
+                            homeFragment!!.fetchLocalILD()
+                            return
                         }
+                        utils.setSharedPreference("Tmp", "ildJson", message)
+                        val data = ILDNotification(message)
+                        if (data.show) showILD(data)
+                        else homeFragment!!.fetchLocalILD()
                     }
                 })
+    }
+
+    fun showILD(data: ILDNotification) {
+        val displayedILDs = utils.getSharedPreference("Tmp").getStringSet("doNotDisplayTheseILDs", setOf())
+        if (!displayedILDs.contains(data.uuid))
+        // display if haven't been marked as displayed
+            Thread(Runnable {
+                // Network thread
+                if (homeFragment != null) {
+                    val connection = URL(data.headerImageURL).openConnection() as HttpURLConnection
+                    connection.setRequestProperty("User-agent", "Mozilla/5.0")
+                    connection.connect()
+                    val input = connection.inputStream
+                    runOnUiThread {
+                        // UI thread
+                        val langIndex =
+                                when (
+                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                                        this@MainActivity.resources.configuration.locales[0]
+                                    } else {
+                                        this@MainActivity.resources.configuration.locale
+                                    }) {
+                                    Locale.ENGLISH -> 0
+                                    Locale.SIMPLIFIED_CHINESE -> 1
+                                    Locale.TRADITIONAL_CHINESE -> 2
+                                    else -> 0
+                                }
+                        homeFragment!!.removeAllILD()
+                        homeFragment!!.initInListDialog(
+                                data.uuid,
+                                Sharp.loadInputStream(input).drawable,
+                                data.titles[langIndex],
+                                data.messages[langIndex],
+                                data.primaryTexts[langIndex],
+                                data.secondaryTexts[langIndex],
+                                data.dismissTexts[langIndex],
+                                data.hideDismiss,
+                                data.hideSecondary,
+                                data.onlyOnce,
+                                View.OnClickListener {},
+                                View.OnClickListener {},
+                                View.OnClickListener {}
+                        )
+                        input.close()
+                        connection.disconnect()
+                    }
+                }
+            }).start()
     }
 
     private fun getUsername(): String {
@@ -888,8 +892,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
         anim.start()
     }
 
-    fun enableDrawer(enable: Boolean) {
-
+    private fun enableDrawer(enable: Boolean) {
         if (enable) drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
         else drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
     }

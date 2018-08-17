@@ -21,6 +21,7 @@ import com.carbonylgroup.schoolpower.R
 import com.carbonylgroup.schoolpower.activities.MainActivity
 import com.carbonylgroup.schoolpower.adapter.FoldingCellListAdapter
 import com.carbonylgroup.schoolpower.adapter.OnItemClickListener
+import com.carbonylgroup.schoolpower.data.ILDNotification
 import com.carbonylgroup.schoolpower.data.Subject
 import com.carbonylgroup.schoolpower.transition.DetailsTransition
 import com.carbonylgroup.schoolpower.transition.TransitionHelper
@@ -166,6 +167,7 @@ class HomeFragment : TransitionHelper.BaseFragment() {
             unfoldedIndexesBackUp = adapter!!.unfoldedIndexes
         }
         dashboardListView.adapter = adapter
+        fetchLocalILD()
     }
 
     /**
@@ -177,11 +179,16 @@ class HomeFragment : TransitionHelper.BaseFragment() {
      * When each button is clicked, dialog will be automatically dismissed after
      * executing the assigned OnClickListener
      *
+     * @param uuid used for identification when used as push notification
      * @param headerImage
      * @param title
      * @param message
+     * @param primaryText
+     * @param secondaryText
+     * @param dismissText
      * @param hideDismiss if true - dismiss button will not be shown
      * @param hideSecondary if true - secondary button will not be shown
+     * @param onlyOnce if true - the uuid will be saved in sharedprefs when dismissed and won't show up again
      * @param primaryOnClickListener
      * @param secondaryOnClickListener
      * @param dismissOnClickListener
@@ -222,6 +229,7 @@ class HomeFragment : TransitionHelper.BaseFragment() {
                 val displayedILDs = utils!!.getSharedPreference("Tmp").getStringSet("doNotDisplayTheseILDs", mutableSetOf())
                 displayedILDs.add(uuid)
                 utils!!.setSharedPreference("Tmp", "doNotDisplayTheseILDs", displayedILDs)
+                utils!!.setSharedPreference("Tmp", "ildJson", "")
             }
             removeILD(self)
         }
@@ -247,6 +255,16 @@ class HomeFragment : TransitionHelper.BaseFragment() {
         TransitionManager.beginDelayedTransition(dashboardListView)
         dashboardListView.addHeaderView(ild, null, false)
         allILDs.add(ild)
+    }
+
+    fun fetchLocalILD() {
+        val json = utils!!
+                .getSharedPreference("Tmp")
+                .getString("ildJson", "")
+        if (json.contains("{")) {
+            val data = ILDNotification(json)
+            if (data.show) MainActivity.of(activity).showILD(data)
+        }
     }
 
     private fun removeILD(ild: ViewGroup) {
