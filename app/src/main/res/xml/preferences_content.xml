@@ -4,11 +4,14 @@
     <PreferenceCategory android:title="@string/theme">
 
         <SwitchPreference
+            android:buttonTint="?android:attr/textColorPrimary"
             android:defaultValue="false"
+            android:icon="@drawable/ic_baseline_brightness_2_24px"
             android:key="switch_preference_theme_dark"
             android:title="@string/dark_theme" />
 
         <com.carbonylgroup.schoolpower.utils.colorChooser.ColorChooserPreference
+            android:icon="@drawable/ic_color_lens_black_24dp"
             android:key="list_preference_accent_color"
             android:title="@string/accent_color" />
 
@@ -20,6 +23,7 @@
             android:defaultValue="0"
             android:entries="@array/list_preference_language_entries"
             android:entryValues="@array/list_preference_language_values"
+            android:icon="@drawable/ic_language_black_24dp"
             android:key="list_preference_language"
             android:summary="%s"
             android:title="@string/language" />
@@ -28,12 +32,14 @@
             android:defaultValue="0"
             android:entries="@array/list_preference_display_types_entries"
             android:entryValues="@array/list_preference_display_types_values"
+            android:icon="@drawable/ic_dashboard_black_24dp"
             android:key="list_preference_dashboard_display"
             android:summary="%s"
             android:title="@string/dashboard_displays" />
 
         <SwitchPreference
             android:defaultValue="false"
+            android:icon="@drawable/ic_archive_black_24dp"
             android:key="list_preference_dashboard_show_inactive"
             android:summary="@string/show_inactive_summary"
             android:title="@string/show_inactive_title" />
@@ -45,6 +51,7 @@
 
         <MultiSelectListPreference
             android:defaultValue="@array/empty_array"
+            android:icon="@drawable/ic_playlist_add_check_black_24dp"
             android:key="list_preference_customize_gpa"
             android:title="@string/list_preference_custom_gpa_select" />
 
@@ -52,6 +59,7 @@
             android:defaultValue="all"
             android:entries="@array/list_preference_gpa_calculate_entries"
             android:entryValues="@array/list_preference_gpa_calculate_values"
+            android:icon="@drawable/ic_format_list_numbered_black_24dp"
             android:key="list_preference_custom_gpa_calculate"
             android:summary="%s"
             android:title="@string/list_preference_custom_gpa_calculate" />
@@ -63,14 +71,19 @@
 
         <SwitchPreference
             android:defaultValue="true"
+            android:icon="@drawable/ic_notifications_active_black_24dp"
             android:key="preference_enable_notification"
             android:title="@string/enable_notification" />
         <SwitchPreference
             android:defaultValue="true"
+            android:dependency="preference_enable_notification"
+            android:icon="@drawable/ic_font_download_black_24dp"
             android:key="notification_show_grade"
             android:title="@string/notification_show_grade" />
         <SwitchPreference
             android:defaultValue="true"
+            android:dependency="preference_enable_notification"
+            android:icon="@drawable/ic_star_border_black_24dp"
             android:key="notification_show_no_grade_assignment"
             android:title="@string/notification_show_no_grade_assignment" />
 
@@ -79,19 +92,23 @@
     <PreferenceCategory android:title="@string/support">
 
         <PreferenceScreen
+            android:icon="@drawable/ic_bug_report_black_24dp"
             android:key="report_bug"
             android:summary="@string/report_bug_summary"
             android:title="@string/report_bug" />
 
         <PreferenceScreen
+            android:icon="@drawable/ic_cloud_done_black_24dp"
             android:key="status"
             android:title="@string/server_status" />
 
         <PreferenceScreen
+            android:icon="@drawable/ic_public_black_24dp"
             android:key="website"
             android:title="@string/visit_website" />
 
         <PreferenceScreen
+            android:icon="@drawable/ic_code_black_24dp"
             android:key="source_code"
             android:title="@string/source_code" />
 

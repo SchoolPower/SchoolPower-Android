@@ -76,6 +76,7 @@ class HomeFragment : TransitionHelper.BaseFragment() {
     }
 
     private fun initValue() {
+        if (activity == null) return
         utils = Utils(MainActivity.of(activity))
         subjects = MainActivity.of(activity).subjects
         allILDs = arrayListOf()
