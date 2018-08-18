@@ -8,6 +8,7 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.app.ProgressDialog
 import android.content.Intent
+import android.support.v4.content.ContextCompat
 import android.util.Log
 import android.view.View
 import android.widget.EditText
@@ -26,10 +27,11 @@ class LoginActivity : BaseActivity() {
     private lateinit var utils: Utils
 
     override fun initActivity() {
-
         super.initActivity()
         if (checkIfLoggedIn()) return
         setContentView(R.layout.login_content)
+        window.navigationBarColor = ContextCompat.getColor(this, R.color.primary)
+        window.statusBarColor = ContextCompat.getColor(this, R.color.primary)
 
         initDialog()
         utils = Utils(this)
@@ -47,7 +49,6 @@ class LoginActivity : BaseActivity() {
     }
 
     private fun checkIfLoggedIn(): Boolean {
-
         val sharedPreferences = getSharedPreferences(getString(R.string.accountData), Activity.MODE_PRIVATE)
         if (sharedPreferences.getBoolean(getString(R.string.loggedIn), false)) {
             startMainActivity()
@@ -57,7 +58,6 @@ class LoginActivity : BaseActivity() {
     }
 
     private fun initDialog() {
-
         val builder = AlertDialog.Builder(this)
         builder.setMessage(getString(R.string.only_alert))
         builder.setTitle(getString(R.string.notification))
@@ -66,7 +66,6 @@ class LoginActivity : BaseActivity() {
     }
 
     private fun loginAction(username: String, password: String) {
-
         val progressDialog = ProgressDialog(this@LoginActivity)
         progressDialog.isIndeterminate = true
         progressDialog.setCancelable(false)
@@ -152,7 +151,6 @@ class LoginActivity : BaseActivity() {
     }
 
     private fun startMainActivity() {
-
         startActivity(Intent(application, MainActivity::class.java))
         this@LoginActivity.finish()
     }
