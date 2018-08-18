@@ -75,7 +75,15 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
     private val mainToolBar: Toolbar by bindView(R.id.main_toolbar)
     private val drawer: DrawerLayout by bindView(R.id.drawer_layout)
     private val mainAppBar: AppBarLayout by bindView(R.id.main_app_bar)
-    private val localeSet = arrayListOf(Resources.getSystem().configuration.locale, Locale.ENGLISH, Locale.TRADITIONAL_CHINESE, Locale.SIMPLIFIED_CHINESE)
+    private val localeSet = arrayListOf(
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                Resources.getSystem().configuration.locales[0]
+            } else {
+                Resources.getSystem().configuration.locale
+            },
+            Locale.ENGLISH,
+            Locale.TRADITIONAL_CHINESE,
+            Locale.SIMPLIFIED_CHINESE)
 
     private lateinit var mAdView: AdView
     private lateinit var toggle: ActionBarDrawerToggle
@@ -93,7 +101,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
 
     override fun attachBaseContext(newBase: Context) {
         utils = Utils(newBase)
-        val newLocale = utils.getSharedPreference(Utils.SettingsPreference).getString("lang", "0").toInt()
+        val newLocale = utils.getSharedPreference(Utils.SettingsPreference).getString("lang", "0")!!.toInt()
         val context = ContextWrapper.wrap(newBase, localeSet[newLocale])
         super.attachBaseContext(context)
     }
@@ -270,8 +278,8 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
     }
 
     private fun removeAvatar() {
-        val username = utils.getSharedPreference(AccountData).getString(getString(R.string.usernameKEY), "")
-        val password = utils.getSharedPreference(AccountData).getString(getString(R.string.passwordKEY), "")
+        val username = utils.getSharedPreference(AccountData).getString(getString(R.string.usernameKEY), "")!!
+        val password = utils.getSharedPreference(AccountData).getString(getString(R.string.passwordKEY), "")!!
 
         utils.buildNetworkRequest(getString(R.string.avatarURL), "POST",
                 MultipartBody.Builder()
@@ -488,7 +496,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
         hideToolBarItems(false)
         if (subjects != null && utils.getFilteredSubjects(subjects!!).count() != 0) homeFragment!!.notifyAdapter()
 
-        //TODO Bugs might occur when adding new menu items QAQ
+        //Bugs might occur when adding new menu items, BE CAREFUL (was actually a T0D0)
         navigationView.menu.getItem(1).isChecked = false
         navigationView.menu.getItem(0).isChecked = true
     }
@@ -528,8 +536,8 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
         val oldSubjects = ArrayList<Subject>()
         val oldAttendances = ArrayList<Attendance>()
 
-        val username = utils.getSharedPreference(AccountData).getString(getString(R.string.usernameKEY), "")
-        val password = utils.getSharedPreference(AccountData).getString(getString(R.string.passwordKEY), "")
+        val username = utils.getSharedPreference(AccountData).getString(getString(R.string.usernameKEY), "")!!
+        val password = utils.getSharedPreference(AccountData).getString(getString(R.string.passwordKEY), "")!!
         if (subjects != null) oldSubjects.addAll(subjects!!)
         if (attendances != null) oldAttendances.addAll(attendances!!)
 
@@ -686,7 +694,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
     }
 
     fun showILD(data: ILDNotification) {
-        val displayedILDs = utils.getSharedPreference("Tmp").getStringSet("doNotDisplayTheseILDs", setOf())
+        val displayedILDs = utils.getSharedPreference("Tmp").getStringSet("doNotDisplayTheseILDs", setOf())!!
         if (!displayedILDs.contains(data.uuid))
         // display if haven't been marked as displayed
             Thread(Runnable {
@@ -735,7 +743,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
 
     private fun getUsername(): String {
 
-        val name = utils.getSharedPreference(AccountData).getString(getString(R.string.student_name), "")
+        val name = utils.getSharedPreference(AccountData).getString(getString(R.string.student_name), "")!!
         if (name != "") return name.split(" ")[1] + " " + name.split(" ")[2]
         return getString(R.string.no_username)
     }
@@ -818,8 +826,8 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                             return
                         }
                         val avatarUrl = responseJson.getJSONObject("data")["url"].toString()
-                        val username = utils.getSharedPreference(AccountData).getString(getString(R.string.usernameKEY), "")
-                        val password = utils.getSharedPreference(AccountData).getString(getString(R.string.passwordKEY), "")
+                        val username = utils.getSharedPreference(AccountData).getString(getString(R.string.usernameKEY), "")!!
+                        val password = utils.getSharedPreference(AccountData).getString(getString(R.string.passwordKEY), "")!!
 
                         val responseAvatar = utils.buildNetworkRequest(getString(R.string.avatarURL), "POST",
                                 MultipartBody.Builder()

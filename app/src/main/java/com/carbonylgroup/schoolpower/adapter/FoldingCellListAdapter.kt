@@ -31,7 +31,6 @@ import android.os.Handler
  * Simple example of ListAdapter for using with Folding Cell
  * Adapter holds indexes of unfolded elements for correct work with default reusable views behavior
  */
-// TODO: fix the folding problem when hiding inactive subjects
 class FoldingCellListAdapter(context: Context, private var subjects: List<Subject>?, val unfoldedIndexes: HashSet<Int>, private val transformedPosition: Int) : ArrayAdapter<Subject>(context, 0, subjects) {
 
     private var fab_in: Animation? = null

@@ -2,6 +2,7 @@ package com.carbonylgroup.schoolpower.fragments
 
 import android.app.Activity
 import android.content.Intent
+import android.content.res.Resources
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -11,6 +12,8 @@ import android.view.ViewGroup
 import android.widget.TextView
 import com.carbonylgroup.schoolpower.R
 import com.carbonylgroup.schoolpower.activities.MainActivity
+import com.carbonylgroup.schoolpower.activities.SettingsActivity
+import com.carbonylgroup.schoolpower.utils.ThemeHelper
 import com.carbonylgroup.schoolpower.utils.Utils
 import com.mikepenz.aboutlibraries.LibsBuilder
 
@@ -52,20 +55,11 @@ class AboutFragment : Fragment() {
         }
 
         view.findViewById<View>(R.id.about_license_cell).setOnClickListener {
-
-            //TODO fix this (this lib is using android.app.Fragment, which is not compatible with that in v4 support lib)
-//            val licenseFragment = LibsBuilder()
-//                    .withAboutDescription(getString(R.string.i_love_open_source))
-//                    .fragment()
-//
-//            activity!!.supportFragmentManager
-//                    .beginTransaction()
-//                    .setCustomAnimations(R.animator.slide_from_right_in, R.animator.slide_to_left_out)
-//                    .replace(R.id.content_view, licenseFragmentt)
-//                    .addToBackStack(null)
-//                    .commit()
-//
-//            MainActivity.of(activity).presentFragment = 4
+            //TODO theme the licence activity
+            LibsBuilder()
+                    .withAboutDescription(getString(R.string.i_love_open_source))
+                    .withActivityTitle(getString(R.string.license))
+                    .start(activity)
         }
 
         view.findViewById<View>(R.id.about_bug_cell).setOnClickListener {
