@@ -4,12 +4,16 @@
 
 package com.carbonylgroup.schoolpower.fragments
 
+import android.content.Context
 import android.graphics.drawable.Drawable
+import android.os.AsyncTask
 import android.os.Bundle
 import android.support.transition.TransitionManager
+import android.support.v4.app.FragmentManager
 import android.support.v4.content.ContextCompat
 import android.support.v4.content.res.ResourcesCompat.getDrawable
 import android.support.v4.widget.SwipeRefreshLayout
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -31,6 +35,10 @@ import com.ramotion.foldingcell.FoldingCell
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
+import java.lang.reflect.AccessibleObject.setAccessible
+import java.lang.reflect.AccessibleObject.setAccessible
+
+
 
 
 class HomeFragment : TransitionHelper.BaseFragment() {
@@ -120,7 +128,7 @@ class HomeFragment : TransitionHelper.BaseFragment() {
             if (dashboardListView.headerViewsCount == 0)
                 initInListDialog(
                         "",
-                        ContextCompat.getDrawable(activity, R.drawable.ic_donation)!!,
+                        ContextCompat.getDrawable(activity as MainActivity, R.drawable.ic_donation)!!,
                         getString(R.string.donation_title),
                         getString(R.string.donation_message),
                         getString(R.string.donation_ok),
@@ -158,7 +166,7 @@ class HomeFragment : TransitionHelper.BaseFragment() {
             noGradeView.visibility = View.GONE
         }
 
-        adapter = FoldingCellListAdapter(activity, utils!!.getFilteredSubjects(subjects!!), unfoldedIndexesBackUp, transformedPosition)
+        adapter = FoldingCellListAdapter(activity as MainActivity, utils!!.getFilteredSubjects(subjects!!), unfoldedIndexesBackUp, transformedPosition)
         adapterSetFabOnClickListener(adapter!!)
         adapterSetTermOnClickListener(adapter!!)
         dashboardListView.onItemClickListener = AdapterView.OnItemClickListener { _, view, pos, _ ->
@@ -209,7 +217,7 @@ class HomeFragment : TransitionHelper.BaseFragment() {
             secondaryOnClickListener: View.OnClickListener,
             dismissOnClickListener: View.OnClickListener
     ) {
-        val inflater = activity.layoutInflater
+        val inflater = activity!!.layoutInflater
         val self = inflater.inflate(R.layout.in_list_dialog, dashboardListView, false) as ViewGroup
 
         self.findViewById<ImageView>(R.id.ild_image_view).setImageDrawable(headerImage)
@@ -227,7 +235,7 @@ class HomeFragment : TransitionHelper.BaseFragment() {
         val dismiss = View.OnClickListener {
             if (onlyOnce) {
                 // mark the ILD as displayed
-                val displayedILDs = utils!!.getSharedPreference("Tmp").getStringSet("doNotDisplayTheseILDs", mutableSetOf())
+                val displayedILDs = utils!!.getSharedPreference("Tmp").getStringSet("doNotDisplayTheseILDs", mutableSetOf())!!
                 displayedILDs.add(uuid)
                 utils!!.setSharedPreference("Tmp", "doNotDisplayTheseILDs", displayedILDs)
                 utils!!.setSharedPreference("Tmp", "ildJson", "")
@@ -261,7 +269,7 @@ class HomeFragment : TransitionHelper.BaseFragment() {
     fun fetchLocalILD() {
         val json = utils!!
                 .getSharedPreference("Tmp")
-                .getString("ildJson", "")
+                .getString("ildJson", "")!!
         if (json.contains("{")) {
             val data = ILDNotification(json)
             if (data.show) MainActivity.of(activity).showILD(data)
@@ -286,16 +294,16 @@ class HomeFragment : TransitionHelper.BaseFragment() {
     }
 
     private fun isDonated(): Boolean {
-        return Utils(activity).getSharedPreference("Tmp").getBoolean("Donated", false)
+        return Utils(activity as MainActivity).getSharedPreference("Tmp").getBoolean("Donated", false)
     }
 
     private fun setLastDonateShowedDate(date: Date) {
-        Utils(activity).setSharedPreference("Tmp", "LastTimeDonateShowed",
+        Utils(activity as MainActivity).setSharedPreference("Tmp", "LastTimeDonateShowed",
                 SimpleDateFormat("yyyy-MM-dd", Locale.CHINA).format(date))
     }
 
     private fun getLastDonateShowedDate(): Date {
-        val dateStr = Utils(activity)
+        val dateStr = Utils(activity as MainActivity)
                 .getSharedPreference("Tmp")
                 .getString("LastTimeDonateShowed", "")
 
@@ -339,27 +347,30 @@ class HomeFragment : TransitionHelper.BaseFragment() {
         else listView.getChildAt(position - firstItemPos)
     }
 
-    private fun gotoCourseDetail(_header: View, _subject_title: View, transformedPosition: Int) {
+    private fun gotoCourseDetail(header: View, subjectTitle: View, transformedPosition: Int) {
+
         courseDetailFragment = CourseDetailFragment()
         courseDetailFragment!!.sharedElementEnterTransition = DetailsTransition()
         courseDetailFragment!!.sharedElementReturnTransition = DetailsTransition()
-        _header.transitionName = getString(R.string.shared_element_course_header)
-        _subject_title.transitionName = getString(R.string.shared_element_course_subject_title)
+        header.transitionName = getString(R.string.shared_element_course_header)
+        subjectTitle.transitionName = getString(R.string.shared_element_course_subject_title)
         val bundle = Bundle()
         bundle.putInt("transformedPosition", transformedPosition)
         courseDetailFragment!!.arguments = bundle
 
-        activity.fragmentManager
+        activity!!.supportFragmentManager
                 .beginTransaction()
-                .addSharedElement(_header, getString(R.string.shared_element_course_header))
-                .addSharedElement(_subject_title, getString(R.string.shared_element_course_subject_title))
+                .addSharedElement(header, getString(R.string.shared_element_course_header))
+                .addSharedElement(subjectTitle, getString(R.string.shared_element_course_subject_title))
                 .setCustomAnimations(R.animator.do_nothing, R.animator.fade_out)
-                .replace(R.id.content_view, courseDetailFragment)
+                .replace(R.id.content_view, courseDetailFragment!!)
                 .addToBackStack(null)
                 .commit()
 
         MainActivity.of(activity).animateDrawerToggle(true)
         MainActivity.of(activity).setToolBarElevation(0)
+
+        Log.d("[][][", "vszuybxcbsiuekjds")
     }
 
     private fun preRenderUnfoldCells() {

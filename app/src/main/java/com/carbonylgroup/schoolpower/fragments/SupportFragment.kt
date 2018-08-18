@@ -1,10 +1,10 @@
 package com.carbonylgroup.schoolpower.fragments
 
-import android.app.Fragment
-import android.app.FragmentManager
 import android.os.Bundle
 import android.support.design.widget.TabLayout
-import android.support.v13.app.FragmentStatePagerAdapter
+import android.support.v4.app.Fragment
+import android.support.v4.app.FragmentManager
+import android.support.v4.app.FragmentStatePagerAdapter
 import android.support.v4.view.PagerAdapter
 import android.support.v4.view.ViewPager
 import android.view.LayoutInflater
@@ -34,25 +34,24 @@ class SupportFragment : Fragment() {
             }
         }
 
-        override fun getPageTitle(position: Int) = activity.getString(titles[position])!!
+        override fun getPageTitle(position: Int) = activity!!.getString(titles[position])!!
 
         override fun getCount() = PagesNumber
     }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
-        val view = inflater!!.inflate(R.layout.fragment_viewpager, container, false)
+        val view = inflater.inflate(R.layout.fragment_viewpager, container, false)
         MainActivity.of(activity).expandToolBar(true, true)
 
         // Instantiate a ViewPager and a PagerAdapter.
         mPager = view.findViewById(R.id.chart_pager) as ViewPager
-        mPagerAdapter = ScreenSlidePagerAdapter(fragmentManager)
+        mPagerAdapter = ScreenSlidePagerAdapter(fragmentManager!!)
         mPager!!.adapter = mPagerAdapter
 
-        if (Utils(activity).getSharedPreference("Tmp").getBoolean("ImComingForDonation", false)) {
+        if (Utils(activity as MainActivity).getSharedPreference("Tmp").getBoolean("ImComingForDonation", false)) {
             mPager!!.setCurrentItem(2, true)
-            Utils(activity).setSharedPreference("Tmp", "ImComingForDonation", false)
+            Utils(activity as MainActivity).setSharedPreference("Tmp", "ImComingForDonation", false)
         }
 
         val tabLayout = view.findViewById(R.id.tab_layout) as TabLayout

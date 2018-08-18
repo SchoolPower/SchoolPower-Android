@@ -1,10 +1,10 @@
 package com.carbonylgroup.schoolpower.transition
 
 import android.app.Activity
-import android.app.Fragment
 import android.os.Build
 import android.os.Bundle
 import android.support.v4.app.ActivityCompat
+import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.transition.Transition
 import android.view.View
@@ -200,13 +200,13 @@ class TransitionHelper private constructor(internal val activity: Activity, save
     open class BaseFragment : Fragment(), TransitionHelper.Listener {
 
         override fun onCreate(savedInstanceState: Bundle?) {
-            TransitionHelper.of(activity).addListener(this)
+            TransitionHelper.of(activity as MainActivity).addListener(this)
             super.onCreate(savedInstanceState)
 
         }
 
         override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-            TransitionHelper.of(activity).onViewCreated()
+            TransitionHelper.of(activity as MainActivity).onViewCreated()
             super.onViewCreated(view, savedInstanceState)
         }
 

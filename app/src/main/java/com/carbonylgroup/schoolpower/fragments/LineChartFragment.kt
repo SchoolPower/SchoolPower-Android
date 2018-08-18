@@ -1,9 +1,9 @@
 package com.carbonylgroup.schoolpower.fragments
 
-import android.app.Fragment
 import android.graphics.Color
 import android.os.Bundle
 import android.preference.PreferenceManager
+import android.support.v4.app.Fragment
 import android.support.v7.widget.CardView
 import android.view.LayoutInflater
 import android.view.MotionEvent
@@ -29,12 +29,11 @@ class LineChartFragment : Fragment() {
 
     private lateinit var utils: Utils
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
-        val view = inflater!!.inflate(R.layout.fragment_line_chart, container, false)
+        val view = inflater.inflate(R.layout.fragment_line_chart, container, false)
 
-        utils = Utils(activity)
+        utils = Utils(activity as MainActivity)
 
         // Adjust chart's size to leave the space for the action bar and ad. bar.
         val lineChartCardView = view.findViewById<CardView>(R.id.line_chart_card)
@@ -66,7 +65,7 @@ class LineChartFragment : Fragment() {
                 val subjectName = subjectNow.getString("name")
                 val subjectGrade = subjectNow.getDouble("grade").toFloat()
                 if (subjectGrade == 0.0f) continue
-                if (!PreferenceManager.getDefaultSharedPreferences(activity.applicationContext)
+                if (!PreferenceManager.getDefaultSharedPreferences(activity!!.applicationContext)
                                 .getBoolean("list_preference_dashboard_show_inactive", false)) {
                     val currentTime = System.currentTimeMillis()
                     val it = MainActivity.of(activity).subjects!!.find { it.name == subjectName }

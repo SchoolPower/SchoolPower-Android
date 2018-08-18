@@ -1,15 +1,16 @@
 package com.carbonylgroup.schoolpower.fragments
 
-import android.app.Fragment
 import android.content.Intent
 import android.didikee.donate.AlipayDonate
 import android.os.Bundle
+import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.carbonylgroup.schoolpower.R
 import com.carbonylgroup.schoolpower.utils.Utils
 import android.support.v7.widget.CardView
+import com.carbonylgroup.schoolpower.activities.MainActivity
 import com.carbonylgroup.schoolpower.activities.WechatIntroActivity
 import com.carbonylgroup.schoolpower.utils.CryptoDonationDialog
 
@@ -20,10 +21,9 @@ class DonationFragment : Fragment() {
     private lateinit var utils: Utils
     private val AlipayToken = "tsx09230fuwngogndwbkg3b"
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-        val view = inflater!!.inflate(R.layout.fragment_donation, container, false)
-        utils = Utils(activity)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        val view = inflater.inflate(R.layout.fragment_donation, container, false)
+        utils = Utils(activity as MainActivity)
         view.findViewById<CardView>(R.id.alipay_card).setOnClickListener { gotoAlipay() }
         view.findViewById<CardView>(R.id.wechat_card).setOnClickListener { gotoWechatPay() }
         view.findViewById<CardView>(R.id.paypal_card).setOnClickListener { gotoPaypal() }
@@ -37,7 +37,7 @@ class DonationFragment : Fragment() {
             AlipayDonate.startAlipayClient(activity, AlipayToken)
             setIsDonated(true)
         } else {
-            utils.showSnackBar(view.findViewById(R.id.donation_fragment), getString(R.string.AlipayNotFound), true)
+            utils.showSnackBar(view!!.findViewById(R.id.donation_fragment), getString(R.string.AlipayNotFound), true)
         }
     }
 
@@ -52,18 +52,18 @@ class DonationFragment : Fragment() {
     }
 
     fun gotoCrypto(crypto: CryptoDonationDialog.CRYPTO_TYPE) {
-        CryptoDonationDialog(activity, crypto).show()
+        CryptoDonationDialog(activity as MainActivity, crypto).show()
         setIsDonated(true)
     }
 
     private fun setIsDonated(donated: Boolean) {
-        Utils(activity).setSharedPreference("Tmp", "Donated", donated)
+        Utils(activity as MainActivity).setSharedPreference("Tmp", "Donated", donated)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == WECHAT_INTRO && resultCode == WechatIntroActivity().WECHAT_NOT_FOUND) {
-            Utils(activity).showSnackBar(activity.findViewById(R.id.donation_fragment), getString(R.string.WechatNotFound), true)
+            Utils(activity as MainActivity).showSnackBar(activity!!.findViewById(R.id.donation_fragment), getString(R.string.WechatNotFound), true)
         }
     }
 }

@@ -20,6 +20,7 @@ import android.os.Bundle
 import android.preference.PreferenceManager
 import android.support.design.widget.AppBarLayout
 import android.support.design.widget.NavigationView
+import android.support.v4.app.FragmentActivity
 import android.support.v4.view.GravityCompat
 import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.ActionBarDrawerToggle
@@ -370,13 +371,13 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
     /* Fragments Handler */
     fun gotoFragmentWithMenuItemId(id: Int) {
 
-        val fm = fragmentManager
+        val fm = supportFragmentManager
         val transaction = fm.beginTransaction()
 
         when (id) {
             R.id.nav_dashboard -> {
                 homeFragment = HomeFragment()
-                transaction.replace(R.id.content_view, homeFragment)
+                transaction.replace(R.id.content_view, homeFragment!!)
                 setToolBarTitle(getString(R.string.dashboard))
                 setToolBarElevation()
                 expandToolBar(true, true)
@@ -385,7 +386,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
             }
             R.id.nav_charts -> {
                 chartFragment = ChartFragment()
-                transaction.replace(R.id.content_view, chartFragment)
+                transaction.replace(R.id.content_view, chartFragment!!)
                 setToolBarTitle(getString(R.string.charts))
                 setToolBarElevation(0)
                 expandToolBar(true, true)
@@ -394,7 +395,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
             }
             R.id.nav_attendance -> {
                 attendanceFragment = AttendanceFragment()
-                transaction.replace(R.id.content_view, attendanceFragment)
+                transaction.replace(R.id.content_view, attendanceFragment!!)
                 setToolBarTitle(getString(R.string.attendance))
                 setToolBarElevation()
                 expandToolBar(true, true)
@@ -406,7 +407,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
             R.id.nav_support -> {
                 supportFragment = SupportFragment()
                 transaction.setCustomAnimations(R.animator.slide_from_right_in, R.animator.slide_to_left_out)
-                        .replace(R.id.content_view, supportFragment)
+                        .replace(R.id.content_view, supportFragment!!)
                 setToolBarTitle(getString(R.string.support_us))
                 setToolBarElevation(0)
                 expandToolBar(true, true)
@@ -418,7 +419,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
             R.id.nav_about -> {
                 aboutFragment = AboutFragment()
                 transaction.setCustomAnimations(R.animator.slide_from_right_in, R.animator.slide_to_left_out)
-                        .replace(R.id.content_view, aboutFragment)
+                        .replace(R.id.content_view, aboutFragment!!)
                 setToolBarTitle(getString(R.string.about))
                 setToolBarElevation()
                 expandToolBar(true, true)
@@ -452,12 +453,12 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
         homeFragment!!.sharedElementEnterTransition = DetailsTransition()
         homeFragment!!.sharedElementReturnTransition = DetailsTransition()
 
-        fragmentManager
+        supportFragmentManager
                 .beginTransaction()
                 .addSharedElement(findViewById(R.id.detail_view_header), getString(R.string.shared_element_course_header))
                 .addSharedElement(findViewById(R.id.detail_subject_title_tv), getString(R.string.shared_element_course_subject_title))
                 .setCustomAnimations(R.animator.do_nothing, R.animator.fade_out)
-                .replace(R.id.content_view, homeFragment)
+                .replace(R.id.content_view, homeFragment!!)
                 .addToBackStack(null)
                 .commit()
 
@@ -476,10 +477,10 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
 
         if (homeFragment == null) homeFragment = HomeFragment()
 
-        fragmentManager
+        supportFragmentManager
                 .beginTransaction()
                 .setCustomAnimations(R.animator.slide_to_right_in, R.animator.slide_from_left_out)
-                .replace(R.id.content_view, homeFragment)
+                .replace(R.id.content_view, homeFragment!!)
                 .addToBackStack(null)
                 .commit()
 
@@ -501,9 +502,9 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
 
         if (homeFragment == null) homeFragment = HomeFragment()
 
-        fragmentManager
+        supportFragmentManager
                 .beginTransaction()
-                .replace(R.id.content_view, homeFragment)
+                .replace(R.id.content_view, homeFragment!!)
                 .addToBackStack(null)
                 .commit()
 
@@ -515,7 +516,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
 
     private fun setDefaultFragment() {
 
-        val fm = fragmentManager
+        val fm = supportFragmentManager
         val transaction = fm.beginTransaction()
         gotoFragmentWithMenuItemId(R.id.nav_dashboard)
         transaction.commit()
@@ -853,9 +854,9 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
 
             homeFragment = HomeFragment()
 
-            fragmentManager
+            supportFragmentManager
                     .beginTransaction()
-                    .replace(R.id.content_view, homeFragment)
+                    .replace(R.id.content_view, homeFragment!!)
                     .addToBackStack(null)
                     .commit()
         }
@@ -935,7 +936,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
     }
 
     companion object {
-        fun of(activity: Activity): MainActivity {
+        fun of(activity: FragmentActivity?): MainActivity {
             return activity as MainActivity
         }
     }

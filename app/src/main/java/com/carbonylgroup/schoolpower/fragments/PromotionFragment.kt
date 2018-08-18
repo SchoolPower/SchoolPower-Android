@@ -1,13 +1,14 @@
 package com.carbonylgroup.schoolpower.fragments
 
-import android.app.Fragment
 import android.os.Bundle
+import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import co.ceryle.segmentedbutton.SegmentedButtonGroup
 import com.carbonylgroup.schoolpower.R
+import com.carbonylgroup.schoolpower.activities.MainActivity
 import com.carbonylgroup.schoolpower.utils.Utils
 import net.glxn.qrgen.android.QRCode
 
@@ -21,11 +22,10 @@ class PromotionFragment : Fragment() {
             .withColor(utils.getPrimaryColor(), 0xFFFFFFFF.toInt())
             .bitmap()!!
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
-        val view = inflater!!.inflate(R.layout.fragment_promotion, container, false)
-        utils = Utils(activity)
+        val view = inflater.inflate(R.layout.fragment_promotion, container, false)
+        utils = Utils(activity as MainActivity)
         val androidDownloadUrl = utils.getSharedPreference(Utils.OtherData).getString("app_download_url", getString(R.string.default_android_download_address))
         val qrCode = view.findViewById(R.id.qr_code) as ImageView
         val segmented: SegmentedButtonGroup = view.findViewById(R.id.promotion_segmented)

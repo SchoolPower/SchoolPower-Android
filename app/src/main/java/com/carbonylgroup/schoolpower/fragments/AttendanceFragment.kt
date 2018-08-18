@@ -1,8 +1,8 @@
 package com.carbonylgroup.schoolpower.fragments
 
-import android.app.Fragment
 import android.os.Bundle
 import android.os.Handler
+import android.support.v4.app.Fragment
 import android.support.v4.content.res.ResourcesCompat
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.LinearLayoutManager
@@ -30,10 +30,9 @@ class AttendanceFragment : Fragment() {
     private lateinit var no_attendance_view: LinearLayout
     private var attendance_swipe_refresh_layout: SwipeRefreshLayout? = null
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
-        utils = Utils(activity)
+        utils = Utils(activity as MainActivity)
         MainActivity.of(activity).expandToolBar(true, true)
         view_private = inflater!!.inflate(R.layout.fragment_attendance, container, false)
 
@@ -55,15 +54,15 @@ class AttendanceFragment : Fragment() {
 
     private fun initValue() {
 
-        utils = Utils(activity)
+        utils = Utils(activity as MainActivity)
         attendance = MainActivity.of(activity).attendances!!
         attendanceRecyclerView = view_private!!.findViewById(R.id.attendance_recycler)
         no_attendance_view = view_private!!.findViewById(R.id.no_attendance_view)
         view_private!!.findViewById<ImageView>(R.id.perfect_attendance_image_view).setImageDrawable(
                 ResourcesCompat.getDrawable(resources,
-                        when (Utils(activity).getTheme()) {
-                            Utils(activity).LIGHT -> R.drawable.perfect_attendance
-                            Utils(activity).DARK -> R.drawable.perfect_attendance_dark
+                        when (Utils(activity as MainActivity).getTheme()) {
+                            Utils(activity as MainActivity).LIGHT -> R.drawable.perfect_attendance
+                            Utils(activity as MainActivity).DARK -> R.drawable.perfect_attendance_dark
                             else -> R.drawable.perfect_attendance
                         }, null)
         )
@@ -83,7 +82,7 @@ class AttendanceFragment : Fragment() {
         }
         attendanceRecyclerView.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
 //        Handler().postDelayed({
-            attendanceRecyclerView.adapter = AttendanceAdapter(activity, attendance)
+            attendanceRecyclerView.adapter = AttendanceAdapter(activity as MainActivity, attendance)
 //        }, 500)
     }
 

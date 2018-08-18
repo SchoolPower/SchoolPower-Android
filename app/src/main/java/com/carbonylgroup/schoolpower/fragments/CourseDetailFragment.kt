@@ -37,12 +37,12 @@ class CourseDetailFragment : TransitionHelper.BaseFragment() {
 
     private fun initValue(view: View) {
 
-        utils = Utils(activity)
+        utils = Utils(activity as TransitionHelper.MainActivity)
         MainActivity.of(activity).presentFragment = 1
         MainActivity.of(activity).setToolBarTitle("")
         MainActivity.of(activity).expandToolBar(true, true)
         MainActivity.of(activity).hideToolBarItems(true)
-        val transformedPosition = this.arguments.getInt("transformedPosition", -1)
+        val transformedPosition = this.arguments!!.getInt("transformedPosition", -1)
 
         if (transformedPosition != -1) {
             val itemToPresent = MainActivity.of(activity).subjectTransporter
@@ -57,7 +57,7 @@ class CourseDetailFragment : TransitionHelper.BaseFragment() {
             }
             view.findViewById<TextView>(R.id.detail_subject_title_tv).text = itemToPresent.name
             course_detail_recycler.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
-            course_detail_recycler.adapter = CourseDetailAdapter(activity, dataList!![transformedPosition])
+            course_detail_recycler.adapter = CourseDetailAdapter(activity as TransitionHelper.MainActivity, dataList!![transformedPosition])
         }
     }
 
