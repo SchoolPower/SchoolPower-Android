@@ -25,8 +25,8 @@ class GPADialog(private val activity: Activity, private val subjects: List<Subje
     private lateinit var gpa_dialog_percentage_front: CounterView
     private lateinit var gpaDialogSegmented: SegmentedButtonGroup
 
-    fun show() : Boolean {
-        if(subjects.count() == 0) return false
+    fun show(): Boolean {
+        if (subjects.count() == 0) return false
 
         val latestPeriods = HashMap<String, Subject.Grade>()
         val allPeriods = HashSet<String>()
@@ -56,20 +56,20 @@ class GPADialog(private val activity: Activity, private val subjects: List<Subje
     private fun updateData(GPAAll: Float, GPACustom: Float, GPAOfficial: Float?) {
         gpaDialogSegmented.setOnClickedButtonPosition { position: Int ->
             when (position) {
-                0 -> animateWaveAndText(waveView.waterLevelRatio, GPAAll / 100.0f)
+                0 -> animateWaveAndText(waveView.waterLevelRatio, GPAAll, 100.0f)
                 1 -> if (GPACustom.isNaN()) customGPANotAvailable() else
-                    animateWaveAndText(waveView.waterLevelRatio, GPACustom / 100.0f)
+                    animateWaveAndText(waveView.waterLevelRatio, GPACustom, 100.0f)
                 2 -> {
-                    animateWaveAndText(waveView.waterLevelRatio, GPAOfficial!! / 4.0f)
+                    animateWaveAndText(waveView.waterLevelRatio, GPAOfficial!!, 4.0f, "", "%.4f")
                 }
             }
         }
 
         when (gpaDialogSegmented.position) {
-            0 -> animateWaveAndText(waveView.waterLevelRatio, GPAAll / 100.0f)
+            0 -> animateWaveAndText(waveView.waterLevelRatio, GPAAll, 100.0f)
             1 -> if (GPACustom.isNaN()) customGPANotAvailable() else
-                animateWaveAndText(waveView.waterLevelRatio, GPACustom / 100.0f)
-            2 -> animateWaveAndText(waveView.waterLevelRatio, GPAOfficial!! / 4.0f)
+                animateWaveAndText(waveView.waterLevelRatio, GPACustom, 100.0f)
+            2 -> animateWaveAndText(waveView.waterLevelRatio, GPAOfficial!!, 4.0f, "", "%.4f")
         }
     }
 
@@ -87,14 +87,10 @@ class GPADialog(private val activity: Activity, private val subjects: List<Subje
         }
         gpa_dialog_percentage_front = gpaDialogView.findViewById(R.id.gpa_dialog_percentage_front)
         gpa_dialog_percentage_back = gpaDialogView.findViewById(R.id.gpa_dialog_percentage_back)
-        gpa_dialog_percentage_front.setFormatter { _, suffix, value -> String.format("%.3f", value) + suffix }
-        gpa_dialog_percentage_back.setFormatter { _, suffix, value -> String.format("%.3f", value) + suffix }
         gpa_dialog_percentage_front.setAutoStart(false)
         gpa_dialog_percentage_front.setPrefix("")
-        gpa_dialog_percentage_front.setSuffix("%")
         gpa_dialog_percentage_back.setAutoStart(false)
         gpa_dialog_percentage_back.setPrefix("")
-        gpa_dialog_percentage_back.setSuffix("%")
 
         waveView = gpaDialogView.findViewById(R.id.gpa_Dialog_wave_view)
         waveView.setShapeType(WaveView.ShapeType.CIRCLE)
@@ -141,7 +137,7 @@ class GPADialog(private val activity: Activity, private val subjects: List<Subje
     private fun calculateCustomGPA(term: String): Float {
         val customRule = utils.getSharedPreference(Utils.SettingsPreference).getString("list_preference_custom_gpa_calculate", "all")
         val customSubjects = PreferenceManager.getDefaultSharedPreferences(activity).getStringSet("list_preference_customize_gpa", HashSet())
-        if (customSubjects.isEmpty()) return Float.NaN
+        if (customSubjects!!.isEmpty()) return Float.NaN
 
         val grades = ArrayList<Float>()
         for (subject in subjects) {
@@ -156,26 +152,36 @@ class GPADialog(private val activity: Activity, private val subjects: List<Subje
         return if (customRule == "all") {
             grades.average().toFloat()
         } else {
-            grades.sortedDescending().take(customRule.toInt()).average().toFloat()
+            grades.sortedDescending().take(customRule!!.toInt()).average().toFloat()
         }
     }
 
-    private fun animateWaveAndText(rawStartValue: Float, rawEndValue: Float) {
+    private fun animateWaveAndText(rawStartValue: Float,
+                                   rawEndValue: Float,
+                                   divider: Float,
+                                   textSuffix: String = "%",
+                                   textFormat: String = "%.3f") {
 
         val startValue = if (rawStartValue.isNaN()) 0.0f else rawStartValue * 100
-        val endValue = if (rawEndValue.isNaN()) 0.0f else rawEndValue * 100
+        val endValue =
+                if (rawEndValue.isNaN()) 0.0f
+                else rawEndValue / divider * 100
 
         val waveLightColor = utils.getColorByLetterGrade(utils.getLetterGradeByPercentageGrade(endValue))
         val waveDarkColor = utils.getDarkColorByPrimary(waveLightColor)
 
         gpa_dialog_percentage_front.setStartValue(startValue)
-        gpa_dialog_percentage_front.setEndValue(endValue)
-        gpa_dialog_percentage_front.setIncrement((endValue - startValue) / 25f) // the amount the number increments at each time interval
+        gpa_dialog_percentage_front.setEndValue(rawEndValue)
+        gpa_dialog_percentage_front.setIncrement((rawEndValue - startValue) / 25f) // the amount the number increments at each time interval
         gpa_dialog_percentage_front.setTimeInterval(2) // the time interval (ms) at which the text changes
+        gpa_dialog_percentage_front.setSuffix(textSuffix)
+        gpa_dialog_percentage_front.setFormatter { _, suffix, value -> String.format(textFormat, value) + suffix }
         gpa_dialog_percentage_back.setStartValue(startValue)
-        gpa_dialog_percentage_back.setEndValue(endValue)
-        gpa_dialog_percentage_back.setIncrement((endValue - startValue) / 25f) // the amount the number increments at each time interval
+        gpa_dialog_percentage_back.setEndValue(rawEndValue)
+        gpa_dialog_percentage_back.setIncrement((rawEndValue - startValue) / 25f) // the amount the number increments at each time interval
         gpa_dialog_percentage_back.setTimeInterval(2) // the time interval (ms) at which the text changes
+        gpa_dialog_percentage_back.setSuffix(textSuffix)
+        gpa_dialog_percentage_back.setFormatter { _, suffix, value -> String.format(textFormat, value) + suffix }
         gpa_dialog_percentage_front.start()
         gpa_dialog_percentage_back.start()
 
