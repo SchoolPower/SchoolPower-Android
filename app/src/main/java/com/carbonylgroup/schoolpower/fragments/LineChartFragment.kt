@@ -42,12 +42,15 @@ class LineChartFragment : Fragment() {
         layoutParams.setMargins(0, 0, 0, utils.getActionBarSizePx() + utils.dpToPx(58))
         lineChartCardView.requestLayout()
 
-        if (MainActivity.of(activity).subjects == null ||
+        val lineChart: LineChart = view.findViewById(R.id.line_chart)
+        lineChart.setNoDataText(getString(R.string.chart_not_available))
+        lineChart.setNoDataTextColor(utils.getSecondaryTextColor())
+
+        val subjects = MainActivity.of(activity).subjects
+        if (subjects == null ||
+                utils.getGradedSubjects(subjects).isEmpty() ||
                 utils.getFilteredSubjects(MainActivity.of(activity).subjects!!).count() == 0)
             return view
-
-        val lineChart: LineChart = view.findViewById(R.id.line_chart)
-        lineChart.description.isEnabled = false
 
         val historyData = utils.readHistoryGrade()
         val organizedData = HashMap<String, ArrayList<Entry>>()
@@ -114,6 +117,7 @@ class LineChartFragment : Fragment() {
             }
         }
 
+        lineChart.description.isEnabled = false
         lineChart.axisLeft.enableGridDashedLine(10f, 10f, 0f)
         lineChart.axisLeft.textColor = utils.getPrimaryTextColor()
         lineChart.axisRight.enableGridDashedLine(10f, 10f, 0f)

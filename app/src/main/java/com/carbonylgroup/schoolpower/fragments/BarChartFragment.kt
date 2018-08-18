@@ -41,20 +41,17 @@ class BarChartFragment : Fragment() {
         layoutParams.setMargins(0, 0, 0, utils.getActionBarSizePx() + utils.dpToPx(58))
         barChartCardView.requestLayout()
 
-        if (MainActivity.of(activity).subjects == null ||
+        val barChart: BarChart = view.findViewById(R.id.bar_chart)
+        barChart.setNoDataText(getString(R.string.chart_not_available))
+        barChart.setNoDataTextColor(utils.getSecondaryTextColor())
+
+        val subjects = MainActivity.of(activity).subjects
+        if (subjects == null ||
+                utils.getGradedSubjects(subjects).isEmpty() ||
                 utils.getFilteredSubjects(MainActivity.of(activity).subjects!!).count() == 0)
             return view
 
-        val subjects = MainActivity.of(activity).subjects!!
-        val gradedSubjects = ArrayList<Subject>() // Subjects that have grades
-
-        subjects.forEach {
-            val grade = utils.getLatestPeriodGrade(it)
-            if (grade != null && grade.letter != "--") gradedSubjects.add(it)
-        }
-        val barChart: BarChart = view.findViewById(R.id.bar_chart)
-        barChart.description.isEnabled = false
-
+        val gradedSubjects = utils.getGradedSubjects(subjects)
         val dataSets = ArrayList<IBarDataSet>()
         val subjectStrings = ArrayList<String>()
 
@@ -98,6 +95,7 @@ class BarChartFragment : Fragment() {
             dataSets.add(dataSet)
         }
 
+        barChart.description.isEnabled = false
         barChart.xAxis.position = XAxis.XAxisPosition.BOTTOM
         barChart.xAxis.granularity = 4f
         barChart.xAxis.axisMinimum = 0f
@@ -124,11 +122,11 @@ class BarChartFragment : Fragment() {
         barChart.animateY(1000)
         barChart.setScaleEnabled(true)
 
-        barChart.setOnTouchListener({ _, event ->
-            if (event.action == MotionEvent.ACTION_DOWN) {
+        barChart.setOnTouchListener { view, motionEvent ->
+            if (motionEvent.action == MotionEvent.ACTION_DOWN) {
                 barChart.parent.requestDisallowInterceptTouchEvent(true);false
             } else false
-        })
+        }
 
         return view
     }

@@ -155,6 +155,7 @@
     <string name="chart_line">Line</string>
     <string name="chart_radar">Radar</string>
     <string name="chart_bar">Bar</string>
+    <string name="chart_not_available">No chart data available</string>
 
     <string name="theme">Theme</string>
     <string name="dark_theme">Dark theme</string>

@@ -145,6 +145,7 @@
     <string name="chart_line">線圖</string>
     <string name="chart_radar">雷達圖</string>
     <string name="chart_bar">柱狀圖</string>
+    <string name="chart_not_available">沒有數據呢</string>
 
     <string name="theme">主題</string>
     <string name="dark_theme">暗主題</string>

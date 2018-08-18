@@ -19,6 +19,7 @@ import android.support.v4.content.ContextCompat
 import android.util.DisplayMetrics
 import android.view.View
 import com.carbonylgroup.schoolpower.R
+import com.carbonylgroup.schoolpower.activities.MainActivity
 import com.carbonylgroup.schoolpower.data.StudentData
 import com.carbonylgroup.schoolpower.data.Subject
 import okhttp3.*
@@ -484,8 +485,25 @@ class Utils(private val context: Context) {
                 })
     }
 
-    fun getFilteredSubjects(subjects: List<Subject>): List<Subject> {
+    fun getGradedSubjects(subjects: List<Subject>): List<Subject> {
+        val gradedSubjects = ArrayList<Subject>() // Subjects that have grades
 
+        for (subjectNow in subjects) {
+
+            if (!PreferenceManager.getDefaultSharedPreferences(context.applicationContext)
+                            .getBoolean("list_preference_dashboard_show_inactive", false)) {
+                val currentTime = System.currentTimeMillis()
+                val it = subjects.find { it.name == subjectNow.name }
+                        ?: continue
+                if (currentTime < it.startDate || currentTime > it.endDate) continue
+            }
+            val grade = getLatestPeriodGrade(subjectNow)
+            if (grade != null && grade.letter != "--") gradedSubjects.add(subjectNow)
+        }
+        return gradedSubjects
+    }
+
+    fun getFilteredSubjects(subjects: List<Subject>): List<Subject> {
         val filteredSubjects: List<Subject>
         if (!PreferenceManager.getDefaultSharedPreferences(context.applicationContext).getBoolean("list_preference_dashboard_show_inactive", false)) {
 

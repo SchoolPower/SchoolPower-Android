@@ -37,83 +37,72 @@ class RadarChartFragment : Fragment() {
         layoutParams.setMargins(0, 0, 0, utils.getActionBarSizePx() + utils.dpToPx(58))
         radarChartCardView.requestLayout()
 
-        if (MainActivity.of(activity).subjects == null ||
+        val radarChart: RadarChart = view.findViewById(R.id.radar_chart)
+        radarChart.setNoDataText(getString(R.string.chart_not_available))
+        radarChart.setNoDataTextColor(utils.getSecondaryTextColor())
+
+        val subjects = MainActivity.of(activity).subjects
+        if (subjects == null ||
+                utils.getGradedSubjects(subjects).isEmpty() ||
                 utils.getFilteredSubjects(MainActivity.of(activity).subjects!!).count() == 0)
             return view
-        val gradedSubjects = ArrayList<Subject>() // Subjects that have grades
 
-        for (subjectNow in MainActivity.of(activity).subjects!!) {
+        val gradedSubjects = utils.getGradedSubjects(subjects)
+        val entries = ArrayList<RadarEntry>()
+        radarChart.description.isEnabled = false
+        val xAxis = radarChart.xAxis
+        xAxis.yOffset = 10f
+        xAxis.xOffset = 10f
+        xAxis.textColor = utils.getPrimaryTextColor()
+        xAxis.valueFormatter = object : IAxisValueFormatter {
 
-            if (!PreferenceManager.getDefaultSharedPreferences(activity.applicationContext)
-                            .getBoolean("list_preference_dashboard_show_inactive", false)) {
-                val currentTime = System.currentTimeMillis()
-                val it = MainActivity.of(activity).subjects!!.find { it.name == subjectNow.name }
-                        ?: continue
-                if (currentTime < it.startDate || currentTime > it.endDate) continue
+            private val mSubjectsName = ArrayList<String>()
+
+            init {
+                gradedSubjects.mapTo(mSubjectsName) { it.getShortName() }
             }
-            val grade = utils.getLatestPeriodGrade(subjectNow)
-            if (grade != null && grade.letter != "--") gradedSubjects.add(subjectNow)
+
+            override fun getFormattedValue(value: Float, axis: AxisBase): String {
+                return mSubjectsName[value.toInt() % mSubjectsName.size]
+            }
         }
-        if(gradedSubjects.isEmpty()) return view
-        run {
-
-            val radarChart: RadarChart = view.findViewById(R.id.radar_chart)
-            val entries = ArrayList<RadarEntry>()
-            radarChart.description.isEnabled = false
-            val xAxis = radarChart.xAxis
-            xAxis.yOffset = 10f
-            xAxis.xOffset = 10f
-            xAxis.textColor = utils.getPrimaryTextColor()
-            xAxis.valueFormatter = object : IAxisValueFormatter {
-
-                private val mSubjectsName = ArrayList<String>()
-
-                init {
-                    gradedSubjects.mapTo(mSubjectsName) { it.getShortName() }
-                }
-
-                override fun getFormattedValue(value: Float, axis: AxisBase): String {
-                    return mSubjectsName[value.toInt() % mSubjectsName.size]
-                }
-            }
-            var minGrade = 100.0f
-            for (it in gradedSubjects) {
-                val periodGrade = (utils.getLatestPeriodGrade(it) ?: continue).percentage.toFloat()
-                entries.add(RadarEntry(periodGrade))
-                if (periodGrade < minGrade) minGrade = periodGrade
-            }
-
-            val yAxis = radarChart.yAxis
-            yAxis.textSize = 9f
-            yAxis.axisMinimum = minGrade / 3 * 2
-            yAxis.axisMaximum = 110.0f - 20.0f
-            yAxis.setDrawLabels(false)
-
-            val set = RadarDataSet(entries, "Grades")
-            set.color = utils.getAccentColor()
-            set.fillColor = utils.getAccentColor()
-            set.setDrawFilled(true)
-            set.fillAlpha = 180
-            set.lineWidth = 2f
-            set.isDrawHighlightCircleEnabled = true
-            set.setDrawHighlightIndicators(false)
-
-            val sets = ArrayList<IRadarDataSet>()
-            sets.add(set)
-
-            val radarData = RadarData(sets)
-            radarData.setValueTextSize(8f)
-            radarData.setDrawValues(true)
-            radarData.setValueTextColor(utils.getAccentColor())
-
-            radarChart.legend.isEnabled = false
-
-            radarChart.data = radarData
-            //radarChart.invalidate()
-
-            radarChart.animateX(1000)
-
+        var minGrade = 100.0f
+        for (it in gradedSubjects) {
+            val periodGrade = (utils.getLatestPeriodGrade(it) ?: continue).percentage.toFloat()
+            entries.add(RadarEntry(periodGrade))
+            if (periodGrade < minGrade) minGrade = periodGrade
         }
+
+        val yAxis = radarChart.yAxis
+        yAxis.textSize = 9f
+        yAxis.axisMinimum = minGrade / 3 * 2
+        yAxis.axisMaximum = 110.0f - 20.0f
+        yAxis.setDrawLabels(false)
+
+        val set = RadarDataSet(entries, "Grades")
+        set.color = utils.getAccentColor()
+        set.fillColor = utils.getAccentColor()
+        set.setDrawFilled(true)
+        set.fillAlpha = 180
+        set.lineWidth = 2f
+        set.isDrawHighlightCircleEnabled = true
+        set.setDrawHighlightIndicators(false)
+
+        val sets = ArrayList<IRadarDataSet>()
+        sets.add(set)
+
+        val radarData = RadarData(sets)
+        radarData.setValueTextSize(8f)
+        radarData.setDrawValues(true)
+        radarData.setValueTextColor(utils.getAccentColor())
+
+        radarChart.legend.isEnabled = false
+
+        radarChart.data = radarData
+        //radarChart.invalidate()
+
+        radarChart.animateX(1000)
+
         return view
     }
 }
