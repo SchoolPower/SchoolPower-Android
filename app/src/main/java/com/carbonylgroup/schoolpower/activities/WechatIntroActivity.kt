@@ -77,6 +77,7 @@ class WechatIntroActivity : AppIntro() {
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
         window.statusBarColor = ContextCompat.getColor(this, R.color.B_score_green_dark)
+        window.navigationBarColor = ContextCompat.getColor(this, R.color.B_score_green)
 
         setBarColor(ContextCompat.getColor(this, android.R.color.transparent))
         setSeparatorColor(ContextCompat.getColor(this, R.color.white_0_10))
