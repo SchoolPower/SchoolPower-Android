@@ -369,8 +369,6 @@ class HomeFragment : TransitionHelper.BaseFragment() {
 
         MainActivity.of(activity).animateDrawerToggle(true)
         MainActivity.of(activity).setToolBarElevation(0)
-
-        Log.d("[][][", "vszuybxcbsiuekjds")
     }
 
     private fun preRenderUnfoldCells() {

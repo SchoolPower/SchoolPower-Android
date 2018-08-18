@@ -926,16 +926,18 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
 
         if (_animation) {
 
-            val anim1 = ValueAnimator.ofArgb((mainToolBar.background as ColorDrawable).color, _actionBarToColor)
-            val anim2 = ValueAnimator.ofArgb(utils.getDarkColorByPrimary((mainToolBar.background as ColorDrawable).color), utils.getDarkColorByPrimary(_actionBarToColor))
-            anim1.addUpdateListener { valueAnimator ->
-                mainToolBar.setBackgroundColor(valueAnimator.animatedValue as Int)
+            runOnUiThread {
+                val anim1 = ValueAnimator.ofArgb(_actionBarToColor)
+                val anim2 = ValueAnimator.ofArgb(utils.getDarkColorByPrimary(_actionBarToColor))
+                anim1.addUpdateListener { valueAnimator ->
+                    mainToolBar.setBackgroundColor(valueAnimator.animatedValue as Int)
+                }
+                anim2.addUpdateListener { valueAnimator -> window.statusBarColor = valueAnimator.animatedValue as Int }
+                anim1.duration = 300
+                anim2.duration = 300
+                anim1.start()
+                anim2.start()
             }
-            anim2.addUpdateListener { valueAnimator -> window.statusBarColor = valueAnimator.animatedValue as Int }
-            anim1.duration = 300
-            anim2.duration = 300
-            anim1.start()
-            anim2.start()
 
         } else {
             mainToolBar.setBackgroundColor(_actionBarToColor)

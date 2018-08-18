@@ -57,7 +57,6 @@ class SettingsActivity : BaseActivity(), SettingsFragment.SettingsCallBack {
 
         setResult(Activity.RESULT_OK)
         if (recreated) {
-            Log.d("[][][", "juortubfdhni")
             rootLayout.post( { startAnimation() })
             // to invoke onActivityResult to apply settings
             recreated = false
