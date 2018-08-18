@@ -38,6 +38,7 @@
         <item name="android:actionBarPopupTheme">@style/PopupThemeLight</item>
         <item name="android:actionBarStyle">@style/AppbarThemeLight</item>
         <item name="actionOverflowButtonStyle">@style/ActionButtonOverflowLight</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">true</item>
         <item name="android:contextPopupMenuStyle" tools:targetApi="n">
             @style/ContextPopupThemeLight
         </item>

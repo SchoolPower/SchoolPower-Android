@@ -921,7 +921,6 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
             val anim2 = ValueAnimator.ofArgb(utils.getDarkColorByPrimary((mainToolBar.background as ColorDrawable).color), utils.getDarkColorByPrimary(_actionBarToColor))
             anim1.addUpdateListener { valueAnimator ->
                 mainToolBar.setBackgroundColor(valueAnimator.animatedValue as Int)
-                getWindow().navigationBarColor = valueAnimator.animatedValue as Int
             }
             anim2.addUpdateListener { valueAnimator -> window.statusBarColor = valueAnimator.animatedValue as Int }
             anim1.duration = 300
@@ -931,7 +930,6 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
 
         } else {
             mainToolBar.setBackgroundColor(_actionBarToColor)
-            getWindow().navigationBarColor = _actionBarToColor
             window.statusBarColor = utils.getDarkColorByPrimary(_actionBarToColor)
         }
     }
