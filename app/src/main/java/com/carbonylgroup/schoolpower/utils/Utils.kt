@@ -243,6 +243,8 @@ class Utils(private val context: Context) {
             else if (termsList.contains("T1")) return "T1"
         }
 
+        if (termsList.contains("Y1") && grades["Y1"]!!.letter != "--") return "Y1"
+
         return null
     }
 
