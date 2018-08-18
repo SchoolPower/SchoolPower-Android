@@ -128,7 +128,7 @@
     <string name="title_activity_settings">Settings</string>
 
     <string name="display">Display</string>
-    <string name="dashboard_displays">Dashboard Displays</string>
+    <string name="dashboard_displays">Dashboard displays</string>
     <string name="language">Language</string>
     <string name="dashboard_display_preference_summary_prefix">The score of&#160;</string>
     <string name="dashboard_display_preference_summary_suffix"> </string>
@@ -156,18 +156,18 @@
         <item>S1</item>
     </string-array>
 
-    <string name="show_inactive_title">Show Inactive Subjects</string>
+    <string name="show_inactive_title">Show inactive subjects</string>
     <string name="show_inactive_summary">Show subjects that you are not currently taking.</string>
 
-    <string name="enable_notification">Enable Notifications</string>
-    <string name="notification_show_grade">Show Grades in Notification</string>
-    <string name="notification_show_no_grade_assignment">Notify Ungraded Assignments</string>
-    <string name="notification_new">New Assignments</string>
+    <string name="enable_notification">Notify new assignments</string>
+    <string name="notification_show_grade">Show grades in notification</string>
+    <string name="notification_show_no_grade_assignment">Notify ungraded assignments</string>
+    <string name="notification_new">New assignments</string>
 
-    <string name="attendance_new">New Attendances</string>
+    <string name="attendance_new">New attendances</string>
 
     <string name="support">Support</string>
-    <string name="report_bug">Report a Bug</string>
+    <string name="report_bug">Report a bug</string>
     <string name="report_bug_summary">Contact developer with email.</string>
     <string name="feedback_forum">Visit feedback forum</string>
     <string name="feedback_forum_summary">View announcements, give suggestions or report bugs via our forum</string>
@@ -176,15 +176,15 @@
     <string name="bug_report_email_subject">Found Bug(s) in SchoolPower</string>
     <string name="bug_report_email_content">Please provide as much info as possible, such as how to reproduce it, what is the expected result. \nDebug Info: SchoolPower Android %s.\nPowerSchool Username and Password (Optional, help us solve it faster): \n</string>
 
-    <string name="visit_website">Visit Website</string>
-    <string name="source_code">Get Source Code</string>
+    <string name="visit_website">Visit website</string>
+    <string name="source_code">Get source code</string>
 
     <string name="customize_gpa">Customize GPA</string>
-    <string name="list_preference_custom_gpa_select">Select Subjects</string>
-    <string name="list_preference_custom_gpa_calculate">Calculate Rule</string>
+    <string name="list_preference_custom_gpa_select">Select subjects</string>
+    <string name="list_preference_custom_gpa_calculate">Calculate rule</string>
     <string name="dashboard_gpa_rule_summary_prefix">Calculate&#160;</string>
     <string name="dashboard_gpa_rule_summary_suffix">&#160;subjects in your selections</string>
-    <string name="custom_gpa_not_available">Custom GPA Not Available</string>
+    <string name="custom_gpa_not_available">Custom GPA not available</string>
     <string name="custom_gpa_not_available_because">Please go to settings to customize your GPA calculate rules.</string>
 
     <string-array name="list_preference_gpa_calculate_entries">
@@ -219,8 +219,8 @@
     <string name="chart_bar">Bar</string>
 
     <string name="theme">Theme</string>
-    <string name="dark_theme">Dark Theme</string>
-    <string name="accent_color">Accent Color</string>
+    <string name="dark_theme">Dark theme</string>
+    <string name="accent_color">Accent color</string>
     <string name="choose_accent_color">Choose accent color</string>
 
     <string name="accept">Accept</string>
@@ -253,7 +253,7 @@ SchoolPower does not guarantee that the user\'s picture will be permanently save
     <string name="iOS" translatable="false">iOS</string>
     <string name="donation">Donation</string>
     <string name="qr_code">QR Code</string>
-    <string name="server_status">Server Status</string>
+    <string name="server_status">Server status</string>
     <string name="Alipay">Alipay</string>
     <string name="Wechat">Wechat</string>
     <string name="AlipayNotFound">Alipay not found</string>
