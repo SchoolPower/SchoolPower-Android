@@ -43,7 +43,6 @@ class DonationFragment : Fragment() {
 
     fun gotoWechatPay() {
         startActivityForResult(Intent(activity, WechatIntroActivity::class.java), WECHAT_INTRO)
-        setIsDonated(true)
     }
 
     fun gotoPaypal() {

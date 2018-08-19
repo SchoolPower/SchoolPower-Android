@@ -134,11 +134,16 @@ class WechatIntroActivity : AppIntro() {
                     "sp_wechat.png"
             WeiXinDonate.saveDonateQrImage2SDCard(qrPath, BitmapFactory.decodeStream(weixinQrIs))
             WeiXinDonate.donateViaWeiXin(this, qrPath)
+            setIsDonated(true)
             this.finish()
         } else {
             setResult(WECHAT_NOT_FOUND)
             this.finish()
         }
+    }
+
+    private fun setIsDonated(donated: Boolean) {
+        Utils(this).setSharedPreference("Tmp", "Donated", donated)
     }
 
     override fun onRequestPermissionsResult(requestCode: Int,
