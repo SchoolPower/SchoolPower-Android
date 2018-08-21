@@ -2,6 +2,7 @@
 <full-backup-content>
     <include domain="file" path="."/>
     <include domain="database" path="."/>
-    <include domain="sharedpref" path="."/>
     <include domain="root" path="."/>
+    <include domain="sharedpref" path="accountData.xml"/>
+    <include domain="sharedpref" path="com.carbonylgroup.schoolpower_preferences.xml"/>
 </full-backup-content>
