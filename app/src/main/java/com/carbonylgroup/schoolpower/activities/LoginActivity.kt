@@ -4,7 +4,6 @@
 
 package com.carbonylgroup.schoolpower.activities
 
-import android.app.Activity
 import android.app.AlertDialog
 import android.app.ProgressDialog
 import android.content.Intent
@@ -28,7 +27,6 @@ class LoginActivity : BaseActivity() {
 
     override fun initActivity() {
         super.initActivity()
-        if (checkIfLoggedIn()) return
         setContentView(R.layout.login_content)
         window.navigationBarColor = ContextCompat.getColor(this, R.color.primary)
         window.statusBarColor = ContextCompat.getColor(this, R.color.primary)
@@ -44,17 +42,6 @@ class LoginActivity : BaseActivity() {
                     .apply()
             loginAction(username, password)
         }
-
-        utils.checkApplicationUpdate()
-    }
-
-    private fun checkIfLoggedIn(): Boolean {
-        val sharedPreferences = getSharedPreferences(getString(R.string.accountData), Activity.MODE_PRIVATE)
-        if (sharedPreferences.getBoolean(getString(R.string.loggedIn), false)) {
-            startMainActivity()
-            return true
-        }
-        return false
     }
 
     private fun initDialog() {
