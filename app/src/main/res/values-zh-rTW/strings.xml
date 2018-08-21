@@ -97,7 +97,7 @@
     </string-array>
 
     <string name="show_inactive_title">顯示不活躍課程</string>
-    <string name="show_inactive_summary">顯示您現在不正在修的課程。</string>
+    <string name="show_inactive_summary">顯示你目前沒有在修的課程</string>
 
     <string name="enable_notification">啟用新作業通知</string>
     <string name="notification_show_grade">在通知裡顯示成績</string>
