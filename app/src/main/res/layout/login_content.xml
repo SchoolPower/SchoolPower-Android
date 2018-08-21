@@ -17,6 +17,13 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center">
 
+            <ProgressBar
+                android:id="@+id/login_progress_bar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:visibility="gone"/>
+
             <LinearLayout
                 android:id="@+id/login_scroll"
                 android:layout_width="match_parent"
@@ -51,7 +58,6 @@
 
                 </android.support.design.widget.TextInputLayout>
 
-
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -85,7 +91,7 @@
             </LinearLayout>
 
             <android.support.v7.widget.AppCompatTextView
-                android:id="@+id/link_signup"
+                android:id="@+id/login_copyright"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"

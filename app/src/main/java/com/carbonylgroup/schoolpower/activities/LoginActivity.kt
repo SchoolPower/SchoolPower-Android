@@ -5,12 +5,15 @@
 package com.carbonylgroup.schoolpower.activities
 
 import android.app.AlertDialog
-import android.app.ProgressDialog
+import android.content.Context
 import android.content.Intent
 import android.support.v4.content.ContextCompat
+import android.support.v7.widget.AppCompatTextView
 import android.util.Log
 import android.view.View
 import android.widget.EditText
+import android.widget.LinearLayout
+import android.widget.ProgressBar
 import com.carbonylgroup.schoolpower.R
 import com.carbonylgroup.schoolpower.data.StudentData
 import com.carbonylgroup.schoolpower.utils.Utils
@@ -20,6 +23,10 @@ import okhttp3.MultipartBody
 import okhttp3.Response
 import org.json.JSONObject
 import java.io.IOException
+import android.content.Context.INPUT_METHOD_SERVICE
+import android.support.v4.content.ContextCompat.getSystemService
+import android.view.inputmethod.InputMethodManager
+
 
 class LoginActivity : BaseActivity() {
 
@@ -31,6 +38,7 @@ class LoginActivity : BaseActivity() {
         window.navigationBarColor = ContextCompat.getColor(this, R.color.primary)
         window.statusBarColor = ContextCompat.getColor(this, R.color.primary)
 
+        hideProgress()
         initDialog()
         utils = Utils(this)
 
@@ -52,13 +60,35 @@ class LoginActivity : BaseActivity() {
         builder.create().show()
     }
 
+    private fun showProgress() {
+        runOnUiThread {
+            findViewById<ProgressBar>(R.id.login_progress_bar).visibility = View.VISIBLE
+            findViewById<LinearLayout>(R.id.login_scroll).visibility = View.INVISIBLE
+            findViewById<AppCompatTextView>(R.id.login_copyright).visibility = View.INVISIBLE
+        }
+    }
+
+    private fun hideProgress() {
+        runOnUiThread {
+            findViewById<ProgressBar>(R.id.login_progress_bar).visibility = View.GONE
+            findViewById<LinearLayout>(R.id.login_scroll).visibility = View.VISIBLE
+            findViewById<AppCompatTextView>(R.id.login_copyright).visibility = View.VISIBLE
+        }
+    }
+
+    private fun hideSoftKeyboard() {
+        val view = this.currentFocus
+        if (view != null) {
+            val imm = this.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(view.windowToken, 0)
+        }
+    }
+
     private fun loginAction(username: String, password: String) {
-        val progressDialog = ProgressDialog(this@LoginActivity)
-        progressDialog.isIndeterminate = true
-        progressDialog.setCancelable(false)
-        progressDialog.setCanceledOnTouchOutside(false)
-        progressDialog.setMessage(getString(R.string.authenticating))
-        progressDialog.show()
+
+        hideSoftKeyboard()
+        showProgress()
+
         val body = MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
                 .addFormDataPart("username", username)
@@ -84,7 +114,7 @@ class LoginActivity : BaseActivity() {
                             }
                             return
                         }
-                        progressDialog.dismiss()
+                        hideProgress()
                         utils.showSnackBar(findViewById(R.id.login_coordinate_layout), getString(R.string.no_connection), true)
                     }
 
@@ -97,21 +127,21 @@ class LoginActivity : BaseActivity() {
                             runOnUiThread {
                                 utils.showSnackBar(findViewById(R.id.login_coordinate_layout), getString(R.string.wrong_password), true)
                                 Log.w("Login", strMessage)
-                                progressDialog.dismiss()
+                                hideProgress()
                             }
                             return
                         }
                         if (strMessage.contains("\"alert\"")) {
                             runOnUiThread {
                                 utils.showSnackBar(findViewById(R.id.login_coordinate_layout), JSONObject(strMessage)["alert"].toString(), true)
-                                progressDialog.dismiss()
+                                hideProgress()
                             }
                             return
                         }
                         if (!strMessage.contains("{")) {
                             runOnUiThread {
                                 utils.showSnackBar(findViewById(R.id.login_coordinate_layout), getString(R.string.no_connection), true)
-                                progressDialog.dismiss()
+                                hideProgress()
                             }
                             return
                         }
@@ -129,10 +159,6 @@ class LoginActivity : BaseActivity() {
                         utils.saveHistoryGrade(data.subjects)
 
                         startMainActivity()
-
-                        runOnUiThread {
-                            progressDialog.dismiss()
-                        }
                     }
                 })
     }
