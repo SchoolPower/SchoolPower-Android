@@ -673,6 +673,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
         utils.buildNetworkRequest(getString(R.string.ildURL), "GET", null)
                 .enqueue(object : Callback {
                     override fun onFailure(call: Call, e: IOException) {
+                        homeFragment!!.fetchLocalILD()
                         e.printStackTrace()
                     }
 
@@ -680,14 +681,10 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                         // Display ILD message if received
                         val message = response.body()!!.string()
                         response.close()
-                        if (!message.contains("{")) {
-                            homeFragment!!.fetchLocalILD()
-                            return
+                        if (message.contains("{")) {
+                            utils.setSharedPreference("Tmp", "ildJson", message)
                         }
-                        utils.setSharedPreference("Tmp", "ildJson", message)
-                        val data = ILDNotification(message)
-                        if (data.show) showILD(data)
-                        else homeFragment!!.fetchLocalILD()
+                        homeFragment!!.fetchLocalILD()
                     }
                 })
     }
