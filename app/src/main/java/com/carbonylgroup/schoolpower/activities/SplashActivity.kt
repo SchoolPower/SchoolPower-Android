@@ -14,7 +14,6 @@ class SplashActivity : AppCompatActivity() {
         Utils(this).checkApplicationUpdate()
         if (checkIfLoggedIn()) startMainActivity()
         else startLoginActivity()
-        finish()
     }
 
     private fun checkIfLoggedIn(): Boolean {
@@ -24,9 +23,11 @@ class SplashActivity : AppCompatActivity() {
 
     private fun startLoginActivity() {
         startActivity(Intent(application, LoginActivity::class.java))
+        finish()
     }
 
     private fun startMainActivity() {
         startActivity(Intent(application, MainActivity::class.java))
+        finish()
     }
 }

@@ -49,6 +49,20 @@
         </activity>
 
         <activity
+            android:name=".activities.IntroActivity"
+            android:configChanges="locale|orientation"
+            android:screenOrientation="portrait">
+
+            <intent-filter>
+
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.DEFAULT" />
+
+            </intent-filter>
+
+        </activity>
+
+        <activity
             android:name=".activities.MainActivity"
             android:configChanges="locale|orientation"
             android:launchMode="singleTop"
@@ -77,7 +91,8 @@
         <activity
             android:name=".activities.WechatIntroActivity"
             android:label="@string/title_activity_settings"
-            android:parentActivityName=".activities.MainActivity">
+            android:parentActivityName=".activities.MainActivity"
+            android:theme="@style/WechatIntroTheme">
 
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

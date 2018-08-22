@@ -11,7 +11,7 @@ import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.os.Environment
 import android.support.annotation.Nullable
-import android.support.v13.app.ActivityCompat
+import android.support.v4.app.ActivityCompat
 import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
 import android.view.WindowManager
@@ -23,19 +23,16 @@ import com.github.paolorotolo.appintro.AppIntro
 import com.github.paolorotolo.appintro.AppIntroFragment
 import com.github.paolorotolo.appintro.model.SliderPage
 import java.io.File
-import java.util.*
 
 
 class WechatIntroActivity : AppIntro() {
 
     val MY_PERMISSIONS_WRITE_EXTERNAL_STORAGE = 233
     val WECHAT_NOT_FOUND = 1
-    private val localeSet = arrayListOf(Resources.getSystem().configuration.locale, Locale.ENGLISH, Locale.TRADITIONAL_CHINESE, Locale.SIMPLIFIED_CHINESE)
 
     override fun attachBaseContext(newBase: Context) {
-
-        val newLocale = Utils(newBase).getSharedPreference(Utils.SettingsPreference).getString("lang", "0").toInt()
-        val context = ContextWrapper.wrap(newBase, localeSet[newLocale])
+        val newLocale = Utils(newBase).getSharedPreference(Utils.SettingsPreference).getString("lang", "0")!!.toInt()
+        val context = ContextWrapper.wrap(newBase, Utils(newBase).localeSet[newLocale])
         super.attachBaseContext(context)
     }
 
@@ -76,8 +73,6 @@ class WechatIntroActivity : AppIntro() {
         val window = this.window
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-        window.statusBarColor = ContextCompat.getColor(this, R.color.B_score_green_dark)
-        window.navigationBarColor = ContextCompat.getColor(this, R.color.B_score_green)
 
         setBarColor(ContextCompat.getColor(this, android.R.color.transparent))
         setSeparatorColor(ContextCompat.getColor(this, R.color.white_0_10))

@@ -158,9 +158,20 @@ class LoginActivity : BaseActivity() {
                         utils.saveDataJson(strMessage)
                         utils.saveHistoryGrade(data.subjects)
 
-                        startMainActivity()
+                        if (checkIfDisplayedIntro()) startMainActivity()
+                        else startIntroActivity()
                     }
                 })
+    }
+
+    private fun checkIfDisplayedIntro(): Boolean {
+// TODO       return getSharedPreferences("Tmp", Activity.MODE_PRIVATE).getBoolean("displayedIntro", false)
+        return false
+    }
+
+    private fun startIntroActivity() {
+        startActivity(Intent(application, IntroActivity::class.java))
+        this@LoginActivity.finish()
     }
 
     private fun startMainActivity() {

@@ -8,6 +8,12 @@
         <item name="android:navigationBarColor">@color/primary</item>
     </style>
 
+    <style name="WechatIntroTheme" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowBackground">@drawable/background_splash</item>
+        <item name="android:statusBarColor">@color/B_score_green_dark</item>
+        <item name="android:navigationBarColor">@color/B_score_green</item>
+    </style>
+
     <style name="Design.DrawerArrowStyle" parent="@style/Widget.AppCompat.DrawerArrowToggle">
         <item name="spinBars">true</item>
         <item name="color">@android:color/white</item>

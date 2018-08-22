@@ -74,15 +74,6 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
     private val mainToolBar: Toolbar by bindView(R.id.main_toolbar)
     private val drawer: DrawerLayout by bindView(R.id.drawer_layout)
     private val mainAppBar: AppBarLayout by bindView(R.id.main_app_bar)
-    private val localeSet = arrayListOf(
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                Resources.getSystem().configuration.locales[0]
-            } else {
-                Resources.getSystem().configuration.locale
-            },
-            Locale.ENGLISH,
-            Locale.TRADITIONAL_CHINESE,
-            Locale.SIMPLIFIED_CHINESE)
 
     private lateinit var mAdView: AdView
     private lateinit var toggle: ActionBarDrawerToggle
@@ -101,7 +92,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
     override fun attachBaseContext(newBase: Context) {
         utils = Utils(newBase)
         val newLocale = utils.getSharedPreference(Utils.SettingsPreference).getString("lang", "0")!!.toInt()
-        val context = ContextWrapper.wrap(newBase, localeSet[newLocale])
+        val context = ContextWrapper.wrap(newBase, utils.localeSet[newLocale])
         super.attachBaseContext(context)
     }
 
@@ -751,7 +742,6 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
     }
 
     private fun confirmSignOut() {
-
         val builder = AlertDialog.Builder(this)
         builder.setTitle(getString(R.string.signing_out_dialog_title))
         builder.setMessage(getString(R.string.signing_out_dialog_message))
