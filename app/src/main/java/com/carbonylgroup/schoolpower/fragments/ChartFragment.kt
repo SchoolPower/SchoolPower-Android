@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentStatePagerAdapter
 import android.support.v4.view.PagerAdapter
 import android.support.v4.view.ViewPager
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,10 +23,15 @@ class ChartFragment : Fragment() {
     private var mPager: ViewPager? = null
     private var mPagerAdapter: PagerAdapter? = null
     private val PagesNumber = 3
+    private val titles = arrayOf(R.string.chart_line, R.string.chart_radar, R.string.chart_bar)
+    private val icons = arrayOf(
+            R.drawable.ic_line_chart_black_24dp,
+            R.drawable.ic_radar_chart_24px,
+            R.drawable.ic_bar_chart_24px
+    )
 
     private inner class ScreenSlidePagerAdapter(fm: FragmentManager) : FragmentStatePagerAdapter(fm) {
 
-        val titles = arrayOf(R.string.chart_line, R.string.chart_radar, R.string.chart_bar)
 
         override fun getItem(position: Int): Fragment {
             return when (position) {
@@ -36,14 +42,14 @@ class ChartFragment : Fragment() {
             }
         }
 
-        override fun getPageTitle(position: Int) = activity!!.getString(titles[position])
+        override fun getPageTitle(position: Int) = ""
 
         override fun getCount() = PagesNumber
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
-        val view = inflater!!.inflate(R.layout.fragment_viewpager, container, false)
+        val view = inflater.inflate(R.layout.fragment_viewpager, container, false)
         MainActivity.of(activity).expandToolBar(true, true)
 
         mPager = view.findViewById(R.id.chart_pager) as ViewPager
@@ -52,6 +58,10 @@ class ChartFragment : Fragment() {
 
         val tabLayout = view.findViewById(R.id.tab_layout) as TabLayout
         tabLayout.setupWithViewPager(mPager)
+
+        for (i in 0 until tabLayout.tabCount) {
+            tabLayout.getTabAt(i)!!.setIcon(icons[i])
+        }
 
         return view
     }
