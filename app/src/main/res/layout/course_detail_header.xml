@@ -37,6 +37,7 @@
 
                     <TextView
                         android:id="@+id/detail_letter_grade_tv"
+                        style="@style/NumberViewStyle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="A"
@@ -46,6 +47,7 @@
 
                     <TextView
                         android:id="@+id/detail_percentage_grade_tv"
+                        style="@style/NumberViewStyle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/detail_letter_grade_tv"
@@ -89,9 +91,9 @@
                                 android:layout_alignParentStart="true"
                                 android:layout_alignParentTop="true"
                                 android:layout_marginEnd="8dp"
-                                android:textAppearance="@android:style/TextAppearance.Material.Title"
                                 android:layout_toStartOf="@id/detail_header_email_image"
-                                android:text="Grainne Hamal-Smith" />
+                                android:text="Grainne Hamal-Smith"
+                                android:textAppearance="@android:style/TextAppearance.Material.Title" />
 
                         </RelativeLayout>
 

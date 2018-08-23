@@ -20,15 +20,14 @@
 
             <TextView
                 android:id="@+id/term_percentage_grade_tv"
+                style="@style/LargeNumberViewStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentTop="true"
                 android:layout_marginEnd="15dp"
-                android:fontFamily="sans-serif-light"
                 android:textAppearance="@android:style/TextAppearance.Material.Title"
                 android:textColor="@color/white"
-                android:textSize="65sp"
                 android:text="100" />
 
             <TextView

@@ -2,7 +2,16 @@
 
 <resources>
 
-    <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">
+    <style name="NumberViewStyle" parent="android:Widget.TextView">
+        <item name="android:fontFamily">@font/glacial_indifference_regular</item>
+    </style>
+
+    <style name="LargeNumberViewStyle" parent="android:Widget.TextView">
+        <item name="android:fontFamily">@font/glacial_indifference_regular</item>
+        <item name="android:textSize">80sp</item>
+    </style>
+
+    <style name="SplashTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowBackground">@drawable/background_splash</item>
         <item name="android:statusBarColor">@color/primary</item>
         <item name="android:navigationBarColor">@color/primary</item>

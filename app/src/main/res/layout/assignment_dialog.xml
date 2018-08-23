@@ -21,15 +21,14 @@
 
             <TextView
                 android:id="@+id/assignment_percentage_grade_tv"
+                style="@style/LargeNumberViewStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentTop="true"
                 android:layout_marginEnd="15dp"
-                android:fontFamily="sans-serif-light"
                 android:textAppearance="@android:style/TextAppearance.Material.Title"
                 android:textColor="@color/white"
-                android:textSize="65sp"
                 tool:text="100.00" />
 
             <TextView
@@ -79,16 +78,16 @@
                     android:id="@+id/assignment_score_card"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="4"
                     android:layout_marginEnd="5dp"
+                    android:layout_weight="4"
                     app:cardUseCompatPadding="true">
 
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:background="?attr/card_background"
                         android:paddingBottom="10dp"
                         android:paddingEnd="15dp"
-                        android:background="?attr/card_background"
                         android:paddingStart="20dp"
                         android:paddingTop="15dp">
 
@@ -127,9 +126,9 @@
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:background="?attr/card_background"
                         android:paddingBottom="10dp"
                         android:paddingEnd="15dp"
-                        android:background="?attr/card_background"
                         android:paddingStart="20dp"
                         android:paddingTop="15dp">
 
@@ -171,10 +170,10 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="?attr/card_background"
                     android:paddingBottom="10dp"
                     android:paddingEnd="15dp"
                     android:paddingStart="10dp"
-                    android:background="?attr/card_background"
                     android:paddingTop="15dp">
 
                     <TextView

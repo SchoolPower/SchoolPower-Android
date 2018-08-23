@@ -73,15 +73,14 @@
 
                 <TextView
                     android:id="@+id/unfold_percentage_grade_tv"
+                    style="@style/LargeNumberViewStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentTop="true"
                     android:layout_marginEnd="15dp"
-                    android:fontFamily="sans-serif-light"
                     android:textAppearance="@android:style/TextAppearance.Material.Title"
                     android:textColor="@color/white"
-                    android:textSize="65sp"
                     tool:text="100" />
 
                 <TextView
@@ -165,6 +164,7 @@
 
                 <TextView
                     android:id="@+id/fold_letter_grade_tv"
+                    style="@style/NumberViewStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textAlignment="center"
@@ -174,10 +174,10 @@
 
                 <TextView
                     android:id="@+id/fold_percentage_grade_tv"
+                    style="@style/NumberViewStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/fold_letter_grade_tv"
-                    android:layout_marginTop="5dp"
                     android:textAlignment="center"
                     android:textColor="@color/white"
                     android:textSize="30sp"

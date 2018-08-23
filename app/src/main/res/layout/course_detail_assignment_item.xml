@@ -14,7 +14,7 @@
         android:id="@+id/detail_header_background"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/white"
+        android:background="?attr/card_background"
         android:foreground="?selectableItemBackgroundBorderless"
         android:paddingEnd="0dp"
         android:paddingStart="16dp">
@@ -37,21 +37,25 @@
 
                     <TextView
                         android:id="@+id/detail_assignment_percentage_tv"
+                        style="@style/NumberViewStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"
                         android:textColor="@color/white"
-                        android:textSize="20sp" />
+                        android:textSize="20sp"
+                        tool:text="90" />
 
                     <TextView
                         android:id="@+id/detail_assignment_dividing_score_tv"
+                        style="@style/NumberViewStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/detail_assignment_percentage_tv"
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="2dp"
                         android:textColor="@color/white_0_20"
-                        android:textSize="12sp" />
+                        android:textSize="12sp"
+                        tool:text="27/30.0" />
                 </RelativeLayout>
 
             </RelativeLayout>
@@ -68,7 +72,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:lines="1"
-                    android:textColor="@color/text_primary_black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="18sp"
                     tool:text="Science Fair Project" />
 
@@ -78,7 +82,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/detail_assignment_name_tv"
                     android:layout_marginTop="2dp"
-                    android:textColor="@color/text_tertiary_black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="12sp"
                     tool:text="6666/66/66" />
 
