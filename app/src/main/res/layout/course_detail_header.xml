@@ -61,7 +61,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="2"
-                    android:padding="15dp">
+                    android:padding="16dp">
 
                     <RelativeLayout
                         android:id="@+id/detail_header_profile_inner_view"
@@ -89,11 +89,9 @@
                                 android:layout_alignParentStart="true"
                                 android:layout_alignParentTop="true"
                                 android:layout_marginEnd="8dp"
+                                android:textAppearance="@android:style/TextAppearance.Material.Title"
                                 android:layout_toStartOf="@id/detail_header_email_image"
-                                android:text="Grainne Hamal-Smith"
-                                android:textColor="?android:textColorPrimary"
-                                android:textSize="20sp"
-                                android:textStyle="bold" />
+                                android:text="Grainne Hamal-Smith" />
 
                         </RelativeLayout>
 
@@ -104,8 +102,7 @@
                             android:layout_below="@id/detail_header_profile_inner_upper_view"
                             android:layout_marginTop="10dp"
                             android:text="Block A(1)"
-                            android:textColor="?android:textColorSecondary"
-                            android:textSize="13sp" />
+                            android:textColor="?android:textColorSecondary" />
 
                         <TextView
                             android:id="@+id/detail_header_room_tv"
@@ -115,8 +112,7 @@
                             android:layout_marginStart="15dp"
                             android:layout_toEndOf="@id/detail_header_block_tv"
                             android:text="Room 311"
-                            android:textColor="?android:textColorPrimary"
-                            android:textSize="13sp" />
+                            android:textColor="?android:textColorSecondary" />
 
                     </RelativeLayout>
 
@@ -135,7 +131,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/heading_card"
         android:layout_marginBottom="5dp"
-        android:layout_marginStart="15dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="20dp"
         android:text="@string/assignments"
         android:textColor="?android:textColorPrimary"

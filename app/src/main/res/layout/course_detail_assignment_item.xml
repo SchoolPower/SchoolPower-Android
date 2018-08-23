@@ -17,7 +17,7 @@
         android:background="@color/white"
         android:foreground="?selectableItemBackgroundBorderless"
         android:paddingEnd="0dp"
-        android:paddingStart="15dp">
+        android:paddingStart="16dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -60,7 +60,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginEnd="15dp"
+                android:layout_marginEnd="16dp"
                 android:layout_toStartOf="@id/detail_assignment_grade_background">
 
                 <TextView

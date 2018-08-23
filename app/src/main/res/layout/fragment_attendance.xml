@@ -43,10 +43,10 @@
             android:drawSelectorOnTop="false"
             android:layoutAnimation="@anim/layout_swipe_in"
             android:nestedScrollingEnabled="true"
-            android:paddingBottom="10dp"
-            android:paddingEnd="10dp"
-            android:paddingStart="10dp"
-            android:paddingTop="10dp"
+            android:paddingBottom="7dp"
+            android:paddingEnd="7dp"
+            android:paddingStart="7dp"
+            android:paddingTop="7dp"
             android:scrollbars="none"
             android:visibility="gone">
 

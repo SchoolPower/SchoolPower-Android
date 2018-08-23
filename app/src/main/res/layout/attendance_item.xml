@@ -5,6 +5,7 @@
     android:layout_height="wrap_content"
     android:visibility="visible"
     app:cardUseCompatPadding="true"
+    android:layout_marginBottom="3dp"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tool="http://schemas.android.com/tools">
@@ -19,7 +20,7 @@
                 android:id="@+id/attendance_code_background"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
+                android:layout_weight="5"
                 android:background="@color/primary"
                 android:gravity="center">
 
@@ -38,21 +39,19 @@
                 android:id="@+id/fold_background"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="3"
-                android:background="@color/white">
+                android:layout_weight="12"
+                android:background="?attr/card_background">
 
                 <TextView
                     android:id="@+id/attendance_description_tv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="15dp"
-                    android:layout_marginStart="15dp"
-                    android:layout_marginTop="10dp"
-                    android:fontFamily="sans-serif-light"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:fontFamily="sans-serif"
                     android:maxLines="1"
                     android:textAppearance="@android:style/TextAppearance.Material.Title"
-                    android:textColor="@color/text_primary_black"
-                    android:textSize="20sp"
                     tool:text="Excused Absent" />
 
                 <TextView
@@ -60,10 +59,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/attendance_description_tv"
-                    android:layout_marginStart="15dp"
-                    android:layout_marginTop="3dp"
-                    android:textColor="@color/text_tertiary_black"
-                    android:textSize="12sp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="5dp"
+                    android:textAppearance="@android:style/TextAppearance.Material.Body1"
+                    android:textColor="?android:attr/textColorSecondary"
+                    android:textStyle="normal"
                     tool:text="Chinese Social Study 11"/>
 
                 <TextView
@@ -71,11 +71,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/attendance_subject_tv"
-                    android:layout_marginBottom="15dp"
+                    android:layout_marginBottom="16dp"
                     android:layout_marginStart="15dp"
-                    android:layout_marginTop="2dp"
-                    android:textColor="@color/text_tertiary_black"
-                    android:textSize="12sp"
+                    android:textAppearance="@android:style/TextAppearance.Material.Body1"
+                    android:textColor="?android:attr/textColorSecondary"
+                    android:textStyle="normal"
                     tool:text="2017/10/12"/>
 
             </RelativeLayout>

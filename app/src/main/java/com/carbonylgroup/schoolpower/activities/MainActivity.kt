@@ -469,7 +469,6 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                 .addToBackStack(null)
                 .commit()
 
-
         MainActivity.of(this).setToolBarColor(
                 utils.getPrimaryColor(), true)
 
@@ -673,7 +672,11 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
         utils.buildNetworkRequest(getString(R.string.ildURL), "GET", null)
                 .enqueue(object : Callback {
                     override fun onFailure(call: Call, e: IOException) {
-                        homeFragment!!.fetchLocalILD()
+                        try {
+                            homeFragment!!.fetchLocalILD()
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
                         e.printStackTrace()
                     }
 
@@ -684,7 +687,11 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                         if (message.contains("{")) {
                             utils.setSharedPreference("Tmp", "ildJson", message)
                         }
-                        homeFragment!!.fetchLocalILD()
+                        try {
+                            homeFragment!!.fetchLocalILD()
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
                     }
                 })
     }

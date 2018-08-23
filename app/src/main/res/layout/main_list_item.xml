@@ -90,14 +90,14 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
                     android:layout_alignParentStart="true"
-                    android:layout_marginBottom="10dp"
+                    android:layout_marginBottom="16dp"
                     android:layout_marginStart="20dp"
                     android:layout_toStartOf="@id/unfold_percentage_grade_tv"
-                    android:fontFamily="sans-serif-light"
+                    android:fontFamily="sans-serif"
                     android:maxLines="2"
                     android:textAppearance="@android:style/TextAppearance.Material.Title"
                     android:textColor="@color/white"
-                    android:textSize="22sp"
+                    android:textStyle="normal"
                     tool:text="Pre-Calculus 11" />
 
                 <TextView
@@ -107,8 +107,9 @@
                     android:layout_above="@id/detail_subject_title_tv"
                     android:layout_marginBottom="5dp"
                     android:layout_marginStart="20dp"
+                    android:textAppearance="@android:style/TextAppearance.Material.Body1"
                     android:textColor="@color/white_0_20"
-                    android:textSize="13sp"
+                    android:textStyle="normal"
                     tool:text="Alex Appiah" />
 
             </RelativeLayout>
@@ -119,8 +120,11 @@
                 android:layout_height="match_parent"
                 android:layout_alignParentBottom="true"
                 android:layout_below="@id/unfold_header_view"
+                android:layout_marginBottom="5dp"
                 android:layout_marginTop="30dp"
-                android:minHeight="120dp">
+                android:minHeight="120dp"
+                android:paddingEnd="0dp"
+                android:paddingStart="10dp">
 
             </android.support.v7.widget.RecyclerView>
 
@@ -155,7 +159,7 @@
                 android:id="@+id/fold_grade_background"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
+                android:layout_weight="5"
                 android:background="@color/primary"
                 android:gravity="center">
 
@@ -185,21 +189,20 @@
                 android:id="@+id/fold_background"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="3"
-                android:background="@color/white">
+                android:layout_weight="12"
+                android:background="?attr/card_background">
 
                 <TextView
                     android:id="@+id/fold_subject_title_tv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="15dp"
-                    android:layout_marginStart="15dp"
-                    android:layout_marginTop="15dp"
-                    android:fontFamily="sans-serif-light"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:fontFamily="sans-serif"
                     android:maxLines="1"
                     android:textAppearance="@android:style/TextAppearance.Material.Title"
-                    android:textColor="@color/text_primary_black"
-                    android:textSize="20sp"
+                    android:textStyle="normal"
                     tool:text="Science 10" />
 
                 <TextView
@@ -207,21 +210,23 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/fold_subject_title_tv"
-                    android:layout_marginStart="15dp"
-                    android:layout_marginTop="3dp"
-                    android:textColor="@color/text_tertiary_black"
-                    android:textSize="12sp" />
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="4dp"
+                    android:textAppearance="@android:style/TextAppearance.Material.Body1"
+                    android:textColor="?android:attr/textColorSecondary"
+                    android:textStyle="normal"
+                    tool:text="Science 10" />
 
                 <TextView
                     android:id="@+id/fold_block_letter_tv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/fold_teacher_name_tv"
-                    android:layout_marginBottom="15dp"
-                    android:layout_marginStart="15dp"
-                    android:layout_marginTop="2dp"
-                    android:textColor="@color/text_tertiary_black"
-                    android:textSize="12sp" />
+                    android:layout_marginBottom="16dp"
+                    android:layout_marginStart="16dp"
+                    android:textAppearance="@android:style/TextAppearance.Material.Body1"
+                    android:textColor="?android:attr/textColorSecondary"
+                    tool:text="Science 10" />
 
             </RelativeLayout>
 

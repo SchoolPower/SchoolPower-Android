@@ -24,7 +24,7 @@
             android:layout_alignParentTop="true"
             android:layout_marginEnd="25dp"
             android:layout_marginStart="25dp"
-            android:fontFamily="sans-serif-light"
+            android:fontFamily="sans-serif"
             android:maxLines="2"
             android:paddingBottom="10dp"
             android:text="Foundation of Maths and Pre-Calculus 10"

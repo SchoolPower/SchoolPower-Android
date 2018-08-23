@@ -14,7 +14,6 @@
     </style>
 
     <style name="Design.TitleTextStyle" parent="@android:style/TextAppearance.Holo.Widget.ActionBar.Title">
-        <item name="android:fontFamily">sans-serif-light</item>
         <item name="android:textSize">@dimen/app_name_size</item>
         <item name="android:textAppearance">@android:style/TextAppearance.Material.Title</item>
     </style>
