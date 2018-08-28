@@ -5,13 +5,13 @@ import android.os.Bundle
 import android.preference.PreferenceManager
 import android.support.v4.app.Fragment
 import android.support.v7.widget.CardView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import com.carbonylgroup.schoolpower.R
 import com.carbonylgroup.schoolpower.activities.MainActivity
-import com.carbonylgroup.schoolpower.data.Subject
 import com.carbonylgroup.schoolpower.utils.Utils
 import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.components.Legend
@@ -22,6 +22,8 @@ import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.formatter.IAxisValueFormatter
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet
 import java.util.*
+
+
 
 
 class BarChartFragment : Fragment() {
@@ -67,6 +69,18 @@ class BarChartFragment : Fragment() {
 
         val termStrings = arrayListOf("T1","T2","T3","T4")
 
+        val accent = utils.getAccentColor()
+        val hsbVals = FloatArray(3)
+        Color.colorToHSV(accent, hsbVals)
+
+        Log.d("[][][", utils.hsvToRgb(hsbVals[0]/360f, hsbVals[1], hsbVals[2]))
+        val colorList = arrayListOf(
+                Color.parseColor(utils.hsvToRgb(0.3f, hsbVals[1], hsbVals[2])),
+                Color.parseColor(utils.hsvToRgb(0.4f, hsbVals[1], hsbVals[2])),
+                Color.parseColor(utils.hsvToRgb(0.5f, hsbVals[1], hsbVals[2])),
+                Color.parseColor(utils.hsvToRgb(0.6f, hsbVals[1], hsbVals[2]))
+        )
+
         // second run -- group them in terms
         for (term in termStrings) {
 
@@ -90,7 +104,7 @@ class BarChartFragment : Fragment() {
             }
 
             val dataSet = BarDataSet(group, term)
-            dataSet.color = Color.parseColor(Utils.chartColorList[termStrings.indexOf(term)])
+            dataSet.color = colorList[termStrings.indexOf(term)]
             dataSets.add(dataSet)
         }
 

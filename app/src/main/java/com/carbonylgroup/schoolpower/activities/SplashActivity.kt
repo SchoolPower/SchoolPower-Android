@@ -18,7 +18,7 @@ class SplashActivity : AppCompatActivity() {
     }
 
     private fun checkIfLoggedIn(): Boolean {
-        val sharedPreferences = getSharedPreferences(getString(R.string.accountData), Activity.MODE_PRIVATE)
+        val sharedPreferences = getSharedPreferences(Utils.AccountData, Activity.MODE_PRIVATE)
         return (sharedPreferences.getBoolean(getString(R.string.loggedIn), false))
     }
 

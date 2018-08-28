@@ -49,9 +49,9 @@ class SupportFragment : Fragment() {
         mPagerAdapter = ScreenSlidePagerAdapter(fragmentManager!!)
         mPager!!.adapter = mPagerAdapter
 
-        if (Utils(activity as MainActivity).getSharedPreference("Tmp").getBoolean("ImComingForDonation", false)) {
+        if (Utils(activity as MainActivity).getSharedPreference(Utils.TmpData).getBoolean("ImComingForDonation", false)) {
             mPager!!.setCurrentItem(2, true)
-            Utils(activity as MainActivity).setSharedPreference("Tmp", "ImComingForDonation", false)
+            Utils(activity as MainActivity).setSharedPreference(Utils.TmpData, "ImComingForDonation", false)
         }
 
         val tabLayout = view.findViewById(R.id.tab_layout) as TabLayout

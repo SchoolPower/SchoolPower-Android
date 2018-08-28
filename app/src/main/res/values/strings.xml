@@ -6,7 +6,6 @@
     <!--<string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>-->
     <string name="banner_ad_unit_id" translatable="false">ca-app-pub-9841217337381410/7121777483</string>
 
-    <string name="accountData" translatable="false">accountData</string>
     <string name="loggedIn" translatable="false">loggedIn</string>
     <string name="usernameKEY" translatable="false">Username</string>
     <string name="passwordKEY" translatable="false">Password</string>

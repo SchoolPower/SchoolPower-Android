@@ -143,7 +143,7 @@ class WechatIntroActivity : AppIntro() {
     }
 
     private fun setIsDonated(donated: Boolean) {
-        Utils(this).setSharedPreference("Tmp", "Donated", donated)
+        Utils(this).setSharedPreference(Utils.TmpData, "Donated", donated)
     }
 
     override fun onRequestPermissionsResult(requestCode: Int,

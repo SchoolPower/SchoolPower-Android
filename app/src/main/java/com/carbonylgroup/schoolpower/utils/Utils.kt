@@ -19,7 +19,6 @@ import android.support.v4.content.ContextCompat
 import android.util.DisplayMetrics
 import android.view.View
 import com.carbonylgroup.schoolpower.R
-import com.carbonylgroup.schoolpower.activities.MainActivity
 import com.carbonylgroup.schoolpower.data.StudentData
 import com.carbonylgroup.schoolpower.data.Subject
 import okhttp3.*
@@ -93,6 +92,32 @@ class Utils(private val context: Context) {
             "ISS" to R.color.primary,
             "FT" to R.color.B_score_green_dark
     )
+
+    fun hsvToRgb(hue: Float, saturation: Float, value: Float): String {
+
+        val h = (hue * 6).toInt()
+        val f = hue * 6 - h
+        val p = value * (1 - saturation)
+        val q = value * (1 - f * saturation)
+        val t = value * (1 - (1 - f) * saturation)
+
+        when (h) {
+            0 -> return rgbToString(value, t, p)
+            1 -> return rgbToString(q, value, p)
+            2 -> return rgbToString(p, value, t)
+            3 -> return rgbToString(p, q, value)
+            4 -> return rgbToString(t, p, value)
+            5 -> return rgbToString(value, p, q)
+            else -> throw RuntimeException("Something went wrong when converting from HSV to RGB. Input was $hue, $saturation, $value")
+        }
+    }
+
+    private fun rgbToString(r: Float, g: Float, b: Float): String {
+        val rs = Integer.toHexString((r * 256).toInt())
+        val gs = Integer.toHexString((g * 256).toInt())
+        val bs = Integer.toHexString((b * 256).toInt())
+        return rs + gs + bs
+    }
 
     val citizenshipCodes: HashMap<String, String> = hashMapOf(
             "M" to "Meeting Expectations",
@@ -188,6 +213,10 @@ class Utils(private val context: Context) {
             attendanceColorIds[attendanceCode] ?: R.color.gray)
 
     /* Others */
+    fun isDeveloperMode(): Boolean {
+        return getSharedPreference(TmpData).getBoolean("developer_mode", false)
+    }
+
     fun dpToPx(dp: Int) = Math.round(dp * (context.resources.displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT))
 
     fun getAssignmentFlag(key: String): Pair<Int, String> {
@@ -466,7 +495,7 @@ class Utils(private val context: Context) {
                         response.close()
                         if (!message.contains("{")) return
                         val updateJSON = JSONObject(message)
-                        setSharedPreference(OtherData, "app_download_url", updateJSON.getString("url"))
+                        setSharedPreference(TmpData, "app_download_url", updateJSON.getString("url"))
                         if (updateJSON.getString("version") != getAppVersion()) {
                             (context as Activity).runOnUiThread {
                                 val builder = AlertDialog.Builder(context)
@@ -655,7 +684,7 @@ class Utils(private val context: Context) {
 
         const val SettingsPreference: String = "Settings"
         const val AccountData: String = "accountData"
-        const val OtherData: String = "other"
+        const val TmpData: String = "Tmp"
 
         const val StudentDataFileName: String = "dataMap.json"
         const val HistoryDataFileName: String = "history.json"

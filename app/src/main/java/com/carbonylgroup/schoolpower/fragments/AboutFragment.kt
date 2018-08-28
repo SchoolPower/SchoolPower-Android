@@ -30,7 +30,7 @@ class AboutFragment : Fragment() {
         (view.findViewById<View>(R.id.about_version_label) as TextView).text = activity!!.packageManager.getPackageInfo(activity!!.packageName, 0).versionName
 
         view.findViewById<View>(R.id.about_version_cell).setOnLongClickListener {
-            val pref = activity!!.getSharedPreferences("other", Activity.MODE_PRIVATE)
+            val pref = activity!!.getSharedPreferences(Utils.TmpData, Activity.MODE_PRIVATE)
             val spEditor = pref.edit()
             spEditor.putBoolean("developer_mode", !pref.getBoolean("developer_mode", false))
             spEditor.apply()

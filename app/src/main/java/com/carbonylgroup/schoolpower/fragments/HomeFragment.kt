@@ -113,7 +113,7 @@ class HomeFragment : TransitionHelper.BaseFragment() {
 
         val po = View.OnClickListener {
             MainActivity.of(activity).gotoFragmentWithMenuItemId(R.id.nav_support)
-            utils!!.setSharedPreference("Tmp", "ImComingForDonation", true)
+            utils!!.setSharedPreference(Utils.TmpData, "ImComingForDonation", true)
             setLastDonateShowedDate(Date())
         }
         val ps = View.OnClickListener {
@@ -235,10 +235,10 @@ class HomeFragment : TransitionHelper.BaseFragment() {
         val dismiss = View.OnClickListener {
             if (onlyOnce) {
                 // mark the ILD as displayed
-                val displayedILDs = utils!!.getSharedPreference("Tmp").getStringSet("doNotDisplayTheseILDs", mutableSetOf())!!
+                val displayedILDs = utils!!.getSharedPreference(Utils.TmpData).getStringSet("doNotDisplayTheseILDs", mutableSetOf())!!
                 displayedILDs.add(uuid)
-                utils!!.setSharedPreference("Tmp", "doNotDisplayTheseILDs", displayedILDs)
-                utils!!.setSharedPreference("Tmp", "ildJson", "")
+                utils!!.setSharedPreference(Utils.TmpData, "doNotDisplayTheseILDs", displayedILDs)
+                utils!!.setSharedPreference(Utils.TmpData, "ildJson", "")
             }
             removeILD(self)
         }
@@ -268,7 +268,7 @@ class HomeFragment : TransitionHelper.BaseFragment() {
 
     fun fetchLocalILD() {
         val json = utils!!
-                .getSharedPreference("Tmp")
+                .getSharedPreference(Utils.TmpData)
                 .getString("ildJson", "")!!
         if (json.contains("{")) {
             val data = ILDNotification(json)
@@ -294,17 +294,17 @@ class HomeFragment : TransitionHelper.BaseFragment() {
     }
 
     private fun isDonated(): Boolean {
-        return Utils(activity as MainActivity).getSharedPreference("Tmp").getBoolean("Donated", false)
+        return Utils(activity as MainActivity).getSharedPreference(Utils.TmpData).getBoolean("Donated", false)
     }
 
     private fun setLastDonateShowedDate(date: Date) {
-        Utils(activity as MainActivity).setSharedPreference("Tmp", "LastTimeDonateShowed",
+        Utils(activity as MainActivity).setSharedPreference(Utils.TmpData, "LastTimeDonateShowed",
                 SimpleDateFormat("yyyy-MM-dd", Locale.CHINA).format(date))
     }
 
     private fun getLastDonateShowedDate(): Date {
         val dateStr = Utils(activity as MainActivity)
-                .getSharedPreference("Tmp")
+                .getSharedPreference(Utils.TmpData)
                 .getString("LastTimeDonateShowed", "")
 
         return if (dateStr != "") SimpleDateFormat("yyyy-MM-dd", Locale.CHINA).parse(dateStr) else Date(0)

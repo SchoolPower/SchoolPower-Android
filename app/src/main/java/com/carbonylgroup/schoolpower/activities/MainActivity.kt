@@ -685,7 +685,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                         val message = response.body()!!.string()
                         response.close()
                         if (message.contains("{")) {
-                            utils.setSharedPreference("Tmp", "ildJson", message)
+                            utils.setSharedPreference(Utils.TmpData, "ildJson", message)
                         }
                         try {
                             homeFragment!!.fetchLocalILD()
@@ -697,7 +697,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
     }
 
     fun showILD(data: ILDNotification) {
-        val displayedILDs = utils.getSharedPreference("Tmp").getStringSet("doNotDisplayTheseILDs", setOf())!!
+        val displayedILDs = utils.getSharedPreference(Utils.TmpData).getStringSet("doNotDisplayTheseILDs", setOf())!!
         if (!displayedILDs.contains(data.uuid))
         // display if haven't been marked as displayed
             Thread(Runnable {
