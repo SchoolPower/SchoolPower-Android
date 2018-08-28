@@ -534,7 +534,7 @@ class Utils(private val context: Context) {
         for (subjectNow in subjects) {
 
             if (!PreferenceManager.getDefaultSharedPreferences(context.applicationContext)
-                            .getBoolean("list_preference_dashboard_show_inactive", false)) {
+                            .getBoolean("list_preference_dashboard_show_inactive", true)) {
                 val currentTime = System.currentTimeMillis()
                 val it = subjects.find { it.name == subjectNow.name }
                         ?: continue
@@ -548,7 +548,7 @@ class Utils(private val context: Context) {
 
     fun getFilteredSubjects(subjects: List<Subject>): List<Subject> {
         val filteredSubjects: List<Subject>
-        if (!PreferenceManager.getDefaultSharedPreferences(context.applicationContext).getBoolean("list_preference_dashboard_show_inactive", false)) {
+        if (!PreferenceManager.getDefaultSharedPreferences(context.applicationContext).getBoolean("list_preference_dashboard_show_inactive", true)) {
 
             filteredSubjects = ArrayList()
             subjects

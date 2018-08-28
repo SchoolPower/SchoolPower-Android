@@ -38,7 +38,7 @@
             android:title="@string/dashboard_displays" />
 
         <SwitchPreference
-            android:defaultValue="false"
+            android:defaultValue="true"
             android:icon="@drawable/ic_archive_black_24dp"
             android:key="list_preference_dashboard_show_inactive"
             android:summary="@string/show_inactive_summary"

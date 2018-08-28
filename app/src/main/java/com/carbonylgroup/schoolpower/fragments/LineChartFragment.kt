@@ -66,7 +66,7 @@ class LineChartFragment : Fragment() {
                 val subjectGrade = subjectNow.getDouble("grade").toFloat()
                 if (subjectGrade == 0.0f) continue
                 if (!PreferenceManager.getDefaultSharedPreferences(activity!!.applicationContext)
-                                .getBoolean("list_preference_dashboard_show_inactive", false)) {
+                                .getBoolean("list_preference_dashboard_show_inactive", true)) {
                     val currentTime = System.currentTimeMillis()
                     val it = MainActivity.of(activity).subjects!!.find { it.name == subjectName }
                             ?: continue

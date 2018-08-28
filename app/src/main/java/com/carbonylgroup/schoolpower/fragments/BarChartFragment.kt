@@ -73,9 +73,6 @@ class BarChartFragment : Fragment() {
         val hsbVals = FloatArray(3)
         Color.colorToHSV(accent, hsbVals)
 
-        for (v in hsbVals)
-            Log.d("[][][", v.toString())
-
         val colorList = arrayListOf(
                 Color.HSVToColor(floatArrayOf(hsbVals[0] - 30, hsbVals[1], hsbVals[2])),
                 Color.HSVToColor(floatArrayOf(hsbVals[0] - 10, hsbVals[1], hsbVals[2])),
@@ -90,7 +87,7 @@ class BarChartFragment : Fragment() {
 
             for (subject in gradedSubjects) {
                 if (!PreferenceManager.getDefaultSharedPreferences(activity!!.applicationContext)
-                                .getBoolean("list_preference_dashboard_show_inactive", false)) {
+                                .getBoolean("list_preference_dashboard_show_inactive", true)) {
                     val currentTime = System.currentTimeMillis()
                     val it = MainActivity.of(activity).subjects!!.find { it.name == subject.name }
                             ?: continue
