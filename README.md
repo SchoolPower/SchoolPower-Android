@@ -10,6 +10,6 @@ SchoolPower-Android 是使用 Kotlin 编写的开源、现代化的 [PowerSchool
 License
 -------
     Copyright (C) 2018 SchoolPower Studio.
-    Licensed under the [GPL-3.0](https://www.gnu.org/licenses/gpl.html).
-    (See the [LICENSE](https://github.com/SchoolPower/SchoolPower-Android/blob/master/LICENSE) file for the whole license text.)
+> Licensed under the [GPL-3.0](https://www.gnu.org/licenses/gpl.html).
+> (See the [LICENSE](https://github.com/SchoolPower/SchoolPower-Android/blob/master/LICENSE) file for the whole license text.)
 
