@@ -73,12 +73,14 @@ class BarChartFragment : Fragment() {
         val hsbVals = FloatArray(3)
         Color.colorToHSV(accent, hsbVals)
 
-        Log.d("[][][", utils.hsvToRgb(hsbVals[0]/360f, hsbVals[1], hsbVals[2]))
+        for (v in hsbVals)
+            Log.d("[][][", v.toString())
+
         val colorList = arrayListOf(
-                Color.parseColor(utils.hsvToRgb(0.3f, hsbVals[1], hsbVals[2])),
-                Color.parseColor(utils.hsvToRgb(0.4f, hsbVals[1], hsbVals[2])),
-                Color.parseColor(utils.hsvToRgb(0.5f, hsbVals[1], hsbVals[2])),
-                Color.parseColor(utils.hsvToRgb(0.6f, hsbVals[1], hsbVals[2]))
+                Color.HSVToColor(floatArrayOf(hsbVals[0] - 30, hsbVals[1], hsbVals[2])),
+                Color.HSVToColor(floatArrayOf(hsbVals[0] - 10, hsbVals[1], hsbVals[2])),
+                Color.HSVToColor(floatArrayOf(hsbVals[0] + 10, hsbVals[1], hsbVals[2])),
+                Color.HSVToColor(floatArrayOf(hsbVals[0] + 30, hsbVals[1], hsbVals[2]))
         )
 
         // second run -- group them in terms
