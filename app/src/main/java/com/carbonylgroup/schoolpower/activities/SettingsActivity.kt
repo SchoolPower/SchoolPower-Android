@@ -29,15 +29,6 @@ class SettingsActivity : BaseActivity(), SettingsFragment.SettingsCallBack {
 
     private val settingsToolBar: Toolbar by bindView(R.id.settings_toolbar)
     private val rootLayout: RelativeLayout by bindView(R.id.settings_root_layout)
-    private val localeSet = arrayListOf(Resources.getSystem().configuration.locale, Locale.ENGLISH, Locale.TRADITIONAL_CHINESE, Locale.SIMPLIFIED_CHINESE)
-
-    override fun attachBaseContext(newBase: Context) {
-
-        val utils = Utils(newBase)
-        val newLocale = utils.getSharedPreference(Utils.SettingsPreference).getString("lang", "0").toInt()
-        val context = ContextWrapper.wrap(newBase, localeSet[newLocale])
-        super.attachBaseContext(context)
-    }
 
     override fun onRecreate() {
         recreated = true

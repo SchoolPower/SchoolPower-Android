@@ -7,6 +7,10 @@
         android:title="@string/action_refreshing"
         app:showAsAction="never" />
     <item
+        android:id="@+id/action_show_json"
+        android:title="@string/action_show_json"
+        app:showAsAction="never" />
+    <item
         android:id="@+id/action_birthday"
         android:title="birthday"
         app:actionLayout="@layout/lottie_menu_layout"

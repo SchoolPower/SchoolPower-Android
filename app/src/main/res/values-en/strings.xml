@@ -4,6 +4,9 @@
     <string name="app_name">SchoolPower</string>
     <string name="action_refreshing">Refresh</string>
     <string name="action_gpa">GPA</string>
+    <string name="action_show_json">View raw JSON data</string>
+    <string name="share_as_file">Share as JSON file</string>
+    <string name="share_as_text">Share as plain text</string>
 
     <string name="dashboard">Dashboard</string>
     <string name="charts">Charts</string>

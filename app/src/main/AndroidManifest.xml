@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.carbonylgroup.schoolpower">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -14,86 +15,85 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/ThemeLight.Cyan.500">
-
         <activity
             android:name=".activities.SplashActivity"
             android:configChanges="locale|orientation"
             android:screenOrientation="portrait"
             android:theme="@style/SplashTheme">
-
             <intent-filter>
-
                 <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
             <meta-data
                 android:name="android.app.shortcuts"
                 android:resource="@xml/shortcuts" />
         </activity>
-
         <activity
             android:name=".activities.LoginActivity"
             android:configChanges="locale|orientation"
             android:screenOrientation="portrait"
             android:theme="@style/ThemeLight.Cyan.500">
-
             <intent-filter>
-
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.DEFAULT" />
-
             </intent-filter>
-
         </activity>
-
         <activity
             android:name=".activities.MainActivity"
             android:configChanges="locale|orientation"
             android:launchMode="singleTop"
             android:screenOrientation="portrait">
-
             <intent-filter>
-
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.DEFAULT" />
-
             </intent-filter>
-
         </activity>
-
         <activity
             android:name=".activities.SettingsActivity"
             android:label="@string/title_activity_settings"
             android:parentActivityName=".activities.MainActivity">
-
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.MainActivity" />
-
         </activity>
-
         <activity
             android:name=".activities.WechatIntroActivity"
             android:label="@string/title_activity_settings"
             android:parentActivityName=".activities.MainActivity">
-
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.MainActivity" />
-
         </activity>
 
         <activity
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:theme="@style/Base.Theme.AppCompat" />
 
+        <activity
+            android:name=".activities.TextViewingActivity"
+            android:label="@string/title_activity_text_viewing"
+            android:theme="@style/ThemeLight.Cyan.500" />
+
         <service
             android:name=".service.PullDataJob"
             android:label="Fetch student data"
             android:permission="android.permission.BIND_JOB_SERVICE" />
 
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.carbonylgroup.schoolpower"
+            android:exported="false"
+            android:grantUriPermissions="true"
+            tools:replace="android:authorities">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths"
+                tools:replace="android:resource"/>
+        </provider>
     </application>
 
 </manifest>

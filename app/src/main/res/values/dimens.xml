@@ -33,4 +33,6 @@
     <dimen name="md_styled_pic_size">44dp</dimen>
 
     <dimen name="toolbar_elevation">10dp</dimen>
+    <dimen name="app_bar_height">180dp</dimen>
+    <dimen name="text_margin">16dp</dimen>
 </resources>

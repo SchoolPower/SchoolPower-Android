@@ -30,12 +30,11 @@ class WechatIntroActivity : AppIntro() {
 
     val MY_PERMISSIONS_WRITE_EXTERNAL_STORAGE = 233
     val WECHAT_NOT_FOUND = 1
-    private val localeSet = arrayListOf(Resources.getSystem().configuration.locale, Locale.ENGLISH, Locale.TRADITIONAL_CHINESE, Locale.SIMPLIFIED_CHINESE)
 
-    override fun attachBaseContext(newBase: Context) {
-
-        val newLocale = Utils(newBase).getSharedPreference(Utils.SettingsPreference).getString("lang", "0").toInt()
-        val context = ContextWrapper.wrap(newBase, localeSet[newLocale])
+    override fun attachBaseContext(newBase: Context?) {
+        val utils = Utils(newBase!!)
+        val newLocale = utils.getSharedPreference(Utils.SettingsPreference).getString("lang", "0")!!.toInt()
+        val context = ContextWrapper.wrap(newBase, utils.localeSet[newLocale])
         super.attachBaseContext(context)
     }
 

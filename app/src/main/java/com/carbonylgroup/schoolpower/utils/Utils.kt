@@ -10,8 +10,10 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.SharedPreferences
+import android.content.res.Resources
 import android.graphics.Color
 import android.net.Uri
+import android.os.Build
 import android.preference.PreferenceManager
 import android.support.annotation.ColorInt
 import android.support.design.widget.Snackbar
@@ -35,6 +37,16 @@ class Utils(private val context: Context) {
     val ACCENT_COLOR = "accentColor"
     val LIGHT = "LIGHT"
     val DARK = "DARK"
+
+    val localeSet = arrayListOf(
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                Resources.getSystem().configuration.locales[0]
+            } else {
+                Resources.getSystem().configuration.locale
+            },
+            Locale.ENGLISH,
+            Locale.TRADITIONAL_CHINESE,
+            Locale.SIMPLIFIED_CHINESE)
 
     private val gradeColorIds = intArrayOf(
             R.color.A_score_green,

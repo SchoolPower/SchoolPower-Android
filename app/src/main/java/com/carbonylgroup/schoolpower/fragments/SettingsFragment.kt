@@ -16,6 +16,7 @@ import android.support.v7.preference.PreferenceFragmentCompat
 import android.support.v7.preference.PreferenceManager
 import com.carbonylgroup.schoolpower.R
 import com.carbonylgroup.schoolpower.activities.MainActivity
+import com.carbonylgroup.schoolpower.activities.SettingsActivity
 import com.carbonylgroup.schoolpower.utils.Utils
 import com.carbonylgroup.schoolpower.utils.colorChooser.ColorChooserPreference
 import java.util.*
@@ -52,7 +53,7 @@ class SettingsFragment : PreferenceFragmentCompat(),
         super.onCreate(savedInstanceState)
         addPreferencesFromResource(R.xml.preferences_content)
         preferenceManager.sharedPreferences.registerOnSharedPreferenceChangeListener(this)
-        utils = Utils(activity as MainActivity)
+        utils = Utils(activity as SettingsActivity)
         initPreferences()
     }
 
@@ -122,7 +123,7 @@ class SettingsFragment : PreferenceFragmentCompat(),
                 utils!!.setSharedPreference(Utils.SettingsPreference, key, sharedPreferences!!.getString(key, "0")!!)
             }
             "switch_preference_theme_dark" -> {
-                val utils = Utils(activity as MainActivity)
+                val utils = Utils(activity as SettingsActivity)
                 utils.set(utils.THEME, if ((findPreference(key) as SwitchPreference).isChecked) utils.DARK else utils.LIGHT)
                 recreateMain()
             }
@@ -130,7 +131,7 @@ class SettingsFragment : PreferenceFragmentCompat(),
     }
 
     private fun showThemeChooser() {
-        val utils = Utils(activity as MainActivity)
+        val utils = Utils(activity as SettingsActivity)
         val valueList = Arrays.asList(*resources.getStringArray(R.array.theme_array))
         val theme = utils.getTheme()
         val selectIndex = valueList.indexOf(theme)

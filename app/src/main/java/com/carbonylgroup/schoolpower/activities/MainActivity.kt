@@ -74,15 +74,6 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
     private val mainToolBar: Toolbar by bindView(R.id.main_toolbar)
     private val drawer: DrawerLayout by bindView(R.id.drawer_layout)
     private val mainAppBar: AppBarLayout by bindView(R.id.main_app_bar)
-    private val localeSet = arrayListOf(
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                Resources.getSystem().configuration.locales[0]
-            } else {
-                Resources.getSystem().configuration.locale
-            },
-            Locale.ENGLISH,
-            Locale.TRADITIONAL_CHINESE,
-            Locale.SIMPLIFIED_CHINESE)
 
     private lateinit var mAdView: AdView
     private lateinit var toggle: ActionBarDrawerToggle
@@ -97,13 +88,6 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
     private var supportFragment: SupportFragment? = null
 
     private val SETTINGS_REQUEST_CODE = 233
-
-    override fun attachBaseContext(newBase: Context) {
-        utils = Utils(newBase)
-        val newLocale = utils.getSharedPreference(Utils.SettingsPreference).getString("lang", "0")!!.toInt()
-        val context = ContextWrapper.wrap(newBase, localeSet[newLocale])
-        super.attachBaseContext(context)
-    }
 
     override fun initActivity() {
         super.initActivity()
@@ -147,6 +131,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
         menuInflater.inflate(R.menu.menu_main, menu)
         menu.findItem(R.id.action_gpa).isVisible = !hideToolBarItemFlag
         menu.findItem(R.id.action_refresh).isVisible = !hideToolBarItemFlag
+        menu.findItem(R.id.action_show_json).isVisible = (!hideToolBarItemFlag && utils.isDeveloperMode())
         menu.findItem(R.id.action_birthday).isVisible = (!hideToolBarItemFlag && utils.isBirthDay())
 
         val birthdayClickable = menu.findItem(R.id.action_birthday).actionView
@@ -166,9 +151,19 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                     3 -> attendanceFragment!!.setRefreshing(true)
                 }
             }
+            R.id.action_show_json -> {
+                val intent = Intent(application, TextViewingActivity::class.java)
+                intent.putExtra("title", getUserID(false))
+                intent.putExtra("text", JSONObject(
+                        utils.readStringFromFile(Utils.StudentDataFileName) ?: "{}")
+                        .toString(2))
+                intent.putExtra("shareEnabled", true)
+                startActivity(intent)
+            }
             R.id.action_gpa -> {
 
-                if (subjects == null || !GPADialog(this, subjects!!, studentInformation!!.GPA).show()) {
+                if (subjects == null || !GPADialog(this, subjects!!,
+                                studentInformation!!.GPA).show()) {
 
                     val builder = AlertDialog.Builder(this)
                     builder.setMessage(getString(R.string.gpa_not_available_because))
@@ -350,7 +345,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
 
         val header = navigationView.getHeaderView(0)
         header.findViewById<TextView>(R.id.nav_header_username).text = getUsername()
-        header.findViewById<TextView>(R.id.nav_header_id).text = getUserID().replace("\n", "")
+        header.findViewById<TextView>(R.id.nav_header_id).text = getUserID(true).replace("\n", "")
         header.findViewById<ImageView>(R.id.user_avatar).setOnClickListener { setAvatar() }
 
         updateAvatar()
@@ -751,10 +746,9 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
         return getString(R.string.no_username)
     }
 
-    private fun getUserID(): String {
-
-        val id = utils.getSharedPreference(AccountData).getString(getString(R.string.user_id), "")
-        return getString(R.string.user_id_indicator) + " " + id
+    private fun getUserID(withPrefix: Boolean): String {
+        val id = utils.getSharedPreference(AccountData).getString(getString(R.string.user_id), "")!!
+        return if (withPrefix) getString(R.string.user_id_indicator) + " " + id else id
     }
 
     private fun confirmSignOut() {
@@ -794,8 +788,8 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                 .mapTo(ArrayList<CharSequence>()) { it.name }
         intent.putExtra("subjects", subjectList.toTypedArray())
         intent.putExtra("subjects_values", subjectValueList.toTypedArray())
-        startActivityForResult(intent, SETTINGS_REQUEST_CODE)
         // Use startActivityForResult to invoke onActivityResult to apply settings
+        startActivityForResult(intent, SETTINGS_REQUEST_CODE)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
