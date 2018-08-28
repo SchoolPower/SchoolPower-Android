@@ -90,7 +90,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
     private lateinit var toggleIcon: DrawerArrowDrawable
 
     /* Fragments */
-    private var homeFragment: HomeFragment? = null
+    private var dashboardFragment: DashboardFragment? = null
     private var chartFragment: ChartFragment? = null
     private var attendanceFragment: AttendanceFragment? = null
     private var aboutFragment: AboutFragment? = null
@@ -162,7 +162,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
             R.id.action_refresh -> {
                 fetchStudentDataFromServer()
                 when (presentFragment) {
-                    0 -> homeFragment!!.setRefreshing(true)
+                    0 -> dashboardFragment!!.setRefreshing(true)
                     3 -> attendanceFragment!!.setRefreshing(true)
                 }
             }
@@ -233,7 +233,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
         mainAppBar.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
             override fun onGlobalLayout() {
                 mainAppBar.viewTreeObserver.removeOnGlobalLayoutListener(this)
-                if (!noConnection) homeFragment!!.setRefreshing(true)
+                if (!noConnection) dashboardFragment!!.setRefreshing(true)
                 else noConnection = false
 
                 // Remove toolbar elevation if at Chart Fragment
@@ -383,8 +383,8 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
 
         when (id) {
             R.id.nav_dashboard -> {
-                homeFragment = HomeFragment()
-                transaction.replace(R.id.content_view, homeFragment!!)
+                dashboardFragment = DashboardFragment()
+                transaction.replace(R.id.content_view, dashboardFragment!!)
                 setToolBarTitle(getString(R.string.dashboard))
                 setToolBarElevation()
                 expandToolBar(true, true)
@@ -456,16 +456,16 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
 
         expandToolBar(true, true)
 
-        if (homeFragment == null) homeFragment = HomeFragment()
-        homeFragment!!.sharedElementEnterTransition = DetailsTransition()
-        homeFragment!!.sharedElementReturnTransition = DetailsTransition()
+        if (dashboardFragment == null) dashboardFragment = DashboardFragment()
+        dashboardFragment!!.sharedElementEnterTransition = DetailsTransition()
+        dashboardFragment!!.sharedElementReturnTransition = DetailsTransition()
 
         supportFragmentManager
                 .beginTransaction()
                 .addSharedElement(findViewById(R.id.detail_view_header), getString(R.string.shared_element_course_header))
                 .addSharedElement(findViewById(R.id.detail_subject_title_tv), getString(R.string.shared_element_course_subject_title))
                 .setCustomAnimations(R.animator.do_nothing, R.animator.fade_out)
-                .replace(R.id.content_view, homeFragment!!)
+                .replace(R.id.content_view, dashboardFragment!!)
                 .addToBackStack(null)
                 .commit()
 
@@ -481,18 +481,18 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
 
         expandToolBar(true, true)
 
-        if (homeFragment == null) homeFragment = HomeFragment()
+        if (dashboardFragment == null) dashboardFragment = DashboardFragment()
 
         supportFragmentManager
                 .beginTransaction()
                 .setCustomAnimations(R.animator.slide_to_right_in, R.animator.slide_from_left_out)
-                .replace(R.id.content_view, homeFragment!!)
+                .replace(R.id.content_view, dashboardFragment!!)
                 .addToBackStack(null)
                 .commit()
 
         animateDrawerToggle(false)
         hideToolBarItems(false)
-        if (subjects != null && utils.getFilteredSubjects(subjects!!).count() != 0) homeFragment!!.notifyAdapter()
+        if (subjects != null && utils.getFilteredSubjects(subjects!!).count() != 0) dashboardFragment!!.notifyAdapter()
 
         //Bugs might occur when adding new menu items, BE CAREFUL (was actually a T0D0)
         navigationView.menu.getItem(1).isChecked = false
@@ -506,16 +506,16 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
 
         expandToolBar(true, true)
 
-        if (homeFragment == null) homeFragment = HomeFragment()
+        if (dashboardFragment == null) dashboardFragment = DashboardFragment()
 
         supportFragmentManager
                 .beginTransaction()
-                .replace(R.id.content_view, homeFragment!!)
+                .replace(R.id.content_view, dashboardFragment!!)
                 .addToBackStack(null)
                 .commit()
 
         hideToolBarItems(false)
-        if (subjects != null && utils.getFilteredSubjects(subjects!!).count() != 0) homeFragment!!.notifyAdapter()
+        if (subjects != null && utils.getFilteredSubjects(subjects!!).count() != 0) dashboardFragment!!.notifyAdapter()
         navigationView.menu.getItem(index).isChecked = false
         navigationView.menu.getItem(0).isChecked = true
     }
@@ -564,7 +564,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                 }
                 utils.showSnackBar(findViewById(R.id.main_coordinate_layout), getString(R.string.no_connection), true)
                 when (presentFragment) {
-                    0 -> homeFragment?.setRefreshing(false)
+                    0 -> dashboardFragment?.setRefreshing(false)
                     3 -> attendanceFragment?.setRefreshing(false)
                 }
 
@@ -588,7 +588,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                     runOnUiThread {
                         utils.showSnackBar(findViewById(R.id.main_coordinate_layout), getString(R.string.server_problem) + strMessage, true)
                         when (presentFragment) {
-                            0 -> homeFragment!!.setRefreshing(false)
+                            0 -> dashboardFragment!!.setRefreshing(false)
                             3 -> attendanceFragment!!.setRefreshing(false)
                         }
                         noConnection = true
@@ -618,7 +618,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
 
                     runOnUiThread {
                         when (presentFragment) {
-                            0 -> if (subjects!!.isEmpty()) homeFragment!!.refreshAdapterToEmpty()
+                            0 -> if (subjects!!.isEmpty()) dashboardFragment!!.refreshAdapterToEmpty()
                             3 -> if (attendances!!.isEmpty()) attendanceFragment!!.refreshAdapterToEmpty()
                         }
                     }
@@ -644,7 +644,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
 
                     runOnUiThread {
                         when (presentFragment) {
-                            0 -> homeFragment!!.refreshAdapter(subjects!!)
+                            0 -> dashboardFragment!!.refreshAdapter(subjects!!)
                             3 -> attendanceFragment!!.refreshAdapter(attendances!!)
                         }
 
@@ -673,7 +673,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                 .enqueue(object : Callback {
                     override fun onFailure(call: Call, e: IOException) {
                         try {
-                            homeFragment!!.fetchLocalILD()
+                            dashboardFragment!!.fetchLocalILD()
                         } catch (e: Exception) {
                             e.printStackTrace()
                         }
@@ -688,7 +688,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                             utils.setSharedPreference(Utils.TmpData, "ildJson", message)
                         }
                         try {
-                            homeFragment!!.fetchLocalILD()
+                            dashboardFragment!!.fetchLocalILD()
                         } catch (e: Exception) {
                             e.printStackTrace()
                         }
@@ -702,7 +702,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
         // display if haven't been marked as displayed
             Thread(Runnable {
                 // Network thread
-                if (homeFragment != null) {
+                if (dashboardFragment != null) {
                     val connection = URL(data.headerImageURL).openConnection() as HttpURLConnection
                     connection.setRequestProperty("User-agent", "Mozilla/5.0")
                     connection.connect()
@@ -721,8 +721,8 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                                     Locale.TRADITIONAL_CHINESE -> 2
                                     else -> 0
                                 }
-                        homeFragment!!.removeAllILD()
-                        homeFragment!!.initInListDialog(
+                        dashboardFragment!!.removeAllILD()
+                        dashboardFragment!!.initInListDialog(
                                 data.uuid,
                                 Sharp.loadInputStream(input).drawable,
                                 data.titles[langIndex],
@@ -861,13 +861,13 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                 //val error = result.error
             }
         }
-        if (presentFragment == 0) { // Refresh the home fragment to apply settings
+        if (presentFragment == 0) { // Refresh the dashboard fragment to apply settings
 
-            homeFragment = HomeFragment()
+            dashboardFragment = DashboardFragment()
 
             supportFragmentManager
                     .beginTransaction()
-                    .replace(R.id.content_view, homeFragment!!)
+                    .replace(R.id.content_view, dashboardFragment!!)
                     .addToBackStack(null)
                     .commit()
         }

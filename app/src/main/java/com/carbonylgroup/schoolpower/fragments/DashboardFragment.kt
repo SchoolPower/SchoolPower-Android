@@ -4,16 +4,12 @@
 
 package com.carbonylgroup.schoolpower.fragments
 
-import android.content.Context
 import android.graphics.drawable.Drawable
-import android.os.AsyncTask
 import android.os.Bundle
 import android.support.transition.TransitionManager
-import android.support.v4.app.FragmentManager
 import android.support.v4.content.ContextCompat
 import android.support.v4.content.res.ResourcesCompat.getDrawable
 import android.support.v4.widget.SwipeRefreshLayout
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -35,13 +31,9 @@ import com.ramotion.foldingcell.FoldingCell
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
-import java.lang.reflect.AccessibleObject.setAccessible
-import java.lang.reflect.AccessibleObject.setAccessible
 
 
-
-
-class HomeFragment : TransitionHelper.BaseFragment() {
+class DashboardFragment : TransitionHelper.BaseFragment() {
 
     private var utils: Utils? = null
     private var transformedPosition = -1
@@ -53,12 +45,12 @@ class HomeFragment : TransitionHelper.BaseFragment() {
     private var unfoldedIndexesBackUp = HashSet<Int>()
     private var adapter: FoldingCellListAdapter? = null
     private var courseDetailFragment: CourseDetailFragment? = null
-    private var homeSwipeRefreshLayout: SwipeRefreshLayout? = null
+    private var dashboardSwipeRefreshLayout: SwipeRefreshLayout? = null
     private lateinit var dashboardListView: ListView
     private lateinit var noGradeView: LinearLayout
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        viewPrivate = inflater.inflate(R.layout.home_view_content, container, false)
+        viewPrivate = inflater.inflate(R.layout.dashboard_view_content, container, false)
         initAnim()
         initValue()
         return viewPrivate
@@ -67,10 +59,10 @@ class HomeFragment : TransitionHelper.BaseFragment() {
     override fun onPause() {
         super.onPause()
         //To prevent freezing during fragment transaction
-        if (homeSwipeRefreshLayout != null) {
-            homeSwipeRefreshLayout!!.isRefreshing = false
-            homeSwipeRefreshLayout!!.destroyDrawingCache()
-            homeSwipeRefreshLayout!!.clearAnimation()
+        if (dashboardSwipeRefreshLayout != null) {
+            dashboardSwipeRefreshLayout!!.isRefreshing = false
+            dashboardSwipeRefreshLayout!!.destroyDrawingCache()
+            dashboardSwipeRefreshLayout!!.clearAnimation()
         }
     }
 
@@ -101,9 +93,9 @@ class HomeFragment : TransitionHelper.BaseFragment() {
                             else -> R.drawable.no_grades
                         }, null)
         )
-        homeSwipeRefreshLayout = viewPrivate!!.findViewById(R.id.home_swipe_refresh_layout)
-        homeSwipeRefreshLayout!!.setColorSchemeColors(utils!!.getAccentColor())
-        homeSwipeRefreshLayout!!.setOnRefreshListener { MainActivity.of(activity).fetchStudentDataFromServer() }
+        dashboardSwipeRefreshLayout = viewPrivate!!.findViewById(R.id.dashboard_swipe_refresh_layout)
+        dashboardSwipeRefreshLayout!!.setColorSchemeColors(utils!!.getAccentColor())
+        dashboardSwipeRefreshLayout!!.setOnRefreshListener { MainActivity.of(activity).fetchStudentDataFromServer() }
         if (subjects == null || utils!!.getFilteredSubjects(subjects!!).count() == 0) refreshAdapterToEmpty()
         else try {
             initAdapter()
@@ -316,7 +308,7 @@ class HomeFragment : TransitionHelper.BaseFragment() {
     }
 
     fun setRefreshing(isRefreshing: Boolean) {
-        homeSwipeRefreshLayout?.isRefreshing = isRefreshing
+        dashboardSwipeRefreshLayout?.isRefreshing = isRefreshing
     }
 
     fun refreshAdapterToEmpty() {

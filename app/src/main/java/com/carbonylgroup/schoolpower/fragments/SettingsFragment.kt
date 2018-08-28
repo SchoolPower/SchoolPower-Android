@@ -8,18 +8,19 @@ import android.net.Uri
 import android.os.Bundle
 import android.support.annotation.ColorInt
 import android.support.v14.preference.MultiSelectListPreference
-import android.support.v14.preference.PreferenceFragment
 import android.support.v14.preference.SwitchPreference
 import android.support.v7.app.AlertDialog
 import android.support.v7.preference.ListPreference
 import android.support.v7.preference.Preference
+import android.support.v7.preference.PreferenceFragmentCompat
 import android.support.v7.preference.PreferenceManager
 import com.carbonylgroup.schoolpower.R
+import com.carbonylgroup.schoolpower.activities.MainActivity
 import com.carbonylgroup.schoolpower.utils.Utils
 import com.carbonylgroup.schoolpower.utils.colorChooser.ColorChooserPreference
 import java.util.*
 
-class SettingsFragment : PreferenceFragment(),
+class SettingsFragment : PreferenceFragmentCompat(),
         SharedPreferences.OnSharedPreferenceChangeListener,
         ColorChooserPreference.ColorChooserCallback{
 
@@ -51,7 +52,7 @@ class SettingsFragment : PreferenceFragment(),
         super.onCreate(savedInstanceState)
         addPreferencesFromResource(R.xml.preferences_content)
         preferenceManager.sharedPreferences.registerOnSharedPreferenceChangeListener(this)
-        utils = Utils(activity)
+        utils = Utils(activity as MainActivity)
         initPreferences()
     }
 
@@ -65,10 +66,10 @@ class SettingsFragment : PreferenceFragment(),
                 .setColorChooserCallback(this)
 
         val dashboardDisplay = (findPreference("list_preference_dashboard_display") as ListPreference)
-        dashboardDisplay.summary = activity.getString(R.string.dashboard_display_preference_summary_prefix) + dashboardDisplay.entry + activity.getString(R.string.dashboard_display_preference_summary_suffix)
+        dashboardDisplay.summary = activity!!.getString(R.string.dashboard_display_preference_summary_prefix) + dashboardDisplay.entry + activity!!.getString(R.string.dashboard_display_preference_summary_suffix)
 
         val gpaRule = findPreference("list_preference_custom_gpa_calculate") as ListPreference
-        gpaRule.summary = getString(R.string.dashboard_gpa_rule_summary_prefix) + gpaRule.entry.toString().toLowerCase() + activity.getString(R.string.dashboard_gpa_rule_summary_suffix)
+        gpaRule.summary = getString(R.string.dashboard_gpa_rule_summary_prefix) + gpaRule.entry.toString().toLowerCase() + activity!!.getString(R.string.dashboard_gpa_rule_summary_suffix)
 
 
         findPreference("report_bug").onPreferenceClickListener = Preference.OnPreferenceClickListener {
@@ -76,7 +77,7 @@ class SettingsFragment : PreferenceFragment(),
             val intent = Intent(Intent.ACTION_SENDTO, uri)
             intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.bug_report_email_subject))
             intent.putExtra(Intent.EXTRA_TEXT, String.format(getString(R.string.bug_report_email_content),
-                    activity.packageManager.getPackageInfo("com.carbonylgroup.schoolpower", 0).versionName))
+                    activity!!.packageManager.getPackageInfo("com.carbonylgroup.schoolpower", 0).versionName))
             startActivity(Intent.createChooser(intent, getString(R.string.choose_email_app)))
             true
         }
@@ -93,8 +94,8 @@ class SettingsFragment : PreferenceFragment(),
             true
         }
         val customGPA = findPreference("list_preference_customize_gpa") as MultiSelectListPreference
-        customGPA.entries = activity.intent.getCharSequenceArrayExtra("subjects")
-        customGPA.entryValues = activity.intent.getCharSequenceArrayExtra("subjects_values")
+        customGPA.entries = activity!!.intent.getCharSequenceArrayExtra("subjects")
+        customGPA.entryValues = activity!!.intent.getCharSequenceArrayExtra("subjects_values")
     }
 
     private fun refreshPreferences(sharedPreferences: SharedPreferences?, key: String?) {
@@ -102,26 +103,26 @@ class SettingsFragment : PreferenceFragment(),
         when (key) {
             "list_preference_dashboard_display" -> {
                 val dashboard_display = (findPreference("list_preference_dashboard_display") as ListPreference)
-                dashboard_display.summary = getString(R.string.dashboard_display_preference_summary_prefix) + dashboard_display.entry + activity.getString(R.string.dashboard_display_preference_summary_suffix)
-                utils!!.setSharedPreference(Utils.SettingsPreference, key, sharedPreferences!!.getString(key, "0"))
+                dashboard_display.summary = getString(R.string.dashboard_display_preference_summary_prefix) + dashboard_display.entry + activity!!.getString(R.string.dashboard_display_preference_summary_suffix)
+                utils!!.setSharedPreference(Utils.SettingsPreference, key, sharedPreferences!!.getString(key, "0")!!)
             }
             "list_preference_language" -> {
-                utils!!.setSharedPreference(Utils.SettingsPreference, "lang", sharedPreferences!!.getString(key, "0"))
+                utils!!.setSharedPreference(Utils.SettingsPreference, "lang", sharedPreferences!!.getString(key, "0")!!)
                 recreateMain()
             }
             "preference_enable_notification" -> {
-                val jobScheduler = activity.getSystemService(Context.JOB_SCHEDULER_SERVICE) as JobScheduler
-                if (!PreferenceManager.getDefaultSharedPreferences(activity.applicationContext).getBoolean("preference_enable_notification", true)) {
+                val jobScheduler = activity!!.getSystemService(Context.JOB_SCHEDULER_SERVICE) as JobScheduler
+                if (!PreferenceManager.getDefaultSharedPreferences(activity!!.applicationContext).getBoolean("preference_enable_notification", true)) {
                     jobScheduler.cancelAll()
                 }
             }
             "list_preference_custom_gpa_calculate" -> {
                 val gpaRule = findPreference(key) as ListPreference
-                gpaRule.summary = getString(R.string.dashboard_gpa_rule_summary_prefix) + gpaRule.entry.toString().toLowerCase() + activity.getString(R.string.dashboard_gpa_rule_summary_suffix)
-                utils!!.setSharedPreference(Utils.SettingsPreference, key, sharedPreferences!!.getString(key, "0"))
+                gpaRule.summary = getString(R.string.dashboard_gpa_rule_summary_prefix) + gpaRule.entry.toString().toLowerCase() + activity!!.getString(R.string.dashboard_gpa_rule_summary_suffix)
+                utils!!.setSharedPreference(Utils.SettingsPreference, key, sharedPreferences!!.getString(key, "0")!!)
             }
             "switch_preference_theme_dark" -> {
-                val utils = Utils(activity)
+                val utils = Utils(activity as MainActivity)
                 utils.set(utils.THEME, if ((findPreference(key) as SwitchPreference).isChecked) utils.DARK else utils.LIGHT)
                 recreateMain()
             }
@@ -129,7 +130,7 @@ class SettingsFragment : PreferenceFragment(),
     }
 
     private fun showThemeChooser() {
-        val utils = Utils(activity)
+        val utils = Utils(activity as MainActivity)
         val valueList = Arrays.asList(*resources.getStringArray(R.array.theme_array))
         val theme = utils.getTheme()
         val selectIndex = valueList.indexOf(theme)

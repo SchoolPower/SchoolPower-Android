@@ -50,7 +50,7 @@ class SettingsActivity : BaseActivity(), SettingsFragment.SettingsCallBack {
         super.initActivity()
         setContentView(R.layout.settings_toolbar)
         setSupportActionBar(settingsToolBar)
-        fragmentManager.beginTransaction().replace(R.id.settings_content, SettingsFragment()).commit()
+        supportFragmentManager.beginTransaction().replace(R.id.settings_content, SettingsFragment()).commit()
         supportActionBar?.setDisplayShowHomeEnabled(true)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = getString(R.string.settings)
