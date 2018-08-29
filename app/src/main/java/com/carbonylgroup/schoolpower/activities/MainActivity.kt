@@ -106,22 +106,25 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
             return
         }
 
-        when (intent.action) {
-            "com.carbonylgroup.schoolpower.custom.attendance" -> {
-                navigationView.menu.getItem(2).isChecked = true
-                gotoFragmentWithMenuItemId(R.id.nav_attendance)
-            }
-            "com.carbonylgroup.schoolpower.custom.charts" -> {
-                navigationView.menu.getItem(1).isChecked = true
-                gotoFragmentWithMenuItemId(R.id.nav_charts)
-            }
-            "com.carbonylgroup.schoolpower.custom.gpa" -> {
-                if (subjects == null || !GPADialog(this, subjects!!, studentInformation!!.GPA).show()) {
-                    val builder = AlertDialog.Builder(this)
-                    builder.setMessage(getString(R.string.gpa_not_available_because))
-                    builder.setTitle(getString(R.string.gpa_not_available))
-                    builder.setPositiveButton(getString(R.string.alright), null)
-                    builder.create().show()
+        runOnUiThread {
+            when (intent.action) {
+                "com.carbonylgroup.schoolpower.custom.attendance" -> {
+                    navigationView.menu.getItem(2).isChecked = true
+                    gotoFragmentWithMenuItemId(R.id.nav_attendance)
+                }
+                "com.carbonylgroup.schoolpower.custom.charts" -> {
+                    navigationView.menu.getItem(1).isChecked = true
+                    Log.d("[][][", "11111")
+                    gotoFragmentWithMenuItemId(R.id.nav_charts)
+                }
+                "com.carbonylgroup.schoolpower.custom.gpa" -> {
+                    if (subjects == null || !GPADialog(this, subjects!!, studentInformation!!.GPA).show()) {
+                        val builder = AlertDialog.Builder(this)
+                        builder.setMessage(getString(R.string.gpa_not_available_because))
+                        builder.setTitle(getString(R.string.gpa_not_available))
+                        builder.setPositiveButton(getString(R.string.alright), null)
+                        builder.create().show()
+                    }
                 }
             }
         }
@@ -375,6 +378,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
 
         val fm = supportFragmentManager
         val transaction = fm.beginTransaction()
+        Log.d("[][][", id.toString())
 
         when (id) {
             R.id.nav_dashboard -> {
@@ -597,10 +601,15 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                         runOnUiThread {
                             val builder = AlertDialog.Builder(this@MainActivity)
                             builder.setMessage(data.disabledMessage)
-                            builder.setTitle(data.disabledTitle)
+                            builder.setTitle(if (data.disabledTitle == "null") "" else data.disabledTitle)
                             builder.setPositiveButton(getString(R.string.alright), null)
                             builder.create().show()
                         }
+                        when (presentFragment) {
+                            0 -> dashboardFragment!!.refreshAdapterToEmpty()
+                            3 -> attendanceFragment!!.refreshAdapterToEmpty()
+                        }
+                        return
                     }
                     studentInformation = data.studentInfo
                     subjects = data.subjects
