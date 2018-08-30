@@ -182,7 +182,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
         }
     }
 
-    private fun handleShortcut () {
+    private fun handleShortcut() {
         when (intent.action) {
             "com.carbonylgroup.schoolpower.custom.attendance" -> {
                 navigationView.menu.getItem(2).isChecked = true
@@ -617,10 +617,10 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                             } catch (e: Exception) {
                                 utils.errorHandler(e)
                             }
-                        }
-                        when (presentFragment) {
-                            0 -> dashboardFragment!!.refreshAdapterToEmpty()
-                            3 -> attendanceFragment!!.refreshAdapterToEmpty()
+                            when (presentFragment) {
+                                0 -> dashboardFragment!!.refreshAdapterToEmpty()
+                                3 -> attendanceFragment!!.refreshAdapterToEmpty()
+                            }
                         }
                         return
                     }
@@ -880,14 +880,12 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
             }
         }
         if (presentFragment == 0) { // Refresh the dashboard fragment to apply settings
-
             dashboardFragment = DashboardFragment()
-
             supportFragmentManager
                     .beginTransaction()
                     .replace(R.id.content_view, dashboardFragment!!)
                     .addToBackStack(null)
-                    .commit()
+                    .commitAllowingStateLoss()
         }
     }
 
