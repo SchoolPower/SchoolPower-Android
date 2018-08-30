@@ -90,7 +90,6 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
     private val SETTINGS_REQUEST_CODE = 233
 
     override fun initActivity() {
-
         // Shortcuts could bring users to main activity directly.
         // In this case, bring users to login activity if they are not logged in
         if (!utils.getSharedPreference(AccountData).getBoolean(getString(R.string.loggedIn), false)) {

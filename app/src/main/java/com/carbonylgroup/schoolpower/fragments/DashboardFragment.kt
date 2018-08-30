@@ -130,7 +130,7 @@ class DashboardFragment : TransitionHelper.BaseFragment() {
                             false, false, false,
                             po, ps, pd
                     )
-                }  catch (e: Exception) {
+                } catch (e: Exception) {
                     utils!!.errorHandler(e)
                 }
     }
@@ -139,8 +139,10 @@ class DashboardFragment : TransitionHelper.BaseFragment() {
         MainActivity.of(activity).subjectTransporter = utils!!.getFilteredSubjects(subjects!!)[dashboardListView.getPositionForView(v) - dashboardListView.headerViewsCount]
         if (transformedPosition != -1) {
             val itemView = getItemViewByPosition(transformedPosition, dashboardListView)
-            itemView.findViewById<View>(R.id.unfold_header_view).transitionName = ""
-            itemView.findViewById<View>(R.id.detail_subject_title_tv).transitionName = ""
+            if (itemView.findViewById<View>(R.id.unfold_header_view) != null) {
+                itemView.findViewById<View>(R.id.unfold_header_view).transitionName = ""
+                itemView.findViewById<View>(R.id.detail_subject_title_tv).transitionName = ""
+            }
         }
         transformedPosition = dashboardListView.getPositionForView(v) - dashboardListView.headerViewsCount
         val itemView = getItemViewByPosition(dashboardListView.getPositionForView(v), dashboardListView)
