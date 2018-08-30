@@ -494,6 +494,9 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
 
         animateDrawerToggle(false)
         hideToolBarItems(false)
+        presentFragment = 0
+        setToolBarElevation()
+        setToolBarTitle(getString(R.string.dashboard))
         if (subjects != null && utils.getFilteredSubjects(subjects!!).count() != 0) dashboardFragment!!.notifyAdapter()
 
         //Bugs might occur when adding new menu items, BE CAREFUL (was actually a T0D0)
@@ -517,6 +520,9 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                 .commit()
 
         hideToolBarItems(false)
+        presentFragment = 0
+        setToolBarElevation()
+        setToolBarTitle(getString(R.string.dashboard))
         if (subjects != null && utils.getFilteredSubjects(subjects!!).count() != 0) dashboardFragment!!.notifyAdapter()
         navigationView.menu.getItem(index).isChecked = false
         navigationView.menu.getItem(0).isChecked = true
