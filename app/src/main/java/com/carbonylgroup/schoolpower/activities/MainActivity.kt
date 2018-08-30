@@ -473,7 +473,9 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
 
         animateDrawerToggle(false)
         hideToolBarItems(false)
-        setToolBarElevation(0)
+        presentFragment = 0
+        setToolBarElevation()
+        setToolBarTitle(getString(R.string.dashboard))
     }
 
     private fun returnFromSecondaryFragments() {
@@ -599,11 +601,15 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                     val data = StudentData(this@MainActivity, strMessage)
                     if (data.disabled) {
                         runOnUiThread {
-                            val builder = AlertDialog.Builder(this@MainActivity)
-                            builder.setMessage(data.disabledMessage)
-                            builder.setTitle(if (data.disabledTitle == "null") "" else data.disabledTitle)
-                            builder.setPositiveButton(getString(R.string.alright), null)
-                            builder.create().show()
+                            try {
+                                val builder = AlertDialog.Builder(this@MainActivity)
+                                builder.setMessage(data.disabledMessage)
+                                builder.setTitle(if (data.disabledTitle == "null") "" else data.disabledTitle)
+                                builder.setPositiveButton(getString(R.string.alright), null)
+                                builder.create().show()
+                            } catch (e: Exception) {
+                                utils.errorHandler(e)
+                            }
                         }
                         when (presentFragment) {
                             0 -> dashboardFragment!!.refreshAdapterToEmpty()

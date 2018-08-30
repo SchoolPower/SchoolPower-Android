@@ -80,9 +80,9 @@ class DashboardFragment : TransitionHelper.BaseFragment() {
         utils = Utils(MainActivity.of(activity))
         subjects = MainActivity.of(activity).subjects
         allILDs = arrayListOf()
-        MainActivity.of(activity).presentFragment = 0
-        MainActivity.of(activity).setToolBarElevation()
-        MainActivity.of(activity).setToolBarTitle(getString(R.string.dashboard))
+//        MainActivity.of(activity).presentFragment = 0
+//        MainActivity.of(activity).setToolBarElevation()
+//        MainActivity.of(activity).setToolBarTitle(getString(R.string.dashboard))
         dashboardListView = viewPrivate!!.findViewById(R.id.mainListView)
         noGradeView = viewPrivate!!.findViewById(R.id.no_grade_view)
         viewPrivate!!.findViewById<ImageView>(R.id.no_grade_image_view).setImageDrawable(
@@ -118,17 +118,21 @@ class DashboardFragment : TransitionHelper.BaseFragment() {
         if (needToShowDonate())
         // If other ILDs are being displayed, don't show the donation
             if (dashboardListView.headerViewsCount == 0)
-                initInListDialog(
-                        "",
-                        ContextCompat.getDrawable(activity as MainActivity, R.drawable.ic_donation)!!,
-                        getString(R.string.donation_title),
-                        getString(R.string.donation_message),
-                        getString(R.string.donation_ok),
-                        getString(R.string.donation_promote),
-                        getString(R.string.donation_cancel),
-                        false, false, false,
-                        po, ps, pd
-                )
+                try {
+                    initInListDialog(
+                            "",
+                            ContextCompat.getDrawable(activity as MainActivity, R.drawable.ic_donation)!!,
+                            getString(R.string.donation_title),
+                            getString(R.string.donation_message),
+                            getString(R.string.donation_ok),
+                            getString(R.string.donation_promote),
+                            getString(R.string.donation_cancel),
+                            false, false, false,
+                            po, ps, pd
+                    )
+                }  catch (e: Exception) {
+                    utils!!.errorHandler(e)
+                }
     }
 
     private fun adapterSetFabOnClickListener(adapter: FoldingCellListAdapter) = adapter.setFabOnClickListener(View.OnClickListener { v ->
@@ -325,14 +329,18 @@ class DashboardFragment : TransitionHelper.BaseFragment() {
     }
 
     fun refreshAdapter(newSubjects: List<Subject>) {
-        subjects = newSubjects
-        if (adapter == null) initValue()
-        else {
-            adapter!!.setMainListItems(utils!!.getFilteredSubjects(newSubjects))
-            adapterSetFabOnClickListener(adapter!!)
-            adapter!!.notifyDataSetChanged()
+        try {
+            subjects = newSubjects
+            if (adapter == null) initValue()
+            else {
+                adapter!!.setMainListItems(utils!!.getFilteredSubjects(newSubjects))
+                adapterSetFabOnClickListener(adapter!!)
+                adapter!!.notifyDataSetChanged()
+            }
+            setRefreshing(false)
+        } catch (e: Exception) {
+            utils!!.errorHandler(e)
         }
-        setRefreshing(false)
     }
 
     fun notifyAdapter() {
