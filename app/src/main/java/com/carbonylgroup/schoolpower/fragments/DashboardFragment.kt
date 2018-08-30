@@ -280,9 +280,16 @@ class DashboardFragment : TransitionHelper.BaseFragment() {
 
     private fun needToShowDonate(): Boolean {
         // Show donate every 30 days, if haven't donated
-        return if (isDonated()) false
+        return if (isDonated() || isEarlyDonators()) false
         else ((Date().time - getLastDonateShowedDate().time) / 1000.0 / 60.0 / 60.0 / 24.0 >= 30.0)
 //        return true
+    }
+
+    private fun isEarlyDonators(): Boolean {
+        val start120 = SimpleDateFormat("yyyy-MM-dd", Locale.CHINA).parse("2018-07-01")
+        val end120 = SimpleDateFormat("yyyy-MM-dd", Locale.CHINA).parse("2018-08-28")
+        val shown = getLastDonateShowedDate()
+        return start120.compareTo(shown) * shown.compareTo(end120) > 0
     }
 
     private fun isDonated(): Boolean {
