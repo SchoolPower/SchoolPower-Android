@@ -90,43 +90,22 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
     private val SETTINGS_REQUEST_CODE = 233
 
     override fun initActivity() {
-        super.initActivity()
-        utils = Utils(this)
-        setContentView(R.layout.nav_drawer)
-        initValue()
-        initUI()
-        initOnClick()
-        initScheduler()
-        utils.checkApplicationUpdate()
 
         // Shortcuts could bring users to main activity directly.
         // In this case, bring users to login activity if they are not logged in
         if (!utils.getSharedPreference(AccountData).getBoolean(getString(R.string.loggedIn), false)) {
             startLoginActivity()
             return
-        }
-
-        runOnUiThread {
-            when (intent.action) {
-                "com.carbonylgroup.schoolpower.custom.attendance" -> {
-                    navigationView.menu.getItem(2).isChecked = true
-                    gotoFragmentWithMenuItemId(R.id.nav_attendance)
-                }
-                "com.carbonylgroup.schoolpower.custom.charts" -> {
-                    navigationView.menu.getItem(1).isChecked = true
-                    Log.d("[][][", "11111")
-                    gotoFragmentWithMenuItemId(R.id.nav_charts)
-                }
-                "com.carbonylgroup.schoolpower.custom.gpa" -> {
-                    if (subjects == null || !GPADialog(this, subjects!!, studentInformation!!.GPA).show()) {
-                        val builder = AlertDialog.Builder(this)
-                        builder.setMessage(getString(R.string.gpa_not_available_because))
-                        builder.setTitle(getString(R.string.gpa_not_available))
-                        builder.setPositiveButton(getString(R.string.alright), null)
-                        builder.create().show()
-                    }
-                }
-            }
+        } else {
+            super.initActivity()
+            utils = Utils(this)
+            setContentView(R.layout.nav_drawer)
+            initValue()
+            initUI()
+            initOnClick()
+            initScheduler()
+            utils.checkApplicationUpdate()
+            handleShortcut()
         }
     }
 
@@ -201,6 +180,29 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
             4 -> returnFromSecondaryFragments()
             5 -> returnFromSecondaryFragments()
             else -> super.onBackPressed()
+        }
+    }
+
+    private fun handleShortcut () {
+        when (intent.action) {
+            "com.carbonylgroup.schoolpower.custom.attendance" -> {
+                navigationView.menu.getItem(2).isChecked = true
+                gotoFragmentWithMenuItemId(R.id.nav_attendance)
+            }
+            "com.carbonylgroup.schoolpower.custom.charts" -> {
+                navigationView.menu.getItem(1).isChecked = true
+                Log.d("[][][", "11111")
+                gotoFragmentWithMenuItemId(R.id.nav_charts)
+            }
+            "com.carbonylgroup.schoolpower.custom.gpa" -> {
+                if (subjects == null || !GPADialog(this, subjects!!, studentInformation!!.GPA).show()) {
+                    val builder = AlertDialog.Builder(this)
+                    builder.setMessage(getString(R.string.gpa_not_available_because))
+                    builder.setTitle(getString(R.string.gpa_not_available))
+                    builder.setPositiveButton(getString(R.string.alright), null)
+                    builder.create().show()
+                }
+            }
         }
     }
 
