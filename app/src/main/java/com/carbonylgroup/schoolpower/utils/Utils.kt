@@ -282,7 +282,7 @@ class Utils(private val context: Context) {
         return result
     }
 
-    fun getAllPeriods(subjects: List<Subject>): HashSet<String>{
+    fun getAllPeriods(subjects: List<Subject>): HashSet<String> {
         val allPeriods = HashSet<String>()
         subjects.indices.forEach { i ->
             subjects[i].grades.keys.filterTo(allPeriods) { subjects[i].grades[it]!!.letter != "--" }
@@ -567,19 +567,21 @@ class Utils(private val context: Context) {
                         val updateJSON = JSONObject(message)
                         setSharedPreference(TmpData, "app_download_url", updateJSON.getString("url"))
                         if (updateJSON.getString("version") != getAppVersion()) {
-                            (context as Activity).runOnUiThread {
-                                val builder = AlertDialog.Builder(context)
-                                builder.setTitle(context.getString(R.string.upgrade_title))
-                                builder.setMessage(updateJSON.getString("description"))
-                                builder.setPositiveButton(context.getString(R.string.upgrade_pos)) { dialog, _ ->
-                                    run {
-                                        dialog.dismiss()
-                                        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(updateJSON.getString("url")))
-                                        context.startActivity(intent)
+                            if (!(context as Activity).isFinishing && !context.isDestroyed) {
+                                context.runOnUiThread {
+                                    val builder = AlertDialog.Builder(context)
+                                    builder.setTitle(context.getString(R.string.upgrade_title))
+                                    builder.setMessage(updateJSON.getString("description"))
+                                    builder.setPositiveButton(context.getString(R.string.upgrade_pos)) { dialog, _ ->
+                                        run {
+                                            dialog.dismiss()
+                                            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(updateJSON.getString("url")))
+                                            context.startActivity(intent)
+                                        }
                                     }
+                                    builder.setNegativeButton(context.getString(R.string.upgrade_neg), null)
+                                    builder.create().show()
                                 }
-                                builder.setNegativeButton(context.getString(R.string.upgrade_neg), null)
-                                builder.create().show()
                             }
                         }
                     }
