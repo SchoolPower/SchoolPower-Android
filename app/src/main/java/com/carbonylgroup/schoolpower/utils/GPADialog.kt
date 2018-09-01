@@ -20,6 +20,7 @@ import com.github.premnirmal.textcounter.CounterView
 class GPADialog(private val activity: Activity, private val subjects: List<Subject>, private val officialGPA: Double?) {
 
     private val utils = Utils(activity)
+    private var currentTerm = 0
     private lateinit var waveView: WaveView
     private lateinit var gpa_dialog_percentage_back: CounterView
     private lateinit var gpa_dialog_percentage_front: CounterView
@@ -28,20 +29,12 @@ class GPADialog(private val activity: Activity, private val subjects: List<Subje
     fun show(): Boolean {
         if (subjects.count() == 0) return false
 
-        val latestPeriods = HashMap<String, Subject.Grade>()
-        val allPeriods = HashSet<String>()
-        subjects.indices.forEach { i ->
-            val key = utils.getLatestPeriod(subjects[i].grades) ?: return@forEach
-            latestPeriods[key] = subjects[i].grades[key]!!
-            subjects[i].grades.keys.filterTo(allPeriods) { subjects[i].grades[it]!!.letter != "--" }
-        }
-        val terms = utils.sortTerm(allPeriods)
-        val latestPeriod = utils.getLatestPeriod(latestPeriods)
-                ?: return false // overall latest period, usually indicate the current term
+        val allPeriods = utils.sortTerm(utils.getAllPeriods(subjects))
+        currentTerm = allPeriods.indexOf(utils.getLatestPeriod(subjects))
 
-        constructView(latestPeriod, terms)
-        updateData(calculateGPA(latestPeriod),
-                calculateCustomGPA(latestPeriod),
+        constructView(allPeriods)
+        updateData(calculateGPA(allPeriods[currentTerm]),
+                calculateCustomGPA(allPeriods[currentTerm]),
                 officialGPA?.toFloat())
         return true
     }
@@ -74,7 +67,7 @@ class GPADialog(private val activity: Activity, private val subjects: List<Subje
         }
     }
 
-    private fun constructView(latestPeriod: String, allPeriods: ArrayList<String>) {
+    private fun constructView(allPeriods: ArrayList<String>) {
 
         // construct view
         val gpaDialog = activity.layoutInflater.inflate(R.layout.gpa_dialog, null)
@@ -109,7 +102,7 @@ class GPADialog(private val activity: Activity, private val subjects: List<Subje
         val spinner = gpaDialog.findViewById<Spinner>(R.id.gpa_dialog_term_spinner)
         spinner.adapter =
                 ArrayAdapter(activity, R.layout.term_selection_spinner, allPeriods)
-        spinner.setSelection(allPeriods.indexOf(latestPeriod))
+        spinner.setSelection(currentTerm)
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View, pos: Int, id: Long) {
                 updateData(calculateGPA(allPeriods[pos]),

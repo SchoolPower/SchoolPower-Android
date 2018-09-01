@@ -25,9 +25,9 @@ class SortableTerm(raw: String)  {
         return when (letter) {
             "T" -> 1
             "Q" -> 1
-            "S" -> 2
-            "Y" -> 3
-            "X" -> 4
+            "S" -> 5
+            "Y" -> 11
+            "X" -> 12
             else -> 0
         }
     }

@@ -22,8 +22,7 @@ import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.formatter.IAxisValueFormatter
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet
 import java.util.*
-
-
+import kotlin.collections.HashSet
 
 
 class BarChartFragment : Fragment() {
@@ -54,17 +53,8 @@ class BarChartFragment : Fragment() {
 
         val gradedSubjects = utils.getGradedSubjects(subjects)
         val dataSets = ArrayList<IBarDataSet>()
-        val subjectStrings = ArrayList<String>()
-
-        // first run -- get all available terms
-
-        var termStrings = ArrayList<String>()
-        for (it in gradedSubjects) {
-            for (term in it.grades.keys) {
-                if(!termStrings.contains(term)) termStrings.add(term)
-            }
-        }
-        termStrings = utils.sortTerm(termStrings)
+        val subjectStrings = HashSet<String>()
+        val termStrings = utils.sortTerm(utils.getAllPeriods(gradedSubjects))
 
         // or let's just do T1,T2,T3,T4
 //        val termStrings = arrayListOf("T1","T2","T3","T4")
@@ -90,11 +80,11 @@ class BarChartFragment : Fragment() {
             for (i in (n - 1) / 2 downTo 1) {
                 colorList.add(Color.HSVToColor(floatArrayOf(hsbVals[0] - padding * i, hsbVals[1], hsbVals[2])))
             }
+            colorList.add(accent)
             for (i in 1..(n - 1) / 2) {
                 colorList.add(Color.HSVToColor(floatArrayOf(hsbVals[0] + padding * i, hsbVals[1], hsbVals[2])))
             }
         }
-
 
         // second run -- group them in terms
         for (term in termStrings) {
@@ -110,13 +100,14 @@ class BarChartFragment : Fragment() {
                     if (currentTime < it.startDate || currentTime > it.endDate) continue
                 }
                 subjectStrings.add(subject.name)
-                if (subject.grades[term] != null && subject.grades[term]!!.percentage!="0") {
+                if (subject.grades[term] != null && subject.grades[term]!!.percentage != "0") {
                     group.add(BarEntry((subjectStrings.size - 1).toFloat(),
                             subject.grades[term]!!.percentage.toFloat()))
-                }else{
+                } else {
                     group.add(BarEntry((subjectStrings.size - 1).toFloat(), Float.NaN))
                 }
             }
+            Log.d("[][[][", group.toString())
 
             val dataSet = BarDataSet(group, term)
             dataSet.color = colorList[termStrings.indexOf(term)]
@@ -125,13 +116,14 @@ class BarChartFragment : Fragment() {
 
         barChart.description.isEnabled = false
         barChart.xAxis.position = XAxis.XAxisPosition.BOTTOM
-        barChart.xAxis.granularity = 4f
+        barChart.xAxis.granularity = termStrings.size.toFloat()
         barChart.xAxis.axisMinimum = 0f
-        barChart.xAxis.axisMaximum = 4f*gradedSubjects.size
+        barChart.xAxis.axisMaximum = termStrings.size.toFloat() * gradedSubjects.size.toFloat()
         barChart.xAxis.setCenterAxisLabels(true)
         barChart.xAxis.textColor = utils.getPrimaryTextColor()
         //barChart.xAxis.labelRotationAngle = 40f
-        barChart.xAxis.valueFormatter = IAxisValueFormatter { value, _ -> subjectStrings.getOrElse(value.toInt()/4,{_->""}) }
+        Log.d("8989888", subjectStrings.toString())
+        barChart.xAxis.valueFormatter = IAxisValueFormatter { value, _ -> subjectStrings.toList().getOrElse(value.toInt() / termStrings.size) { _ -> "" } }
         barChart.axisLeft.textColor = utils.getPrimaryTextColor()
         barChart.axisRight.textColor = utils.getPrimaryTextColor()
         barChart.legend.textColor = utils.getPrimaryTextColor()

@@ -21,6 +21,7 @@ import android.support.v4.content.ContextCompat
 import android.util.DisplayMetrics
 import android.view.View
 import com.carbonylgroup.schoolpower.R
+import com.carbonylgroup.schoolpower.R.string.grades
 import com.carbonylgroup.schoolpower.data.SortableTerm
 import com.carbonylgroup.schoolpower.data.StudentData
 import com.carbonylgroup.schoolpower.data.Subject
@@ -281,6 +282,14 @@ class Utils(private val context: Context) {
         return result
     }
 
+    fun getAllPeriods(subjects: List<Subject>): HashSet<String>{
+        val allPeriods = HashSet<String>()
+        subjects.indices.forEach { i ->
+            subjects[i].grades.keys.filterTo(allPeriods) { subjects[i].grades[it]!!.letter != "--" }
+        }
+        return allPeriods
+    }
+
     fun sortTerm(terms: HashSet<String>): ArrayList<String> {
         val sortableTerms = arrayListOf<SortableTerm>()
         for (term in terms) {
@@ -294,7 +303,19 @@ class Utils(private val context: Context) {
         return result
     }
 
-    fun getLatestPeriod(grades: Map<String, Subject.Grade>, forceLastTerm: Boolean = false): String? {
+    fun getLatestPeriod(subjects: List<Subject>): String {
+        val latestPeriods = mutableMapOf<String, Subject.Grade>()
+
+        subjects.forEach {
+            val key = getLatestItem(it.grades)!!
+            latestPeriods.put(key, it.grades[key]!!)
+        }
+
+        // overall latest period, usually indicates the current term
+        return getLatestItem(latestPeriods)!!
+    }
+
+    fun getLatestItem(grades: Map<String, Subject.Grade>, forceLastTerm: Boolean = false): String? {
         val termsList = grades.keys
         val forLatestSemester = getSharedPreference(SettingsPreference)
                 .getString("list_preference_dashboard_display", "0") == "1"
@@ -326,7 +347,7 @@ class Utils(private val context: Context) {
         return null
     }
 
-    fun getLatestPeriodGrade(subject: Subject) = subject.grades[getLatestPeriod(subject.grades)]
+    fun getLatestPeriodGrade(subject: Subject) = subject.grades[getLatestItem(subject.grades)]
 
     fun getLetterGradeByPercentageGrade(percentageGrade: Float): String {
         val letterGrades = arrayOf("A", "B", "C+", "C", "C-", "F", "I", "--")
@@ -424,7 +445,7 @@ class Utils(private val context: Context) {
 
         for (subject in data) {
 
-            val term = getLatestPeriod(subject.grades, true) ?: continue
+            val term = getLatestItem(subject.grades, true) ?: continue
             if (subject.grades[term]!!.percentage == "--") continue
             val percentage = subject.grades[term]!!.percentage.toDouble()
 
