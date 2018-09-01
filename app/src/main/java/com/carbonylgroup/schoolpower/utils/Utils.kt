@@ -303,16 +303,19 @@ class Utils(private val context: Context) {
         return result
     }
 
-    fun getLatestPeriod(subjects: List<Subject>): String {
+    fun getLatestPeriod(subjects: List<Subject>): String? {
         val latestPeriods = mutableMapOf<String, Subject.Grade>()
 
         subjects.forEach {
+            if (getLatestItem(it.grades) == null) {
+                return null
+            }
             val key = getLatestItem(it.grades)!!
-            latestPeriods.put(key, it.grades[key]!!)
+            latestPeriods[key] = it.grades[key]!!
         }
 
         // overall latest period, usually indicates the current term
-        return getLatestItem(latestPeriods)!!
+        return getLatestItem(latestPeriods)
     }
 
     fun getLatestItem(grades: Map<String, Subject.Grade>, forceLastTerm: Boolean = false): String? {

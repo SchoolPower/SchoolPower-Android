@@ -30,7 +30,11 @@ class GPADialog(private val activity: Activity, private val subjects: List<Subje
         if (subjects.count() == 0) return false
 
         val allPeriods = utils.sortTerm(utils.getAllPeriods(subjects))
-        currentTerm = allPeriods.indexOf(utils.getLatestPeriod(subjects))
+        val temp = utils.getLatestPeriod(subjects)
+        currentTerm = if (temp != null) allPeriods.indexOf(temp) else -1
+        if (currentTerm == -1) {
+            return false
+        }
 
         constructView(allPeriods)
         updateData(calculateGPA(allPeriods[currentTerm]),
