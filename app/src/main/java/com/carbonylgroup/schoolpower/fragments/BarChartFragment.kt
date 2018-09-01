@@ -107,7 +107,6 @@ class BarChartFragment : Fragment() {
                     group.add(BarEntry((subjectStrings.size - 1).toFloat(), Float.NaN))
                 }
             }
-            Log.d("[][[][", group.toString())
 
             val dataSet = BarDataSet(group, term)
             dataSet.color = colorList[termStrings.indexOf(term)]
@@ -122,7 +121,6 @@ class BarChartFragment : Fragment() {
         barChart.xAxis.setCenterAxisLabels(true)
         barChart.xAxis.textColor = utils.getPrimaryTextColor()
         //barChart.xAxis.labelRotationAngle = 40f
-        Log.d("8989888", subjectStrings.toString())
         barChart.xAxis.valueFormatter = IAxisValueFormatter { value, _ -> subjectStrings.toList().getOrElse(value.toInt() / termStrings.size) { _ -> "" } }
         barChart.axisLeft.textColor = utils.getPrimaryTextColor()
         barChart.axisRight.textColor = utils.getPrimaryTextColor()
