@@ -1,5 +1,8 @@
-package com.carbonylgroup.schoolpower.data
+/**
+ * Copyright (C) 2018 SchoolPower Studio
+ */
 
+package com.carbonylgroup.schoolpower.data
 
 class SortableTerm(raw: String)  {
 
@@ -22,6 +25,8 @@ class SortableTerm(raw: String)  {
     }
 
     private fun valueOfLetter(letter: String): Int {
+        // This is so that S1 > T4/Q4, Y1 > S2, X1 > Y1
+        // Don't know what's X, assume it's greater than Y here :P
         return when (letter) {
             "T" -> 1
             "Q" -> 1
