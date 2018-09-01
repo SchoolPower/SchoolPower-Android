@@ -190,7 +190,6 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
             }
             "com.carbonylgroup.schoolpower.custom.charts" -> {
                 navigationView.menu.getItem(1).isChecked = true
-                Log.d("[][][", "11111")
                 gotoFragmentWithMenuItemId(R.id.nav_charts)
             }
             "com.carbonylgroup.schoolpower.custom.gpa" -> {
@@ -379,7 +378,6 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
 
         val fm = supportFragmentManager
         val transaction = fm.beginTransaction()
-        Log.d("[][][", id.toString())
 
         when (id) {
             R.id.nav_dashboard -> {

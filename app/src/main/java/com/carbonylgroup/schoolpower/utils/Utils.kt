@@ -21,6 +21,7 @@ import android.support.v4.content.ContextCompat
 import android.util.DisplayMetrics
 import android.view.View
 import com.carbonylgroup.schoolpower.R
+import com.carbonylgroup.schoolpower.data.SortableTerm
 import com.carbonylgroup.schoolpower.data.StudentData
 import com.carbonylgroup.schoolpower.data.Subject
 import okhttp3.*
@@ -30,6 +31,8 @@ import org.json.JSONObject
 import java.io.*
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.collections.HashSet
 
 class Utils(private val context: Context) {
 
@@ -265,6 +268,32 @@ class Utils(private val context: Context) {
         return Pair(icon, descrip)
     }
 
+    fun sortTerm(terms: ArrayList<String>): ArrayList<String> {
+        val sortableTerms = arrayListOf<SortableTerm>()
+        for (term in terms) {
+            sortableTerms.add(SortableTerm(term))
+        }
+        val sortedTerms = sortableTerms.sortedWith(compareBy { it.getValue() })
+        val result = arrayListOf<String>()
+        for (term in sortedTerms) {
+            result.add(term.getRaw())
+        }
+        return result
+    }
+
+    fun sortTerm(terms: HashSet<String>): ArrayList<String> {
+        val sortableTerms = arrayListOf<SortableTerm>()
+        for (term in terms) {
+            sortableTerms.add(SortableTerm(term))
+        }
+        val sortedTerms = sortableTerms.sortedWith(compareBy { it.getValue() })
+        val result = arrayListOf<String>()
+        for (term in sortedTerms) {
+            result.add(term.getRaw())
+        }
+        return result
+    }
+
     fun getLatestPeriod(grades: Map<String, Subject.Grade>, forceLastTerm: Boolean = false): String? {
         val termsList = grades.keys
         val forLatestSemester = getSharedPreference(SettingsPreference)
@@ -277,11 +306,19 @@ class Utils(private val context: Context) {
             else if (termsList.contains("T3") && grades["T3"]!!.letter != "--") return "T3"
             else if (termsList.contains("T2") && grades["T2"]!!.letter != "--") return "T2"
             else if (termsList.contains("T1")) return "T1"
+            else if (termsList.contains("Q4") && grades["Q4"]!!.letter != "--") return "Q4"
+            else if (termsList.contains("Q3") && grades["Q3"]!!.letter != "--") return "Q3"
+            else if (termsList.contains("Q2") && grades["Q2"]!!.letter != "--") return "Q2"
+            else if (termsList.contains("Q1")) return "Q1"
         } else {
             if (termsList.contains("T4") && grades["T4"]!!.letter != "--") return "T4"
             else if (termsList.contains("T3") && grades["T3"]!!.letter != "--") return "T3"
             else if (termsList.contains("T2") && grades["T2"]!!.letter != "--") return "T2"
             else if (termsList.contains("T1")) return "T1"
+            else if (termsList.contains("Q4") && grades["Q4"]!!.letter != "--") return "Q4"
+            else if (termsList.contains("Q3") && grades["Q3"]!!.letter != "--") return "Q3"
+            else if (termsList.contains("Q2") && grades["Q2"]!!.letter != "--") return "Q2"
+            else if (termsList.contains("Q1")) return "Q1"
         }
 
         if (termsList.contains("Y1") && grades["Y1"]!!.letter != "--") return "Y1"
@@ -672,24 +709,25 @@ class Utils(private val context: Context) {
     fun errorHandler(e: Exception) {
         val sw = StringWriter()
         e.printStackTrace(PrintWriter(sw))
-        (context as Activity).runOnUiThread {
-            val emergencyDialogBuilder = AlertDialog.Builder(context)
-            emergencyDialogBuilder.setTitle(context.getString(R.string.fatel_error))
-            emergencyDialogBuilder.setMessage(context.getString(R.string.fatel_error_message) + sw.toString())
-            val sendEmail = DialogInterface.OnClickListener { _, _ ->
-                val version = context.packageManager.getPackageInfo("com.carbonylgroup.schoolpower", 0).versionName
-                val uri = Uri.parse(context.getString(R.string.bug_report_email))
-                val intent = Intent(Intent.ACTION_SENDTO, uri)
-                intent.putExtra(Intent.EXTRA_SUBJECT, context.getString(R.string.bug_report_email_subject))
-                intent.putExtra(Intent.EXTRA_TEXT, String.format(context.getString(R.string.bug_report_email_content), version) +
-                        "\n\nError message: \n" + sw.toString())
-                context.startActivity(Intent.createChooser(intent, context.getString(R.string.choose_email_app)))
+        if (!(context as Activity).isFinishing && !context.isDestroyed)
+            context.runOnUiThread {
+                val emergencyDialogBuilder = AlertDialog.Builder(context)
+                emergencyDialogBuilder.setTitle(context.getString(R.string.fatel_error))
+                emergencyDialogBuilder.setMessage(context.getString(R.string.fatel_error_message) + sw.toString())
+                val sendEmail = DialogInterface.OnClickListener { _, _ ->
+                    val version = context.packageManager.getPackageInfo("com.carbonylgroup.schoolpower", 0).versionName
+                    val uri = Uri.parse(context.getString(R.string.bug_report_email))
+                    val intent = Intent(Intent.ACTION_SENDTO, uri)
+                    intent.putExtra(Intent.EXTRA_SUBJECT, context.getString(R.string.bug_report_email_subject))
+                    intent.putExtra(Intent.EXTRA_TEXT, String.format(context.getString(R.string.bug_report_email_content), version) +
+                            "\n\nError message: \n" + sw.toString())
+                    context.startActivity(Intent.createChooser(intent, context.getString(R.string.choose_email_app)))
+                }
+                emergencyDialogBuilder.setPositiveButton(context.getString(R.string.email), sendEmail)
+                emergencyDialogBuilder.setNegativeButton(context.getString(R.string.cancel), null)
+                emergencyDialogBuilder.create().setCanceledOnTouchOutside(false)
+                emergencyDialogBuilder.create().show()
             }
-            emergencyDialogBuilder.setPositiveButton(context.getString(R.string.email), sendEmail)
-            emergencyDialogBuilder.setNegativeButton(context.getString(R.string.cancel), null)
-            emergencyDialogBuilder.create().setCanceledOnTouchOutside(false)
-            emergencyDialogBuilder.create().show()
-        }
     }
 
     companion object {

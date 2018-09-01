@@ -35,10 +35,11 @@ class GPADialog(private val activity: Activity, private val subjects: List<Subje
             latestPeriods[key] = subjects[i].grades[key]!!
             subjects[i].grades.keys.filterTo(allPeriods) { subjects[i].grades[it]!!.letter != "--" }
         }
+        val terms = utils.sortTerm(allPeriods)
         val latestPeriod = utils.getLatestPeriod(latestPeriods)
                 ?: return false // overall latest period, usually indicate the current term
 
-        constructView(latestPeriod, allPeriods.toList())
+        constructView(latestPeriod, terms)
         updateData(calculateGPA(latestPeriod),
                 calculateCustomGPA(latestPeriod),
                 officialGPA?.toFloat())
@@ -73,7 +74,7 @@ class GPADialog(private val activity: Activity, private val subjects: List<Subje
         }
     }
 
-    private fun constructView(latestPeriod: String, allPeriods: List<String>) {
+    private fun constructView(latestPeriod: String, allPeriods: ArrayList<String>) {
 
         // construct view
         val gpaDialog = activity.layoutInflater.inflate(R.layout.gpa_dialog, null)

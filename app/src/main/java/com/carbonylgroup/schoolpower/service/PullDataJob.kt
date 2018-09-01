@@ -147,30 +147,34 @@ class PullDataJob : JobService() {
                     }
 
                     override fun onResponse(call: Call, response: Response) {
-                        val strMessage = response.body()!!.string().replace("\n", "")
-                        response.close()
-                        if (strMessage.contains("Something went wrong!") // incorrect username or password
-                                || !strMessage.contains("{")) { // unknown error
+                        try {
+                            val strMessage = response.body()!!.string().replace("\n", "")
+                            response.close()
+                            if (strMessage.contains("Something went wrong!") // incorrect username or password
+                                    || !strMessage.contains("{")) { // unknown error
 
-                            Log.d("PullDataJob", "Job Finished Early $strMessage")
+                                Log.d("PullDataJob", "Job Finished Early $strMessage")
+                                jobFinished(params, false)
+                                return
+
+                            }
+                            val newData = try {
+                                StudentData(this@PullDataJob, strMessage)
+                            } catch (e: Exception) {
+                                Log.d("PullDataJob", "Job Finished Early $strMessage, ${e.message}")
+                                jobFinished(params, false)
+                                return
+                            }
+                            val oldData = utils.readDataArrayList()
+
+                            diffSubjects(oldData.subjects, newData.subjects)
+                            diffAttendances(oldData.attendances, newData.attendances)
+
+                            Log.d("PullDataJob", "Job Finished Normally")
                             jobFinished(params, false)
-                            return
-
-                        }
-                        val newData = try {
-                            StudentData(this@PullDataJob, strMessage)
                         } catch (e: Exception) {
-                            Log.d("PullDataJob", "Job Finished Early $strMessage, ${e.message}")
-                            jobFinished(params, false)
-                            return
+                            utils.errorHandler(e)
                         }
-                        val oldData = utils.readDataArrayList()
-
-                        diffSubjects(oldData.subjects, newData.subjects)
-                        diffAttendances(oldData.attendances, newData.attendances)
-
-                        Log.d("PullDataJob", "Job Finished Normally")
-                        jobFinished(params, false)
                     }
                 })
 

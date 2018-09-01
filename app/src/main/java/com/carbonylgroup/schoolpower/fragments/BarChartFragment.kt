@@ -57,28 +57,44 @@ class BarChartFragment : Fragment() {
         val subjectStrings = ArrayList<String>()
 
         // first run -- get all available terms
-        /*
-        val termStrings = ArrayList<String>()
+
+        var termStrings = ArrayList<String>()
         for (it in gradedSubjects) {
             for (term in it.grades.keys) {
                 if(!termStrings.contains(term)) termStrings.add(term)
             }
         }
-        */
-        // or let's just do T1,T2,T3,T4
+        termStrings = utils.sortTerm(termStrings)
 
-        val termStrings = arrayListOf("T1","T2","T3","T4")
+        // or let's just do T1,T2,T3,T4
+//        val termStrings = arrayListOf("T1","T2","T3","T4")
 
         val accent = utils.getAccentColor()
         val hsbVals = FloatArray(3)
         Color.colorToHSV(accent, hsbVals)
 
-        val colorList = arrayListOf(
-                Color.HSVToColor(floatArrayOf(hsbVals[0] - 30, hsbVals[1], hsbVals[2])),
-                Color.HSVToColor(floatArrayOf(hsbVals[0] - 10, hsbVals[1], hsbVals[2])),
-                Color.HSVToColor(floatArrayOf(hsbVals[0] + 10, hsbVals[1], hsbVals[2])),
-                Color.HSVToColor(floatArrayOf(hsbVals[0] + 30, hsbVals[1], hsbVals[2]))
-        )
+        val colorList = arrayListOf<Int>()
+        val padding = 20
+        val n = termStrings.size
+        val even = n % 2 == 0
+
+        if (even) {
+            val offset = padding / 2
+            for (i in n / 2 - 1 downTo 0) {
+                colorList.add(Color.HSVToColor(floatArrayOf(hsbVals[0] - padding * i - offset, hsbVals[1], hsbVals[2])))
+            }
+            for (i in 0 until n / 2) {
+                colorList.add(Color.HSVToColor(floatArrayOf(hsbVals[0] + padding * i + offset, hsbVals[1], hsbVals[2])))
+            }
+        } else {
+            for (i in (n - 1) / 2 downTo 1) {
+                colorList.add(Color.HSVToColor(floatArrayOf(hsbVals[0] - padding * i, hsbVals[1], hsbVals[2])))
+            }
+            for (i in 1..(n - 1) / 2) {
+                colorList.add(Color.HSVToColor(floatArrayOf(hsbVals[0] + padding * i, hsbVals[1], hsbVals[2])))
+            }
+        }
+
 
         // second run -- group them in terms
         for (term in termStrings) {

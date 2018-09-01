@@ -32,7 +32,7 @@ class CourseDetailAdapter(private val context: Context, private val subject: Sub
 
     private var presentingTermPos = 0
     private val utils: Utils = Utils(context)
-    private val termsList: ArrayList<String> = ArrayList()
+    private var termsList: ArrayList<String> = ArrayList()
     private var list: ArrayList<AssignmentItem>? = null
 
     init {
@@ -41,9 +41,9 @@ class CourseDetailAdapter(private val context: Context, private val subject: Sub
     }
 
     private fun initTermList() {
-
-        termsList.add(context.getString(R.string.all_terms))
         subject.grades.keys.mapTo(termsList) { it }
+        termsList = utils.sortTerm(termsList)
+        termsList.add(0, context.getString(R.string.all_terms))
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
