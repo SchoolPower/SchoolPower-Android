@@ -4,6 +4,7 @@
     <string name="app_name">SchoolPower</string>
     <string name="action_refreshing">刷新</string>
     <string name="action_gpa">GPA</string>
+    <string name="action_category">分類</string>
     <string name="action_show_json">查看原始 JSON 數據</string>
     <string name="share_as_file">以 JSON 文件分享</string>
     <string name="share_as_text">以文字分享</string>

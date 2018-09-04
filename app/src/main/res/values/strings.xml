@@ -58,6 +58,7 @@
     <string name="app_name">SchoolPower</string>
     <string name="action_refreshing">Refresh</string>
     <string name="action_gpa">GPA</string>
+    <string name="action_category">Category</string>
     <string name="action_show_json">View raw JSON data</string>
     <string name="share_as_file">Share as JSON file</string>
     <string name="share_as_text">Share as plain text</string>
@@ -300,4 +301,5 @@ SchoolPower does not guarantee that the user\'s picture will be permanently save
         Lorem Ipsum
     </string>
     <string name="action_settings">Settings</string>
+    <string name="title_activity_category">CategoryActivity</string>
 </resources>

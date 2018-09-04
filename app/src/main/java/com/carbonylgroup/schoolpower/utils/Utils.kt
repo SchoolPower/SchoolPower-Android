@@ -21,7 +21,6 @@ import android.support.v4.content.ContextCompat
 import android.util.DisplayMetrics
 import android.view.View
 import com.carbonylgroup.schoolpower.R
-import com.carbonylgroup.schoolpower.R.string.grades
 import com.carbonylgroup.schoolpower.data.SortableTerm
 import com.carbonylgroup.schoolpower.data.StudentData
 import com.carbonylgroup.schoolpower.data.Subject
@@ -761,6 +760,7 @@ class Utils(private val context: Context) {
         const val SettingsPreference: String = "Settings"
         const val AccountData: String = "accountData"
         const val TmpData: String = "Tmp"
+        const val CategoryWeightData: String = "category"
 
         const val StudentDataFileName: String = "dataMap.json"
         const val HistoryDataFileName: String = "history.json"

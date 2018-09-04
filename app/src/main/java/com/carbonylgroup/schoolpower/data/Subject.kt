@@ -66,7 +66,8 @@ import java.util.*
 
 class Subject(json: JSONObject) : Serializable {
 
-    data class Grade(val percentage: String, val letter: String, val comment: String, val evaluation: String)
+    data class Grade(val percentage: String, val letter: String,
+                     val comment: String, val evaluation: String)  : Serializable
 
     val name: String = json.getString("name")
     val teacherName: String = json.getJSONObject("teacher").let { obj -> obj.getString("firstName") + " " + obj.getString("lastName") }

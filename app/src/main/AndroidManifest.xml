@@ -68,11 +68,9 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.MainActivity" />
         </activity>
-
         <activity
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:theme="@style/Base.Theme.AppCompat" />
-
         <activity
             android:name=".activities.TextViewingActivity"
             android:label="@string/title_activity_text_viewing"
@@ -92,8 +90,13 @@
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths"
-                tools:replace="android:resource"/>
+                tools:replace="android:resource" />
         </provider>
+
+        <activity
+            android:name=".activities.CategoryActivity"
+            android:label="@string/title_activity_category"
+            android:theme="@style/ThemeLight.Cyan.500"></activity>
     </application>
 
 </manifest>

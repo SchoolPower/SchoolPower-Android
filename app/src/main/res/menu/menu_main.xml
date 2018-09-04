@@ -20,4 +20,9 @@
         android:icon="@drawable/ic_grade_white_24dp"
         android:title="@string/action_gpa"
         app:showAsAction="always" />
+    <item
+        android:id="@+id/action_category"
+        android:icon="@drawable/ic_donut_small_white_24dp"
+        android:title="@string/action_category"
+        app:showAsAction="always" />
 </menu>

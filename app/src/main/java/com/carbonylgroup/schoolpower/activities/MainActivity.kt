@@ -13,7 +13,6 @@ import android.app.job.JobScheduler
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
-import android.content.res.Resources
 import android.os.Build
 import android.os.Bundle
 import android.preference.PreferenceManager
@@ -37,7 +36,6 @@ import com.carbonylgroup.schoolpower.service.PullDataJob
 import com.carbonylgroup.schoolpower.transition.DetailsTransition
 import com.carbonylgroup.schoolpower.transition.TransitionHelper
 import com.carbonylgroup.schoolpower.utils.BirthdayDialog
-import com.carbonylgroup.schoolpower.utils.ContextWrapper
 import com.carbonylgroup.schoolpower.utils.GPADialog
 import com.carbonylgroup.schoolpower.utils.Utils
 import com.carbonylgroup.schoolpower.utils.Utils.Companion.AccountData
@@ -71,6 +69,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
     private var menuOpenDrawer = true
     private var utils: Utils = Utils(this)
     private var hideToolBarItemFlag = false
+    private var hideCourseDetailItemFlag = false
     private val mainToolBar: Toolbar by bindView(R.id.main_toolbar)
     private val drawer: DrawerLayout by bindView(R.id.drawer_layout)
     private val mainAppBar: AppBarLayout by bindView(R.id.main_app_bar)
@@ -114,6 +113,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
         menu.findItem(R.id.action_refresh).isVisible = !hideToolBarItemFlag
         menu.findItem(R.id.action_show_json).isVisible = (!hideToolBarItemFlag && utils.isDeveloperMode())
         menu.findItem(R.id.action_birthday).isVisible = (!hideToolBarItemFlag && utils.isBirthDay())
+        menu.findItem(R.id.action_category).isVisible = (!hideCourseDetailItemFlag)
 
         val birthdayClickable = menu.findItem(R.id.action_birthday).actionView
                 .findViewById<RelativeLayout>(R.id.birthday_cheer_animation_wrapper)
@@ -153,6 +153,14 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                     builder.create().show()
 
                 }
+            }
+            R.id.action_category -> {
+
+                if (presentFragment != 1 || subjectTransporter == null) return false
+                val intent = Intent(application, CategoryActivity::class.java)
+                intent.putExtra("subject", subjectTransporter)
+                startActivity(intent)
+
             }
         }
         return super.onOptionsItemSelected(item)
@@ -387,6 +395,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                 setToolBarElevation()
                 expandToolBar(true, true)
                 hideToolBarItems(false)
+                hideCourseDetailBarItems(true)
                 presentFragment = 0
             }
             R.id.nav_charts -> {
@@ -396,6 +405,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                 setToolBarElevation(0)
                 expandToolBar(true, true)
                 hideToolBarItems(true)
+                hideCourseDetailBarItems(true)
                 presentFragment = 2
             }
             R.id.nav_attendance -> {
@@ -405,6 +415,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                 setToolBarElevation()
                 expandToolBar(true, true)
                 hideToolBarItems(true)
+                hideCourseDetailBarItems(true)
                 presentFragment = 3
             }
             R.id.nav_settings -> startSettingsActivity()
@@ -418,6 +429,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                 expandToolBar(true, true)
                 animateDrawerToggle(true)
                 hideToolBarItems(true)
+                hideCourseDetailBarItems(true)
                 presentFragment = 5
             }
 
@@ -430,6 +442,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                 expandToolBar(true, true)
                 animateDrawerToggle(true)
                 hideToolBarItems(true)
+                hideCourseDetailBarItems(true)
                 presentFragment = 4
             }
             R.id.nav_sign_out -> confirmSignOut()
@@ -474,6 +487,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
         hideToolBarItems(false)
         presentFragment = 0
         setToolBarElevation()
+        hideCourseDetailBarItems(true)
         setToolBarTitle(getString(R.string.dashboard))
     }
 
@@ -924,6 +938,12 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
     fun hideToolBarItems(hide: Boolean) {
 
         hideToolBarItemFlag = hide
+        invalidateOptionsMenu()
+    }
+
+    fun hideCourseDetailBarItems(hide: Boolean) {
+
+        hideCourseDetailItemFlag = hide
         invalidateOptionsMenu()
     }
 
