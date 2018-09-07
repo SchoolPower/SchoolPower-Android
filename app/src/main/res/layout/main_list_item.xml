@@ -123,8 +123,7 @@
                 android:layout_marginBottom="5dp"
                 android:layout_marginTop="30dp"
                 android:minHeight="120dp"
-                android:paddingEnd="0dp"
-                android:paddingStart="10dp">
+                android:paddingEnd="0dp">
 
             </android.support.v7.widget.RecyclerView>
 
