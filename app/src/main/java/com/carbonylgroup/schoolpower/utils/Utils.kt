@@ -307,11 +307,13 @@ class Utils(private val context: Context) {
 
         subjects.forEach {
             if (getLatestItem(it.grades) == null) {
-                return null
+                return@forEach
             }
             val key = getLatestItem(it.grades)!!
             latestPeriods[key] = it.grades[key]!!
         }
+
+        if (latestPeriods.isEmpty()) return null
 
         // overall latest period, usually indicates the current term
         return getLatestItem(latestPeriods)
