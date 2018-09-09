@@ -37,11 +37,10 @@ class CategoryActivity : AppCompatActivity() {
                 categoriesMap[assignment.category] =
                         CategoryItem(categoriesWeights.getWeight(assignment.category, subject)
                                 ?: Double.NaN)
-            val assignmentWeight = assignment.weight.toDouble()
-            val assignmentScore = assignment.score.toDoubleOrNull() ?: continue
-            val assignmentMaxScore = assignment.maximumScore.toDoubleOrNull() ?: continue
-            categoriesMap[assignment.category]!!.score += assignmentScore * assignmentWeight
-            categoriesMap[assignment.category]!!.maxScore += assignmentMaxScore * assignmentWeight
+            if(assignment.score==null || assignment.weight==null || assignment.maximumScore==null)
+                continue
+            categoriesMap[assignment.category]!!.score += assignment.score * assignment.weight
+            categoriesMap[assignment.category]!!.maxScore += assignment.maximumScore * assignment.weight
         }
 
         var sumScore = 0.0

@@ -37,7 +37,7 @@ class GPADialog(private val activity: Activity, private val subjects: List<Subje
         }
 
         constructView(allPeriods)
-        updateData(calculateGPA(allPeriods[currentTerm]),
+        updateData(calculateGPA(allPeriods[currentTerm]).toFloat(),
                 calculateCustomGPA(allPeriods[currentTerm]),
                 officialGPA?.toFloat())
         return true
@@ -109,7 +109,7 @@ class GPADialog(private val activity: Activity, private val subjects: List<Subje
         spinner.setSelection(currentTerm)
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View, pos: Int, id: Long) {
-                updateData(calculateGPA(allPeriods[pos]),
+                updateData(calculateGPA(allPeriods[pos]).toFloat(),
                         calculateCustomGPA(allPeriods[pos]),
                         officialGPA?.toFloat())
             }
@@ -118,14 +118,13 @@ class GPADialog(private val activity: Activity, private val subjects: List<Subje
         }
     }
 
-    private fun calculateGPA(term: String): Float {
-        var sumGPA = 0.0f
+    private fun calculateGPA(term: String): Double {
+        var sumGPA = 0.0
         var num = 0
         for (subject in subjects) {
 
             val periodGrade = subject.grades[term] ?: continue
-            if (periodGrade.letter == "--") continue
-            sumGPA += periodGrade.percentage.toFloat()
+            sumGPA += periodGrade.getGrade() ?: continue
             num += 1
 
         }
@@ -137,13 +136,11 @@ class GPADialog(private val activity: Activity, private val subjects: List<Subje
         val customSubjects = PreferenceManager.getDefaultSharedPreferences(activity).getStringSet("list_preference_customize_gpa", HashSet())
         if (customSubjects!!.isEmpty()) return Float.NaN
 
-        val grades = ArrayList<Float>()
+        val grades = ArrayList<Double>()
         for (subject in subjects) {
 
-            val periodGrade = subject.grades[term] ?: continue
-            if (periodGrade.letter == "--") continue
             if (!customSubjects.contains(subject.name)) continue
-            grades.add(periodGrade.percentage.toFloat())
+            grades.add(subject.grades[term]?.getGrade() ?: continue)
 
         }
 

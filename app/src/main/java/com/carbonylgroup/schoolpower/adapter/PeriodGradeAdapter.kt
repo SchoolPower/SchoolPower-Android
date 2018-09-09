@@ -35,7 +35,7 @@ class PeriodGradeAdapter(private val context: Context, objects: Map<String, Subj
         val item = gradeMap[keys[position]]!!
         viewHolder.period_indicator.text = keys[position]
         viewHolder.period_latter_grade.text = item.letter
-        viewHolder.period_percentage_grade.text = item.percentage
+        viewHolder.period_percentage_grade.text = item.getPercentageString()
         viewHolder.period_grade_background.setBackgroundColor(utils.getColorByLetterGrade(item.letter))
     }
 

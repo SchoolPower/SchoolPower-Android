@@ -3,6 +3,7 @@ package com.carbonylgroup.schoolpower.adapter
 
 import android.app.AlertDialog
 import android.content.Context
+import android.os.Handler
 import android.support.design.widget.FloatingActionButton
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.CardView
@@ -19,12 +20,10 @@ import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
 import com.carbonylgroup.schoolpower.R
-import com.carbonylgroup.schoolpower.activities.BaseActivity
 import com.carbonylgroup.schoolpower.data.Subject
 import com.carbonylgroup.schoolpower.utils.Utils
 import com.ramotion.foldingcell.FoldingCell
 import java.util.*
-import android.os.Handler
 
 
 /**
@@ -103,9 +102,9 @@ class FoldingCellListAdapter(context: Context, private var subjects: List<Subjec
         viewHolder.unfold_teacher_name_tv!!.text = item.teacherName
         viewHolder.unfold_subject_title_tv!!.text = item.name
         viewHolder.unfolded_grade_recycler_view!!.layoutManager = layoutManager
-        viewHolder.fold_percentage_grade_tv!!.text = period.percentage
+        viewHolder.fold_percentage_grade_tv!!.text = period.getPercentageString()
         viewHolder.floating_action_button!!.setOnClickListener(fabOnClickListener)
-        viewHolder.unfold_percentage_grade_tv!!.text = period.percentage
+        viewHolder.unfold_percentage_grade_tv!!.text = period.getPercentageString()
         viewHolder.unfold_header_view!!.setBackgroundColor(utils.getColorByLetterGrade(period.letter))
         viewHolder.fold_grade_background!!.setBackgroundColor(utils.getColorByLetterGrade(period.letter))
         viewHolder.detail_header_background!!.setBackgroundColor(utils.getCardBackground())
@@ -202,10 +201,7 @@ class FoldingCellListAdapter(context: Context, private var subjects: List<Subjec
         val keys = objects.keys.toTypedArray()
         val term = gradeMap[keys[position]]!!
 
-        val letter = term.letter
-        val percentage = term.percentage
         val termIndicator = keys[position]
-        val subjectTitle = subject.name
         val evaluation = term.evaluation
         val comment = term.comment
 
@@ -214,11 +210,11 @@ class FoldingCellListAdapter(context: Context, private var subjects: List<Subjec
         val termDialogBuilder = AlertDialog.Builder(context)
 
         termDialogView.findViewById<RelativeLayout>(R.id.term_header_view).setBackgroundColor(
-                utils.getColorByLetterGrade(letter))
+                utils.getColorByLetterGrade(term.letter))
 
-        termDialogView.findViewById<TextView>(R.id.term_percentage_grade_tv).text = percentage
+        termDialogView.findViewById<TextView>(R.id.term_percentage_grade_tv).text = term.getPercentageString()
         termDialogView.findViewById<TextView>(R.id.term_name_tv).text = termIndicator
-        termDialogView.findViewById<TextView>(R.id.term_subject_tv).text = subjectTitle
+        termDialogView.findViewById<TextView>(R.id.term_subject_tv).text = subject.name
         termDialogView.findViewById<TextView>(R.id.term_eval_body_tv).text =
                 if (evaluation.equals("--")) "N/A"
                 else String.format("%s (%s)", evaluation, utils.citizenshipCodes[evaluation])

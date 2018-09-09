@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.preference.PreferenceManager
 import android.support.v4.app.Fragment
 import android.support.v7.widget.CardView
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -100,12 +99,8 @@ class BarChartFragment : Fragment() {
                     if (currentTime < it.startDate || currentTime > it.endDate) continue
                 }
                 subjectStrings.add(subject.name)
-                if (subject.grades[term] != null && subject.grades[term]!!.percentage != "0") {
-                    group.add(BarEntry((subjectStrings.size - 1).toFloat(),
-                            subject.grades[term]!!.percentage.toFloat()))
-                } else {
-                    group.add(BarEntry((subjectStrings.size - 1).toFloat(), Float.NaN))
-                }
+                group.add(BarEntry((subjectStrings.size - 1).toFloat(),
+                        subject.grades[term]?.getGrade()?.toFloat()?:Float.NaN))
             }
 
             val dataSet = BarDataSet(group, term)

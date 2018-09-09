@@ -9,6 +9,7 @@ import com.carbonylgroup.schoolpower.utils.Utils
 import org.json.JSONObject
 import java.io.Serializable
 import java.util.*
+import kotlin.math.roundToInt
 
 /*
     Sample:
@@ -65,9 +66,13 @@ import java.util.*
  */
 
 class Subject(json: JSONObject) : Serializable {
-
-    data class Grade(val percentage: String, val letter: String,
-                     val comment: String, val evaluation: String)  : Serializable
+    data class Grade(private val _percentage: String, val letter: String,
+                     val comment: String, val evaluation: String)  : Serializable{
+        val percentage : Double? = _percentage.toDoubleOrNull()
+        fun getGrade() : Double? = if(letter!="--") percentage else null
+        fun hasGrade() : Boolean = getGrade() != null
+        fun getPercentageString() = percentage?.toString()?:"--"
+    }
 
     val name: String = json.getString("name")
     val teacherName: String = json.getJSONObject("teacher").let { obj -> obj.getString("firstName") + " " + obj.getString("lastName") }
@@ -113,20 +118,13 @@ class Subject(json: JSONObject) : Serializable {
             }
             if (!found) {
                 item.isNew = true
+                margin=0
 
-                var oldPercent = 0
-                var newPercent = 0
-                var oldPercentStr = "--"
-                var newPercentStr = "--"
-                if (utils.getLatestPeriodGrade(oldSubject) != null)
-                    oldPercentStr = utils.getLatestPeriodGrade(oldSubject)!!.percentage
-                if (utils.getLatestPeriodGrade(this) != null)
-                    newPercentStr = utils.getLatestPeriodGrade(this)!!.percentage
-                if (oldPercentStr != "--") oldPercent = oldPercentStr.toInt()
-                if (newPercentStr != "--") newPercent = newPercentStr.toInt()
+                val oldPercent = utils.getLatestPeriodGrade(oldSubject)!!.getGrade()?:continue
+                val newPercent = utils.getLatestPeriodGrade(this)!!.getGrade()?:continue
 
                 if (oldPercent != newPercent)
-                    margin = newPercent - oldPercent
+                    margin = (newPercent - oldPercent).roundToInt()
             }
         }
     }

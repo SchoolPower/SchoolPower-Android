@@ -5,7 +5,6 @@
 package com.carbonylgroup.schoolpower.adapter
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
@@ -13,7 +12,6 @@ import android.net.Uri
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -64,7 +62,7 @@ class CourseDetailAdapter(private val context: Context, private val subject: Sub
             val assignmentItem = list!![position - 1]
             normalViewHolder.detail_assignment_name_tv.text = assignmentItem.title
             normalViewHolder.detail_assignment_date_tv.text = assignmentItem.date
-            normalViewHolder.detail_assignment_percentage_tv.text = assignmentItem.percentage
+            normalViewHolder.detail_assignment_percentage_tv.text = assignmentItem.getPercentageString()
             normalViewHolder.detail_assignment_dividing_score_tv.text = assignmentItem.getDividedScore()
             normalViewHolder.detail_assignment_flag_rv.adapter = DetailAssignmentFlagAdapter(context, assignmentItem)
             normalViewHolder.detail_assignment_grade_background.setBackgroundColor(utils.getColorByLetterGrade(assignmentItem.letterGrade))
@@ -95,7 +93,7 @@ class CourseDetailAdapter(private val context: Context, private val subject: Sub
             val period = utils.getLatestPeriodGrade(subject) ?: Subject.Grade("--", "--", "null", "--")
 
             holder.detail_letter_grade_tv.text = period.letter
-            holder.detail_percentage_grade_tv.text = period.percentage
+            holder.detail_percentage_grade_tv.text = period.getPercentageString()
             holder.detail_header_teacher_name_tv.text = subject.teacherName
             holder.detail_header_block_tv.text = context.getString(R.string.block) + " " + subject.blockLetter
             holder.detail_header_room_tv.text = context.getString(R.string.room) + " " + subject.roomNumber
@@ -149,11 +147,11 @@ class CourseDetailAdapter(private val context: Context, private val subject: Sub
         assignmentDialogView.findViewById<RelativeLayout>(R.id.assignment_header_view).setBackgroundColor(
                 utils.getColorByLetterGrade(assignmentItem.letterGrade))
 
-        assignmentDialogView.findViewById<TextView>(R.id.assignment_percentage_grade_tv).text = assignmentItem.percentage
+        assignmentDialogView.findViewById<TextView>(R.id.assignment_percentage_grade_tv).text = assignmentItem.getPercentageString()
         assignmentDialogView.findViewById<TextView>(R.id.assignment_name_tv).text = assignmentItem.title
         assignmentDialogView.findViewById<TextView>(R.id.assignment_date_tv).text = assignmentItem.date
         assignmentDialogView.findViewById<TextView>(R.id.assignment_score_body_tv).text = assignmentItem.getDividedScore()
-        assignmentDialogView.findViewById<TextView>(R.id.assignment_weight_body_tv).text = assignmentItem.weight
+        assignmentDialogView.findViewById<TextView>(R.id.assignment_weight_body_tv).text = assignmentItem.weight.toString()
 
         assignmentDialogView.findViewById<RecyclerView>(R.id.assignment_flag_rv).adapter = AssignmentFlagAdapter(context, assignmentItem)
         assignmentDialogView.findViewById<RecyclerView>(R.id.assignment_flag_rv).layoutManager =

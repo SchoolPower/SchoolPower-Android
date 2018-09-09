@@ -4,14 +4,12 @@
 
 package com.carbonylgroup.schoolpower.data
 
-import android.util.Log
 import com.carbonylgroup.schoolpower.utils.Utils
 import org.json.JSONException
 import org.json.JSONObject
 import java.io.Serializable
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.HashMap
 
 /*
 Sample:
@@ -44,13 +42,14 @@ class AssignmentItem(json: JSONObject) : Serializable {
 
     val title: String = json.getString("name")
     val date: String
-    val percentage: String = json.optString("percent", "--").replace("null", "--")  // value like "86.96" or "--"
-    val score: String = json.optString("score", "--").replace("null", "--")  // value like "20" or "--"
-    val maximumScore: String = json.getString("pointsPossible") // value like "23.0"
-    val letterGrade: String = json.optString("letterGrade", "--").replace("null", "--") // value like "A" or "--"
+    val percentage: Double? = json.optString("percent", "--").toDoubleOrNull()  // value like 86.96
+    val score: Double? = json.optString("score", "--").toDoubleOrNull() // value like 23.0
+    val maximumScore: Double? = json.getString("pointsPossible").toDoubleOrNull() // value like 23.0
+    val letterGrade: String = json.optString("letterGrade", "--")
+            .replace("null", "--") // value like "A" or "--"
     val category: String = json.getString("category")
     val includeInFinalGrade: Boolean = json.getString("includeInFinalGrade") == "1"
-    val weight: String = json.getString("weight")
+    val weight: Double? = json.getString("weight").toDoubleOrNull()
     val terms: List<String>
 
 //    val flags: ArrayList<Pair<String, Boolean>> = arrayListOf(
@@ -95,4 +94,6 @@ class AssignmentItem(json: JSONObject) : Serializable {
     }
 
     fun getDividedScore() = "$score/$maximumScore"
+    fun getPercentageString() = percentage?.toString()?:"--"
+    fun getScoreString() = score?.toString()?:"--"
 }

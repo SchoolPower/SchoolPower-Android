@@ -284,7 +284,7 @@ class Utils(private val context: Context) {
     fun getAllPeriods(subjects: List<Subject>): HashSet<String> {
         val allPeriods = HashSet<String>()
         subjects.indices.forEach { i ->
-            subjects[i].grades.keys.filterTo(allPeriods) { subjects[i].grades[it]!!.letter != "--" }
+            subjects[i].grades.keys.filterTo(allPeriods) { subjects[i].grades[it]!!.hasGrade() }
         }
         return allPeriods
     }
@@ -325,28 +325,32 @@ class Utils(private val context: Context) {
                 .getString("list_preference_dashboard_display", "0") == "1"
 
         if (forLatestSemester && !forceLastTerm) {
-            if (termsList.contains("S2") && grades["S2"]!!.letter != "--") return "S2"
-            else if (termsList.contains("S1") && grades["S1"]!!.letter != "--") return "S1"
-            else if (termsList.contains("T4") && grades["T4"]!!.letter != "--") return "T4"
-            else if (termsList.contains("T3") && grades["T3"]!!.letter != "--") return "T3"
-            else if (termsList.contains("T2") && grades["T2"]!!.letter != "--") return "T2"
-            else if (termsList.contains("T1")) return "T1"
-            else if (termsList.contains("Q4") && grades["Q4"]!!.letter != "--") return "Q4"
-            else if (termsList.contains("Q3") && grades["Q3"]!!.letter != "--") return "Q3"
-            else if (termsList.contains("Q2") && grades["Q2"]!!.letter != "--") return "Q2"
-            else if (termsList.contains("Q1")) return "Q1"
+            when {
+                grades["S2"]?.hasGrade() == true -> return "S2"
+                grades["S1"]?.hasGrade() == true -> return "S1"
+                grades["T4"]?.hasGrade() == true -> return "T4"
+                grades["T3"]?.hasGrade() == true -> return "T3"
+                grades["T2"]?.hasGrade() == true -> return "T2"
+                termsList.contains("T1") -> return "T1"
+                grades["Q4"]?.hasGrade() == true -> return "Q4"
+                grades["Q3"]?.hasGrade() == true -> return "Q3"
+                grades["Q2"]?.hasGrade() == true -> return "Q2"
+                termsList.contains("Q1") -> return "Q1"
+                grades["Y1"]?.hasGrade() == true -> return "Y1"
+            }
         } else {
-            if (termsList.contains("T4") && grades["T4"]!!.letter != "--") return "T4"
-            else if (termsList.contains("T3") && grades["T3"]!!.letter != "--") return "T3"
-            else if (termsList.contains("T2") && grades["T2"]!!.letter != "--") return "T2"
-            else if (termsList.contains("T1")) return "T1"
-            else if (termsList.contains("Q4") && grades["Q4"]!!.letter != "--") return "Q4"
-            else if (termsList.contains("Q3") && grades["Q3"]!!.letter != "--") return "Q3"
-            else if (termsList.contains("Q2") && grades["Q2"]!!.letter != "--") return "Q2"
-            else if (termsList.contains("Q1")) return "Q1"
+            when {
+                grades["T4"]?.hasGrade() == true -> return "T4"
+                grades["T3"]?.hasGrade() == true -> return "T3"
+                grades["T2"]?.hasGrade() == true -> return "T2"
+                termsList.contains("T1") -> return "T1"
+                grades["Q4"]?.hasGrade() == true -> return "Q4"
+                grades["Q3"]?.hasGrade() == true -> return "Q3"
+                grades["Q2"]?.hasGrade() == true -> return "Q2"
+                termsList.contains("Q1") -> return "Q1"
+                grades["Y1"]?.hasGrade() == true -> return "Y1"
+            }
         }
-
-        if (termsList.contains("Y1") && grades["Y1"]!!.letter != "--") return "Y1"
 
         return null
     }
@@ -450,8 +454,7 @@ class Utils(private val context: Context) {
         for (subject in data) {
 
             val term = getLatestItem(subject.grades, true) ?: continue
-            if (subject.grades[term]!!.percentage == "--") continue
-            val percentage = subject.grades[term]!!.percentage.toDouble()
+            val percentage = subject.grades[term]!!.getGrade() ?: continue
 
             class GradeInfo {
                 var grade: Double = 0.0
@@ -461,10 +464,10 @@ class Utils(private val context: Context) {
             val categories = HashMap<String, GradeInfo>()
             for (assignment in subject.assignments) {
                 if (!categories.containsKey(assignment.category)) categories[assignment.category] = GradeInfo()
-                if (assignment.score.toDoubleOrNull() == null) continue
+                if (assignment.score==null || assignment.maximumScore==null || assignment.weight==null) continue
                 if (!assignment.terms.contains(term)) continue
-                categories[assignment.category]!!.grade += assignment.score.toDouble() * assignment.weight.toDouble()
-                categories[assignment.category]!!.maxGrade += assignment.maximumScore.toDouble() * assignment.weight.toDouble()
+                categories[assignment.category]!!.grade += assignment.score * assignment.weight
+                categories[assignment.category]!!.maxGrade += assignment.maximumScore * assignment.weight
             }
             val sample = JSONObject() // categories {"sum": 100, "cat-1":100, ...}
 
@@ -511,12 +514,11 @@ class Utils(private val context: Context) {
             for (subject in data) {
                 val subInfo = JSONObject()
                 val leastPeriod = getLatestPeriodGrade(subject) ?: continue
-                if (leastPeriod.percentage == "--") continue
 
                 subInfo.put("name", subject.name)
-                subInfo.put("grade", leastPeriod.percentage.toDouble())
+                subInfo.put("grade", leastPeriod.getGrade()?:continue)
                 if (!subject.name.contains("Homeroom")) {
-                    pointSum += leastPeriod.percentage.toDouble()
+                    pointSum += leastPeriod.getGrade()!!
                     count++
                 }
                 gradeInfo.put(subInfo)
@@ -605,7 +607,7 @@ class Utils(private val context: Context) {
                 if (currentTime < it.startDate || currentTime > it.endDate) continue
             }
             val grade = getLatestPeriodGrade(subjectNow)
-            if (grade != null && grade.letter != "--") gradedSubjects.add(subjectNow)
+            if (grade?.hasGrade() == true) gradedSubjects.add(subjectNow)
         }
         return gradedSubjects
     }
