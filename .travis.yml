@@ -4,7 +4,7 @@ android:
   components:
     - tools
     - build-tools-27.0.3
-    - android-27
+    - android-28
     - extra-google-m2repository
     - extra-android-m2repository
 before_install:
@@ -18,4 +18,5 @@ cache:
     - $HOME/.gradle/wrapper/
     - $HOME/.android/build-cache
 script:
+  - yes | sdkmanager --licenses
   - ./gradlew build
