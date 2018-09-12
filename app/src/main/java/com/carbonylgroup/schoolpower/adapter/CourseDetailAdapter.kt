@@ -57,7 +57,7 @@ class CourseDetailAdapter(private val context: Context, private val subject: Sub
 
             val normalViewHolder = holder
 
-            Collections.sort(list!!) { o1, o2 -> o2.date.compareTo(o1.date) }
+            list!!.sortWith(Comparator { o1, o2 -> o2.date.compareTo(o1.date) })
 
             val assignmentItem = list!![position - 1]
             normalViewHolder.detail_assignment_name_tv.text = assignmentItem.title
@@ -90,14 +90,14 @@ class CourseDetailAdapter(private val context: Context, private val subject: Sub
         } else if (holder is HeaderViewHolder) {
 
             val termAdapter = ArrayAdapter(context, R.layout.term_selection_spinner, termsList)
-            val period = utils.getLatestPeriodGrade(subject) ?: Subject.Grade("--", "--", "null", "--")
+            val period = utils.getLatestTermGrade(subject)
 
-            holder.detail_letter_grade_tv.text = period.letter
-            holder.detail_percentage_grade_tv.text = period.getPercentageString()
+            holder.detail_letter_grade_tv.text = period?.letter ?: "--"
+            holder.detail_percentage_grade_tv.text = period?.getPercentageString() ?: "--"
             holder.detail_header_teacher_name_tv.text = subject.teacherName
             holder.detail_header_block_tv.text = context.getString(R.string.block) + " " + subject.blockLetter
             holder.detail_header_room_tv.text = context.getString(R.string.room) + " " + subject.roomNumber
-            holder.detail_header_grade_background.setBackgroundColor(utils.getColorByLetterGrade(period.letter))
+            holder.detail_header_grade_background.setBackgroundColor(utils.getColorByLetterGrade(period?.letter ?: "--"))
             holder.detail_term_select_spinner.adapter = termAdapter
             holder.detail_term_select_spinner.setSelection(presentingTermPos)
             holder.detail_term_select_spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {

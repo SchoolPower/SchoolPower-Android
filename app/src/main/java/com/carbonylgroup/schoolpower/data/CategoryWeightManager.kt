@@ -25,6 +25,7 @@ class CategoryWeightData(val utils: Utils){
     }
 
     fun setWeight(category: String, subject: Subject, weight: Double) {
+        if(weight.isNaN()||weight.isInfinite()) return
         if(!json.has(subject.name)) json.put(subject.name, JSONObject())
         json.getJSONObject(subject.name).put(category, weight)
     }

@@ -11,16 +11,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
-
 import com.carbonylgroup.schoolpower.R
-import com.carbonylgroup.schoolpower.data.Subject
+import com.carbonylgroup.schoolpower.data.Grade
 import com.carbonylgroup.schoolpower.utils.Utils
 import kotterknife.bindView
 
-class PeriodGradeAdapter(private val context: Context, objects: Map<String, Subject.Grade>) : RecyclerView.Adapter<PeriodGradeAdapter.PeriodGradeViewHolder>() {
+class PeriodGradeAdapter(private val context: Context, objects: Map<String, Grade>) : RecyclerView.Adapter<PeriodGradeAdapter.PeriodGradeViewHolder>() {
 
     private val inflater: LayoutInflater = LayoutInflater.from(context)
-    private val gradeMap: Map<String, Subject.Grade> = objects
+    private val gradeMap: Map<String, Grade> = objects
     private val utils: Utils = Utils(context)
     private val keys = objects.keys.toTypedArray()
 

@@ -30,7 +30,7 @@ class GPADialog(private val activity: Activity, private val subjects: List<Subje
         if (subjects.count() == 0) return false
 
         val allPeriods = utils.sortTerm(utils.getAllPeriods(subjects))
-        val temp = utils.getLatestPeriod(subjects)
+        val temp = utils.getLatestTermNameOverall(subjects)
         currentTerm = if (temp != null) allPeriods.indexOf(temp) else -1
         if (currentTerm == -1) {
             return false
@@ -136,7 +136,7 @@ class GPADialog(private val activity: Activity, private val subjects: List<Subje
         val customSubjects = PreferenceManager.getDefaultSharedPreferences(activity).getStringSet("list_preference_customize_gpa", HashSet())
         if (customSubjects!!.isEmpty()) return Float.NaN
 
-        val grades = ArrayList<Double>()
+        val grades = ArrayList<Int>()
         for (subject in subjects) {
 
             if (!customSubjects.contains(subject.name)) continue

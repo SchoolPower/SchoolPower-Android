@@ -159,7 +159,7 @@ class PullDataJob : JobService() {
 
                             }
                             val newData = try {
-                                StudentData(this@PullDataJob, strMessage)
+                                StudentData(this@PullDataJob, strMessage, utils)
                             } catch (e: Exception) {
                                 Log.d("PullDataJob", "Job Finished Early $strMessage, ${e.message}")
                                 jobFinished(params, false)

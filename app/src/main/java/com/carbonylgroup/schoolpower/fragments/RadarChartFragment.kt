@@ -65,7 +65,7 @@ class RadarChartFragment : Fragment() {
         }
         var minGrade = 100.0f
         for (it in gradedSubjects) {
-            val periodGrade = utils.getLatestPeriodGrade(it)?.getGrade()?.toFloat()?:continue
+            val periodGrade = utils.getLatestTermGrade(it)?.getGrade()?.toFloat()?:continue
             entries.add(RadarEntry(periodGrade))
             if (periodGrade < minGrade) minGrade = periodGrade
         }

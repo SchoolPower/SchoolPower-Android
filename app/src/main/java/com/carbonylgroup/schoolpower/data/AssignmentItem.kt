@@ -64,7 +64,7 @@ class AssignmentItem(json: JSONObject) : Serializable {
     val trueFlags: ArrayList<Pair<String, Boolean>> = arrayListOf()
     var isNew = false
 
-    fun getStatusIfExists(json: JSONObject, name: String, defaultValue: Boolean = false)
+    private fun getStatusIfExists(json: JSONObject, name: String, defaultValue: Boolean = false)
             = if (json.has("status") && json.getJSONObject("status").has(name))
             json.getJSONObject("status").getBoolean(name) else defaultValue
 
@@ -93,7 +93,7 @@ class AssignmentItem(json: JSONObject) : Serializable {
         }
     }
 
-    fun getDividedScore() = "$score/$maximumScore"
+    fun getDividedScore() = getScoreString()+"/"+maximumScore
     fun getPercentageString() = percentage?.toString()?:"--"
     fun getScoreString() = score?.toString()?:"--"
 }

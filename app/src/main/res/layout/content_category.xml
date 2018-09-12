@@ -9,6 +9,7 @@
     tools:showIn="@layout/activity_category">
 
     <LinearLayout
+        android:id="@+id/categoryContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -18,18 +19,5 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/text_margin" />
-        <EditText
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/catname"/>
-        <EditText
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/catweight"/>
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Set"
-            android:id="@+id/catset"/>
     </LinearLayout>
 </android.support.v4.widget.NestedScrollView>

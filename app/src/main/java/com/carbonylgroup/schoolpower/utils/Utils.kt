@@ -21,6 +21,7 @@ import android.support.v4.content.ContextCompat
 import android.util.DisplayMetrics
 import android.view.View
 import com.carbonylgroup.schoolpower.R
+import com.carbonylgroup.schoolpower.data.Grade
 import com.carbonylgroup.schoolpower.data.SortableTerm
 import com.carbonylgroup.schoolpower.data.StudentData
 import com.carbonylgroup.schoolpower.data.Subject
@@ -35,78 +36,6 @@ import kotlin.collections.ArrayList
 import kotlin.collections.HashSet
 
 class Utils(private val context: Context) {
-
-    val THEME = "appTheme"
-    val ACCENT_COLOR = "accentColor"
-    val LIGHT = "LIGHT"
-    val DARK = "DARK"
-
-    val localeSet = arrayListOf(
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                Resources.getSystem().configuration.locales[0]
-            } else {
-                Resources.getSystem().configuration.locale
-            },
-            Locale.ENGLISH,
-            Locale.TRADITIONAL_CHINESE,
-            Locale.SIMPLIFIED_CHINESE)
-
-    private val gradeColorIds = intArrayOf(
-            R.color.A_score_green,
-            R.color.B_score_green,
-            R.color.Cp_score_yellow,
-            R.color.C_score_orange,
-            R.color.Cm_score_red,
-            R.color.primary_dark,
-            R.color.primary,
-            R.color.primary
-    )
-
-    private val gradeColorIdsPlain = intArrayOf(
-            R.color.A_score_green,
-            R.color.B_score_green,
-            R.color.Cp_score_yellow,
-            R.color.C_score_orange,
-            R.color.Cm_score_red,
-            R.color.primary_dark,
-            R.color.primary,
-            R.color.dark_color_primary
-    )
-
-    private val gradeDarkColorIdsPlain = intArrayOf(
-            R.color.A_score_green_dark,
-            R.color.B_score_green_dark,
-            R.color.Cp_score_yellow_dark,
-            R.color.C_score_orange_dark,
-            R.color.Cm_score_red_dark,
-            R.color.primary_darker,
-            R.color.primary_dark,
-            R.color.dark_color_primary_dark
-    )
-
-    private val attendanceColorIds = mapOf(
-            "A" to R.color.primary_dark,
-            "E" to R.color.A_score_green_dark,
-            "L" to R.color.Cp_score_yellow,
-            "R" to R.color.Cp_score_yellow_dark,
-            "H" to R.color.C_score_orange_dark,
-            "T" to R.color.C_score_orange,
-            "S" to R.color.primary,
-            "I" to R.color.Cm_score_red,
-            "X" to R.color.A_score_green,
-            "M" to R.color.Cm_score_red_dark,
-            "C" to R.color.B_score_green_dark,
-            "D" to R.color.B_score_green,
-            "P" to R.color.A_score_green,
-            "NR" to R.color.C_score_orange,
-            "TW" to R.color.primary,
-            "RA" to R.color.Cp_score_yellow_darker,
-            "NE" to R.color.Cp_score_yellow_light,
-            "U" to R.color.Cp_score_yellow_lighter,
-            "RS" to R.color.primary_light,
-            "ISS" to R.color.primary,
-            "FT" to R.color.B_score_green_dark
-    )
 
     fun hsvToRgb(hue: Float, saturation: Float, value: Float): String {
 
@@ -133,12 +62,6 @@ class Utils(private val context: Context) {
         val bs = Integer.toHexString((b * 256).toInt())
         return rs + gs + bs
     }
-
-    val citizenshipCodes: HashMap<String, String> = hashMapOf(
-            "M" to "Meeting Expectations",
-            "P" to "Partially Meeting Expectations",
-            "N" to "Not Yet Meeting Expectations"
-    )
 
     private fun indexOfString(searchString: String, domain: Array<String>):
             Int = domain.indices.firstOrNull { searchString == domain[it] } ?: -1
@@ -302,24 +225,24 @@ class Utils(private val context: Context) {
         return result
     }
 
-    fun getLatestPeriod(subjects: List<Subject>): String? {
-        val latestPeriods = mutableMapOf<String, Subject.Grade>()
+    fun getLatestTermNameOverall(subjects: List<Subject>): String? {
+        val latestPeriods = mutableMapOf<String, Grade>()
 
         subjects.forEach {
-            if (getLatestItem(it.grades) == null) {
+            if (getLatestTermName(it.grades) == null) {
                 return@forEach
             }
-            val key = getLatestItem(it.grades)!!
+            val key = getLatestTermName(it.grades)!!
             latestPeriods[key] = it.grades[key]!!
         }
 
         if (latestPeriods.isEmpty()) return null
 
         // overall latest period, usually indicates the current term
-        return getLatestItem(latestPeriods)
+        return getLatestTermName(latestPeriods)
     }
 
-    fun getLatestItem(grades: Map<String, Subject.Grade>, forceLastTerm: Boolean = false): String? {
+    fun getLatestTermName(grades: Map<String, Grade>, forceLastTerm: Boolean = false): String? {
         val termsList = grades.keys
         val forLatestSemester = getSharedPreference(SettingsPreference)
                 .getString("list_preference_dashboard_display", "0") == "1"
@@ -355,7 +278,7 @@ class Utils(private val context: Context) {
         return null
     }
 
-    fun getLatestPeriodGrade(subject: Subject) = subject.grades[getLatestItem(subject.grades)]
+    fun getLatestTermGrade(subject: Subject) = subject.grades[getLatestTermName(subject.grades)]
 
     fun getLetterGradeByPercentageGrade(percentageGrade: Float): String {
         val letterGrades = arrayOf("A", "B", "C+", "C", "C-", "F", "I", "--")
@@ -439,7 +362,7 @@ class Utils(private val context: Context) {
     }
 
     @Throws(IOException::class)
-    fun readDataArrayList() = StudentData(context, readStringFromFile(StudentDataFileName)!!)
+    fun readDataArrayList() = StudentData(context, readStringFromFile(StudentDataFileName)!!, this)
 
     @Throws(IOException::class)
     fun saveDataJson(jsonStr: String) = saveStringToFile(StudentDataFileName, jsonStr)
@@ -453,7 +376,7 @@ class Utils(private val context: Context) {
 
         for (subject in data) {
 
-            val term = getLatestItem(subject.grades, true) ?: continue
+            val term = getLatestTermName(subject.grades, true) ?: continue
             val percentage = subject.grades[term]!!.getGrade() ?: continue
 
             class GradeInfo {
@@ -513,7 +436,7 @@ class Utils(private val context: Context) {
             val gradeInfo = JSONArray() // [{"name":"...","grade":80.0}, ...]
             for (subject in data) {
                 val subInfo = JSONObject()
-                val leastPeriod = getLatestPeriodGrade(subject) ?: continue
+                val leastPeriod = getLatestTermGrade(subject) ?: continue
 
                 subInfo.put("name", subject.name)
                 subInfo.put("grade", leastPeriod.getGrade()?:continue)
@@ -606,7 +529,7 @@ class Utils(private val context: Context) {
                         ?: continue
                 if (currentTime < it.startDate || currentTime > it.endDate) continue
             }
-            val grade = getLatestPeriodGrade(subjectNow)
+            val grade = getLatestTermGrade(subjectNow)
             if (grade?.hasGrade() == true) gradedSubjects.add(subjectNow)
         }
         return gradedSubjects
@@ -760,6 +683,84 @@ class Utils(private val context: Context) {
     }
 
     companion object {
+
+        const val THEME = "appTheme"
+        const val ACCENT_COLOR = "accentColor"
+        const val LIGHT = "LIGHT"
+        const val DARK = "DARK"
+
+        val localeSet = arrayListOf(
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    Resources.getSystem().configuration.locales[0]
+                } else {
+                    Resources.getSystem().configuration.locale
+                },
+                Locale.ENGLISH,
+                Locale.TRADITIONAL_CHINESE,
+                Locale.SIMPLIFIED_CHINESE)
+
+        private val gradeColorIds = intArrayOf(
+                R.color.A_score_green,
+                R.color.B_score_green,
+                R.color.Cp_score_yellow,
+                R.color.C_score_orange,
+                R.color.Cm_score_red,
+                R.color.primary_dark,
+                R.color.primary,
+                R.color.primary
+        )
+
+        private val gradeColorIdsPlain = intArrayOf(
+                R.color.A_score_green,
+                R.color.B_score_green,
+                R.color.Cp_score_yellow,
+                R.color.C_score_orange,
+                R.color.Cm_score_red,
+                R.color.primary_dark,
+                R.color.primary,
+                R.color.dark_color_primary
+        )
+
+        private val gradeDarkColorIdsPlain = intArrayOf(
+                R.color.A_score_green_dark,
+                R.color.B_score_green_dark,
+                R.color.Cp_score_yellow_dark,
+                R.color.C_score_orange_dark,
+                R.color.Cm_score_red_dark,
+                R.color.primary_darker,
+                R.color.primary_dark,
+                R.color.dark_color_primary_dark
+        )
+
+        private val attendanceColorIds = mapOf(
+                "A" to R.color.primary_dark,
+                "E" to R.color.A_score_green_dark,
+                "L" to R.color.Cp_score_yellow,
+                "R" to R.color.Cp_score_yellow_dark,
+                "H" to R.color.C_score_orange_dark,
+                "T" to R.color.C_score_orange,
+                "S" to R.color.primary,
+                "I" to R.color.Cm_score_red,
+                "X" to R.color.A_score_green,
+                "M" to R.color.Cm_score_red_dark,
+                "C" to R.color.B_score_green_dark,
+                "D" to R.color.B_score_green,
+                "P" to R.color.A_score_green,
+                "NR" to R.color.C_score_orange,
+                "TW" to R.color.primary,
+                "RA" to R.color.Cp_score_yellow_darker,
+                "NE" to R.color.Cp_score_yellow_light,
+                "U" to R.color.Cp_score_yellow_lighter,
+                "RS" to R.color.primary_light,
+                "ISS" to R.color.primary,
+                "FT" to R.color.B_score_green_dark
+        )
+
+        val citizenshipCodes: HashMap<String, String> = hashMapOf(
+                "M" to "Meeting Expectations",
+                "P" to "Partially Meeting Expectations",
+                "N" to "Not Yet Meeting Expectations"
+        )
 
         const val SettingsPreference: String = "Settings"
         const val AccountData: String = "accountData"

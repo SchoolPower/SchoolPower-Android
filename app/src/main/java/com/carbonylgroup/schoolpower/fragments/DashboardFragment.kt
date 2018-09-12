@@ -35,7 +35,7 @@ import kotlin.collections.ArrayList
 
 class DashboardFragment : TransitionHelper.BaseFragment() {
 
-    private var utils: Utils? = null
+    private lateinit var utils: Utils
     private var transformedPosition = -1
     private var viewPrivate: View? = null
     private var fabIn: ScaleAnimation? = null
@@ -87,25 +87,25 @@ class DashboardFragment : TransitionHelper.BaseFragment() {
         noGradeView = viewPrivate!!.findViewById(R.id.no_grade_view)
         viewPrivate!!.findViewById<ImageView>(R.id.no_grade_image_view).setImageDrawable(
                 getDrawable(resources,
-                        when (utils!!.getTheme()) {
-                            utils!!.LIGHT -> R.drawable.no_grades
-                            utils!!.DARK -> R.drawable.no_grades_dark
+                        when (utils.getTheme()) {
+                            Utils.LIGHT -> R.drawable.no_grades
+                            Utils.DARK -> R.drawable.no_grades_dark
                             else -> R.drawable.no_grades
                         }, null)
         )
         dashboardSwipeRefreshLayout = viewPrivate!!.findViewById(R.id.dashboard_swipe_refresh_layout)
-        dashboardSwipeRefreshLayout!!.setColorSchemeColors(utils!!.getAccentColor())
+        dashboardSwipeRefreshLayout!!.setColorSchemeColors(utils.getAccentColor())
         dashboardSwipeRefreshLayout!!.setOnRefreshListener { MainActivity.of(activity).fetchStudentDataFromServer() }
-        if (subjects == null || utils!!.getFilteredSubjects(subjects!!).count() == 0) refreshAdapterToEmpty()
+        if (subjects == null || utils.getFilteredSubjects(subjects!!).count() == 0) refreshAdapterToEmpty()
         else try {
             initAdapter()
         } catch (e: Exception) {
-            utils!!.errorHandler(e)
+            utils.errorHandler(e)
         }
 
         val po = View.OnClickListener {
             MainActivity.of(activity).gotoFragmentWithMenuItemId(R.id.nav_support)
-            utils!!.setSharedPreference(Utils.TmpData, "ImComingForDonation", true)
+            utils.setSharedPreference(Utils.TmpData, "ImComingForDonation", true)
             setLastDonateShowedDate(Date())
         }
         val ps = View.OnClickListener {
@@ -131,12 +131,12 @@ class DashboardFragment : TransitionHelper.BaseFragment() {
                             po, ps, pd
                     )
                 } catch (e: Exception) {
-                    utils!!.errorHandler(e)
+                    utils.errorHandler(e)
                 }
     }
 
     private fun adapterSetFabOnClickListener(adapter: FoldingCellListAdapter) = adapter.setFabOnClickListener(View.OnClickListener { v ->
-        MainActivity.of(activity).subjectTransporter = utils!!.getFilteredSubjects(subjects!!)[dashboardListView.getPositionForView(v) - dashboardListView.headerViewsCount]
+        MainActivity.of(activity).subjectTransporter = utils.getFilteredSubjects(subjects!!)[dashboardListView.getPositionForView(v) - dashboardListView.headerViewsCount]
         if (transformedPosition != -1) {
             val itemView = getItemViewByPosition(transformedPosition, dashboardListView)
             if (itemView.findViewById<View>(R.id.unfold_header_view) != null) {
@@ -154,17 +154,17 @@ class DashboardFragment : TransitionHelper.BaseFragment() {
     private fun adapterSetTermOnClickListener(adapter: FoldingCellListAdapter) =
             adapter.setTermOnClickListener(object : OnItemClickListener {
                 override fun onItemClicked(position: Int, view: View) {
-                    adapter.showTermDialog(utils!!.getFilteredSubjects(subjects!!)[dashboardListView.getPositionForView(view) - dashboardListView.headerViewsCount], position)
+                    adapter.showTermDialog(utils.getFilteredSubjects(subjects!!)[dashboardListView.getPositionForView(view) - dashboardListView.headerViewsCount], position)
                 }
             })
 
     private fun initAdapter() {
-        if (subjects != null && utils!!.getFilteredSubjects(subjects!!).count() != 0) {
+        if (subjects != null && utils.getFilteredSubjects(subjects!!).count() != 0) {
             dashboardListView.visibility = View.VISIBLE
             noGradeView.visibility = View.GONE
         }
 
-        adapter = FoldingCellListAdapter(activity as MainActivity, utils!!.getFilteredSubjects(subjects!!), unfoldedIndexesBackUp, transformedPosition)
+        adapter = FoldingCellListAdapter(activity as MainActivity, utils.getFilteredSubjects(subjects!!), unfoldedIndexesBackUp, transformedPosition)
         adapterSetFabOnClickListener(adapter!!)
         adapterSetTermOnClickListener(adapter!!)
         dashboardListView.onItemClickListener = AdapterView.OnItemClickListener { _, view, pos, _ ->
@@ -233,10 +233,10 @@ class DashboardFragment : TransitionHelper.BaseFragment() {
         val dismiss = View.OnClickListener {
             if (onlyOnce) {
                 // mark the ILD as displayed
-                val displayedILDs = utils!!.getSharedPreference(Utils.TmpData).getStringSet("doNotDisplayTheseILDs", mutableSetOf())!!
+                val displayedILDs = utils.getSharedPreference(Utils.TmpData).getStringSet("doNotDisplayTheseILDs", mutableSetOf())!!
                 displayedILDs.add(uuid)
-                utils!!.setSharedPreference(Utils.TmpData, "doNotDisplayTheseILDs", displayedILDs)
-                utils!!.setSharedPreference(Utils.TmpData, "ildJson", "")
+                utils.setSharedPreference(Utils.TmpData, "doNotDisplayTheseILDs", displayedILDs)
+                utils.setSharedPreference(Utils.TmpData, "ildJson", "")
             }
             removeILD(self)
         }
@@ -265,7 +265,7 @@ class DashboardFragment : TransitionHelper.BaseFragment() {
     }
 
     fun fetchLocalILD() {
-        val json = utils!!
+        val json = utils
                 .getSharedPreference(Utils.TmpData)
                 .getString("ildJson", "")!!
         if (json.contains("{")) {
@@ -335,13 +335,13 @@ class DashboardFragment : TransitionHelper.BaseFragment() {
             subjects = newSubjects
             if (adapter == null) initValue()
             else {
-                adapter!!.setMainListItems(utils!!.getFilteredSubjects(newSubjects))
+                adapter!!.setMainListItems(utils.getFilteredSubjects(newSubjects))
                 adapterSetFabOnClickListener(adapter!!)
                 adapter!!.notifyDataSetChanged()
             }
             setRefreshing(false)
         } catch (e: Exception) {
-            utils!!.errorHandler(e)
+            utils.errorHandler(e)
         }
     }
 
