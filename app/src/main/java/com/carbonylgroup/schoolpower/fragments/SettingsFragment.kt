@@ -15,7 +15,6 @@ import android.support.v7.preference.Preference
 import android.support.v7.preference.PreferenceFragmentCompat
 import android.support.v7.preference.PreferenceManager
 import com.carbonylgroup.schoolpower.R
-import com.carbonylgroup.schoolpower.activities.MainActivity
 import com.carbonylgroup.schoolpower.activities.SettingsActivity
 import com.carbonylgroup.schoolpower.utils.Utils
 import com.carbonylgroup.schoolpower.utils.colorChooser.ColorChooserPreference
@@ -124,7 +123,7 @@ class SettingsFragment : PreferenceFragmentCompat(),
             }
             "switch_preference_theme_dark" -> {
                 val utils = Utils(activity as SettingsActivity)
-                utils.set(utils.THEME, if ((findPreference(key) as SwitchPreference).isChecked) utils.DARK else utils.LIGHT)
+                utils[Utils.THEME] = if ((findPreference(key) as SwitchPreference).isChecked) Utils.DARK else Utils.LIGHT
                 recreateMain()
             }
         }
@@ -138,11 +137,11 @@ class SettingsFragment : PreferenceFragmentCompat(),
         AlertDialog.Builder(activity!!)
                 .setCancelable(true)
                 .setTitle("choosetheme")
-                .setSingleChoiceItems(R.array.theme_array, selectIndex, { dialog1, which ->
+                .setSingleChoiceItems(R.array.theme_array, selectIndex) { dialog1, which ->
                     dialog1.dismiss()
-                    utils.set(utils.THEME, valueList[which])
+                    utils[Utils.THEME] = valueList[which]
                     recreateMain()
-                })
+                }
                 .show()
     }
 

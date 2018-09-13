@@ -11,6 +11,7 @@ import android.support.v4.content.ContextCompat
 import android.support.v7.widget.AppCompatTextView
 import android.util.Log
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.ProgressBar
@@ -23,9 +24,6 @@ import okhttp3.MultipartBody
 import okhttp3.Response
 import org.json.JSONObject
 import java.io.IOException
-import android.content.Context.INPUT_METHOD_SERVICE
-import android.support.v4.content.ContextCompat.getSystemService
-import android.view.inputmethod.InputMethodManager
 
 
 class LoginActivity : BaseActivity() {
@@ -146,7 +144,7 @@ class LoginActivity : BaseActivity() {
                             return
                         }
 
-                        val data = StudentData(this@LoginActivity, strMessage)
+                        val data = StudentData(this@LoginActivity, strMessage, utils)
 
                         utils.getSharedPreference(Utils.AccountData).edit()
                                 .putString(getString(R.string.usernameKEY), username)

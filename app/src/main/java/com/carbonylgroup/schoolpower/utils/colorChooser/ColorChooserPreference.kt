@@ -9,7 +9,7 @@ import android.util.AttributeSet
 import com.carbonylgroup.schoolpower.R
 import com.carbonylgroup.schoolpower.activities.BaseActivity
 import com.carbonylgroup.schoolpower.utils.Utils
-import java.util.ArrayList
+import java.util.*
 
 
 /**
@@ -87,7 +87,7 @@ class ColorChooserPreference : Preference, ColorChooserDialog.ColorCallback {
     }
 
     override fun onColorSelection(dialog: ColorChooserDialog, @ColorInt selectedColor: Int) {
-        utils[utils.ACCENT_COLOR] = getColorIndex(selectedColor)
+        utils[Utils.ACCENT_COLOR] = getColorIndex(selectedColor)
         //        colorView.getBackground().setColorFilter(selectedColor, PorterDuff.Mode.SRC_IN);
         if (colorChooserCallback != null && oriColor != selectedColor) {
             colorChooserCallback!!.onColorChanged(oriColor, selectedColor)

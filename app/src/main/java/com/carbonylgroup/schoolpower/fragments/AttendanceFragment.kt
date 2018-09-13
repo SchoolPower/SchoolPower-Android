@@ -1,7 +1,6 @@
 package com.carbonylgroup.schoolpower.fragments
 
 import android.os.Bundle
-import android.os.Handler
 import android.support.v4.app.Fragment
 import android.support.v4.content.res.ResourcesCompat
 import android.support.v4.widget.SwipeRefreshLayout
@@ -12,7 +11,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
-import android.widget.ProgressBar
 import com.carbonylgroup.schoolpower.R
 import com.carbonylgroup.schoolpower.activities.MainActivity
 import com.carbonylgroup.schoolpower.adapter.AttendanceAdapter
@@ -61,8 +59,8 @@ class AttendanceFragment : Fragment() {
         view_private!!.findViewById<ImageView>(R.id.perfect_attendance_image_view).setImageDrawable(
                 ResourcesCompat.getDrawable(resources,
                         when (Utils(activity as MainActivity).getTheme()) {
-                            Utils(activity as MainActivity).LIGHT -> R.drawable.perfect_attendance
-                            Utils(activity as MainActivity).DARK -> R.drawable.perfect_attendance_dark
+                            Utils.LIGHT -> R.drawable.perfect_attendance
+                            Utils.DARK -> R.drawable.perfect_attendance_dark
                             else -> R.drawable.perfect_attendance
                         }, null)
         )

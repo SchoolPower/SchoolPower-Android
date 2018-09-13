@@ -23,8 +23,8 @@ class ThemeHelper(private val context: Context) {
     @StyleRes
     fun getTheme(theme: String, accentColor: Int): Int {
         return when (theme) {
-            utils.LIGHT -> lightArray[accentColor]
-            utils.DARK -> darkArray[accentColor]
+            Utils.LIGHT -> lightArray[accentColor]
+            Utils.DARK -> darkArray[accentColor]
             else -> R.style.ThemeLight_Cyan_500
         }
     }
