@@ -47,19 +47,22 @@ class CourseDetailFragment : TransitionHelper.BaseFragment() {
 
         if (transformedPosition != -1) {
             val itemToPresent = MainActivity.of(activity).subjectTransporter
-            val course_detail_recycler = view.findViewById<RecyclerView>(R.id.course_detail_recycler)
-            val period = utils.getLatestPeriodGrade(itemToPresent!!) ?: Subject.Grade("--", "--", "null", "--")
-            dataList = utils.getFilteredSubjects(MainActivity.of(activity).subjects!!)
+            if (itemToPresent != null) {
+                val course_detail_recycler = view.findViewById<RecyclerView>(R.id.course_detail_recycler)
+                val period = utils.getLatestPeriodGrade(itemToPresent)
+                        ?: Subject.Grade("--", "--", "null", "--")
+                dataList = utils.getFilteredSubjects(MainActivity.of(activity).subjects!!)
 
-            MainActivity.of(activity).setToolBarColor(utils.getColorByLetterGrade(period.letter), true)
-            view.findViewById<View>(R.id.detail_view_header).setBackgroundColor(utils.getColorByLetterGrade(period.letter))
-            view.findViewById<View>(R.id.detail_view_header).setOnClickListener {
-                MainActivity.of(activity).expandToolBar(true, true)
-                course_detail_recycler.smoothScrollToPosition(0)
+                MainActivity.of(activity).setToolBarColor(utils.getColorByLetterGrade(period.letter), true)
+                view.findViewById<View>(R.id.detail_view_header).setBackgroundColor(utils.getColorByLetterGrade(period.letter))
+                view.findViewById<View>(R.id.detail_view_header).setOnClickListener {
+                    MainActivity.of(activity).expandToolBar(true, true)
+                    course_detail_recycler.smoothScrollToPosition(0)
+                }
+                view.findViewById<TextView>(R.id.detail_subject_title_tv).text = itemToPresent.name
+                course_detail_recycler.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
+                course_detail_recycler.adapter = CourseDetailAdapter(activity as TransitionHelper.MainActivity, dataList!![transformedPosition])
             }
-            view.findViewById<TextView>(R.id.detail_subject_title_tv).text = itemToPresent.name
-            course_detail_recycler.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
-            course_detail_recycler.adapter = CourseDetailAdapter(activity as TransitionHelper.MainActivity, dataList!![transformedPosition])
         }
     }
 

@@ -142,25 +142,20 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                 startActivity(intent)
             }
             R.id.action_gpa -> {
-
                 if (subjects == null || !GPADialog(this, subjects!!,
                                 studentInformation!!.GPA).show()) {
-
                     val builder = AlertDialog.Builder(this)
                     builder.setMessage(getString(R.string.gpa_not_available_because))
                     builder.setTitle(getString(R.string.gpa_not_available))
                     builder.setPositiveButton(getString(R.string.alright), null)
                     builder.create().show()
-
                 }
             }
             R.id.action_category -> {
-
                 if (presentFragment != 1 || subjectTransporter == null) return false
                 val intent = Intent(application, CategoryActivity::class.java)
                 intent.putExtra("subject", subjectTransporter)
                 startActivity(intent)
-
             }
         }
         return super.onOptionsItemSelected(item)
