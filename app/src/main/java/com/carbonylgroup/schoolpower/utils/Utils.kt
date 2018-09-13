@@ -108,32 +108,6 @@ class Utils(private val context: Context) {
             "FT" to R.color.B_score_green_dark
     )
 
-    fun hsvToRgb(hue: Float, saturation: Float, value: Float): String {
-
-        val h = (hue * 6).toInt()
-        val f = hue * 6 - h
-        val p = value * (1 - saturation)
-        val q = value * (1 - f * saturation)
-        val t = value * (1 - (1 - f) * saturation)
-
-        when (h) {
-            0 -> return rgbToString(value, t, p)
-            1 -> return rgbToString(q, value, p)
-            2 -> return rgbToString(p, value, t)
-            3 -> return rgbToString(p, q, value)
-            4 -> return rgbToString(t, p, value)
-            5 -> return rgbToString(value, p, q)
-            else -> throw RuntimeException("Something went wrong when converting from HSV to RGB. Input was $hue, $saturation, $value")
-        }
-    }
-
-    private fun rgbToString(r: Float, g: Float, b: Float): String {
-        val rs = Integer.toHexString((r * 256).toInt())
-        val gs = Integer.toHexString((g * 256).toInt())
-        val bs = Integer.toHexString((b * 256).toInt())
-        return rs + gs + bs
-    }
-
     val citizenshipCodes: HashMap<String, String> = hashMapOf(
             "M" to "Meeting Expectations",
             "P" to "Partially Meeting Expectations",
@@ -144,12 +118,12 @@ class Utils(private val context: Context) {
             Int = domain.indices.firstOrNull { searchString == domain[it] } ?: -1
 
 
-    fun getDefaultSp(context: Context): SharedPreferences {
+    private fun getDefaultSp(context: Context): SharedPreferences {
         return PreferenceManager.getDefaultSharedPreferences(context)
     }
 
     fun getTheme(): String {
-        return getDefaultSp(context).getString(THEME, LIGHT)
+        return getDefaultSp(context).getString(THEME, LIGHT)!!
     }
 
     fun getAccentColorIndex() = getDefaultSp(context).getInt(ACCENT_COLOR,
@@ -319,7 +293,7 @@ class Utils(private val context: Context) {
         return getLatestItem(latestPeriods)
     }
 
-    fun getLatestItem(grades: Map<String, Subject.Grade>, forceLastTerm: Boolean = false): String? {
+    private fun getLatestItem(grades: Map<String, Subject.Grade>, forceLastTerm: Boolean = false): String? {
         val termsList = grades.keys
         val forLatestSemester = getSharedPreference(SettingsPreference)
                 .getString("list_preference_dashboard_display", "0") == "1"
@@ -532,7 +506,13 @@ class Utils(private val context: Context) {
             gradeInfo.put(gpaInfo)
 
             // 3. read history grade from file
-            val historyData = JSONObject(readStringFromFile(HistoryDataFileName) ?: "{}")
+
+            val historyData = try {
+                JSONObject(readStringFromFile(HistoryDataFileName))
+            } catch (e: Exception) {
+                e.printStackTrace()
+                JSONObject("{}")
+            }
             // {"2017-06-20": [{"name":"...","grade":"80"}, ...], ...}
 
             // 4. update history grade
