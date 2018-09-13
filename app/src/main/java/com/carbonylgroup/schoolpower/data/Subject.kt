@@ -120,8 +120,8 @@ class Subject(json: JSONObject, utils: Utils) : Serializable {
                 item.isNew = true
                 margin=0
 
-                val oldPercent = utils.getLatestTermGrade(oldSubject)!!.getGrade()?:continue
-                val newPercent = utils.getLatestTermGrade(this)!!.getGrade()?:continue
+                val oldPercent = utils.getLatestTermGrade(oldSubject)?.getGrade()?:continue
+                val newPercent = utils.getLatestTermGrade(this)?.getGrade()?:continue
 
                 if (oldPercent != newPercent)
                     margin = newPercent - oldPercent
