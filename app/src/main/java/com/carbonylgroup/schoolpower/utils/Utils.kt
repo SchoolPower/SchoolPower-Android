@@ -37,42 +37,94 @@ import kotlin.collections.HashSet
 
 class Utils(private val context: Context) {
 
-    fun hsvToRgb(hue: Float, saturation: Float, value: Float): String {
+    val THEME = "appTheme"
+    val ACCENT_COLOR = "accentColor"
+    val LIGHT = "LIGHT"
+    val DARK = "DARK"
 
-        val h = (hue * 6).toInt()
-        val f = hue * 6 - h
-        val p = value * (1 - saturation)
-        val q = value * (1 - f * saturation)
-        val t = value * (1 - (1 - f) * saturation)
+    val localeSet = arrayListOf(
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                Resources.getSystem().configuration.locales[0]
+            } else {
+                Resources.getSystem().configuration.locale
+            },
+            Locale.ENGLISH,
+            Locale.TRADITIONAL_CHINESE,
+            Locale.SIMPLIFIED_CHINESE)
 
-        when (h) {
-            0 -> return rgbToString(value, t, p)
-            1 -> return rgbToString(q, value, p)
-            2 -> return rgbToString(p, value, t)
-            3 -> return rgbToString(p, q, value)
-            4 -> return rgbToString(t, p, value)
-            5 -> return rgbToString(value, p, q)
-            else -> throw RuntimeException("Something went wrong when converting from HSV to RGB. Input was $hue, $saturation, $value")
-        }
-    }
+    private val gradeColorIds = intArrayOf(
+            R.color.A_score_green,
+            R.color.B_score_green,
+            R.color.Cp_score_yellow,
+            R.color.C_score_orange,
+            R.color.Cm_score_red,
+            R.color.primary_dark,
+            R.color.primary,
+            R.color.primary
+    )
 
-    private fun rgbToString(r: Float, g: Float, b: Float): String {
-        val rs = Integer.toHexString((r * 256).toInt())
-        val gs = Integer.toHexString((g * 256).toInt())
-        val bs = Integer.toHexString((b * 256).toInt())
-        return rs + gs + bs
-    }
+    private val gradeColorIdsPlain = intArrayOf(
+            R.color.A_score_green,
+            R.color.B_score_green,
+            R.color.Cp_score_yellow,
+            R.color.C_score_orange,
+            R.color.Cm_score_red,
+            R.color.primary_dark,
+            R.color.primary,
+            R.color.dark_color_primary
+    )
+
+    private val gradeDarkColorIdsPlain = intArrayOf(
+            R.color.A_score_green_dark,
+            R.color.B_score_green_dark,
+            R.color.Cp_score_yellow_dark,
+            R.color.C_score_orange_dark,
+            R.color.Cm_score_red_dark,
+            R.color.primary_darker,
+            R.color.primary_dark,
+            R.color.dark_color_primary_dark
+    )
+
+    private val attendanceColorIds = mapOf(
+            "A" to R.color.primary_dark,
+            "E" to R.color.A_score_green_dark,
+            "L" to R.color.Cp_score_yellow,
+            "R" to R.color.Cp_score_yellow_dark,
+            "H" to R.color.C_score_orange_dark,
+            "T" to R.color.C_score_orange,
+            "S" to R.color.primary,
+            "I" to R.color.Cm_score_red,
+            "X" to R.color.A_score_green,
+            "M" to R.color.Cm_score_red_dark,
+            "C" to R.color.B_score_green_dark,
+            "D" to R.color.B_score_green,
+            "P" to R.color.A_score_green,
+            "NR" to R.color.C_score_orange,
+            "TW" to R.color.primary,
+            "RA" to R.color.Cp_score_yellow_darker,
+            "NE" to R.color.Cp_score_yellow_light,
+            "U" to R.color.Cp_score_yellow_lighter,
+            "RS" to R.color.primary_light,
+            "ISS" to R.color.primary,
+            "FT" to R.color.B_score_green_dark
+    )
+
+    val citizenshipCodes: HashMap<String, String> = hashMapOf(
+            "M" to "Meeting Expectations",
+            "P" to "Partially Meeting Expectations",
+            "N" to "Not Yet Meeting Expectations"
+    )
 
     private fun indexOfString(searchString: String, domain: Array<String>):
             Int = domain.indices.firstOrNull { searchString == domain[it] } ?: -1
 
 
-    fun getDefaultSp(context: Context): SharedPreferences {
+    private fun getDefaultSp(context: Context): SharedPreferences {
         return PreferenceManager.getDefaultSharedPreferences(context)
     }
 
     fun getTheme(): String {
-        return getDefaultSp(context).getString(THEME, LIGHT)
+        return getDefaultSp(context).getString(THEME, LIGHT)!!
     }
 
     fun getAccentColorIndex() = getDefaultSp(context).getInt(ACCENT_COLOR,
@@ -457,7 +509,13 @@ class Utils(private val context: Context) {
             gradeInfo.put(gpaInfo)
 
             // 3. read history grade from file
-            val historyData = JSONObject(readStringFromFile(HistoryDataFileName) ?: "{}")
+
+            val historyData = try {
+                JSONObject(readStringFromFile(HistoryDataFileName))
+            } catch (e: Exception) {
+                e.printStackTrace()
+                JSONObject("{}")
+            }
             // {"2017-06-20": [{"name":"...","grade":"80"}, ...], ...}
 
             // 4. update history grade
