@@ -9,13 +9,12 @@ class CalculatedGrade(subject: Subject, term: String, weightData: CategoryWeight
         var maxScore: Double = 0.0
 
         fun getPercentage() = score/maxScore
-        fun getWeightedScore() = score*weight
-        fun getWeightedMaxScore() = maxScore*weight
+        fun getWeightedPercentage() = score/maxScore * weight
     }
-    var sumScore = 0.0
-    var sumMaxScore = 0.0
+    var sumScorePercentage = 0.0
+    var sumMaxScorePercentage = 0.0
     val categories = HashMap<String, CategoryItem>()
-    fun getEstimatedPercentageGrade() : Double = sumScore/sumMaxScore
+    fun getEstimatedPercentageGrade() : Double = sumScorePercentage/sumMaxScorePercentage
 
     init{
         for(assignment in subject.assignments){
@@ -32,8 +31,8 @@ class CalculatedGrade(subject: Subject, term: String, weightData: CategoryWeight
         }
 
         for((_, category) in categories){
-            sumScore += category.getWeightedScore()
-            sumMaxScore += category.getWeightedMaxScore()
+            sumScorePercentage += category.getWeightedPercentage()
+            sumMaxScorePercentage += category.weight
         }
     }
 }
