@@ -1,13 +1,11 @@
 package com.carbonylgroup.schoolpower.data
 
 import android.content.Context
-import android.graphics.drawable.Drawable
 import android.util.Log
 import com.carbonylgroup.schoolpower.R
-import org.json.JSONArray
+import com.carbonylgroup.schoolpower.utils.Utils
 import org.json.JSONObject
 import java.util.*
-import kotlin.collections.ArrayList
 
 /**
  * Created by Null on 2017/11/5.
@@ -24,7 +22,7 @@ import kotlin.collections.ArrayList
     ]
 }
  */
-class StudentData(context: Context, jsonStr: String) {
+class StudentData(context: Context, jsonStr: String, utils: Utils) {
 
     val studentInfo: StudentInformation
     val attendances: List<Attendance>
@@ -44,7 +42,7 @@ class StudentData(context: Context, jsonStr: String) {
         val attendance = studentData.getJSONArray("attendances")
         attendances = (0 until attendance.length()).map { Attendance(attendance.getJSONObject(it)) }
         val sections = studentData.getJSONArray("sections")
-        subjects = (0 until sections.length()).map { Subject(sections.getJSONObject(it)) }
+        subjects = (0 until sections.length()).map { Subject(sections.getJSONObject(it), utils) }
 
         Collections.sort(subjects, Comparator<Subject> { o1, o2 ->
             if (o1.blockLetter == "HR(A-E)") return@Comparator -1

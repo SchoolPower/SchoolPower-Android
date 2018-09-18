@@ -5,7 +5,6 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
 import android.content.pm.PackageManager
-import android.content.res.Resources
 import android.didikee.donate.WeiXinDonate
 import android.graphics.BitmapFactory
 import android.os.Bundle
@@ -23,7 +22,6 @@ import com.github.paolorotolo.appintro.AppIntro
 import com.github.paolorotolo.appintro.AppIntroFragment
 import com.github.paolorotolo.appintro.model.SliderPage
 import java.io.File
-import java.util.*
 
 
 class WechatIntroActivity : AppIntro() {
@@ -34,7 +32,7 @@ class WechatIntroActivity : AppIntro() {
     override fun attachBaseContext(newBase: Context?) {
         val utils = Utils(newBase!!)
         val newLocale = utils.getSharedPreference(Utils.SettingsPreference).getString("lang", "0")!!.toInt()
-        val context = ContextWrapper.wrap(newBase, utils.localeSet[newLocale])
+        val context = ContextWrapper.wrap(newBase, Utils.localeSet[newLocale])
         super.attachBaseContext(context)
     }
 

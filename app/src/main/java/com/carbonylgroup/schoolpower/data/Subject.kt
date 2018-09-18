@@ -4,7 +4,6 @@
 
 package com.carbonylgroup.schoolpower.data
 
-import android.content.Context
 import com.carbonylgroup.schoolpower.utils.Utils
 import org.json.JSONObject
 import java.io.Serializable
@@ -64,10 +63,7 @@ import java.util.*
     }
  */
 
-class Subject(json: JSONObject) : Serializable {
-
-    data class Grade(val percentage: String, val letter: String,
-                     val comment: String, val evaluation: String)  : Serializable
+class Subject(json: JSONObject, utils: Utils) : Serializable {
 
     val name: String = json.getString("name")
     val teacherName: String = json.getJSONObject("teacher").let { obj -> obj.getString("firstName") + " " + obj.getString("lastName") }
@@ -87,12 +83,15 @@ class Subject(json: JSONObject) : Serializable {
             (0 until jsonAssignments.length()).mapTo(assignments) { AssignmentItem(jsonAssignments.getJSONObject(it)) }
         }
 
+        val categoriesWeights = CategoryWeightData(utils)
+
         if (!json.isNull("finalGrades")) {
             val finalGrades = json.getJSONObject("finalGrades")
             for (key in finalGrades.keys()) {
                 val grade = finalGrades.getJSONObject(key)
                 grades[key] = Grade(grade.getString("percent").toDouble().toInt().toString(),
-                        grade.getString("letter"), grade.getString("comment"), grade.getString("eval"))
+                        grade.getString("letter"), grade.getString("comment"), grade.getString("eval"),
+                        CalculatedGrade(this, key, categoriesWeights))
             }
         }
 
@@ -100,9 +99,15 @@ class Subject(json: JSONObject) : Serializable {
         endDate = Utils.convertDateToTimestamp(json.getString("endDate"))
     }
 
+    // Call it when weights of categories have been changed.
+    fun recalculateGrades(weights: CategoryWeightData) {
+        for ((name, grade) in grades) {
+            grade.calculatedGrade = CalculatedGrade(this, name, weights)
+        }
+    }
+
     // Compare `oldSubject` with this one and mark changed assignments
-    fun markNewAssignments(oldSubject: Subject, context: Context) {
-        val utils = Utils(context)
+    fun markNewAssignments(oldSubject: Subject, utils: Utils) {
         // Mark new or changed assignments
         val newAssignmentListCollection = assignments
         val oldAssignmentListCollection = oldSubject.assignments
@@ -113,17 +118,10 @@ class Subject(json: JSONObject) : Serializable {
             }
             if (!found) {
                 item.isNew = true
+                margin=0
 
-                var oldPercent = 0
-                var newPercent = 0
-                var oldPercentStr = "--"
-                var newPercentStr = "--"
-                if (utils.getLatestPeriodGrade(oldSubject) != null)
-                    oldPercentStr = utils.getLatestPeriodGrade(oldSubject)!!.percentage
-                if (utils.getLatestPeriodGrade(this) != null)
-                    newPercentStr = utils.getLatestPeriodGrade(this)!!.percentage
-                if (oldPercentStr != "--") oldPercent = oldPercentStr.toInt()
-                if (newPercentStr != "--") newPercent = newPercentStr.toInt()
+                val oldPercent = utils.getLatestTermGrade(oldSubject)?.getGrade()?:continue
+                val newPercent = utils.getLatestTermGrade(this)?.getGrade()?:continue
 
                 if (oldPercent != newPercent)
                     margin = newPercent - oldPercent
@@ -132,4 +130,9 @@ class Subject(json: JSONObject) : Serializable {
     }
 
     fun getShortName() = Utils.getShortName(name)
+
+    fun getLatestTermName(utils: Utils, forceLastTerm: Boolean = false): String?
+        = utils.getLatestTermName(this.grades, forceLastTerm)
+
+    fun getLatestTermGrade(utils: Utils) = utils.getLatestTermGrade(this)
 }

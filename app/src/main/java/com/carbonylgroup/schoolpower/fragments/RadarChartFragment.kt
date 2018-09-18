@@ -1,7 +1,6 @@
 package com.carbonylgroup.schoolpower.fragments
 
 import android.os.Bundle
-import android.preference.PreferenceManager
 import android.support.v4.app.Fragment
 import android.support.v7.widget.CardView
 import android.view.LayoutInflater
@@ -9,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import com.carbonylgroup.schoolpower.R
 import com.carbonylgroup.schoolpower.activities.MainActivity
-import com.carbonylgroup.schoolpower.data.Subject
 import com.carbonylgroup.schoolpower.utils.Utils
 import com.github.mikephil.charting.charts.RadarChart
 import com.github.mikephil.charting.components.AxisBase
@@ -67,7 +65,7 @@ class RadarChartFragment : Fragment() {
         }
         var minGrade = 100.0f
         for (it in gradedSubjects) {
-            val periodGrade = (utils.getLatestPeriodGrade(it) ?: continue).percentage.toFloat()
+            val periodGrade = utils.getLatestTermGrade(it)?.getGrade()?.toFloat()?:continue
             entries.add(RadarEntry(periodGrade))
             if (periodGrade < minGrade) minGrade = periodGrade
         }

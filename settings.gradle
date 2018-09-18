@@ -1,1 +1,1 @@
-include ':app', ':folding-cell', ':foldingcell'
+include ':app', ':foldingcell'

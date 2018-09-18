@@ -1,5 +1,11 @@
 package com.carbonylgroup.schoolpower.activities
 
+import android.os.Bundle
+import android.support.v7.app.AppCompatActivity
+import android.text.Editable
+import android.text.TextWatcher
+import android.widget.EditText
+import android.widget.TextView
 import android.graphics.Color
 import android.support.v4.content.ContextCompat
 import com.carbonylgroup.schoolpower.R
@@ -18,14 +24,7 @@ import java.util.ArrayList
 
 class CategoryActivity : BaseActivity() {
 
-    class CategoryItem(val weight: Double) {
-        var score: Double = 0.0
-        var maxScore: Double = 0.0
-
-        fun getPercentage() = score / maxScore
-        fun getWeightedScore() = score * weight
-        fun getWeightedMaxScore() = maxScore * weight
-    }
+    lateinit var categoriesWeights: CategoryWeightData
 
     private lateinit var categoriesWeights: CategoryWeightData
 
@@ -44,35 +43,47 @@ class CategoryActivity : BaseActivity() {
 
         val subject = intent.getSerializableExtra("subject") as Subject
 
-        val categoriesMap = HashMap<String, CategoryItem>()
-        for (assignment in subject.assignments) {
-            if (!categoriesMap.contains(assignment.category))
-                categoriesMap[assignment.category] =
-                        CategoryItem(categoriesWeights.getWeight(assignment.category, subject)
-                                ?: Double.NaN)
-            val assignmentWeight = assignment.weight.toDouble()
-            val assignmentScore = assignment.score.toDoubleOrNull() ?: continue
-            val assignmentMaxScore = assignment.maximumScore.toDoubleOrNull() ?: continue
-            categoriesMap[assignment.category]!!.score += assignmentScore * assignmentWeight
-            categoriesMap[assignment.category]!!.maxScore += assignmentMaxScore * assignmentWeight
+        val name = subject.getLatestTermName(utils)
+        val grade = subject.grades[name]!!
+        if(name!=null) {
+            supportActionBar!!.title = "$name %.2f%%".format(
+                    grade.calculatedGrade.getEstimatedPercentageGrade()*100)
         }
 
-        var sumScore = 0.0
-        var sumMaxScore = 0.0
-        for ((name, category) in categoriesMap) {
-            cates.text = cates.text.toString() + "\n\n" + "name: " + name + " " + category.score +
-                    "/" + category.maxScore + " (" + category.getPercentage() * 100 + "%) contributing " +
-                    category.getWeightedScore() + "/" + category.getWeightedMaxScore()
-            sumScore += category.getWeightedScore()
-            sumMaxScore += category.getWeightedMaxScore()
+        var text = ""
+        for ((cname, cate) in grade.calculatedGrade.categories){
+            text += "\n$cname ${cate.score}/${cate.maxScore} (%.2f%%) weight ${cate.weight}"
+                    .format(cate.getPercentage()*100)
         }
+        cates.text = text
 
-        cates.text = cates.text.toString() + "\n" + "total " + sumScore + "/" + sumMaxScore +
-                "(" + (sumScore / sumMaxScore * 100) + "%)"
+        val categories = grade.calculatedGrade.categories
+        val weightLabel = arrayOfNulls<TextView>(categories.size)
+        val weightEdit = arrayOfNulls<EditText>(categories.size)
 
-        catset.setOnClickListener {
-            categoriesWeights.setWeight(catname.text.toString(), subject, catweight.text.toString().toDouble())
-            categoriesWeights.flush()
+        for ((cname, cate) in grade.calculatedGrade.categories){
+            val label = TextView(this)
+            val edit = EditText(this)
+
+            label.text = cname
+            edit.setText(cate.weight.toString())
+            edit.addTextChangedListener(object : TextWatcher {
+                override fun afterTextChanged(s: Editable) {
+                    categoriesWeights.setWeight(cname, subject, s.toString().toDoubleOrNull()?:return)
+                    categoriesWeights.flush()
+                    subject.recalculateGrades(categoriesWeights)
+                }
+
+                override fun beforeTextChanged(s: CharSequence, start: Int,
+                                               count: Int, after: Int) {}
+
+                override fun onTextChanged(s: CharSequence, start: Int,
+                                           before: Int, count: Int) {}
+            })
+
+            categoryContainer.addView(label)
+            categoryContainer.addView(edit)
+
         }
     }
 

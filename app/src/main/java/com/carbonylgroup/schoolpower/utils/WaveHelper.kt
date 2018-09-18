@@ -25,7 +25,7 @@ class WaveHelper(private val mWaveView: WaveView, private val lastLevelRatio: Fl
     fun start() {
 
         mWaveView.isShowWave = true
-        if (mAnimatorSet != null) mAnimatorSet!!.start()
+        mAnimatorSet?.start()
     }
 
     private fun initAnimation() {

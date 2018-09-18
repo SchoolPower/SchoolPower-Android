@@ -39,7 +39,7 @@ class PullDataJob : JobService() {
                 for (item in newAssignmentListCollection) {
                     var newItem = true
                     var newGrade = true
-                    var grade = ""
+                    var grade : String = ""
                     val maxGrade = item.maximumScore
 
                     for (it in oldAssignmentListCollection) {
@@ -47,12 +47,12 @@ class PullDataJob : JobService() {
                         if (it.title == item.title && it.date == item.date) {
                             newItem = false
                             if (it.score == item.score) newGrade = false
-                            else grade = it.score
+                            else grade = it.score?.toString() ?: "--"
                         }
                     }
-                    if (newItem && item.score != "--") {
+                    if (newItem && item.score != null) {
                         newGrade = true
-                        grade = item.score
+                        grade = item.getScoreString()
                     }
 
                     val preference = PreferenceManager.getDefaultSharedPreferences(applicationContext)
@@ -159,7 +159,7 @@ class PullDataJob : JobService() {
 
                             }
                             val newData = try {
-                                StudentData(this@PullDataJob, strMessage)
+                                StudentData(this@PullDataJob, strMessage, utils)
                             } catch (e: Exception) {
                                 Log.d("PullDataJob", "Job Finished Early $strMessage, ${e.message}")
                                 jobFinished(params, false)

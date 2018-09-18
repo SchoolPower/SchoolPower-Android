@@ -113,7 +113,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
         menu.findItem(R.id.action_refresh).isVisible = !hideToolBarItemFlag
         menu.findItem(R.id.action_show_json).isVisible = (!hideToolBarItemFlag && utils.isDeveloperMode())
         menu.findItem(R.id.action_birthday).isVisible = (!hideToolBarItemFlag && utils.isBirthDay())
-        menu.findItem(R.id.action_category).isVisible = (!hideCourseDetailItemFlag)
+        menu.findItem(R.id.action_category).isVisible = (!hideCourseDetailItemFlag) && utils.isDeveloperMode()
 
         val birthdayClickable = menu.findItem(R.id.action_birthday).actionView
                 .findViewById<RelativeLayout>(R.id.birthday_cheer_animation_wrapper)
@@ -612,7 +612,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                 }
                 try {
                     utils.saveDataJson(strMessage)
-                    val data = StudentData(this@MainActivity, strMessage)
+                    val data = StudentData(this@MainActivity, strMessage, utils)
                     if (data.disabled) {
                         runOnUiThread {
                             try {
@@ -654,9 +654,10 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                     // Mark new or changed assignments
                     if (subjects!!.size == oldSubjects.size) {
                         for (i in subjects!!.indices) {
-                            subjects!![i].markNewAssignments(oldSubjects[i], this@MainActivity)
+                            subjects!![i].markNewAssignments(oldSubjects[i], utils)
                         }
                     }
+
                     // Mark new or changed attendances
                     for (item in attendances!!) {
                         val found = oldAttendances.any { it ->
@@ -812,10 +813,10 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
     private fun startSettingsActivity() {
         val intent = Intent(application, SettingsActivity::class.java)
         val subjectList = subjects!!
-                .filter { it -> utils.getLatestPeriodGrade(it) != null }
-                .mapTo(ArrayList<CharSequence>()) { it -> "${it.name} (${utils.getLatestPeriodGrade(it)!!.percentage}%)" }
+                .filter { it -> utils.getLatestTermGrade(it) != null }
+                .mapTo(ArrayList<CharSequence>()) { it -> "${it.name} (${utils.getLatestTermGrade(it)!!.getPercentageString()}%)" }
         val subjectValueList = subjects!!
-                .filter { it -> utils.getLatestPeriodGrade(it) != null }
+                .filter { it -> utils.getLatestTermGrade(it) != null }
                 .mapTo(ArrayList<CharSequence>()) { it.name }
         intent.putExtra("subjects", subjectList.toTypedArray())
         intent.putExtra("subjects_values", subjectValueList.toTypedArray())
