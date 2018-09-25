@@ -56,7 +56,6 @@ import java.net.URL
 import java.net.URLConnection
 import java.util.*
 
-
 class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     var presentFragment: Int = 0

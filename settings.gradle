@@ -1,1 +1,2 @@
-include ':app', ':foldingcell'
+include ':app', ':foldingcell', ':cropper'
+project(':cropper').projectDir = new File('Android-Image-Cropper/cropper')
