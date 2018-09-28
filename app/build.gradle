@@ -4,7 +4,7 @@ apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion 28
-    buildToolsVersion '27.0.3'
+    buildToolsVersion '28.0.3'
     defaultConfig {
         applicationId 'com.carbonylgroup.schoolpower'
         minSdkVersion 21
@@ -60,7 +60,7 @@ dependencies {
     implementation 'com.github.kenglxn.QRGen:android:2.4.0'
     implementation 'com.gelitenight.waveview:waveview:1.0.0'
     implementation 'com.github.premnirmal:TextCounter:1.1.0'
-    implementation 'com.github.ceryle:SegmentedButton:v1.2.2'
+    implementation 'com.github.ceryle:SegmentedButton:v2.0.2'
     implementation 'com.github.PhilJay:MPAndroidChart:v3.0.2'
     implementation 'de.danielbechler:java-object-diff:0.95-RC5'
     implementation 'com.afollestad.material-dialogs:core:0.9.4.5'

@@ -52,7 +52,7 @@ class GPADialog(private val activity: Activity, private val subjects: List<Subje
     }
 
     private fun updateData(GPAAll: Float, GPACustom: Float, GPAOfficial: Float?) {
-        gpaDialogSegmented.setOnClickedButtonPosition { position: Int ->
+        gpaDialogSegmented.setOnClickedButtonListener { position: Int ->
             when (position) {
                 0 -> animateWaveAndText(waveView.waterLevelRatio, GPAAll, 100.0f)
                 1 -> if (GPACustom.isNaN()) customGPANotAvailable() else
