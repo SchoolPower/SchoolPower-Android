@@ -220,4 +220,9 @@ SchoolPower 不保证上述网站的服务稳定性，不保证用户头像会�
     <string name="enable_advertisement">启用广告</string>
     <string name="ad_donation_request">广告有助于 SchoolPower 的运行</string>
     <string name="ad_donation_request_content">我们和您一样不喜欢广告和付费会员，因此我们允许您不花一分钱将广告关闭。但与此同时，广告帮助我们支付开发和维护所产生的大量成本。因此，在您关闭广告后，如果您觉得这款 App 帮助到了您，希望让它继续维护着，请您考虑赞助我们 (´,,•ω•,,)♡。</string>
+    <string name="even_odd_filter_even_week">这周是偶数周 (F-J)</string>
+    <string name="even_odd_filter_odd_week">这周是奇数周 (A-E)</string>
+    <string name="even_odd_filter_title">智能 Block 显示</string>
+    <string name="even_odd_filter_summary">仅显示适用于当前周的 Block 信息</string>
+    <string name="even_odd_filter_switch_title">奇偶周调整</string>
 </resources>

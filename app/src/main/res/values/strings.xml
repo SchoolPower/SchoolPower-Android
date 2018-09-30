@@ -308,6 +308,6 @@ SchoolPower does not guarantee that the user\'s picture will be permanently save
     <string name="even_odd_filter_title">Smart block display</string>
     <string name="even_odd_filter_summary">Show only the block information that applys to the current week</string>
     <string name="even_odd_filter_switch_title">Odd-even week adjustment</string>
-    <string name="even_odd_filter_even_week">This week is an even week</string>
-    <string name="even_odd_filter_odd_week">This week is an odd week</string>
+    <string name="even_odd_filter_even_week">This week is an even week (F-J)</string>
+    <string name="even_odd_filter_odd_week">This week is an odd week (A-E)</string>
 </resources>

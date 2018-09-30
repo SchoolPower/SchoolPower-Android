@@ -59,7 +59,7 @@ class SettingsFragment : PreferenceFragmentCompat(),
         if (isAdded) refreshPreferences(sharedPreferences, key)
     }
 
-    private fun updatePerferencesStatus(sharedPreferences: SharedPreferences){
+    private fun updatePerferencesStatus(sharedPreferences: SharedPreferences) {
 
         val dashboardDisplay = (findPreference("list_preference_dashboard_display") as ListPreference)
         dashboardDisplay.summary = activity!!.getString(R.string.dashboard_display_preference_summary_prefix) +
@@ -69,11 +69,12 @@ class SettingsFragment : PreferenceFragmentCompat(),
         gpaRule.summary = getString(R.string.dashboard_gpa_rule_summary_prefix) +
                 gpaRule.entry.toString().toLowerCase() + activity!!.getString(R.string.dashboard_gpa_rule_summary_suffix)
 
-        findPreference("list_preference_even_odd_filter_switch").isEnabled =
-                sharedPreferences!!.getBoolean("list_preference_dashboard_show_inactive", false)
+        val evenOddSwitch = findPreference("list_preference_even_odd_filter_switch")
+        evenOddSwitch.isEnabled =
+                sharedPreferences.getBoolean("list_preference_even_odd_filter", false)
 
-        findPreference("list_preference_even_odd_filter_switch").summary =
-                if(sharedPreferences.getBoolean("list_preference_even_odd_filter_switch", false))
+        evenOddSwitch.summary =
+                if (sharedPreferences.getBoolean(evenOddSwitch.key, false))
                     getString(R.string.even_odd_filter_even_week)
                 else
                     getString(R.string.even_odd_filter_odd_week)
