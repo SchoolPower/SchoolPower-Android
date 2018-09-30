@@ -25,7 +25,7 @@ class AboutFragment : Fragment() {
 
         val view = inflater.inflate(R.layout.about_content, container, false)
         MainActivity.of(activity).expandToolBar(true, true)
-        utils = Utils(activity as MainActivity)
+        utils = Utils(activity!!)
 
         (view.findViewById<View>(R.id.about_version_label) as TextView).text = activity!!.packageManager.getPackageInfo(activity!!.packageName, 0).versionName
 

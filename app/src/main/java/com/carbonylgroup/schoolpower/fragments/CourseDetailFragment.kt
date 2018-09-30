@@ -37,7 +37,7 @@ class CourseDetailFragment : TransitionHelper.BaseFragment() {
 
     private fun initValue(view: View) {
 
-        utils = Utils(activity as TransitionHelper.MainActivity)
+        utils = Utils(activity!!)
         MainActivity.of(activity).presentFragment = 1
         MainActivity.of(activity).setToolBarTitle("")
         MainActivity.of(activity).expandToolBar(true, true)

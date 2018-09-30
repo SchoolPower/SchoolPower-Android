@@ -26,7 +26,7 @@ class RadarChartFragment : Fragment() {
 
         val view = inflater.inflate(R.layout.fragment_radar_chart, container, false)
 
-        utils = Utils(activity as MainActivity)
+        utils = Utils(activity!!)
 
         // Adjust chart's size to leave the space for the action bar and ad. bar.
         val radarChartCardView = view.findViewById<CardView>(R.id.radar_chart_card)

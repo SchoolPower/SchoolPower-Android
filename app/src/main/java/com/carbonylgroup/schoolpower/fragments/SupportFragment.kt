@@ -12,8 +12,6 @@ import android.view.View
 import android.view.ViewGroup
 import com.carbonylgroup.schoolpower.R
 import com.carbonylgroup.schoolpower.activities.MainActivity
-import com.carbonylgroup.schoolpower.utils.Utils
-import okhttp3.internal.Util
 
 
 class SupportFragment : Fragment() {
@@ -34,7 +32,7 @@ class SupportFragment : Fragment() {
             }
         }
 
-        override fun getPageTitle(position: Int) = activity!!.getString(titles[position])!!
+        override fun getPageTitle(position: Int) = activity!!.getString(titles[position])
 
         override fun getCount() = PagesNumber
     }
@@ -42,16 +40,15 @@ class SupportFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         val view = inflater.inflate(R.layout.fragment_viewpager, container, false)
-        MainActivity.of(activity).expandToolBar(true, true)
+        (activity as? MainActivity)?.expandToolBar(true, true)
 
         // Instantiate a ViewPager and a PagerAdapter.
         mPager = view.findViewById(R.id.chart_pager) as ViewPager
         mPagerAdapter = ScreenSlidePagerAdapter(fragmentManager!!)
         mPager!!.adapter = mPagerAdapter
 
-        if (Utils(activity as MainActivity).getSharedPreference(Utils.TmpData).getBoolean("ImComingForDonation", false)) {
+        if (arguments?.getBoolean("donation", false) == true) {
             mPager!!.setCurrentItem(2, true)
-            Utils(activity as MainActivity).setSharedPreference(Utils.TmpData, "ImComingForDonation", false)
         }
 
         val tabLayout = view.findViewById(R.id.tab_layout) as TabLayout
