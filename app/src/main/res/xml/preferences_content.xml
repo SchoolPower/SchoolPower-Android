@@ -89,6 +89,16 @@
 
     </PreferenceCategory>
 
+    <PreferenceCategory android:title="@string/advertisement_settings">
+
+        <SwitchPreference
+            android:defaultValue="true"
+            android:icon="@drawable/ic_money_black_24dp"
+            android:key="preference_enable_advertisement"
+            android:title="@string/enable_advertisement" />
+
+    </PreferenceCategory>
+
     <PreferenceCategory android:title="@string/support">
 
         <PreferenceScreen
