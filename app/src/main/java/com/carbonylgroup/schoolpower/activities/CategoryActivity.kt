@@ -1,13 +1,11 @@
 package com.carbonylgroup.schoolpower.activities
 
-import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
+import android.graphics.Color
+import android.support.v4.content.ContextCompat
 import android.text.Editable
 import android.text.TextWatcher
 import android.widget.EditText
 import android.widget.TextView
-import android.graphics.Color
-import android.support.v4.content.ContextCompat
 import com.carbonylgroup.schoolpower.R
 import com.carbonylgroup.schoolpower.data.CategoryWeightData
 import com.carbonylgroup.schoolpower.data.Subject
@@ -20,11 +18,9 @@ import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.formatter.PercentFormatter
 import kotlinx.android.synthetic.main.activity_category.*
 import kotlinx.android.synthetic.main.content_category.*
-import java.util.ArrayList
+import java.util.*
 
 class CategoryActivity : BaseActivity() {
-
-    lateinit var categoriesWeights: CategoryWeightData
 
     private lateinit var categoriesWeights: CategoryWeightData
 
