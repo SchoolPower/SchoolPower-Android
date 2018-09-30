@@ -74,6 +74,7 @@
         android:layout_alignStart="@id/gpa_dialog_frame"
         android:layout_below="@id/gpa_dialog_frame"
         android:layout_marginTop="24dp"
+        android:elevation="1dp"
         app:sbg_animateSelector="decelerate"
         app:sbg_animateSelectorDuration="200"
         app:sbg_backgroundColor="?attr/card_background"
@@ -82,32 +83,40 @@
         app:sbg_radius="2dp"
         app:sbg_ripple="true"
         app:sbg_rippleColor="?attr/colorAccent"
-        app:sbg_selectorColor="?attr/colorAccent"
-        app:sbg_selectorTextColor="@color/white"
-        app:sbg_shadow="true"
-        app:sbg_shadowElevation="1dp"
-        app:sbg_shadowMargin="1dp">
+        app:sbg_selectorColor="?attr/colorAccent">
 
-        <Button
-            android:layout_width="wrap_content"
+        <co.ceryle.segmentedbutton.SegmentedButton
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="5dp"
             android:minHeight="10dp"
-            android:text="@string/gpa_segments_all"
-            android:textAllCaps="false" />
+            android:textAllCaps="false"
+            app:sb_text="@string/gpa_segments_all"
+            app:sb_textColor="@color/white"
+            app:sb_textColor_onSelection="@color/white" />
 
-        <Button
-            android:layout_width="wrap_content"
+        <co.ceryle.segmentedbutton.SegmentedButton
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="5dp"
             android:minHeight="10dp"
-            android:text="@string/gpa_segments_custom"
-            android:textAllCaps="false" />
+            android:textAllCaps="false"
+            app:sb_text="@string/gpa_segments_custom"
+            app:sb_textColor="@color/white"
+            app:sb_textColor_onSelection="@color/white" />
 
-        <Button
-            android:layout_width="wrap_content"
+        <co.ceryle.segmentedbutton.SegmentedButton
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="5dp"
             android:minHeight="10dp"
-            android:text="@string/gpa_segments_official"
-            android:textAllCaps="false" />
+            android:textAllCaps="false"
+            app:sb_text="@string/gpa_segments_official"
+            app:sb_textColor="@color/white"
+            app:sb_textColor_onSelection="@color/white" />
 
     </co.ceryle.segmentedbutton.SegmentedButtonGroup>
 
@@ -119,6 +128,7 @@
         android:layout_alignStart="@id/gpa_dialog_frame"
         android:layout_below="@id/gpa_dialog_frame"
         android:layout_marginTop="24dp"
+        android:elevation="1dp"
         app:sbg_animateSelector="decelerate"
         app:sbg_animateSelectorDuration="200"
         app:sbg_backgroundColor="?attr/card_background"
@@ -127,25 +137,29 @@
         app:sbg_radius="2dp"
         app:sbg_ripple="true"
         app:sbg_rippleColor="?attr/colorAccent"
-        app:sbg_selectorColor="?attr/colorAccent"
-        app:sbg_selectorTextColor="@color/white"
-        app:sbg_shadow="true"
-        app:sbg_shadowElevation="1dp"
-        app:sbg_shadowMargin="1dp">
+        app:sbg_selectorColor="?attr/colorAccent">
 
-        <Button
-            android:layout_width="wrap_content"
+        <co.ceryle.segmentedbutton.SegmentedButton
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="5dp"
             android:minHeight="10dp"
-            android:text="@string/gpa_segments_all"
-            android:textAllCaps="false" />
+            android:textAllCaps="false"
+            app:sb_text="@string/gpa_segments_all"
+            app:sb_textColor="@color/white"
+            app:sb_textColor_onSelection="@color/white" />
 
-        <Button
-            android:layout_width="wrap_content"
+        <co.ceryle.segmentedbutton.SegmentedButton
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="5dp"
             android:minHeight="10dp"
-            android:text="@string/gpa_segments_custom"
-            android:textAllCaps="false" />
+            android:textAllCaps="false"
+            app:sb_text="@string/gpa_segments_custom"
+            app:sb_textColor="@color/white"
+            app:sb_textColor_onSelection="@color/white" />
 
     </co.ceryle.segmentedbutton.SegmentedButtonGroup>
 </RelativeLayout>

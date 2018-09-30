@@ -30,9 +30,9 @@ class AttendanceFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
-        utils = Utils(activity as MainActivity)
+        utils = Utils(activity!!)
         MainActivity.of(activity).expandToolBar(true, true)
-        view_private = inflater!!.inflate(R.layout.fragment_attendance, container, false)
+        view_private = inflater.inflate(R.layout.fragment_attendance, container, false)
 
         initValue()
 
@@ -52,13 +52,13 @@ class AttendanceFragment : Fragment() {
 
     private fun initValue() {
 
-        utils = Utils(activity as MainActivity)
+        utils = Utils(activity!!)
         attendance = MainActivity.of(activity).attendances!!
         attendanceRecyclerView = view_private!!.findViewById(R.id.attendance_recycler)
         no_attendance_view = view_private!!.findViewById(R.id.no_attendance_view)
         view_private!!.findViewById<ImageView>(R.id.perfect_attendance_image_view).setImageDrawable(
                 ResourcesCompat.getDrawable(resources,
-                        when (Utils(activity as MainActivity).getTheme()) {
+                        when (utils.getTheme()) {
                             Utils.LIGHT -> R.drawable.perfect_attendance
                             Utils.DARK -> R.drawable.perfect_attendance_dark
                             else -> R.drawable.perfect_attendance

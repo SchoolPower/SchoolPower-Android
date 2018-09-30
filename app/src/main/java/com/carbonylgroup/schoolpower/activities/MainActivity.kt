@@ -56,7 +56,6 @@ import java.net.URL
 import java.net.URLConnection
 import java.util.*
 
-
 class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     var presentFragment: Int = 0
@@ -209,10 +208,13 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
 
     /* Initializer */
     private fun initValue() {
-        MobileAds.initialize(this, getString(R.string.adMob_app_id))
         mAdView = findViewById(R.id.adView)
-        val adRequest = AdRequest.Builder().build()
-        mAdView.loadAd(adRequest)
+        if(PreferenceManager.getDefaultSharedPreferences(this)
+                        .getBoolean("preference_enable_advertisement", true)) {
+            MobileAds.initialize(this, getString(R.string.adMob_app_id))
+            val adRequest = AdRequest.Builder().build()
+            mAdView.loadAd(adRequest)
+        }
 
         setSupportActionBar(mainToolBar)
         toggleIcon = DrawerArrowDrawable(this)
@@ -377,7 +379,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
     }
 
     /* Fragments Handler */
-    fun gotoFragmentWithMenuItemId(id: Int) {
+    fun gotoFragmentWithMenuItemId(id: Int, customBundle: Bundle? = null) {
 
         val fm = supportFragmentManager
         val transaction = fm.beginTransaction()
@@ -385,6 +387,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
         when (id) {
             R.id.nav_dashboard -> {
                 dashboardFragment = DashboardFragment()
+                dashboardFragment!!.arguments = customBundle
                 transaction.replace(R.id.content_view, dashboardFragment!!)
                 setToolBarTitle(getString(R.string.dashboard))
                 setToolBarElevation()
@@ -395,6 +398,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
             }
             R.id.nav_charts -> {
                 chartFragment = ChartFragment()
+                chartFragment!!.arguments = customBundle
                 transaction.replace(R.id.content_view, chartFragment!!)
                 setToolBarTitle(getString(R.string.charts))
                 setToolBarElevation(0)
@@ -405,6 +409,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
             }
             R.id.nav_attendance -> {
                 attendanceFragment = AttendanceFragment()
+                attendanceFragment!!.arguments = customBundle
                 transaction.replace(R.id.content_view, attendanceFragment!!)
                 setToolBarTitle(getString(R.string.attendance))
                 setToolBarElevation()
@@ -417,6 +422,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
 
             R.id.nav_support -> {
                 supportFragment = SupportFragment()
+                supportFragment!!.arguments = customBundle
                 transaction.setCustomAnimations(R.animator.slide_from_right_in, R.animator.slide_to_left_out)
                         .replace(R.id.content_view, supportFragment!!)
                 setToolBarTitle(getString(R.string.support_us))
@@ -430,6 +436,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
 
             R.id.nav_about -> {
                 aboutFragment = AboutFragment()
+                aboutFragment!!.arguments = customBundle
                 transaction.setCustomAnimations(R.animator.slide_from_right_in, R.animator.slide_to_left_out)
                         .replace(R.id.content_view, aboutFragment!!)
                 setToolBarTitle(getString(R.string.about))

@@ -619,6 +619,24 @@ class Utils(private val context: Context) {
         return actionBarSize
     }
 
+    fun getLastDonateShowedDate(): Date {
+        val dateStr = getSharedPreference(Utils.TmpData)
+                .getString("LastTimeDonateShowed", "")
+
+        return if (dateStr != "") SimpleDateFormat("yyyy-MM-dd", Locale.CHINA).parse(dateStr) else Date(0)
+    }
+
+    fun isEarlyDonators(): Boolean {
+        val start = SimpleDateFormat("yyyy-MM-dd", Locale.CHINA).parse("2018-07-01")
+        val end = SimpleDateFormat("yyyy-MM-dd", Locale.CHINA).parse("2018-08-28")
+        val shown = getLastDonateShowedDate()
+        return start <= shown && shown <= end
+    }
+
+    fun isDonated(): Boolean {
+        return getSharedPreference(Utils.TmpData).getBoolean("Donated", false)
+    }
+
     private fun checkConnectionToUrl(url: String): Boolean {
         return try {
             buildNetworkRequest(url, "GET", null).execute()

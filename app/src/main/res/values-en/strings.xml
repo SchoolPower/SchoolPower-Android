@@ -230,5 +230,9 @@ SchoolPower does not guarantee that the user\'s picture will be permanently save
 \nPlease stay calm and report this to the developers. We will resolve the issue ASAP.\n\nError message: \n</string>
     <string name="cancel">Cancel</string>
     <string name="email">Email</string>
+    <string name="advertisement_settings">Advertisement Settings</string>
+    <string name="enable_advertisement">Enable advertisement</string>
+    <string name="ad_donation_request">Ad helps SchoolPower</string>
+    <string name="ad_donation_request_content">We dislike ads as much as you do, so we allow you to disable the ads without spending a penny. But meanwhile, advertisment helps us pay for the costs of development and maintenance. Therefore, after you close the ad, if you feel that this app has helped you and wants it to continue to be maintained, please consider donating to us ( ́,,•ω•,,)♡.</string>
 
 </resources>

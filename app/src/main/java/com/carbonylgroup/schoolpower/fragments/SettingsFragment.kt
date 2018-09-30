@@ -32,7 +32,7 @@ class SettingsFragment : PreferenceFragmentCompat(),
         fun onRecreate()
     }
     private var callBack: SettingsCallBack? = null
-    private var utils: Utils? = null
+    private lateinit var utils: Utils
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
@@ -50,9 +50,9 @@ class SettingsFragment : PreferenceFragmentCompat(),
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
+        utils = Utils(activity!!)
         addPreferencesFromResource(R.xml.preferences_content)
         preferenceManager.sharedPreferences.registerOnSharedPreferenceChangeListener(this)
-        utils = Utils(activity as SettingsActivity)
         initPreferences()
     }
 
@@ -104,10 +104,10 @@ class SettingsFragment : PreferenceFragmentCompat(),
             "list_preference_dashboard_display" -> {
                 val dashboard_display = (findPreference("list_preference_dashboard_display") as ListPreference)
                 dashboard_display.summary = getString(R.string.dashboard_display_preference_summary_prefix) + dashboard_display.entry + activity!!.getString(R.string.dashboard_display_preference_summary_suffix)
-                utils!!.setSharedPreference(Utils.SettingsPreference, key, sharedPreferences!!.getString(key, "0")!!)
+                utils.setSharedPreference(Utils.SettingsPreference, key, sharedPreferences!!.getString(key, "0")!!)
             }
             "list_preference_language" -> {
-                utils!!.setSharedPreference(Utils.SettingsPreference, "lang", sharedPreferences!!.getString(key, "0")!!)
+                utils.setSharedPreference(Utils.SettingsPreference, "lang", sharedPreferences!!.getString(key, "0")!!)
                 recreateMain()
             }
             "preference_enable_notification" -> {
@@ -119,18 +119,33 @@ class SettingsFragment : PreferenceFragmentCompat(),
             "list_preference_custom_gpa_calculate" -> {
                 val gpaRule = findPreference(key) as ListPreference
                 gpaRule.summary = getString(R.string.dashboard_gpa_rule_summary_prefix) + gpaRule.entry.toString().toLowerCase() + activity!!.getString(R.string.dashboard_gpa_rule_summary_suffix)
-                utils!!.setSharedPreference(Utils.SettingsPreference, key, sharedPreferences!!.getString(key, "0")!!)
+                utils.setSharedPreference(Utils.SettingsPreference, key,
+                        sharedPreferences!!.getString(key, "0")!!)
             }
             "switch_preference_theme_dark" -> {
-                val utils = Utils(activity as SettingsActivity)
                 utils[Utils.THEME] = if ((findPreference(key) as SwitchPreference).isChecked) Utils.DARK else Utils.LIGHT
                 recreateMain()
+            }
+            "preference_enable_advertisement" -> {
+                if(!utils.isDonated() && !utils.isEarlyDonators()
+                        && !sharedPreferences!!.getBoolean(key, true)){
+
+                    val builder = android.app.AlertDialog.Builder(activity)
+                    builder.setTitle(getString(R.string.ad_donation_request))
+                    builder.setMessage(getString(R.string.ad_donation_request_content))
+                    builder.setPositiveButton(getString(R.string.donation_ok)) { _, _ ->
+                        (activity as SettingsActivity).addFragmentOnTop(DonationFragment())
+                    }
+                    builder.setNegativeButton(getString(R.string.donation_cancel), null)
+                    builder.show()
+
+                }
             }
         }
     }
 
     private fun showThemeChooser() {
-        val utils = Utils(activity as SettingsActivity)
+        val utils = Utils(activity!!)
         val valueList = Arrays.asList(*resources.getStringArray(R.array.theme_array))
         val theme = utils.getTheme()
         val selectIndex = valueList.indexOf(theme)

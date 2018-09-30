@@ -81,7 +81,7 @@ class AssignmentItem(json: JSONObject) : Serializable {
                     Pair("late", getStatusIfExists(json, "late")),
                     Pair("missing", getStatusIfExists(json, "missing")),
                     Pair("exempt", getStatusIfExists(json, "exempt")),
-                    Pair("excludeInFinalGrade", !getStatusIfExists(json, "includeInFinalGrade", true))
+                    Pair("excludeInFinalGrade", !getStatusIfExists(json, "includeInFinalGrade", true) && !includeInFinalGrade)
             )
 
         } catch (e: JSONException) {

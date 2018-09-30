@@ -199,8 +199,7 @@ SchoolPower 不保證上述網站的服務穩定性，不保證用戶頭像會�
     <string name="happy_birth_thank">蟹蟹</string>
 
     <string name="donation_title">我們快沒錢了…</string>
-    <string name="donation_message">拋開大量的時間成本不計，僅是高昂的蘋果開發者年費和服務器服務器費用就達數千元。而我們的唯一收入，廣告收入運營一年以來合計僅 118.78 美元。截止至今我們已經淨虧損上千元。
-\n\n如果您覺得這款App幫到了您，想要支持我們一下，或希望能盡快擺脫廣告的話，歡迎您使用下面的方式贊助我們，或者將其介紹給您身邊的人。感激不盡 (´,,•ω•,,)♡。</string>
+    <string name="donation_message">拋開大量的時間成本不計，僅是高昂的蘋果開發者年費和服務器服務器費用就達數千元。而我們的唯一收入，廣告收入運營一年以來合計僅 118.78 美元。截止至今我們已經淨虧損上千元。   如果您覺得這款App幫到了您，想要支持我們一下，或希望能盡快擺脫廣告的話，歡迎您使用下面的方式贊助我們，或者將其介紹給您身邊的人。感激不盡 (´,,•ω•,,)♡。</string>
     <string name="donation_cancel">才不幫你們呢哼-^-</string>
     <string name="donation_ok">贊助我們</string>
     <string name="donation_promote">宣傳 APP</string>
@@ -219,4 +218,8 @@ SchoolPower 不保證上述網站的服務穩定性，不保證用戶頭像會�
 
     <string name="cancel">取消</string>
     <string name="email">發送</string>
+    <string name="advertisement_settings">廣告設置</string>
+    <string name="enable_advertisement">啟用廣告</string>
+    <string name="ad_donation_request">廣告有助於 SchoolPower 的運行</string>
+    <string name="ad_donation_request_content">我們和您一樣不喜歡廣告和付費會員，因此我們允許您不花一分錢將廣告關閉。但與此同時，廣告幫助我們支付開發和維護所產生的大量成本。因此，在您關閉廣告後，如果您覺得這款 App 幫助到了您，希望讓它繼續維護著，請您考慮贊助我們 (´,,•ω•,,)♡。</string>
 </resources>

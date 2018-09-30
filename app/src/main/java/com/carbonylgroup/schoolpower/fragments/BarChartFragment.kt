@@ -32,7 +32,7 @@ class BarChartFragment : Fragment() {
 
         val view = inflater.inflate(R.layout.fragment_bar_chart, container, false)
 
-        utils = Utils(activity as MainActivity)
+        utils = Utils(activity!!)
 
         // Adjust chart's size to leave the space for the action bar and ad. bar.
         val barChartCardView = view.findViewById<CardView>(R.id.bar_chart_card)
@@ -135,7 +135,7 @@ class BarChartFragment : Fragment() {
         barChart.animateY(1000)
         barChart.setScaleEnabled(true)
 
-        barChart.setOnTouchListener { view, motionEvent ->
+        barChart.setOnTouchListener { _, motionEvent ->
             if (motionEvent.action == MotionEvent.ACTION_DOWN) {
                 barChart.parent.requestDisallowInterceptTouchEvent(true);false
             } else false
