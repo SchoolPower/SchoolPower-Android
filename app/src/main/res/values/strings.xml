@@ -14,7 +14,6 @@
     <string name="flag_badge" translatable="false">flag badge</string>
     <string name="trend_indicator" translatable="false">trend_indicator</string>
     <string name="KEY_DARK_MODE" translatable="false">KEY_DARK_MODE</string>
-    <string name="user_avatar" translatable="false">user_avatar</string>
 
     <string name="shared_element_course_header" translatable="false">SHARE://COURSE_HEADER</string>
     <string name="shared_element_course_fab" translatable="false">SHARE://COURSE_FAB</string>
@@ -306,4 +305,9 @@ SchoolPower does not guarantee that the user\'s picture will be permanently save
     <string name="enable_advertisement">Enable advertisement</string>
     <string name="ad_donation_request">Ad helps SchoolPower</string>
     <string name="ad_donation_request_content">We dislike ads as much as you do, so we allow you to disable the ads without spending a penny. But meanwhile, advertisment helps us pay for the costs of development and maintenance. Therefore, after you close the ad, if you feel that this app has helped you and wants it to continue to be maintained, please consider donating to us ( ́,,•ω•,,)♡.</string>
+    <string name="even_odd_filter_title">Smart block display</string>
+    <string name="even_odd_filter_summary">Show only the block information that applys to the current week</string>
+    <string name="even_odd_filter_switch_title">Odd-even week adjustment</string>
+    <string name="even_odd_filter_even_week">This week is an even week</string>
+    <string name="even_odd_filter_odd_week">This week is an odd week</string>
 </resources>

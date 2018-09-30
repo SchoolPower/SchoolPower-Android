@@ -15,7 +15,6 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.preference.PreferenceManager
 import android.support.design.widget.AppBarLayout
 import android.support.design.widget.NavigationView
 import android.support.v4.app.FragmentActivity
@@ -90,7 +89,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
     override fun initActivity() {
         // Shortcuts could bring users to main activity directly.
         // In this case, bring users to login activity if they are not logged in
-        if (!utils.getSharedPreference(AccountData).getBoolean(getString(R.string.loggedIn), false)) {
+        if (!utils.getPreferences(AccountData).getBoolean(getString(R.string.loggedIn), false)) {
             startLoginActivity()
             return
         } else {
@@ -214,7 +213,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
     /* Initializer */
     private fun initValue() {
         mAdView = findViewById(R.id.adView)
-        if(PreferenceManager.getDefaultSharedPreferences(this)
+        if(utils.getPreferences()
                         .getBoolean("preference_enable_advertisement", true)) {
             MobileAds.initialize(this, getString(R.string.adMob_app_id))
             val adRequest = AdRequest.Builder().build()
@@ -285,8 +284,8 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
     }
 
     private fun removeAvatar() {
-        val username = utils.getSharedPreference(AccountData).getString(getString(R.string.usernameKEY), "")!!
-        val password = utils.getSharedPreference(AccountData).getString(getString(R.string.passwordKEY), "")!!
+        val username = utils.getPreferences(AccountData).getString(getString(R.string.usernameKEY), "")!!
+        val password = utils.getPreferences(AccountData).getString(getString(R.string.passwordKEY), "")!!
 
         utils.buildNetworkRequest(getString(R.string.avatarURL), "POST",
                 MultipartBody.Builder()
@@ -310,7 +309,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                                         JSONObject(res)["error"].toString(), true)
                             }
                         } else {
-                            utils.setSharedPreference(AccountData, getString(R.string.user_avatar), "")
+                            utils.setPreference("user_avatar", "", AccountData)
                             val header = navigationView.getHeaderView(0)
                             header.findViewById<ImageView>(R.id.user_avatar).post {
                                 header.findViewById<ImageView>(R.id.user_avatar).setImageDrawable(getDrawable(R.drawable.icon))
@@ -321,7 +320,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
     }
 
     private fun setAvatar() {
-        if (utils.getSharedPreference(AccountData).getString(getString(R.string.user_avatar), "") != "") {
+        if (utils.getPreferences(AccountData).getString("user_avatar", "") != "") {
             val alertDialog =
                     AlertDialog.Builder(this)
                             .setAdapter(ArrayAdapter<String>(this, R.layout.simple_list_item,
@@ -341,7 +340,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
 
     private fun updateAvatar() {
         val header = navigationView.getHeaderView(0)
-        val avatarUrl = utils.getSharedPreference(AccountData).getString(getString(R.string.user_avatar), "")
+        val avatarUrl = utils.getPreferences(AccountData).getString("user_avatar", "")
         if (avatarUrl != "")
             Picasso.get().load(avatarUrl).placeholder(R.drawable.icon).into(header.findViewById<ImageView>(R.id.user_avatar))
 
@@ -367,7 +366,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
     private fun initScheduler() {
 
         val jobScheduler = getSystemService(Context.JOB_SCHEDULER_SERVICE) as JobScheduler
-        val preferences = PreferenceManager.getDefaultSharedPreferences(applicationContext)
+        val preferences = utils.getPreferences()
         if (!preferences.getBoolean("preference_enable_notification", true)) {
             Log.d("PullDataJob", "Job Gets Cancelled")
             jobScheduler.cancelAll()
@@ -561,8 +560,8 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
         val oldSubjects = ArrayList<Subject>()
         val oldAttendances = ArrayList<Attendance>()
 
-        val username = utils.getSharedPreference(AccountData).getString(getString(R.string.usernameKEY), "")!!
-        val password = utils.getSharedPreference(AccountData).getString(getString(R.string.passwordKEY), "")!!
+        val username = utils.getPreferences(AccountData).getString(getString(R.string.usernameKEY), "")!!
+        val password = utils.getPreferences(AccountData).getString(getString(R.string.passwordKEY), "")!!
         if (subjects != null) oldSubjects.addAll(subjects!!)
         if (attendances != null) oldAttendances.addAll(attendances!!)
 
@@ -647,12 +646,12 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                     subjects = data.subjects
                     attendances = data.attendances
 
-                    utils.setSharedPreference(AccountData, "dob",
-                            Utils.convertDateToTimestamp(data.studentInfo.dob))
+                    utils.setPreference("dob",
+                            Utils.convertDateToTimestamp(data.studentInfo.dob), AccountData)
 
                     val extraInfo = data.extraInfo
 
-                    utils.setSharedPreference(AccountData, getString(R.string.user_avatar), extraInfo.avatar)
+                    utils.setPreference("user_avatar", extraInfo.avatar, AccountData)
 
                     runOnUiThread {
                         when (presentFragment) {
@@ -724,7 +723,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                         val message = response.body()!!.string()
                         response.close()
                         if (message.contains("{")) {
-                            utils.setSharedPreference(Utils.TmpData, "ildJson", message)
+                            utils.setPreference("ildJson", message, Utils.TmpData)
                         }
                         try {
                             dashboardFragment!!.fetchLocalILD()
@@ -736,7 +735,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
     }
 
     fun showILD(data: ILDNotification) {
-        val displayedILDs = utils.getSharedPreference(Utils.TmpData).getStringSet("doNotDisplayTheseILDs", setOf())!!
+        val displayedILDs = utils.getPreferences(Utils.TmpData).getStringSet("doNotDisplayTheseILDs", setOf())!!
         if (!displayedILDs.contains(data.uuid))
         // display if haven't been marked as displayed
             Thread(Runnable {
@@ -785,13 +784,13 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
 
     private fun getUsername(): String {
 
-        val name = utils.getSharedPreference(AccountData).getString(getString(R.string.student_name), "")!!
+        val name = utils.getPreferences(AccountData).getString(getString(R.string.student_name), "")!!
         if (name != "") return name.split(" ")[1] + " " + name.split(" ")[2]
         return getString(R.string.no_username)
     }
 
     private fun getUserID(withPrefix: Boolean): String {
-        val id = utils.getSharedPreference(AccountData).getString(getString(R.string.user_id), "")!!
+        val id = utils.getPreferences(AccountData).getString(getString(R.string.user_id), "")!!
         return if (withPrefix) getString(R.string.user_id_indicator) + " " + id else id
     }
 
@@ -807,11 +806,11 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
 
     private fun signOut() {
 
-        utils.getSharedPreference(AccountData).edit()
+        utils.getPreferences(AccountData).edit()
                 .putString(getString(R.string.usernameKEY), "")
                 .putString(getString(R.string.passwordKEY), "")
                 .putBoolean(getString(R.string.loggedIn), false)
-                .putString(getString(R.string.user_avatar), "")
+                .putString("user_avatar", "")
                 .apply()
         utils.saveHistoryGrade(null)
         utils.saveDataJson("")
@@ -867,8 +866,8 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                             return
                         }
                         val avatarUrl = responseJson.getJSONObject("data")["url"].toString()
-                        val username = utils.getSharedPreference(AccountData).getString(getString(R.string.usernameKEY), "")!!
-                        val password = utils.getSharedPreference(AccountData).getString(getString(R.string.passwordKEY), "")!!
+                        val username = utils.getPreferences(AccountData).getString(getString(R.string.usernameKEY), "")!!
+                        val password = utils.getPreferences(AccountData).getString(getString(R.string.passwordKEY), "")!!
 
                         val responseAvatar = utils.buildNetworkRequest(getString(R.string.avatarURL), "POST",
                                 MultipartBody.Builder()
@@ -887,7 +886,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                             }
                         }
 
-                        utils.setSharedPreference(AccountData, getString(R.string.user_avatar), avatarUrl)
+                        utils.setPreference("user_avatar", avatarUrl, AccountData)
                         val header = navigationView.getHeaderView(0)
                         header.findViewById<ImageView>(R.id.user_avatar).post {
                             updateAvatar()

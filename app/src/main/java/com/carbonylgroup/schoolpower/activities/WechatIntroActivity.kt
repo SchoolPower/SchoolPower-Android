@@ -32,7 +32,7 @@ class WechatIntroActivity : AppIntro() {
 
     override fun attachBaseContext(newBase: Context?) {
         utils = Utils(newBase!!)
-        val newLocale = utils.getSharedPreference(Utils.SettingsPreference).getString("lang", "0")!!.toInt()
+        val newLocale = utils.getPreferences().getString("lang", "0")!!.toInt()
         val context = ContextWrapper.wrap(newBase, Utils.localeSet[newLocale])
         super.attachBaseContext(context)
     }
@@ -141,7 +141,7 @@ class WechatIntroActivity : AppIntro() {
     }
 
     private fun setIsDonated(donated: Boolean) {
-        utils.setSharedPreference(Utils.TmpData, "Donated", donated)
+        utils.setPreference("Donated", donated, Utils.TmpData)
     }
 
     override fun onRequestPermissionsResult(requestCode: Int,

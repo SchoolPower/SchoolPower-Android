@@ -235,10 +235,10 @@ class DashboardFragment : TransitionHelper.BaseFragment() {
         val dismiss = View.OnClickListener {
             if (onlyOnce) {
                 // mark the ILD as displayed
-                val displayedILDs = utils.getSharedPreference(Utils.TmpData).getStringSet("doNotDisplayTheseILDs", mutableSetOf())!!
+                val displayedILDs = utils.getPreferences(Utils.TmpData).getStringSet("doNotDisplayTheseILDs", mutableSetOf())!!
                 displayedILDs.add(uuid)
-                utils.setSharedPreference(Utils.TmpData, "doNotDisplayTheseILDs", displayedILDs)
-                utils.setSharedPreference(Utils.TmpData, "ildJson", "")
+                utils.setPreference("doNotDisplayTheseILDs", displayedILDs, Utils.TmpData)
+                utils.setPreference("ildJson", "", Utils.TmpData)
             }
             removeILD(self)
         }
@@ -268,7 +268,7 @@ class DashboardFragment : TransitionHelper.BaseFragment() {
 
     fun fetchLocalILD() {
         val json = utils
-                .getSharedPreference(Utils.TmpData)
+                .getPreferences(Utils.TmpData)
                 .getString("ildJson", "")!!
         if (json.contains("{")) {
             val data = ILDNotification(json)
@@ -294,8 +294,8 @@ class DashboardFragment : TransitionHelper.BaseFragment() {
     }
 
     private fun setLastDonateShowedDate(date: Date) {
-        utils.setSharedPreference(Utils.TmpData, "LastTimeDonateShowed",
-                SimpleDateFormat("yyyy-MM-dd", Locale.CHINA).format(date))
+        utils.setPreference("LastTimeDonateShowed",
+                SimpleDateFormat("yyyy-MM-dd", Locale.CHINA).format(date), Utils.TmpData)
     }
 
 
