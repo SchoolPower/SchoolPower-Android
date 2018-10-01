@@ -19,7 +19,7 @@ abstract class BaseActivity : AppCompatActivity() {
 
     override fun attachBaseContext(newBase: Context?) {
         val utils = Utils(newBase!!)
-        val newLocale = utils.getPreferences().getString("lang", "0")!!.toInt()
+        val newLocale = utils.getPreferences().getString("list_preference_language", "0")!!.toInt()
         val context = ContextWrapper.wrap(newBase, Utils.localeSet[newLocale])
         super.attachBaseContext(context)
     }

@@ -32,7 +32,7 @@ class WechatIntroActivity : AppIntro() {
 
     override fun attachBaseContext(newBase: Context?) {
         utils = Utils(newBase!!)
-        val newLocale = utils.getPreferences().getString("lang", "0")!!.toInt()
+        val newLocale = utils.getPreferences().getString("list_preference_language", "0")!!.toInt()
         val context = ContextWrapper.wrap(newBase, Utils.localeSet[newLocale])
         super.attachBaseContext(context)
     }
