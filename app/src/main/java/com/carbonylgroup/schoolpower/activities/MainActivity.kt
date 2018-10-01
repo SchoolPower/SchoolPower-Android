@@ -87,6 +87,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
     private val SETTINGS_REQUEST_CODE = 233
 
     override fun initActivity() {
+        utils = Utils(this)
         // Shortcuts could bring users to main activity directly.
         // In this case, bring users to login activity if they are not logged in
         if (!utils.getPreferences(AccountData).getBoolean(getString(R.string.loggedIn), false)) {
@@ -94,7 +95,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
             return
         } else {
             super.initActivity()
-            utils = Utils(this)
+            utils.autoAdjustWeekType()
             setContentView(R.layout.nav_drawer)
             initValue()
             initUI()

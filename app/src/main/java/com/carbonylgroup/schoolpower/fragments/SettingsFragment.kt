@@ -69,7 +69,7 @@ class SettingsFragment : PreferenceFragmentCompat(),
         gpaRule.summary = getString(R.string.dashboard_gpa_rule_summary_prefix) +
                 gpaRule.entry.toString().toLowerCase() + activity!!.getString(R.string.dashboard_gpa_rule_summary_suffix)
 
-        val evenOddSwitch = findPreference("list_preference_even_odd_filter_switch")
+        val evenOddSwitch = findPreference("list_preference_is_even_week")
         evenOddSwitch.isEnabled =
                 sharedPreferences.getBoolean("list_preference_even_odd_filter", false)
 
@@ -146,8 +146,6 @@ class SettingsFragment : PreferenceFragmentCompat(),
                     builder.show()
 
                 }
-            }
-            "list_preference_even_odd_filter_switch" -> {
             }
         }
     }

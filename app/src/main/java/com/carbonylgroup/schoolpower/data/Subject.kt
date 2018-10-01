@@ -68,7 +68,7 @@ class Subject(json: JSONObject, utils: Utils) : Serializable {
     val name: String = json.getString("name")
     val teacherName: String = json.getJSONObject("teacher").let { obj -> obj.getString("firstName") + " " + obj.getString("lastName") }
     val teacherEmail: String = json.getJSONObject("teacher").optString("email")
-    val blockLetter: String = json.getString("expression")
+    val blockLetter: String // init in code
     val roomNumber: String = json.getString("roomName")
     val assignments: ArrayList<AssignmentItem> = arrayListOf()
     val grades: HashMap<String, Grade> = hashMapOf()
@@ -97,6 +97,46 @@ class Subject(json: JSONObject, utils: Utils) : Serializable {
 
         startDate = Utils.convertDateToTimestamp(json.getString("startDate"))
         endDate = Utils.convertDateToTimestamp(json.getString("endDate"))
+
+        val blockLetterRaw = json.getString("expression")
+        // Smart block display
+        if (utils.getPreferences().getBoolean("list_preference_even_odd_filter", false)) {
+            val blockStartIndex = blockLetterRaw.indexOf('(')
+            val currentWeekIsEven =
+                    utils.getPreferences().getBoolean("list_preference_is_even_week", false)
+
+            val blocksToDisplay = arrayListOf<String>()
+
+            var oddEvenWeekFeatureEnabled = false
+            // e.g. 1(A-J), 2(B-C,F,H)
+            for (block in blockLetterRaw.substring(blockStartIndex + 1, blockLetterRaw.length - 1)
+                    .split(",")) {
+                // A, B, C, D, E
+                val odd = block.indexOf('A') != -1
+                        || block.indexOf('B') != -1
+                        || block.indexOf('C') != -1
+                        || block.indexOf('D') != -1
+                        || block.indexOf('E') != -1
+                // F, G, H, I, J
+                val even = block.indexOf('F') != -1
+                        || block.indexOf('G') != -1
+                        || block.indexOf('H') != -1
+                        || block.indexOf('I') != -1
+                        || block.indexOf('J') != -1
+                if (even) oddEvenWeekFeatureEnabled = true
+
+                if ((even && currentWeekIsEven) || (odd && !currentWeekIsEven))
+                    blocksToDisplay.add(block)
+            }
+            if (oddEvenWeekFeatureEnabled) {
+                blockLetter = blockLetterRaw.substring(0, blockStartIndex + 1) +
+                        blocksToDisplay.joinToString(",") + ")"
+            } else {
+                blockLetter = blockLetterRaw
+            }
+        }else{
+            blockLetter = blockLetterRaw
+        }
     }
 
     // Call it when weights of categories have been changed.

@@ -663,6 +663,28 @@ class Utils(private val context: Context) {
             }
     }
 
+    fun autoAdjustWeekType(){
+        val storeKey = "week_last_updated_date"
+        val weekTypeStoreKey = "list_preference_is_even_week"
+
+        val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.CHINA)
+        val lastUpdatedDate =
+                try {
+                    sdf.parse(getPreferences(TmpData).getString(storeKey, ""))
+                } catch(e: Exception) {
+                    Date()
+                }
+        setPreference(storeKey, sdf.format(Date()), TmpData)
+        val lastUpdatedCal = Calendar.getInstance()
+        lastUpdatedCal.time = lastUpdatedDate
+        val currentCal = Calendar.getInstance()
+        currentCal.time = Date()
+        if(lastUpdatedCal.get(Calendar.WEEK_OF_YEAR) % 2 !=
+                currentCal.get(Calendar.WEEK_OF_YEAR) % 2)
+            setPreference(weekTypeStoreKey,
+                    !getPreferences().getBoolean(weekTypeStoreKey, false))
+    }
+
     companion object {
 
         const val THEME = "appTheme"
