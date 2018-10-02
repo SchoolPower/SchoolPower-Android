@@ -55,7 +55,7 @@ class DonationFragment : Fragment() {
     }
 
     private fun setIsDonated(donated: Boolean) {
-        utils.setSharedPreference(Utils.TmpData, "Donated", donated)
+        utils.setPreference("Donated", donated, Utils.TmpData)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

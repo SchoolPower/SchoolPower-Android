@@ -87,7 +87,7 @@ class ColorChooserPreference : Preference, ColorChooserDialog.ColorCallback {
     }
 
     override fun onColorSelection(dialog: ColorChooserDialog, @ColorInt selectedColor: Int) {
-        utils[Utils.ACCENT_COLOR] = getColorIndex(selectedColor)
+        utils.setPreference(Utils.ACCENT_COLOR, getColorIndex(selectedColor))
         //        colorView.getBackground().setColorFilter(selectedColor, PorterDuff.Mode.SRC_IN);
         if (colorChooserCallback != null && oriColor != selectedColor) {
             colorChooserCallback!!.onColorChanged(oriColor, selectedColor)

@@ -13,7 +13,6 @@ import android.support.v7.app.AlertDialog
 import android.support.v7.preference.ListPreference
 import android.support.v7.preference.Preference
 import android.support.v7.preference.PreferenceFragmentCompat
-import android.support.v7.preference.PreferenceManager
 import com.carbonylgroup.schoolpower.R
 import com.carbonylgroup.schoolpower.activities.SettingsActivity
 import com.carbonylgroup.schoolpower.utils.Utils
@@ -60,17 +59,34 @@ class SettingsFragment : PreferenceFragmentCompat(),
         if (isAdded) refreshPreferences(sharedPreferences, key)
     }
 
+    private fun updatePerferencesStatus(sharedPreferences: SharedPreferences) {
+
+        val dashboardDisplay = (findPreference("list_preference_dashboard_display") as ListPreference)
+        dashboardDisplay.summary = activity!!.getString(R.string.dashboard_display_preference_summary_prefix) +
+                dashboardDisplay.entry + activity!!.getString(R.string.dashboard_display_preference_summary_suffix)
+
+        val gpaRule = findPreference("list_preference_custom_gpa_calculate") as ListPreference
+        gpaRule.summary = getString(R.string.dashboard_gpa_rule_summary_prefix) +
+                gpaRule.entry.toString().toLowerCase() + activity!!.getString(R.string.dashboard_gpa_rule_summary_suffix)
+
+        val evenOddSwitch = findPreference("list_preference_is_even_week")
+        evenOddSwitch.isEnabled =
+                sharedPreferences.getBoolean("list_preference_even_odd_filter", false)
+
+        evenOddSwitch.summary =
+                if (sharedPreferences.getBoolean(evenOddSwitch.key, false))
+                    getString(R.string.even_odd_filter_even_week)
+                else
+                    getString(R.string.even_odd_filter_odd_week)
+
+    }
+
     private fun initPreferences() {
+
+        updatePerferencesStatus(preferenceManager.sharedPreferences)
 
         (findPreference("list_preference_accent_color") as ColorChooserPreference)
                 .setColorChooserCallback(this)
-
-        val dashboardDisplay = (findPreference("list_preference_dashboard_display") as ListPreference)
-        dashboardDisplay.summary = activity!!.getString(R.string.dashboard_display_preference_summary_prefix) + dashboardDisplay.entry + activity!!.getString(R.string.dashboard_display_preference_summary_suffix)
-
-        val gpaRule = findPreference("list_preference_custom_gpa_calculate") as ListPreference
-        gpaRule.summary = getString(R.string.dashboard_gpa_rule_summary_prefix) + gpaRule.entry.toString().toLowerCase() + activity!!.getString(R.string.dashboard_gpa_rule_summary_suffix)
-
 
         findPreference("report_bug").onPreferenceClickListener = Preference.OnPreferenceClickListener {
             val uri = Uri.parse(getString(R.string.bug_report_email))
@@ -100,35 +116,25 @@ class SettingsFragment : PreferenceFragmentCompat(),
 
     private fun refreshPreferences(sharedPreferences: SharedPreferences?, key: String?) {
 
+        updatePerferencesStatus(sharedPreferences!!)
+
         when (key) {
-            "list_preference_dashboard_display" -> {
-                val dashboard_display = (findPreference("list_preference_dashboard_display") as ListPreference)
-                dashboard_display.summary = getString(R.string.dashboard_display_preference_summary_prefix) + dashboard_display.entry + activity!!.getString(R.string.dashboard_display_preference_summary_suffix)
-                utils.setSharedPreference(Utils.SettingsPreference, key, sharedPreferences!!.getString(key, "0")!!)
-            }
             "list_preference_language" -> {
-                utils.setSharedPreference(Utils.SettingsPreference, "lang", sharedPreferences!!.getString(key, "0")!!)
                 recreateMain()
             }
             "preference_enable_notification" -> {
-                val jobScheduler = activity!!.getSystemService(Context.JOB_SCHEDULER_SERVICE) as JobScheduler
-                if (!PreferenceManager.getDefaultSharedPreferences(activity!!.applicationContext).getBoolean("preference_enable_notification", true)) {
+                if (!sharedPreferences.getBoolean("preference_enable_notification", true)) {
+                    val jobScheduler = activity!!.getSystemService(Context.JOB_SCHEDULER_SERVICE) as JobScheduler
                     jobScheduler.cancelAll()
                 }
             }
-            "list_preference_custom_gpa_calculate" -> {
-                val gpaRule = findPreference(key) as ListPreference
-                gpaRule.summary = getString(R.string.dashboard_gpa_rule_summary_prefix) + gpaRule.entry.toString().toLowerCase() + activity!!.getString(R.string.dashboard_gpa_rule_summary_suffix)
-                utils.setSharedPreference(Utils.SettingsPreference, key,
-                        sharedPreferences!!.getString(key, "0")!!)
-            }
             "switch_preference_theme_dark" -> {
-                utils[Utils.THEME] = if ((findPreference(key) as SwitchPreference).isChecked) Utils.DARK else Utils.LIGHT
+                utils.setPreference(Utils.THEME, if ((findPreference(key) as SwitchPreference).isChecked) Utils.DARK else Utils.LIGHT)
                 recreateMain()
             }
             "preference_enable_advertisement" -> {
                 if(!utils.isDonated() && !utils.isEarlyDonators()
-                        && !sharedPreferences!!.getBoolean(key, true)){
+                        && !sharedPreferences.getBoolean(key, true)){
 
                     val builder = android.app.AlertDialog.Builder(activity)
                     builder.setTitle(getString(R.string.ad_donation_request))
@@ -154,7 +160,7 @@ class SettingsFragment : PreferenceFragmentCompat(),
                 .setTitle("choosetheme")
                 .setSingleChoiceItems(R.array.theme_array, selectIndex) { dialog1, which ->
                     dialog1.dismiss()
-                    utils[Utils.THEME] = valueList[which]
+                    utils.setPreference(Utils.THEME, valueList[which])
                     recreateMain()
                 }
                 .show()

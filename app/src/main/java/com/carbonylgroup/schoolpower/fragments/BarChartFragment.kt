@@ -2,7 +2,6 @@ package com.carbonylgroup.schoolpower.fragments
 
 import android.graphics.Color
 import android.os.Bundle
-import android.preference.PreferenceManager
 import android.support.v4.app.Fragment
 import android.support.v7.widget.CardView
 import android.view.LayoutInflater
@@ -91,7 +90,7 @@ class BarChartFragment : Fragment() {
             val group = ArrayList<BarEntry>()
 
             for (subject in gradedSubjects) {
-                if (!PreferenceManager.getDefaultSharedPreferences(activity!!.applicationContext)
+                if (!utils.getPreferences()
                                 .getBoolean("list_preference_dashboard_show_inactive", true)) {
                     val currentTime = System.currentTimeMillis()
                     val it = MainActivity.of(activity).subjects!!.find { it.name == subject.name }

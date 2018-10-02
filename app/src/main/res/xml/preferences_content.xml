@@ -44,6 +44,20 @@
             android:summary="@string/show_inactive_summary"
             android:title="@string/show_inactive_title" />
 
+        <SwitchPreference
+            android:defaultValue="false"
+            android:icon="@drawable/ic_smart_block_black_24dp"
+            android:key="list_preference_even_odd_filter"
+            android:title="@string/even_odd_filter_title"
+            android:summary="@string/even_odd_filter_summary" />
+
+        <SwitchPreference
+            android:enabled="false"
+            android:defaultValue="false"
+            android:icon="@drawable/ic_even_odd_week_black_24dp"
+            android:key="list_preference_is_even_week"
+            android:title="@string/even_odd_filter_switch_title"
+            android:summary="%s"/>
 
     </PreferenceCategory>
 
