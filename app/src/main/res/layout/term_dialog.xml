@@ -39,10 +39,10 @@
                 android:layout_marginBottom="20dp"
                 android:fontFamily="sans-serif-light"
                 android:maxLines="2"
-                android:text="Chinese Social Studies 11: Music"
                 android:textAppearance="@android:style/TextAppearance.Material.Title"
                 android:textColor="@color/white_0_20"
-                android:textSize="13sp" />
+                android:textSize="13sp"
+                tool:text="Chinese Social Studies 11: Music" />
 
             <TextView
                 android:id="@+id/term_name_tv"
@@ -53,7 +53,7 @@
                 android:layout_marginStart="20dp"
                 android:textColor="@color/white"
                 android:textSize="22sp"
-                android:text="S2" />
+                tool:text="S2" />
 
 
         </RelativeLayout>
@@ -86,7 +86,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="5dp"
-                        android:text="Evaluation"
+                        tool:text="Evaluation"
                         android:textColor="?android:textColorSecondary"
                         android:textSize="15sp" />
 
@@ -96,7 +96,7 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@id/term_eval_title_tv"
                         android:layout_marginBottom="5dp"
-                        android:text="Meet Expectation"
+                        tool:text="Meet Expectation"
                         android:textColor="?android:textColorPrimary"
                         android:textSize="15sp" />
 
@@ -126,7 +126,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="5dp"
-                        android:text="Comment"
+                        tool:text="Comment"
                         android:textColor="?android:textColorSecondary"
                         android:textSize="15sp" />
 
@@ -136,7 +136,7 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@id/term_comment_title_tv"
                         android:layout_marginBottom="5dp"
-                        android:text="Excellent progress to date. Attention to procederal details is contributing to the student's success in this course."
+                        tool:text="Excellent progress to date. Attention to procederal details is contributing to the student's success in this course."
                         android:textColor="?android:textColorPrimary"
                         android:textSize="15sp" />
 

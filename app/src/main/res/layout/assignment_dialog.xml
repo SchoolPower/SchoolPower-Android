@@ -16,7 +16,7 @@
         <RelativeLayout
             android:id="@+id/assignment_header_view"
             android:layout_width="match_parent"
-            android:layout_height="150dp"
+            android:layout_height="160dp"
             android:background="@color/A_score_green">
 
             <TextView
@@ -32,13 +32,24 @@
                 tool:text="100.00" />
 
             <TextView
+                android:id="@+id/assignment_category_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:layout_marginStart="20dp"
+                android:layout_alignParentBottom="true"
+                android:textColor="@color/white_0_20"
+                android:textSize="13sp"
+                tool:text="Category" />
+
+            <TextView
                 android:id="@+id/assignment_name_tv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_alignStart="@+id/assignment_date_tv"
-                android:layout_marginBottom="20dp"
+                android:layout_above="@id/assignment_category_tv"
                 android:layout_marginEnd="20dp"
+                android:layout_marginBottom="5dp"
+                android:layout_alignStart="@id/assignment_category_tv"
                 android:fontFamily="sans-serif-light"
                 android:maxLines="2"
                 android:textAppearance="@android:style/TextAppearance.Material.Title"
@@ -52,11 +63,10 @@
                 android:layout_height="wrap_content"
                 android:layout_above="@id/assignment_name_tv"
                 android:layout_marginBottom="5dp"
-                android:layout_marginStart="20dp"
+                android:layout_alignStart="@id/assignment_category_tv"
                 android:textColor="@color/white_0_20"
                 android:textSize="13sp"
                 tool:text="2018/01/03" />
-
 
         </RelativeLayout>
 

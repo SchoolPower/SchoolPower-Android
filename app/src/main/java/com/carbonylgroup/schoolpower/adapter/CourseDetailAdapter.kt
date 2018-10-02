@@ -150,6 +150,7 @@ class CourseDetailAdapter(private val context: Context, private val subject: Sub
         assignmentDialogView.findViewById<TextView>(R.id.assignment_percentage_grade_tv).text = assignmentItem.getPercentageString()
         assignmentDialogView.findViewById<TextView>(R.id.assignment_name_tv).text = assignmentItem.title
         assignmentDialogView.findViewById<TextView>(R.id.assignment_date_tv).text = assignmentItem.date
+        assignmentDialogView.findViewById<TextView>(R.id.assignment_category_tv).text = assignmentItem.category
         assignmentDialogView.findViewById<TextView>(R.id.assignment_score_body_tv).text = assignmentItem.getDividedScore()
         assignmentDialogView.findViewById<TextView>(R.id.assignment_weight_body_tv).text = assignmentItem.weight.toString()
 
