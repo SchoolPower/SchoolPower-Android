@@ -1,7 +1,6 @@
 package com.carbonylgroup.schoolpower.activities
 
 import android.graphics.Color
-import android.support.v4.content.ContextCompat
 import android.text.Editable
 import android.text.TextWatcher
 import android.widget.EditText
@@ -9,7 +8,6 @@ import android.widget.TextView
 import com.carbonylgroup.schoolpower.R
 import com.carbonylgroup.schoolpower.data.CategoryWeightData
 import com.carbonylgroup.schoolpower.data.Subject
-import com.carbonylgroup.schoolpower.utils.PieRadarChart.PieRadarChart
 import com.carbonylgroup.schoolpower.utils.Utils
 import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.data.PieData
@@ -23,24 +21,25 @@ import java.util.*
 class CategoryActivity : BaseActivity() {
 
     private lateinit var categoriesWeights: CategoryWeightData
+    private lateinit var utils : Utils
 
     override fun initActivity() {
         super.initActivity()
         setContentView(R.layout.activity_category)
         setSupportActionBar(toolbar)
 
-        initCategories()
-        initChart()
-    }
-
-    private fun initCategories() {
-        val utils = Utils(this)
+        utils = Utils(this)
         categoriesWeights = CategoryWeightData(utils)
 
         val subject = intent.getSerializableExtra("subject") as Subject
+        initChart(subject)
+    }
+
+    private fun initChart(subject: Subject) {
 
         val name = subject.getLatestTermName(utils)
         val grade = subject.grades[name]!!
+
         if(name!=null) {
             supportActionBar!!.title = "$name %.2f%%".format(
                     grade.calculatedGrade.getEstimatedPercentageGrade()*100)
@@ -48,8 +47,9 @@ class CategoryActivity : BaseActivity() {
 
         var text = ""
         for ((cname, cate) in grade.calculatedGrade.categories){
-            text += "\n$cname ${cate.score}/${cate.maxScore} (%.2f%%) weight ${cate.weight}"
-                    .format(cate.getPercentage()*100)
+            text += ("\n$cname ${cate.score}/${cate.maxScore} (%.2f%%) weight ${cate.weight} " +
+                    "Contributing a loss of %.2f%%")
+                    .format(cate.getPercentage()*100, cate.weight*(1-cate.getPercentage()))
         }
         cates.text = text
 
@@ -81,27 +81,30 @@ class CategoryActivity : BaseActivity() {
             categoryContainer.addView(edit)
 
         }
-    }
 
-    private fun initChart() {
         val entries = ArrayList<PieEntry>()
         val percentages = ArrayList<android.util.Pair<Float, Float>>()
         val colors = ArrayList<Int>()
-        entries.add(PieEntry(95f, "rabbit"))
-        entries.add(PieEntry(5f, "rabbit"))
-        percentages.add(android.util.Pair(95f, 100f))
-        percentages.add(android.util.Pair(20f, 100f))
-        colors.add(ContextCompat.getColor(this, R.color.material_purple_500))
-        colors.add(ContextCompat.getColor(this, R.color.material_teal_500))
-        setData(entries, percentages, colors)
+        var count = 0
+        for ((cname, cate) in grade.calculatedGrade.categories){
+            entries.add(PieEntry(cate.weight.toFloat(), cname))
+            percentages.add(android.util.Pair(cate.score.toFloat(), cate.maxScore.toFloat()))
+            colors.add(Color.parseColor(Utils.chartColorList[count++]))
+        }
+        setRadarPieChartData(entries, percentages, colors)
+
+        val entries2 = ArrayList<PieEntry>()
+        for ((cname, cate) in grade.calculatedGrade.categories){
+            entries2.add(PieEntry((cate.weight * (1.0f - cate.getPercentage())).toFloat(), cname))
+        }
+        setPieChartData(entries2, colors)
     }
 
-    private fun setData(entries: ArrayList<PieEntry>,
+    private fun setRadarPieChartData(entries: ArrayList<PieEntry>,
                         percentages: ArrayList<android.util.Pair<Float, Float>>,
                         colors: ArrayList<Int>) {
 
-        val primaryColor = Utils(this).getPrimaryTextColor()
-        val pieRadarChart = findViewById<PieRadarChart>(R.id.prc)!!
+        val primaryColor = utils.getPrimaryTextColor()
         pieRadarChart.rotationAngle = 0f
         pieRadarChart.isRotationEnabled = true
         pieRadarChart.isDrawHoleEnabled = false
@@ -115,10 +118,9 @@ class CategoryActivity : BaseActivity() {
         pieRadarChart.setEntryLabelColor(primaryColor)
         pieRadarChart.setEntryInnerLabelColor(Color.WHITE)
         pieRadarChart.setTransparentCircleColor(Color.WHITE)
-        pieRadarChart.setExtraOffsets(5f, 10f, 5f, 5f)
-        pieRadarChart.setExtraOffsets(20f, 0f, 20f, 0f)
+        pieRadarChart.setExtraOffsets(15f, 0f, 15f, 0f)
 
-        val dataSet = PieDataSet(entries, "Election Results")
+        val dataSet = PieDataSet(entries, "Categories")
         dataSet.colors = colors
         dataSet.sliceSpace = 3f
         dataSet.selectionShift = 5f
@@ -138,6 +140,47 @@ class CategoryActivity : BaseActivity() {
         pieRadarChart.invalidate()
         pieRadarChart.highlightValues(null)
         pieRadarChart.setDrawRadiiPairs(percentages)
-        pieRadarChart.animateY(1400, Easing.EasingOption.EaseInOutCubic)
+        pieRadarChart.animateY(1200, Easing.EasingOption.EaseInOutCubic)
+    }
+
+
+    private fun setPieChartData(entries: ArrayList<PieEntry>,
+                                     colors: ArrayList<Int>) {
+
+        val primaryColor = utils.getPrimaryTextColor()
+        pieChart.rotationAngle = 0f
+        pieChart.isRotationEnabled = true
+        pieChart.isDrawHoleEnabled = false
+        pieChart.description.isEnabled = false
+        pieChart.transparentCircleRadius = 61f
+        pieChart.isHighlightPerTapEnabled = false
+        pieChart.dragDecelerationFrictionCoef = 0.95f
+        pieChart.setUsePercentValues(true)
+        pieChart.setEntryLabelTextSize(11f)
+        pieChart.setTransparentCircleAlpha(110)
+        pieChart.setEntryLabelColor(primaryColor)
+        pieChart.setTransparentCircleColor(Color.WHITE)
+        pieChart.setExtraOffsets(5f, 5f, 5f, 5f)
+
+        val dataSet = PieDataSet(entries, "Categories")
+        dataSet.colors = colors
+        dataSet.sliceSpace = 3f
+        dataSet.selectionShift = 5f
+        dataSet.valueLinePart1Length = .4f
+        dataSet.valueLinePart2Length = .7f
+        dataSet.valueLineColor = primaryColor
+        dataSet.valueTextColor = primaryColor
+        dataSet.valueLinePart1OffsetPercentage = 80f
+        dataSet.xValuePosition = PieDataSet.ValuePosition.INSIDE_SLICE
+        dataSet.yValuePosition = PieDataSet.ValuePosition.INSIDE_SLICE
+
+        val data = PieData(dataSet)
+        data.setValueFormatter(PercentFormatter())
+        data.setValueTextSize(11f)
+        pieChart.data = data
+        pieChart.legend.isEnabled = false
+        pieChart.invalidate()
+        pieChart.highlightValues(null)
+        pieChart.animateY(1200, Easing.EasingOption.EaseInOutCubic)
     }
 }

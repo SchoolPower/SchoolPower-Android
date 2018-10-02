@@ -77,7 +77,7 @@ class DashboardFragment : TransitionHelper.BaseFragment() {
 
     private fun initValue() {
         if (activity == null) return
-        utils = Utils(MainActivity.of(activity))
+        utils = Utils(activity!!)
         subjects = MainActivity.of(activity).subjects
         allILDs = arrayListOf()
 //        MainActivity.of(activity).presentFragment = 0

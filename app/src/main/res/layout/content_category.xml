@@ -33,7 +33,7 @@
                     tools:text="Weight Proportion Overview"/>
 
                 <com.carbonylgroup.schoolpower.utils.PieRadarChart.PieRadarChart
-                    android:id="@+id/prc"
+                    android:id="@+id/pieRadarChart"
                     android:layout_width="match_parent"
                     android:layout_height="500dp" />
 
@@ -47,8 +47,8 @@
             android:layout_margin="8dp"
             app:cardUseCompatPadding="true">
 
-            <com.carbonylgroup.schoolpower.utils.PieRadarChart.PieRadarChart
-                android:id="@+id/rmb"
+            <com.github.mikephil.charting.charts.PieChart
+                android:id="@+id/pieChart"
                 android:layout_width="match_parent"
                 android:layout_height="500dp" />
 
