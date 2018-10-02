@@ -16,7 +16,7 @@
         <RelativeLayout
             android:id="@+id/assignment_header_view"
             android:layout_width="match_parent"
-            android:layout_height="160dp"
+            android:layout_height="170dp"
             android:background="@color/A_score_green">
 
             <TextView
