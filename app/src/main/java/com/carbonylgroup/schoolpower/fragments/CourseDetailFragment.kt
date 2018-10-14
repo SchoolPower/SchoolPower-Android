@@ -16,6 +16,7 @@ import android.widget.TextView
 import com.carbonylgroup.schoolpower.R
 import com.carbonylgroup.schoolpower.activities.MainActivity
 import com.carbonylgroup.schoolpower.adapter.CourseDetailAdapter
+import com.carbonylgroup.schoolpower.data.AssignmentItem
 import com.carbonylgroup.schoolpower.data.Subject
 import com.carbonylgroup.schoolpower.transition.TransitionHelper
 import com.carbonylgroup.schoolpower.utils.Utils
@@ -59,7 +60,24 @@ class CourseDetailFragment : TransitionHelper.BaseFragment() {
             }
             view.findViewById<TextView>(R.id.detail_subject_title_tv).text = itemToPresent.name
             courseDetailRecycler.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
-            courseDetailRecycler.adapter = CourseDetailAdapter(activity as TransitionHelper.MainActivity, dataList!![transformedPosition])
+
+            // Init adapter
+            val subject = dataList!![transformedPosition]
+            var termsList = ArrayList<String>()
+            val allTerm = getString(R.string.all_terms)
+            subject.grades.keys.mapTo(termsList) { it }
+            termsList = utils.sortTerm(termsList)
+            termsList.add(0, allTerm)
+
+            courseDetailRecycler.adapter = CourseDetailAdapter(context!!, subject, true, termsList,
+                fun(assignments:List<AssignmentItem>, filter:String):List<AssignmentItem>{
+                    return if (filter == allTerm) {
+                        assignments
+                    } else {
+                        assignments.filter { it.terms.contains(filter) }
+                    }
+                }
+            )
         }
     }
 

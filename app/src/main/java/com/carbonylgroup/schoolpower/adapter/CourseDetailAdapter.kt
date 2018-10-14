@@ -10,6 +10,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.support.v4.content.ContextCompat
+import android.support.v7.widget.CardView
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -26,22 +27,22 @@ import kotterknife.bindView
 import java.util.*
 
 @SuppressLint("ClickableViewAccessibility")
-class CourseDetailAdapter(private val context: Context, private val subject: Subject) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class CourseDetailAdapter(private val context: Context, private val subject: Subject, private val showHeader: Boolean,
+                          private val filterList: List<String>,
+                          private val filter: (List<AssignmentItem>, String)->List<AssignmentItem>)
+    : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var presentingTermPos = 0
     private val utils: Utils = Utils(context)
-    private var termsList: ArrayList<String> = ArrayList()
     private var list: ArrayList<AssignmentItem>? = null
 
-    init {
-        initTermList()
-        setAllTerms()
+    init{
+        filterList(filterList[0])
     }
 
-    private fun initTermList() {
-        subject.grades.keys.mapTo(termsList) { it }
-        termsList = utils.sortTerm(termsList)
-        termsList.add(0, context.getString(R.string.all_terms))
+    private fun filterList(filterStr: String){
+        list = ArrayList(filter(subject.assignments, filterStr))
+        list!!.sortWith(Comparator { o1, o2 -> o2.date.compareTo(o1.date) })
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -55,33 +56,29 @@ class CourseDetailAdapter(private val context: Context, private val subject: Sub
 
         if (holder is NormalViewHolder) {
 
-            val normalViewHolder = holder
-
-            list!!.sortWith(Comparator { o1, o2 -> o2.date.compareTo(o1.date) })
-
             val assignmentItem = list!![position - 1]
-            normalViewHolder.detail_assignment_name_tv.text = assignmentItem.title
-            normalViewHolder.detail_assignment_date_tv.text = assignmentItem.date
-            normalViewHolder.detail_assignment_percentage_tv.text = assignmentItem.getPercentageString()
-            normalViewHolder.detail_assignment_dividing_score_tv.text = assignmentItem.getDividedScore()
-            normalViewHolder.detail_assignment_flag_rv.adapter = DetailAssignmentFlagAdapter(context, assignmentItem)
-            normalViewHolder.detail_assignment_grade_background.setBackgroundColor(utils.getColorByLetterGrade(assignmentItem.letterGrade))
-            normalViewHolder.detail_assignment_flag_rv.layoutManager =
+            holder.detail_assignment_name_tv.text = assignmentItem.title
+            holder.detail_assignment_date_tv.text = assignmentItem.date
+            holder.detail_assignment_percentage_tv.text = assignmentItem.getPercentageString()
+            holder.detail_assignment_dividing_score_tv.text = assignmentItem.getDividedScore()
+            holder.detail_assignment_flag_rv.adapter = DetailAssignmentFlagAdapter(context, assignmentItem)
+            holder.detail_assignment_grade_background.setBackgroundColor(utils.getColorByLetterGrade(assignmentItem.letterGrade))
+            holder.detail_assignment_flag_rv.layoutManager =
                     LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
 
             if (assignmentItem.isNew) {
-                normalViewHolder.detail_header_background.setBackgroundColor(utils.getAccentColor())
-                normalViewHolder.detail_assignment_name_tv.setTextColor(ContextCompat.getColor(context, R.color.white))
-                normalViewHolder.detail_assignment_date_tv.setTextColor(ContextCompat.getColor(context, R.color.white_0_20))
+                holder.detail_header_background.setBackgroundColor(utils.getAccentColor())
+                holder.detail_assignment_name_tv.setTextColor(ContextCompat.getColor(context, R.color.white))
+                holder.detail_assignment_date_tv.setTextColor(ContextCompat.getColor(context, R.color.white_0_20))
             } else {
-                normalViewHolder.detail_header_background.setBackgroundColor(utils.getCardBackground())
-                normalViewHolder.detail_assignment_name_tv.setTextColor(utils.getPrimaryTextColor())
-                normalViewHolder.detail_assignment_date_tv.setTextColor(utils.getSecondaryTextColor())
+                holder.detail_header_background.setBackgroundColor(utils.getCardBackground())
+                holder.detail_assignment_name_tv.setTextColor(utils.getPrimaryTextColor())
+                holder.detail_assignment_date_tv.setTextColor(utils.getSecondaryTextColor())
             }
-            normalViewHolder.detail_header_background.setOnClickListener {
+            holder.detail_header_background.setOnClickListener {
                 showAssignmentDialog(assignmentItem)
             }
-            normalViewHolder.detail_assignment_flag_rv.setOnTouchListener { view, motionEvent ->
+            holder.detail_assignment_flag_rv.setOnTouchListener { _, motionEvent ->
                 if (motionEvent.action == MotionEvent.ACTION_UP)
                     showAssignmentDialog(assignmentItem)
                 false
@@ -89,39 +86,44 @@ class CourseDetailAdapter(private val context: Context, private val subject: Sub
 
         } else if (holder is HeaderViewHolder) {
 
-            val termAdapter = ArrayAdapter(context, R.layout.term_selection_spinner, termsList)
-            val period = utils.getLatestTermGrade(subject)
-
-            holder.detail_letter_grade_tv.text = period?.letter ?: "--"
-            holder.detail_percentage_grade_tv.text = period?.getPercentageString() ?: "--"
-            holder.detail_header_teacher_name_tv.text = subject.teacherName
-            holder.detail_header_block_tv.text = context.getString(R.string.block) + " " + subject.blockLetter
-            holder.detail_header_room_tv.text = context.getString(R.string.room) + " " + subject.roomNumber
-            holder.detail_header_grade_background.setBackgroundColor(utils.getColorByLetterGrade(period?.letter ?: "--"))
+            val termAdapter = ArrayAdapter(context, R.layout.term_selection_spinner, filterList)
             holder.detail_term_select_spinner.adapter = termAdapter
             holder.detail_term_select_spinner.setSelection(presentingTermPos)
             holder.detail_term_select_spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(parent: AdapterView<*>, view: View, pos: Int, id: Long) {
-                    val selectItem = termsList[pos]
                     if (pos != presentingTermPos) {
                         presentingTermPos = pos
-                        if (selectItem == context.getString(R.string.all_terms)) setAllTerms()
-                        else setTerm(selectItem)
+                        filterList(filterList[pos])
                         refreshAdapter()
                     }
                 }
 
                 override fun onNothingSelected(parent: AdapterView<*>) {}
             }
-            if (subject.teacherEmail == "null") {
-                holder.detail_header_email.visibility = GONE
-            } else {
-                holder.detail_header_email.setOnClickListener {
-                    val uri = Uri.parse("mailto:" + subject.teacherEmail)
-                    val intent = Intent(Intent.ACTION_SENDTO, uri)
-                    context.startActivity(Intent.createChooser(intent, context.getString(R.string.choose_email_app)))
+
+            if(showHeader){
+                val period = utils.getLatestTermGrade(subject)
+
+                holder.detail_letter_grade_tv.text = period?.letter ?: "--"
+                holder.detail_percentage_grade_tv.text = period?.getPercentageString() ?: "--"
+                holder.detail_header_teacher_name_tv.text = subject.teacherName
+                holder.detail_header_block_tv.text = context.getString(R.string.block) + " " + subject.blockLetter
+                holder.detail_header_room_tv.text = context.getString(R.string.room) + " " + subject.roomNumber
+                holder.detail_header_grade_background.setBackgroundColor(utils.getColorByLetterGrade(period?.letter ?: "--"))
+
+                if (subject.teacherEmail == "null") {
+                    holder.detail_header_email.visibility = GONE
+                } else {
+                    holder.detail_header_email.setOnClickListener {
+                        val uri = Uri.parse("mailto:" + subject.teacherEmail)
+                        val intent = Intent(Intent.ACTION_SENDTO, uri)
+                        context.startActivity(Intent.createChooser(intent, context.getString(R.string.choose_email_app)))
+                    }
                 }
+            }else{
+                holder.detail_header_heading_card.visibility = GONE
             }
+
         }
     }
 
@@ -179,6 +181,7 @@ class CourseDetailAdapter(private val context: Context, private val subject: Sub
         val detail_header_room_tv: TextView by bindView(R.id.detail_header_room_tv)
         val detail_header_grade_background: RelativeLayout by bindView(R.id.detail_header_grade_background)
         val detail_term_select_spinner: Spinner by bindView(R.id.detail_term_select_spinner)
+        val detail_header_heading_card: CardView by bindView(R.id.heading_card)
     }
 
     inner class NormalViewHolder(itemView: View) : ViewHolder(itemView) {
@@ -193,21 +196,6 @@ class CourseDetailAdapter(private val context: Context, private val subject: Sub
 
     private fun refreshAdapter() {
         this.notifyDataSetChanged()
-    }
-
-    private fun setTerm(term: String) {
-        if (term == "ANY") {
-            list = subject.assignments
-        } else {
-            list = ArrayList()
-            subject.assignments
-                    .filter { it.terms.contains(term) }
-                    .forEach { list!!.add(it) }
-        }
-    }
-
-    private fun setAllTerms() {
-        setTerm("ANY")
     }
 
     companion object {

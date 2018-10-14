@@ -1,11 +1,14 @@
 package com.carbonylgroup.schoolpower.activities
 
 import android.graphics.Color
+import android.support.v7.widget.LinearLayoutManager
 import android.text.Editable
 import android.text.TextWatcher
 import android.widget.EditText
 import android.widget.TextView
 import com.carbonylgroup.schoolpower.R
+import com.carbonylgroup.schoolpower.adapter.CourseDetailAdapter
+import com.carbonylgroup.schoolpower.data.AssignmentItem
 import com.carbonylgroup.schoolpower.data.CategoryWeightData
 import com.carbonylgroup.schoolpower.data.Subject
 import com.carbonylgroup.schoolpower.utils.Utils
@@ -33,6 +36,20 @@ class CategoryActivity : BaseActivity() {
 
         val subject = intent.getSerializableExtra("subject") as Subject
         initChart(subject)
+        initRecycler(subject)
+    }
+
+    private fun initRecycler(subject: Subject) {
+
+        assignmentsRecycler.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+
+        val categories = subject.grades[subject.getLatestTermName(utils)]!!.calculatedGrade.categories.keys.toList()
+
+        assignmentsRecycler.adapter = CourseDetailAdapter(this, subject, false, categories,
+                fun(assignments:List<AssignmentItem>, filter:String):List<AssignmentItem> {
+                    return assignments.filter { it.category == filter }
+                }
+        )
     }
 
     private fun initChart(subject: Subject) {

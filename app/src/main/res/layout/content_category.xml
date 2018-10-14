@@ -59,5 +59,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/text_margin" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/assignmentsRecycler"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layoutAnimation="@anim/layout_swipe_in">
+        </android.support.v7.widget.RecyclerView>
+
     </LinearLayout>
 </android.support.v4.widget.NestedScrollView>
