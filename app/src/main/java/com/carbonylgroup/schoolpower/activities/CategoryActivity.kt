@@ -32,12 +32,17 @@ class CategoryActivity : BaseActivity() {
         categoriesWeights = CategoryWeightData(utils)
 
         val subject = intent.getSerializableExtra("subject") as Subject
+        subject.recalculateGrades(categoriesWeights)
         initChart(subject)
         initRecycler(subject)
 
         fab.setOnClickListener {
             CategorySettingsDialog(this, categoriesWeights, subject,
-                    subject.grades[subject.getLatestTermName(utils)]!!).show()
+                    subject.grades[subject.getLatestTermName(utils)]!!) {
+                categoriesWeights = CategoryWeightData(utils)
+                subject.recalculateGrades(categoriesWeights)
+                initChart(subject)
+            }.show()
         }
     }
 
@@ -60,7 +65,7 @@ class CategoryActivity : BaseActivity() {
         val grade = subject.grades[name]!!
 
         if(name!=null) {
-            supportActionBar!!.title = "$name %.2f%%".format(
+            toolbar_layout.title = "$name %.2f%%".format(
                     grade.calculatedGrade.getEstimatedPercentageGrade()*100)
         }
 

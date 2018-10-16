@@ -14,7 +14,8 @@ import com.carbonylgroup.schoolpower.data.Grade
 import com.carbonylgroup.schoolpower.data.Subject
 
 class CategorySettingsDialog(private val activity: Activity, private val categoryWeights: CategoryWeightData,
-                             private val subject: Subject, private val grade: Grade) {
+                             private val subject: Subject, private val grade: Grade,
+                             private val refreshCallback: ()->Unit) {
 
     fun show() {
         constructView()
@@ -35,7 +36,6 @@ class CategorySettingsDialog(private val activity: Activity, private val categor
             edit.addTextChangedListener(object : TextWatcher {
                 override fun afterTextChanged(s: Editable) {
                     categoryWeights.setWeight(cname, subject, s.toString().toDoubleOrNull()?:return)
-                    categoryWeights.flush()
                     //subject.recalculateGrades(categoriesWeights)
                 }
 
@@ -55,7 +55,10 @@ class CategorySettingsDialog(private val activity: Activity, private val categor
         val gpaDialogBuilder = AlertDialog.Builder(activity)
         gpaDialogBuilder.setView(dialog)
         gpaDialogBuilder.setTitle("GPA")
-        gpaDialogBuilder.setPositiveButton(activity.getString(R.string.sweet), null)
+        gpaDialogBuilder.setPositiveButton(activity.getString(R.string.sweet)) { _, _ ->
+            categoryWeights.flush()
+            refreshCallback()
+        }
         gpaDialogBuilder.create().setCanceledOnTouchOutside(true)
         gpaDialogBuilder.create().show()
     }
