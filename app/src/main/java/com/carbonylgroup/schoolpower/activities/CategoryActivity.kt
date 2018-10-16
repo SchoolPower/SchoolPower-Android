@@ -2,15 +2,12 @@ package com.carbonylgroup.schoolpower.activities
 
 import android.graphics.Color
 import android.support.v7.widget.LinearLayoutManager
-import android.text.Editable
-import android.text.TextWatcher
-import android.widget.EditText
-import android.widget.TextView
 import com.carbonylgroup.schoolpower.R
 import com.carbonylgroup.schoolpower.adapter.CourseDetailAdapter
 import com.carbonylgroup.schoolpower.data.AssignmentItem
 import com.carbonylgroup.schoolpower.data.CategoryWeightData
 import com.carbonylgroup.schoolpower.data.Subject
+import com.carbonylgroup.schoolpower.utils.CategorySettingsDialog
 import com.carbonylgroup.schoolpower.utils.Utils
 import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.data.PieData
@@ -37,6 +34,11 @@ class CategoryActivity : BaseActivity() {
         val subject = intent.getSerializableExtra("subject") as Subject
         initChart(subject)
         initRecycler(subject)
+
+        fab.setOnClickListener {
+            CategorySettingsDialog(this, categoriesWeights, subject,
+                    subject.grades[subject.getLatestTermName(utils)]!!).show()
+        }
     }
 
     private fun initRecycler(subject: Subject) {
@@ -62,6 +64,7 @@ class CategoryActivity : BaseActivity() {
                     grade.calculatedGrade.getEstimatedPercentageGrade()*100)
         }
 
+        /*
         var text = ""
         for ((cname, cate) in grade.calculatedGrade.categories){
             text += ("\n$cname ${cate.score}/${cate.maxScore} (%.2f%%) weight ${cate.weight} " +
@@ -69,35 +72,7 @@ class CategoryActivity : BaseActivity() {
                     .format(cate.getPercentage()*100, cate.weight*(1-cate.getPercentage()))
         }
         cates.text = text
-
-        val categories = grade.calculatedGrade.categories
-        val weightLabel = arrayOfNulls<TextView>(categories.size)
-        val weightEdit = arrayOfNulls<EditText>(categories.size)
-
-        for ((cname, cate) in grade.calculatedGrade.categories){
-            val label = TextView(this)
-            val edit = EditText(this)
-
-            label.text = cname
-            edit.setText(cate.weight.toString())
-            edit.addTextChangedListener(object : TextWatcher {
-                override fun afterTextChanged(s: Editable) {
-                    categoriesWeights.setWeight(cname, subject, s.toString().toDoubleOrNull()?:return)
-                    categoriesWeights.flush()
-                    subject.recalculateGrades(categoriesWeights)
-                }
-
-                override fun beforeTextChanged(s: CharSequence, start: Int,
-                                               count: Int, after: Int) {}
-
-                override fun onTextChanged(s: CharSequence, start: Int,
-                                           before: Int, count: Int) {}
-            })
-
-            categoryContainer.addView(label)
-            categoryContainer.addView(edit)
-
-        }
+        */
 
         val entries = ArrayList<PieEntry>()
         val percentages = ArrayList<android.util.Pair<Float, Float>>()
