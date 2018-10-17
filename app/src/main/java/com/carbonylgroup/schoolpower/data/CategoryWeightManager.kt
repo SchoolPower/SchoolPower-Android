@@ -14,7 +14,7 @@ import org.json.JSONObject
  * }
  */
 class CategoryWeightData(val utils: Utils){
-    var json = JSONObject(utils.getSharedPreference(Utils.CategoryWeightData)
+    var json = JSONObject(utils.getPreferences(Utils.CategoryWeightData)
             .getString("category_data", "{}"))
 
     fun getWeight(category: String, subject: Subject): Double?{
@@ -31,6 +31,6 @@ class CategoryWeightData(val utils: Utils){
     }
 
     fun flush() {
-        utils.setSharedPreference(Utils.CategoryWeightData, "category_data", json.toString())
+        utils.setPreference("category_data", json.toString(), Utils.CategoryWeightData)
     }
 }

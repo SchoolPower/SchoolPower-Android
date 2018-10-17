@@ -1,8 +1,6 @@
 package com.carbonylgroup.schoolpower.fragments
 
-import android.app.Activity
 import android.content.Intent
-import android.content.res.Resources
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -12,8 +10,6 @@ import android.view.ViewGroup
 import android.widget.TextView
 import com.carbonylgroup.schoolpower.R
 import com.carbonylgroup.schoolpower.activities.MainActivity
-import com.carbonylgroup.schoolpower.activities.SettingsActivity
-import com.carbonylgroup.schoolpower.utils.ThemeHelper
 import com.carbonylgroup.schoolpower.utils.Utils
 import com.mikepenz.aboutlibraries.LibsBuilder
 
@@ -25,16 +21,15 @@ class AboutFragment : Fragment() {
 
         val view = inflater.inflate(R.layout.about_content, container, false)
         MainActivity.of(activity).expandToolBar(true, true)
-        utils = Utils(activity as MainActivity)
+        utils = Utils(activity!!)
 
         (view.findViewById<View>(R.id.about_version_label) as TextView).text = activity!!.packageManager.getPackageInfo(activity!!.packageName, 0).versionName
 
         view.findViewById<View>(R.id.about_version_cell).setOnLongClickListener {
-            val pref = activity!!.getSharedPreferences(Utils.TmpData, Activity.MODE_PRIVATE)
-            val spEditor = pref.edit()
-            spEditor.putBoolean("developer_mode", !pref.getBoolean("developer_mode", false))
-            spEditor.apply()
-            utils.showSnackBar(view.findViewById(R.id.about_content_parent), "Developer Mode: " + pref.getBoolean("developer_mode", false).toString(), false)
+            val devMode = !utils.getPreferences(Utils.TmpData)
+                    .getBoolean("developer_mode", false)
+            utils.setPreference("developer_mode", devMode, Utils.TmpData)
+            utils.showSnackBar(view.findViewById(R.id.about_content_parent), "Developer Mode: " + devMode.toString(), false)
             true
         }
 

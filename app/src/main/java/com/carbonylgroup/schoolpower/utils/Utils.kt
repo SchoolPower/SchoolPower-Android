@@ -37,11 +37,6 @@ import kotlin.collections.HashSet
 
 class Utils(private val context: Context) {
 
-    val THEME = "appTheme"
-    val ACCENT_COLOR = "accentColor"
-    val LIGHT = "LIGHT"
-    val DARK = "DARK"
-
     val localeSet = arrayListOf(
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 Resources.getSystem().configuration.locales[0]
@@ -51,39 +46,6 @@ class Utils(private val context: Context) {
             Locale.ENGLISH,
             Locale.TRADITIONAL_CHINESE,
             Locale.SIMPLIFIED_CHINESE)
-
-    private val gradeColorIds = intArrayOf(
-            R.color.A_score_green,
-            R.color.B_score_green,
-            R.color.Cp_score_yellow,
-            R.color.C_score_orange,
-            R.color.Cm_score_red,
-            R.color.primary_dark,
-            R.color.primary,
-            R.color.primary
-    )
-
-    private val gradeColorIdsPlain = intArrayOf(
-            R.color.A_score_green,
-            R.color.B_score_green,
-            R.color.Cp_score_yellow,
-            R.color.C_score_orange,
-            R.color.Cm_score_red,
-            R.color.primary_dark,
-            R.color.primary,
-            R.color.dark_color_primary
-    )
-
-    private val gradeDarkColorIdsPlain = intArrayOf(
-            R.color.A_score_green_dark,
-            R.color.B_score_green_dark,
-            R.color.Cp_score_yellow_dark,
-            R.color.C_score_orange_dark,
-            R.color.Cm_score_red_dark,
-            R.color.primary_darker,
-            R.color.primary_dark,
-            R.color.dark_color_primary_dark
-    )
 
     private val attendanceColorIds = mapOf(
             "A" to R.color.primary_dark,
@@ -115,19 +77,48 @@ class Utils(private val context: Context) {
             "N" to "Not Yet Meeting Expectations"
     )
 
+    fun getAssignmentFlag(key: String): Pair<Int, String> {
+
+        val icon: Int
+        val descrip: String
+
+        when (key) {
+            "collected" -> {
+                icon = R.drawable.ic_check_box_white_24dp
+                descrip = context.getString(R.string.collected)
+            }
+            "late" -> {
+                icon = R.drawable.ic_late_white_24dp
+                descrip = context.getString(R.string.late)
+            }
+            "missing" -> {
+                icon = R.drawable.ic_missing_white_24dp
+                descrip = context.getString(R.string.missing)
+            }
+            "exempt" -> {
+                icon = R.drawable.ic_exempt_white_24dp
+                descrip = context.getString(R.string.exempt)
+            }
+            "excludeInFinalGrade" -> {
+                icon = R.drawable.ic_exclude_white_24dp
+                descrip = context.getString(R.string.not_include_in_final)
+            }
+            else -> {
+                icon = R.drawable.ic_info_black_24dp
+                descrip = context.getString(R.string.unknown_flag)
+            }
+        }
+        return Pair(icon, descrip)
+    }
+
     private fun indexOfString(searchString: String, domain: Array<String>):
             Int = domain.indices.firstOrNull { searchString == domain[it] } ?: -1
 
-
-    private fun getDefaultSp(context: Context): SharedPreferences {
-        return PreferenceManager.getDefaultSharedPreferences(context)
-    }
-
     fun getTheme(): String {
-        return getDefaultSp(context).getString(THEME, LIGHT)!!
+        return getPreferences().getString(THEME, LIGHT)!!
     }
 
-    fun getAccentColorIndex() = getDefaultSp(context).getInt(ACCENT_COLOR,
+    fun getAccentColorIndex() = getPreferences().getInt(ACCENT_COLOR,
             ThemeHelper(context).lightArray.indexOf(R.style.ThemeLight_Cyan_500)
     )
 
@@ -173,23 +164,6 @@ class Utils(private val context: Context) {
         return color
     }
 
-    operator fun set(key: String, value: Any) {
-        if (StringUtils.isBlank(key)) {
-            throw NullPointerException(String.format("Key and value not be null key=%s, value=%s", key, value))
-        }
-        val edit = getDefaultSp(context).edit()
-        when (value) {
-            is String -> edit.putString(key, value)
-            is Int -> edit.putInt(key, value)
-            is Long -> edit.putLong(key, value)
-            is Boolean -> edit.putBoolean(key, value)
-            is Float -> edit.putFloat(key, value)
-            is Set<*> -> edit.putStringSet(key, value as Set<String>)
-            else -> throw IllegalArgumentException(String.format("Type of value unsupported key=%s, value=%s", key, value))
-        }
-        edit.apply()
-    }
-
     /* Color Handler */
     fun getColorByLetterGrade(letterGrade: String): Int {
         val colorIndex = indexOfString(letterGrade, arrayOf("A", "B", "C+", "C", "C-", "F", "I", "--"))
@@ -204,44 +178,10 @@ class Utils(private val context: Context) {
 
     /* Others */
     fun isDeveloperMode(): Boolean {
-        return getSharedPreference(TmpData).getBoolean("developer_mode", false)
+        return getPreferences(TmpData).getBoolean("developer_mode", false)
     }
 
     fun dpToPx(dp: Int) = Math.round(dp * (context.resources.displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT))
-
-    fun getAssignmentFlag(key: String): Pair<Int, String> {
-
-        val icon: Int
-        val descrip: String
-
-        when (key) {
-            "collected" -> {
-                icon = R.drawable.ic_check_box_white_24dp
-                descrip = context.getString(R.string.collected)
-            }
-            "late" -> {
-                icon = R.drawable.ic_late_white_24dp
-                descrip = context.getString(R.string.late)
-            }
-            "missing" -> {
-                icon = R.drawable.ic_missing_white_24dp
-                descrip = context.getString(R.string.missing)
-            }
-            "exempt" -> {
-                icon = R.drawable.ic_exempt_white_24dp
-                descrip = context.getString(R.string.exempt)
-            }
-            "excludeInFinalGrade" -> {
-                icon = R.drawable.ic_exclude_white_24dp
-                descrip = context.getString(R.string.not_include_in_final)
-            }
-            else -> {
-                icon = R.drawable.ic_info_black_24dp
-                descrip = context.getString(R.string.unknown_flag)
-            }
-        }
-        return Pair(icon, descrip)
-    }
 
     fun sortTerm(terms: ArrayList<String>): ArrayList<String> {
         val sortableTerms = arrayListOf<SortableTerm>()
@@ -296,7 +236,7 @@ class Utils(private val context: Context) {
 
     fun getLatestTermName(grades: Map<String, Grade>, forceLastTerm: Boolean = false): String? {
         val termsList = grades.keys
-        val forLatestSemester = getSharedPreference(SettingsPreference)
+        val forLatestSemester = getPreferences()
                 .getString("list_preference_dashboard_display", "0") == "1"
 
         if (forLatestSemester && !forceLastTerm) {
@@ -353,31 +293,25 @@ class Utils(private val context: Context) {
 
     fun getAppVersion() = context.packageManager.getPackageInfo("com.carbonylgroup.schoolpower", 0).versionName!!
 
-    fun getSharedPreference(database: String) =
-            context.getSharedPreferences(database, Activity.MODE_PRIVATE)!!
+    fun getPreferences(database: String = "") : SharedPreferences =
+            if(database != "") context.getSharedPreferences(database, Activity.MODE_PRIVATE)
+            else PreferenceManager.getDefaultSharedPreferences(context.applicationContext)
 
-    fun setSharedPreference(database: String, key: String, value: String) {
-        val spEditor = context.getSharedPreferences(database, Activity.MODE_PRIVATE).edit()
-        spEditor.putString(key, value)
-        spEditor.apply()
-    }
+    fun setPreference(key: String, value: Any, database: String = "") {
+        if (key == "") {
+            throw NullPointerException(String.format("Key and value not be null key=%s, value=%s", key, value))
+        }
+        val edit = getPreferences(database).edit()
 
-    fun setSharedPreference(database: String, key: String, value: Long) {
-        val spEditor = context.getSharedPreferences(database, Activity.MODE_PRIVATE).edit()
-        spEditor.putLong(key, value)
-        spEditor.apply()
-    }
-
-    fun setSharedPreference(database: String, key: String, value: Boolean) {
-        val spEditor = context.getSharedPreferences(database, Activity.MODE_PRIVATE).edit()
-        spEditor.putBoolean(key, value)
-        spEditor.apply()
-    }
-
-    fun setSharedPreference(database: String, key: String, value: Set<String>) {
-        val spEditor = context.getSharedPreferences(database, Activity.MODE_PRIVATE).edit()
-        spEditor.putStringSet(key, value)
-        spEditor.apply()
+        when (value) {
+            is String -> edit.putString(key, value)
+            is Int -> edit.putInt(key, value)
+            is Long -> edit.putLong(key, value)
+            is Boolean -> edit.putBoolean(key, value)
+            is Float -> edit.putFloat(key, value)
+            else -> throw IllegalArgumentException(String.format("Type of value unsupported key=%s, value=%s", key, value))
+        }
+        edit.apply()
     }
 
     @Throws(IOException::class)
@@ -552,7 +486,7 @@ class Utils(private val context: Context) {
                         response.close()
                         if (!message.contains("{")) return
                         val updateJSON = JSONObject(message)
-                        setSharedPreference(TmpData, "app_download_url", updateJSON.getString("url"))
+                        setPreference("app_download_url", updateJSON.getString("url"), TmpData)
                         if (updateJSON.getString("version") != getAppVersion()) {
                             if (!(context as Activity).isFinishing && !context.isDestroyed) {
                                 context.runOnUiThread {
@@ -580,8 +514,7 @@ class Utils(private val context: Context) {
 
         for (subjectNow in subjects) {
 
-            if (!PreferenceManager.getDefaultSharedPreferences(context.applicationContext)
-                            .getBoolean("list_preference_dashboard_show_inactive", true)) {
+            if (!getPreferences().getBoolean("list_preference_dashboard_show_inactive", true)) {
                 val currentTime = System.currentTimeMillis()
                 val it = subjects.find { it.name == subjectNow.name }
                         ?: continue
@@ -595,7 +528,7 @@ class Utils(private val context: Context) {
 
     fun getFilteredSubjects(subjects: List<Subject>): List<Subject> {
         val filteredSubjects: List<Subject>
-        if (!PreferenceManager.getDefaultSharedPreferences(context.applicationContext).getBoolean("list_preference_dashboard_show_inactive", true)) {
+        if (!getPreferences().getBoolean("list_preference_dashboard_show_inactive", true)) {
 
             filteredSubjects = ArrayList()
             subjects
@@ -619,22 +552,30 @@ class Utils(private val context: Context) {
         return actionBarSize
     }
 
+    fun getLastDonateShowedDate(): Date {
+        val dateStr = getPreferences(Utils.TmpData)
+                .getString("LastTimeDonateShowed", "")
+
+        return if (dateStr != "") SimpleDateFormat("yyyy-MM-dd", Locale.CHINA).parse(dateStr) else Date(0)
+    }
+
+    fun isEarlyDonators(): Boolean {
+        val start = SimpleDateFormat("yyyy-MM-dd", Locale.CHINA).parse("2018-07-01")
+        val end = SimpleDateFormat("yyyy-MM-dd", Locale.CHINA).parse("2018-08-28")
+        val shown = getLastDonateShowedDate()
+        return start <= shown && shown <= end
+    }
+
+    fun isDonated(): Boolean {
+        return getPreferences(Utils.TmpData).getBoolean("Donated", false)
+    }
+
     private fun checkConnectionToUrl(url: String): Boolean {
         return try {
             buildNetworkRequest(url, "GET", null).execute()
             true
         } catch (e: IOException) {
             false
-        }
-    }
-
-    // note that the "https://host/api/" part is not included
-    private fun getRouteFromString(route: String): String? {
-        return when (route) {
-            "pull_data_2" -> "2.0/get_data.php"
-            "update" -> "update.json"
-            "set_avatar" -> "2.0/set_avatar.php"
-            else -> null
         }
     }
 
@@ -667,7 +608,7 @@ class Utils(private val context: Context) {
     }
 
     fun isBirthDay(): Boolean {
-        val data = getSharedPreference(AccountData).getLong("dob", 0)
+        val data = getPreferences(AccountData).getLong("dob", 0)
         if (data == 0L) return false
         val now = Calendar.getInstance()
         val dob = Calendar.getInstance()
@@ -687,17 +628,8 @@ class Utils(private val context: Context) {
         return isSameDayAndMonth(now, dob)
     }
 
-    fun isSameDayAndMonth(cal1: Calendar, cal2: Calendar): Boolean {
-        return cal1.get(Calendar.MONTH) == cal2.get(Calendar.MONTH) &&
-                cal1.get(Calendar.DAY_OF_MONTH) == cal2.get(Calendar.DAY_OF_MONTH)
-    }
-
-    fun isThisYearLeapYear(): Boolean {
-        return Calendar.getInstance().getActualMaximum(Calendar.DAY_OF_YEAR) > 365
-    }
-
     fun getAge(withSuffix: Boolean): String {
-        val dat = getSharedPreference(AccountData).getLong("dob", 0)
+        val dat = getPreferences(AccountData).getLong("dob", 0)
         if (dat == 0L) return ""
         val cal1 = Calendar.getInstance()
         val cal2 = Calendar.getInstance()
@@ -705,15 +637,6 @@ class Utils(private val context: Context) {
         cal2.time = Date(dat)
         val ageStr = cal1.get(Calendar.YEAR) - cal2.get(Calendar.YEAR)
         return ageStr.toString() + if (withSuffix) getSuffixForNumber(ageStr) else ""
-    }
-
-    fun getSuffixForNumber(num: Int): String {
-        return when (num % 10) {
-            1 -> "st"
-            2 -> "nd"
-            3 -> "rd"
-            else -> "th"
-        }
     }
 
     fun errorHandler(e: Exception) {
@@ -738,6 +661,28 @@ class Utils(private val context: Context) {
                 emergencyDialogBuilder.create().setCanceledOnTouchOutside(false)
                 emergencyDialogBuilder.create().show()
             }
+    }
+
+    fun autoAdjustWeekType(){
+        val storeKey = "week_last_updated_date"
+        val weekTypeStoreKey = "list_preference_is_even_week"
+
+        val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.CHINA)
+        val lastUpdatedDate =
+                try {
+                    sdf.parse(getPreferences(TmpData).getString(storeKey, ""))
+                } catch(e: Exception) {
+                    Date()
+                }
+        setPreference(storeKey, sdf.format(Date()), TmpData)
+        val lastUpdatedCal = Calendar.getInstance()
+        lastUpdatedCal.time = lastUpdatedDate
+        val currentCal = Calendar.getInstance()
+        currentCal.time = Date()
+        if(lastUpdatedCal.get(Calendar.WEEK_OF_YEAR) % 2 !=
+                currentCal.get(Calendar.WEEK_OF_YEAR) % 2)
+            setPreference(weekTypeStoreKey,
+                    !getPreferences().getBoolean(weekTypeStoreKey, false))
     }
 
     companion object {
@@ -820,7 +765,6 @@ class Utils(private val context: Context) {
                 "N" to "Not Yet Meeting Expectations"
         )
 
-        const val SettingsPreference: String = "Settings"
         const val AccountData: String = "accountData"
         const val TmpData: String = "Tmp"
         const val CategoryWeightData: String = "category"
@@ -846,6 +790,34 @@ class Utils(private val context: Context) {
                 "#ad5844",
                 "#a49a85"
         )
+
+        // note that the "https://host/api/" part is not included
+        private fun getRouteFromString(route: String): String? {
+            return when (route) {
+                "pull_data_2" -> "2.0/get_data.php"
+                "update" -> "update.json"
+                "set_avatar" -> "2.0/set_avatar.php"
+                else -> null
+            }
+        }
+
+        fun isSameDayAndMonth(cal1: Calendar, cal2: Calendar): Boolean {
+            return cal1.get(Calendar.MONTH) == cal2.get(Calendar.MONTH) &&
+                    cal1.get(Calendar.DAY_OF_MONTH) == cal2.get(Calendar.DAY_OF_MONTH)
+        }
+
+        fun isThisYearLeapYear(): Boolean {
+            return Calendar.getInstance().getActualMaximum(Calendar.DAY_OF_YEAR) > 365
+        }
+
+        private fun getSuffixForNumber(num: Int): String {
+            return when (num % 10) {
+                1 -> "st"
+                2 -> "nd"
+                3 -> "rd"
+                else -> "th"
+            }
+        }
 
         // convert date like "2018-01-21T16:00:00.000Z" to timestamp (unit: MILLISECOND)
         fun convertDateToTimestamp(date: String): Long {

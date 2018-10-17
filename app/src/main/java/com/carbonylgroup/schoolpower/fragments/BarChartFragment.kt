@@ -2,7 +2,6 @@ package com.carbonylgroup.schoolpower.fragments
 
 import android.graphics.Color
 import android.os.Bundle
-import android.preference.PreferenceManager
 import android.support.v4.app.Fragment
 import android.support.v7.widget.CardView
 import android.view.LayoutInflater
@@ -32,7 +31,7 @@ class BarChartFragment : Fragment() {
 
         val view = inflater.inflate(R.layout.fragment_bar_chart, container, false)
 
-        utils = Utils(activity as MainActivity)
+        utils = Utils(activity!!)
 
         // Adjust chart's size to leave the space for the action bar and ad. bar.
         val barChartCardView = view.findViewById<CardView>(R.id.bar_chart_card)
@@ -91,7 +90,7 @@ class BarChartFragment : Fragment() {
             val group = ArrayList<BarEntry>()
 
             for (subject in gradedSubjects) {
-                if (!PreferenceManager.getDefaultSharedPreferences(activity!!.applicationContext)
+                if (!utils.getPreferences()
                                 .getBoolean("list_preference_dashboard_show_inactive", true)) {
                     val currentTime = System.currentTimeMillis()
                     val it = MainActivity.of(activity).subjects!!.find { it.name == subject.name }
@@ -135,7 +134,7 @@ class BarChartFragment : Fragment() {
         barChart.animateY(1000)
         barChart.setScaleEnabled(true)
 
-        barChart.setOnTouchListener { view, motionEvent ->
+        barChart.setOnTouchListener { _, motionEvent ->
             if (motionEvent.action == MotionEvent.ACTION_DOWN) {
                 barChart.parent.requestDisallowInterceptTouchEvent(true);false
             } else false

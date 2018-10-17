@@ -43,7 +43,7 @@ class LoginActivity : BaseActivity() {
         findViewById<View>(R.id.login_fab).setOnClickListener {
             val username = findViewById<EditText>(R.id.input_username).text.toString()
             val password = findViewById<EditText>(R.id.input_password).text.toString()
-            utils.getSharedPreference(Utils.AccountData).edit()
+            utils.getPreferences(Utils.AccountData).edit()
                     .putString(getString(R.string.user_id), username)
                     .apply()
             loginAction(username, password)
@@ -146,7 +146,7 @@ class LoginActivity : BaseActivity() {
 
                         val data = StudentData(this@LoginActivity, strMessage, utils)
 
-                        utils.getSharedPreference(Utils.AccountData).edit()
+                        utils.getPreferences(Utils.AccountData).edit()
                                 .putString(getString(R.string.usernameKEY), username)
                                 .putString(getString(R.string.passwordKEY), password)
                                 .putBoolean(getString(R.string.loggedIn), true)

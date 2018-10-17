@@ -28,10 +28,11 @@ class WechatIntroActivity : AppIntro() {
 
     val MY_PERMISSIONS_WRITE_EXTERNAL_STORAGE = 233
     val WECHAT_NOT_FOUND = 1
+    lateinit var utils: Utils
 
     override fun attachBaseContext(newBase: Context?) {
-        val utils = Utils(newBase!!)
-        val newLocale = utils.getSharedPreference(Utils.SettingsPreference).getString("lang", "0")!!.toInt()
+        utils = Utils(newBase!!)
+        val newLocale = utils.getPreferences().getString("list_preference_language", "0")!!.toInt()
         val context = ContextWrapper.wrap(newBase, Utils.localeSet[newLocale])
         super.attachBaseContext(context)
     }
@@ -140,7 +141,7 @@ class WechatIntroActivity : AppIntro() {
     }
 
     private fun setIsDonated(donated: Boolean) {
-        Utils(this).setSharedPreference(Utils.TmpData, "Donated", donated)
+        utils.setPreference("Donated", donated, Utils.TmpData)
     }
 
     override fun onRequestPermissionsResult(requestCode: Int,

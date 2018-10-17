@@ -6,7 +6,6 @@ import android.app.TaskStackBuilder
 import android.app.job.JobParameters
 import android.app.job.JobService
 import android.content.Intent
-import android.preference.PreferenceManager
 import android.support.v4.app.NotificationCompat
 import android.util.Log
 import com.carbonylgroup.schoolpower.R
@@ -24,6 +23,8 @@ import java.util.*
 
 
 class PullDataJob : JobService() {
+
+    lateinit var utils: Utils
 
     private fun diffSubjects(oldSubjects: List<Subject>, newSubject: List<Subject>) {
 
@@ -55,7 +56,7 @@ class PullDataJob : JobService() {
                         grade = item.getScoreString()
                     }
 
-                    val preference = PreferenceManager.getDefaultSharedPreferences(applicationContext)
+                    val preference = utils.getPreferences()
 
                     if (newGrade || (newItem && preference.getBoolean("notification_show_no_grade_assignment", true))) {
                         if (newGrade && preference.getBoolean("notification_show_grade", true))
@@ -112,9 +113,9 @@ class PullDataJob : JobService() {
     }
 
     override fun onStartJob(params: JobParameters): Boolean {
-        val utils = Utils(this)
-        val username = utils.getSharedPreference(Utils.AccountData).getString(getString(R.string.usernameKEY), "")
-        val password = utils.getSharedPreference(Utils.AccountData).getString(getString(R.string.passwordKEY), "")
+        utils = Utils(this)
+        val username = utils.getPreferences(Utils.AccountData).getString(getString(R.string.usernameKEY), "")!!
+        val password = utils.getPreferences(Utils.AccountData).getString(getString(R.string.passwordKEY), "")!!
 
         Log.d("PullDataJob", "onStartJob")
 

@@ -103,20 +103,21 @@ class DashboardFragment : TransitionHelper.BaseFragment() {
             utils.errorHandler(e)
         }
 
-        val po = View.OnClickListener {
+        val primaryOnClick = View.OnClickListener {
+            val bundle = Bundle()
+            bundle.putBoolean("donation", true)
+            MainActivity.of(activity).gotoFragmentWithMenuItemId(R.id.nav_support, bundle)
+            setLastDonateShowedDate(Date())
+        }
+        val secondaryOnClick = View.OnClickListener {
             MainActivity.of(activity).gotoFragmentWithMenuItemId(R.id.nav_support)
-            utils.setSharedPreference(Utils.TmpData, "ImComingForDonation", true)
             setLastDonateShowedDate(Date())
         }
-        val ps = View.OnClickListener {
-            MainActivity.of(activity).gotoFragmentWithMenuItemId(R.id.nav_support)
+        val dismissOnClick = View.OnClickListener {
             setLastDonateShowedDate(Date())
         }
-        val pd = View.OnClickListener {
-            setLastDonateShowedDate(Date())
-        }
-        if (needToShowDonate())
-        // If other ILDs are being displayed, don't show the donation
+        if (needToShowDonate()) {
+            // If other ILDs are being displayed, don't show the donation
             if (dashboardListView.headerViewsCount == 0)
                 try {
                     initInListDialog(
@@ -128,11 +129,12 @@ class DashboardFragment : TransitionHelper.BaseFragment() {
                             getString(R.string.donation_promote),
                             getString(R.string.donation_cancel),
                             false, false, false,
-                            po, ps, pd
+                            primaryOnClick, secondaryOnClick, dismissOnClick
                     )
                 } catch (e: Exception) {
                     utils.errorHandler(e)
                 }
+        }
     }
 
     private fun adapterSetFabOnClickListener(adapter: FoldingCellListAdapter) = adapter.setFabOnClickListener(View.OnClickListener { v ->
@@ -233,10 +235,10 @@ class DashboardFragment : TransitionHelper.BaseFragment() {
         val dismiss = View.OnClickListener {
             if (onlyOnce) {
                 // mark the ILD as displayed
-                val displayedILDs = utils.getSharedPreference(Utils.TmpData).getStringSet("doNotDisplayTheseILDs", mutableSetOf())!!
+                val displayedILDs = utils.getPreferences(Utils.TmpData).getStringSet("doNotDisplayTheseILDs", mutableSetOf())!!
                 displayedILDs.add(uuid)
-                utils.setSharedPreference(Utils.TmpData, "doNotDisplayTheseILDs", displayedILDs)
-                utils.setSharedPreference(Utils.TmpData, "ildJson", "")
+                utils.setPreference("doNotDisplayTheseILDs", displayedILDs, Utils.TmpData)
+                utils.setPreference("ildJson", "", Utils.TmpData)
             }
             removeILD(self)
         }
@@ -266,7 +268,7 @@ class DashboardFragment : TransitionHelper.BaseFragment() {
 
     fun fetchLocalILD() {
         val json = utils
-                .getSharedPreference(Utils.TmpData)
+                .getPreferences(Utils.TmpData)
                 .getString("ildJson", "")!!
         if (json.contains("{")) {
             val data = ILDNotification(json)
@@ -286,34 +288,16 @@ class DashboardFragment : TransitionHelper.BaseFragment() {
 
     private fun needToShowDonate(): Boolean {
         // Show donate every 30 days, if haven't donated
-        return if (isDonated() || isEarlyDonators()) false
-        else ((Date().time - getLastDonateShowedDate().time) / 1000.0 / 60.0 / 60.0 / 24.0 >= 30.0)
+        return if (utils.isDonated() || utils.isEarlyDonators()) false
+        else ((Date().time - utils.getLastDonateShowedDate().time) / 1000.0 / 60.0 / 60.0 / 24.0 >= 30.0)
 //        return true
     }
 
-    private fun isEarlyDonators(): Boolean {
-        val start120 = SimpleDateFormat("yyyy-MM-dd", Locale.CHINA).parse("2018-07-01")
-        val end120 = SimpleDateFormat("yyyy-MM-dd", Locale.CHINA).parse("2018-08-28")
-        val shown = getLastDonateShowedDate()
-        return start120.compareTo(shown) * shown.compareTo(end120) > 0
-    }
-
-    private fun isDonated(): Boolean {
-        return Utils(activity as MainActivity).getSharedPreference(Utils.TmpData).getBoolean("Donated", false)
-    }
-
     private fun setLastDonateShowedDate(date: Date) {
-        Utils(activity as MainActivity).setSharedPreference(Utils.TmpData, "LastTimeDonateShowed",
-                SimpleDateFormat("yyyy-MM-dd", Locale.CHINA).format(date))
+        utils.setPreference("LastTimeDonateShowed",
+                SimpleDateFormat("yyyy-MM-dd", Locale.CHINA).format(date), Utils.TmpData)
     }
 
-    private fun getLastDonateShowedDate(): Date {
-        val dateStr = Utils(activity as MainActivity)
-                .getSharedPreference(Utils.TmpData)
-                .getString("LastTimeDonateShowed", "")
-
-        return if (dateStr != "") SimpleDateFormat("yyyy-MM-dd", Locale.CHINA).parse(dateStr) else Date(0)
-    }
 
     private fun visibleNoGradeView() {
         dashboardListView.visibility = View.GONE

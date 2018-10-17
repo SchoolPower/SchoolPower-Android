@@ -2,7 +2,6 @@ package com.carbonylgroup.schoolpower.fragments
 
 import android.graphics.Color
 import android.os.Bundle
-import android.preference.PreferenceManager
 import android.support.v4.app.Fragment
 import android.support.v7.widget.CardView
 import android.view.LayoutInflater
@@ -33,7 +32,7 @@ class LineChartFragment : Fragment() {
 
         val view = inflater.inflate(R.layout.fragment_line_chart, container, false)
 
-        utils = Utils(activity as MainActivity)
+        utils = Utils(activity!!)
 
         // Adjust chart's size to leave the space for the action bar and ad. bar.
         val lineChartCardView = view.findViewById<CardView>(R.id.line_chart_card)
@@ -58,14 +57,14 @@ class LineChartFragment : Fragment() {
 
         for (date in historyData.keys()) {
             val floatDate = (SimpleDateFormat("yyyy-MM-dd", Locale.CHINA).parse(date).time / 1000.0f / 60.0f / 60.0f / 24.0f).toInt().toFloat()
-            val subjects = historyData.getJSONArray(date)
+            val historySubjects = historyData.getJSONArray(date)
 
-            for (i in 0 until subjects.length()) {
-                val subjectNow = subjects.getJSONObject(i)
+            for (i in 0 until historySubjects.length()) {
+                val subjectNow = historySubjects.getJSONObject(i)
                 val subjectName = subjectNow.getString("name")
                 val subjectGrade = subjectNow.getDouble("grade").toFloat()
                 if (subjectGrade == 0.0f) continue
-                if (!PreferenceManager.getDefaultSharedPreferences(activity!!.applicationContext)
+                if (!utils.getPreferences()
                                 .getBoolean("list_preference_dashboard_show_inactive", true)) {
                     val currentTime = System.currentTimeMillis()
                     val it = MainActivity.of(activity).subjects!!.find { it.name == subjectName }
@@ -91,7 +90,7 @@ class LineChartFragment : Fragment() {
             val intColor = Color.parseColor(Utils.chartColorList[count])
             dataSet.color = intColor
             dataSet.valueTextColor = utils.getAccentColor()
-            dataSet.circleColors = List((organizedData[subjectName] as ArrayList<Entry>).size, { intColor })
+            dataSet.circleColors = List((organizedData[subjectName] as ArrayList<Entry>).size) { intColor }
             dataSet.lineWidth = 2.0f
             dataSet.mode = LineDataSet.Mode.HORIZONTAL_BEZIER
             lineData.addDataSet(dataSet)
@@ -126,11 +125,11 @@ class LineChartFragment : Fragment() {
         lineChart.legend.formSize = 8.0f
         lineChart.legend.isWordWrapEnabled = true
 
-        lineChart.setOnTouchListener({ _, event ->
+        lineChart.setOnTouchListener { _, event ->
             if (event.action == MotionEvent.ACTION_DOWN) {
                 lineChart.parent.requestDisallowInterceptTouchEvent(true);false
             } else false
-        })
+        }
 
         return view
     }

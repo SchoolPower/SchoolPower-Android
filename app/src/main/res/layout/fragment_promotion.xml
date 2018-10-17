@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/donation_fragment"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_alignParentStart="true"
+    android:fillViewport="true">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -30,44 +33,52 @@
 
         </android.support.v7.widget.CardView>
 
-        <co.ceryle.segmentedbutton.SegmentedButtonGroup
-            android:id="@+id/promotion_segmented"
-            android:layout_width="match_parent"
+        <LinearLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:orientation="vertical"
             android:layout_alignEnd="@id/qr_card"
             android:layout_alignStart="@id/qr_card"
-            android:layout_below="@id/qr_card"
-            android:layout_marginTop="10dp"
-            app:sbg_animateSelector="decelerate"
-            app:sbg_animateSelectorDuration="200"
-            app:sbg_backgroundColor="?attr/card_background"
-            app:sbg_dividerSize="0dp"
-            app:sbg_position="1"
-            app:sbg_radius="2dp"
-            app:sbg_ripple="true"
-            app:sbg_rippleColor="?attr/colorAccent"
-            app:sbg_selectorColor="?attr/colorAccent"
-            app:sbg_selectorTextColor="@color/white"
-            app:sbg_shadow="true"
-            app:sbg_shadowElevation="1dp"
-            app:sbg_shadowMargin="1dp">
+            android:layout_below="@id/qr_card">
 
-            <Button
-                android:layout_width="wrap_content"
+            <co.ceryle.segmentedbutton.SegmentedButtonGroup
+                android:id="@+id/promotion_segmented"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:minHeight="10dp"
-                android:text="@string/Android"
-                android:textAllCaps="false" />
+                android:layout_marginTop="10dp"
+                android:elevation="1dp"
+                app:sbg_animateSelector="decelerate"
+                app:sbg_animateSelectorDuration="200"
+                app:sbg_backgroundColor="?attr/card_background"
+                app:sbg_dividerSize="0dp"
+                app:sbg_position="1"
+                app:sbg_radius="2dp"
+                app:sbg_ripple="true"
+                app:sbg_rippleColor="?attr/colorAccent"
+                app:sbg_selectorColor="?attr/colorAccent">
 
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:minHeight="10dp"
-                android:text="@string/iOS"
-                android:textAllCaps="false" />
+                <co.ceryle.segmentedbutton.SegmentedButton
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:padding="5dp"
+                    android:minHeight="10dp"
+                    android:textAllCaps="false"
+                    app:sb_text="@string/Android"
+                    app:sb_textColor_onSelection="@color/white"/>
 
-        </co.ceryle.segmentedbutton.SegmentedButtonGroup>
+                <co.ceryle.segmentedbutton.SegmentedButton
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:padding="5dp"
+                    android:minHeight="10dp"
+                    android:textAllCaps="false"
+                    app:sb_text="@string/iOS"
+                    app:sb_textColor_onSelection="@color/white"/>
 
+            </co.ceryle.segmentedbutton.SegmentedButtonGroup>
+        </LinearLayout>
     </RelativeLayout>
 
 </android.support.v4.widget.NestedScrollView>

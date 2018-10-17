@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import co.ceryle.segmentedbutton.SegmentedButtonGroup
 import com.carbonylgroup.schoolpower.R
-import com.carbonylgroup.schoolpower.activities.MainActivity
 import com.carbonylgroup.schoolpower.utils.Utils
 import net.glxn.qrgen.android.QRCode
 
@@ -25,8 +24,9 @@ class PromotionFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         val view = inflater.inflate(R.layout.fragment_promotion, container, false)
-        utils = Utils(activity as MainActivity)
-        val androidDownloadUrl = utils.getSharedPreference(Utils.TmpData).getString("app_download_url", getString(R.string.default_android_download_address))
+        utils = Utils(activity!!)
+        val androidDownloadUrl = utils.getPreferences(Utils.TmpData)
+                .getString("app_download_url", getString(R.string.default_android_download_address))!!
         val qrCode = view.findViewById(R.id.qr_code) as ImageView
         val segmented: SegmentedButtonGroup = view.findViewById(R.id.promotion_segmented)
         segmented.setPosition(0, 0)
@@ -38,7 +38,7 @@ class PromotionFragment : Fragment() {
             }
         }
 
-        segmented.setOnClickedButtonPosition(callback)
+        segmented.setOnClickedButtonListener(callback)
         callback(segmented.position)
 
         return view

@@ -2,7 +2,6 @@ package com.carbonylgroup.schoolpower.utils
 
 import android.app.Activity
 import android.app.AlertDialog
-import android.preference.PreferenceManager
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -52,7 +51,7 @@ class GPADialog(private val activity: Activity, private val subjects: List<Subje
     }
 
     private fun updateData(GPAAll: Float, GPACustom: Float, GPAOfficial: Float?) {
-        gpaDialogSegmented.setOnClickedButtonPosition { position: Int ->
+        gpaDialogSegmented.setOnClickedButtonListener { position: Int ->
             when (position) {
                 0 -> animateWaveAndText(waveView.waterLevelRatio, GPAAll, 100.0f)
                 1 -> if (GPACustom.isNaN()) customGPANotAvailable() else
@@ -132,8 +131,8 @@ class GPADialog(private val activity: Activity, private val subjects: List<Subje
     }
 
     private fun calculateCustomGPA(term: String): Float {
-        val customRule = utils.getSharedPreference(Utils.SettingsPreference).getString("list_preference_custom_gpa_calculate", "all")
-        val customSubjects = PreferenceManager.getDefaultSharedPreferences(activity).getStringSet("list_preference_customize_gpa", HashSet())
+        val customRule = utils.getPreferences().getString("list_preference_custom_gpa_calculate", "all")
+        val customSubjects = utils.getPreferences().getStringSet("list_preference_customize_gpa", HashSet())
         if (customSubjects!!.isEmpty()) return Float.NaN
 
         val grades = ArrayList<Int>()

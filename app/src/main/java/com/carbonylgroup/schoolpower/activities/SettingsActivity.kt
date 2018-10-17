@@ -6,22 +6,17 @@ package com.carbonylgroup.schoolpower.activities
 
 import android.animation.AnimatorListenerAdapter
 import android.app.Activity
-import android.content.Context
-import android.content.res.Resources
 import android.os.Bundle
+import android.support.v4.app.Fragment
 import android.support.v4.app.NavUtils
 import android.support.v7.widget.Toolbar
-import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewAnimationUtils
 import android.widget.RelativeLayout
 import com.carbonylgroup.schoolpower.R
 import com.carbonylgroup.schoolpower.fragments.SettingsFragment
-import com.carbonylgroup.schoolpower.utils.ContextWrapper
-import com.carbonylgroup.schoolpower.utils.Utils
 import kotterknife.bindView
-import java.util.*
 
 private var recreated = false
 
@@ -90,5 +85,12 @@ class SettingsActivity : BaseActivity(), SettingsFragment.SettingsCallBack {
         } else {
             finish()
         }
+    }
+
+    fun addFragmentOnTop(fragment: Fragment){
+        supportFragmentManager.beginTransaction()
+                .add(R.id.settings_content, fragment)
+                .addToBackStack("TAG")
+                .commit()
     }
 }
