@@ -287,10 +287,13 @@ class DashboardFragment : TransitionHelper.BaseFragment() {
     }
 
     private fun needToShowDonate(): Boolean {
+        return false // disable donation message for now.
+
         // Show donate every 30 days, if haven't donated
+        /*
         return if (utils.isDonated() || utils.isEarlyDonators()) false
         else ((Date().time - utils.getLastDonateShowedDate().time) / 1000.0 / 60.0 / 60.0 / 24.0 >= 30.0)
-//        return true
+        */
     }
 
     private fun setLastDonateShowedDate(date: Date) {

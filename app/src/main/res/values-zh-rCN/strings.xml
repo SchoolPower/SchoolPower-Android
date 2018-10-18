@@ -195,9 +195,9 @@ SchoolPower 不保证上述网站的服务稳定性，不保证用户头像会�
         \n祝你生日快乐，祝你生日快乐！</string>
     <string name="happy_birth_thank">蟹蟹</string>
 
-    <string name="donation_title">我们快没钱了…</string>
-    <string name="donation_message">抛开大量的时间成本不计，仅是高昂的苹果开发者年费和服务器服务器费用就达数千元。而我们的唯一收入，广告收入运营一年以来合计仅 118.78 美元。截止至今我们已经净亏损上千元。
-\n\n如果您觉得这款App帮到了您，想要支持我们一下，或希望能尽快摆脱广告的话，欢迎您使用下面的方式赞助我们，或者将其介绍给您身边的人。感激不尽 (´,,•ω•,,)♡。</string>
+    <string name="donation_title">我们需要您的支持…</string>
+    <string name="donation_message">抛开大量的时间成本不计，仅是高昂的苹果开发者年费和服务器服务器费用就达数千元。我们主要依靠赞助来回本，而广告收入运营一年以来合计仅 118.78 美元，且我们免费提供了关闭广告的选项。
+\n\n如果您觉得这款App帮到了您，想要支持我们一下，欢迎您使用下面的方式赞助我们，或者将其介绍给您身边的人。感激不尽 (´,,•ω•,,)♡。</string>
     <string name="donation_cancel">才不帮你们呢哼-^-</string>
     <string name="donation_ok">赞助我们</string>
     <string name="donation_promote">宣传应用</string>
@@ -214,7 +214,7 @@ SchoolPower 不保证上述网站的服务稳定性，不保证用户头像会�
     <string name="fatel_error">未知错误</string>
     <string name="fatel_error_message">我们刚刚遇到了未知错误。这通常是我们的锅。您可以尝试稍后重试或我们强烈建议您将此错误反馈给我们\n\n错误信息: \n</string>
 
-    <string name="cancel">取消</string>
+    <string name="cancel">取消</string>str
     <string name="email">发送</string>
     <string name="advertisement_settings">广告设置</string>
     <string name="enable_advertisement">启用广告</string>
