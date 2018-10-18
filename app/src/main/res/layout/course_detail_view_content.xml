@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tool="http://schemas.android.com/tools"
     android:id="@+id/course_detail_background"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -27,11 +28,11 @@
             android:fontFamily="sans-serif"
             android:maxLines="2"
             android:paddingBottom="10dp"
-            android:text="Foundation of Maths and Pre-Calculus 10"
             android:textAppearance="@android:style/TextAppearance.Material.Title"
             android:textColor="@color/white"
             android:textSize="22sp"
-            android:transitionName="@string/shared_element_course_subject_title" />
+            android:transitionName="@string/shared_element_course_subject_title"
+            tool:text="Foundation of Maths and Pre-Calculus 10" />
 
     </RelativeLayout>
 

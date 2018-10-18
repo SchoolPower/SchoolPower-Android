@@ -12,10 +12,6 @@ import com.carbonylgroup.schoolpower.data.Subject
 import com.gelitenight.waveview.library.WaveView
 import com.github.premnirmal.textcounter.CounterView
 
-/**
- * Created by mlsstu on 11/25/2017.
- */
-
 class GPADialog(private val activity: Activity, private val subjects: List<Subject>, private val officialGPA: Double?) {
 
     private val utils = Utils(activity)
