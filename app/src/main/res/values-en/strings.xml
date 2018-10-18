@@ -208,9 +208,9 @@ SchoolPower does not guarantee that the user\'s picture will be permanently save
         \nHappy birthday to you, happy birthday to you!</string>
     <string name="happy_birth_thank">Thx</string>
 
-    <string name="donation_title">We are running out of money…</string>
-    <string name="donation_message">The expensive Apple developers fee and server costed thousands of yuan every year, not to mention the enormous time cost. Our only income, advertising, brought us merely about $100 a year. We have a net loss of thousands of yuan so far.
-\n\nIf you feel that this app has helped you or you hope to get rid of the ads sooner, you are more than welcome to donate us, or introduce the app to the people around you. Any help would be much appreciated ( ́,,•ω•,,)♡.
+    <string name="donation_title">We need your support…</string>
+    <string name="donation_message">The expensive Apple developers fee and server costed thousands of yuan every year, not to mention the enormous time cost. We mainly rely on donation to cover our expenses, and advertisements, which can turn off for free, brought us merely about $100 a year.
+\n\nIf you feel that this app has helped you, you are more than welcome to donate us, or introduce the app to the people around you. Any help would be much appreciated ( ́,,•ω•,,)♡.
 </string>
     <string name="donation_cancel">NO THANKS</string>
     <string name="donation_ok">DONATE</string>
