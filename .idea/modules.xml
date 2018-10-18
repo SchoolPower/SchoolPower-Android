@@ -5,6 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/SchoolPower-Android.iml" filepath="$PROJECT_DIR$/SchoolPower-Android.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/Android-Image-Cropper/cropper/cropper.iml" filepath="$PROJECT_DIR$/Android-Image-Cropper/cropper/cropper.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Android-Image-Cropper/cropper/cropper.iml" filepath="$PROJECT_DIR$/Android-Image-Cropper/cropper/cropper.iml" />
       <module fileurl="file://$PROJECT_DIR$/foldingcell/foldingcell.iml" filepath="$PROJECT_DIR$/foldingcell/foldingcell.iml" />
     </modules>
   </component>

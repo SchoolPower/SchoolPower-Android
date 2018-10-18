@@ -9,8 +9,8 @@ android {
         applicationId 'com.carbonylgroup.schoolpower'
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 20
-        versionName '1.2.7'
+        versionCode 21
+        versionName '1.5.0'
         testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
     }
     buildTypes {

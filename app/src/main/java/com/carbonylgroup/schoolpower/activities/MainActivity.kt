@@ -112,7 +112,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
         menu.findItem(R.id.action_refresh).isVisible = !hideToolBarItemFlag
         menu.findItem(R.id.action_show_json).isVisible = (!hideToolBarItemFlag && utils.isDeveloperMode())
         menu.findItem(R.id.action_birthday).isVisible = (!hideToolBarItemFlag && utils.isBirthDay())
-        menu.findItem(R.id.action_category).isVisible = (!hideCourseDetailItemFlag) && utils.isDeveloperMode()
+        menu.findItem(R.id.action_category).isVisible = (!hideCourseDetailItemFlag) // && utils.isDeveloperMode()
 
         val birthdayClickable = menu.findItem(R.id.action_birthday).actionView
                 .findViewById<RelativeLayout>(R.id.birthday_cheer_animation_wrapper)
