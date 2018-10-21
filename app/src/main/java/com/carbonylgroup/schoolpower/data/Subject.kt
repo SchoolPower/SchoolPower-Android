@@ -77,6 +77,47 @@ class Subject(json: JSONObject, utils: Utils) : Serializable {
 
     var margin = 0
 
+    private fun getAdjustedExpression(utils: Utils, blockLetterRaw: String): String {
+        // Smart block display
+        if (!utils.getPreferences().getBoolean("list_preference_even_odd_filter", false)
+                || blockLetterRaw == "")
+            return blockLetterRaw
+
+        val blockStartIndex = blockLetterRaw.indexOf('(')
+        val currentWeekIsEven =
+                utils.getPreferences().getBoolean("list_preference_is_even_week", false)
+
+        val blocksToDisplay = arrayListOf<String>()
+
+        var oddEvenWeekFeatureEnabled = false
+        // e.g. 1(A-J), 2(B-C,F,H)
+        for (block in blockLetterRaw.substring(blockStartIndex + 1, blockLetterRaw.length - 1)
+                .split(",")) {
+            // A, B, C, D, E
+            val odd = block.indexOf('A') != -1
+                    || block.indexOf('B') != -1
+                    || block.indexOf('C') != -1
+                    || block.indexOf('D') != -1
+                    || block.indexOf('E') != -1
+            // F, G, H, I, J
+            val even = block.indexOf('F') != -1
+                    || block.indexOf('G') != -1
+                    || block.indexOf('H') != -1
+                    || block.indexOf('I') != -1
+                    || block.indexOf('J') != -1
+            if (even) oddEvenWeekFeatureEnabled = true
+
+            if ((even && currentWeekIsEven) || (odd && !currentWeekIsEven))
+                blocksToDisplay.add(block)
+        }
+        if (oddEvenWeekFeatureEnabled) {
+            return blockLetterRaw.substring(0, blockStartIndex + 1) +
+                    blocksToDisplay.joinToString(",") + ")"
+        } else {
+            return blockLetterRaw
+        }
+    }
+
     init {
         if (!json.isNull("assignments")) {
             val jsonAssignments = json.getJSONArray("assignments")
@@ -98,44 +139,12 @@ class Subject(json: JSONObject, utils: Utils) : Serializable {
         startDate = Utils.convertDateToTimestamp(json.getString("startDate"))
         endDate = Utils.convertDateToTimestamp(json.getString("endDate"))
 
+
         val blockLetterRaw = json.getString("expression")
-        // Smart block display
-        if (utils.getPreferences().getBoolean("list_preference_even_odd_filter", false)) {
-            val blockStartIndex = blockLetterRaw.indexOf('(')
-            val currentWeekIsEven =
-                    utils.getPreferences().getBoolean("list_preference_is_even_week", false)
-
-            val blocksToDisplay = arrayListOf<String>()
-
-            var oddEvenWeekFeatureEnabled = false
-            // e.g. 1(A-J), 2(B-C,F,H)
-            for (block in blockLetterRaw.substring(blockStartIndex + 1, blockLetterRaw.length - 1)
-                    .split(",")) {
-                // A, B, C, D, E
-                val odd = block.indexOf('A') != -1
-                        || block.indexOf('B') != -1
-                        || block.indexOf('C') != -1
-                        || block.indexOf('D') != -1
-                        || block.indexOf('E') != -1
-                // F, G, H, I, J
-                val even = block.indexOf('F') != -1
-                        || block.indexOf('G') != -1
-                        || block.indexOf('H') != -1
-                        || block.indexOf('I') != -1
-                        || block.indexOf('J') != -1
-                if (even) oddEvenWeekFeatureEnabled = true
-
-                if ((even && currentWeekIsEven) || (odd && !currentWeekIsEven))
-                    blocksToDisplay.add(block)
-            }
-            if (oddEvenWeekFeatureEnabled) {
-                blockLetter = blockLetterRaw.substring(0, blockStartIndex + 1) +
-                        blocksToDisplay.joinToString(",") + ")"
-            } else {
-                blockLetter = blockLetterRaw
-            }
-        }else{
-            blockLetter = blockLetterRaw
+        blockLetter = try {
+            getAdjustedExpression(utils, blockLetterRaw)
+        } catch (e: Exception) {
+            blockLetterRaw
         }
     }
 
@@ -158,10 +167,10 @@ class Subject(json: JSONObject, utils: Utils) : Serializable {
             }
             if (!found) {
                 item.isNew = true
-                margin=0
+                margin = 0
 
-                val oldPercent = utils.getLatestTermGrade(oldSubject)?.getGrade()?:continue
-                val newPercent = utils.getLatestTermGrade(this)?.getGrade()?:continue
+                val oldPercent = utils.getLatestTermGrade(oldSubject)?.getGrade() ?: continue
+                val newPercent = utils.getLatestTermGrade(this)?.getGrade() ?: continue
 
                 if (oldPercent != newPercent)
                     margin = newPercent - oldPercent
@@ -171,8 +180,7 @@ class Subject(json: JSONObject, utils: Utils) : Serializable {
 
     fun getShortName() = Utils.getShortName(name)
 
-    fun getLatestTermName(utils: Utils, forceLastTerm: Boolean = false): String?
-        = utils.getLatestTermName(this.grades, forceLastTerm)
+    fun getLatestTermName(utils: Utils, forceLastTerm: Boolean = false): String? = utils.getLatestTermName(this.grades, forceLastTerm)
 
     fun getLatestTermGrade(utils: Utils) = utils.getLatestTermGrade(this)
 }
