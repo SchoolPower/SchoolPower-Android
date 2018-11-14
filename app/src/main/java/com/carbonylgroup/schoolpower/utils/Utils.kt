@@ -358,7 +358,12 @@ class Utils(private val context: Context) {
 
         if (data == null) return
 
-        val json = JSONObject(readStringFromFile(StatisticalDataFileName) ?: "{}")
+        val json = try {
+            JSONObject(readStringFromFile(StatisticalDataFileName))
+        } catch (e: Exception) {
+            e.printStackTrace()
+            JSONObject("{}")
+        }
 
         for (subject in data) {
 
