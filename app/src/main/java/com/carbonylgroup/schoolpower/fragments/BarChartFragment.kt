@@ -128,7 +128,7 @@ class BarChartFragment : Fragment() {
         //barChart.legend.isEnabled = false
         barChart.legend.horizontalAlignment = Legend.LegendHorizontalAlignment.CENTER
         barChart.data = barData
-        barChart.groupBars(0.0f, 0.2f, 0.1f)
+        if(dataSets.size > 1) barChart.groupBars(0.0f, 0.2f, 0.1f)
         barChart.invalidate()
         barChart.setVisibleXRange(0.0f, 12.0f)
         barChart.animateY(1000)

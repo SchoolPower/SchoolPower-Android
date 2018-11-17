@@ -39,113 +39,119 @@ class FoldingCellListAdapter(context: Context, private var subjects: List<Subjec
     private var termOnClickListener: com.carbonylgroup.schoolpower.adapter.OnItemClickListener? = null
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-
-        val item = subjects!![position]
         var cell = convertView as FoldingCell?
-        val viewHolder: ViewHolder
+        try {
+            val item = subjects!![position]
+            val viewHolder: ViewHolder
 
-        if (cell == null) {
+            if (cell == null) {
 
-            viewHolder = ViewHolder()
-            val vi = LayoutInflater.from(context)
-            cell = vi.inflate(R.layout.main_list_item, parent, false) as FoldingCell
+                viewHolder = ViewHolder()
+                val vi = LayoutInflater.from(context)
+                cell = vi.inflate(R.layout.main_list_item, parent, false) as FoldingCell
 
-            viewHolder.fold_background = cell.findViewById(R.id.fold_background)
-            viewHolder.unfold_trend_card = cell.findViewById(R.id.unfold_trend_card)
-            viewHolder.unfold_trend_text = cell.findViewById(R.id.unfold_trend_text)
-            viewHolder.unfold_trend_image = cell.findViewById(R.id.unfold_trend_image)
-            viewHolder.unfold_header_view = cell.findViewById(R.id.unfold_header_view)
-            viewHolder.fold_letter_grade_tv = cell.findViewById(R.id.fold_letter_grade_tv)
-            viewHolder.fold_teacher_name_tv = cell.findViewById(R.id.fold_teacher_name_tv)
-            viewHolder.fold_block_letter_tv = cell.findViewById(R.id.fold_block_letter_tv)
-            viewHolder.fold_grade_background = cell.findViewById(R.id.fold_grade_background)
-            viewHolder.fold_subject_title_tv = cell.findViewById(R.id.fold_subject_title_tv)
-            viewHolder.floating_action_button = cell.findViewById(R.id.floating_action_button)
-            viewHolder.unfold_teacher_name_tv = cell.findViewById(R.id.unfold_teacher_name_tv)
-            viewHolder.unfold_subject_title_tv = cell.findViewById(R.id.detail_subject_title_tv)
-            viewHolder.detail_header_background = cell.findViewById(R.id.detail_header_background)
-            viewHolder.fold_percentage_grade_tv = cell.findViewById(R.id.fold_percentage_grade_tv)
-            viewHolder.unfold_percentage_grade_tv = cell.findViewById(R.id.unfold_percentage_grade_tv)
-            viewHolder.unfolded_grade_recycler_view = cell.findViewById(R.id.unfolded_grade_recycler_view)
+                viewHolder.fold_background = cell.findViewById(R.id.fold_background)
+                viewHolder.unfold_trend_card = cell.findViewById(R.id.unfold_trend_card)
+                viewHolder.unfold_trend_text = cell.findViewById(R.id.unfold_trend_text)
+                viewHolder.unfold_trend_image = cell.findViewById(R.id.unfold_trend_image)
+                viewHolder.unfold_header_view = cell.findViewById(R.id.unfold_header_view)
+                viewHolder.fold_letter_grade_tv = cell.findViewById(R.id.fold_letter_grade_tv)
+                viewHolder.fold_teacher_name_tv = cell.findViewById(R.id.fold_teacher_name_tv)
+                viewHolder.fold_block_letter_tv = cell.findViewById(R.id.fold_block_letter_tv)
+                viewHolder.fold_grade_background = cell.findViewById(R.id.fold_grade_background)
+                viewHolder.fold_subject_title_tv = cell.findViewById(R.id.fold_subject_title_tv)
+                viewHolder.floating_action_button = cell.findViewById(R.id.floating_action_button)
+                viewHolder.unfold_teacher_name_tv = cell.findViewById(R.id.unfold_teacher_name_tv)
+                viewHolder.unfold_subject_title_tv = cell.findViewById(R.id.detail_subject_title_tv)
+                viewHolder.detail_header_background = cell.findViewById(R.id.detail_header_background)
+                viewHolder.fold_percentage_grade_tv = cell.findViewById(R.id.fold_percentage_grade_tv)
+                viewHolder.unfold_percentage_grade_tv = cell.findViewById(R.id.unfold_percentage_grade_tv)
+                viewHolder.unfolded_grade_recycler_view = cell.findViewById(R.id.unfolded_grade_recycler_view)
 
-            if (transformedPosition != -1)
-                if (position == transformedPosition) {
+                if (transformedPosition != -1)
+                    if (position == transformedPosition) {
 
-                    viewHolder.unfold_header_view!!.transitionName = context.getString(R.string.shared_element_course_header)
-                    viewHolder.floating_action_button!!.transitionName = context.getString(R.string.shared_element_course_fab)
-                }
+                        viewHolder.unfold_header_view!!.transitionName = context.getString(R.string.shared_element_course_header)
+                        viewHolder.floating_action_button!!.transitionName = context.getString(R.string.shared_element_course_fab)
+                    }
 
-            cell.tag = viewHolder
+                cell.tag = viewHolder
 
-            if (unfoldedIndexes.contains(position)) {
-                cell.unfold(true)
-                popUpFAB(cell, 300)
-            } else cell.fold(true)
+                if (unfoldedIndexes.contains(position)) {
+                    cell.unfold(true)
+                    popUpFAB(cell, 300)
+                } else cell.fold(true)
 
-        } else {
-
-            if (unfoldedIndexes.contains(position)) {
-                cell.unfold(true)
-                popUpFAB(cell, 300)
-            } else cell.fold(true)
-            viewHolder = cell.tag as ViewHolder
-        }
-
-        val adapter = PeriodGradeAdapter(context, item.grades)
-        val layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        val period = utils.getLatestTermGrade(item)
-
-        viewHolder.fold_letter_grade_tv!!.text = period?.letter ?: "--"
-        viewHolder.fold_teacher_name_tv!!.text = item.teacherName
-        viewHolder.fold_block_letter_tv!!.text = item.blockLetter
-        viewHolder.unfolded_grade_recycler_view!!.adapter = adapter
-        viewHolder.fold_subject_title_tv!!.text = item.name
-        viewHolder.unfold_teacher_name_tv!!.text = item.teacherName
-        viewHolder.unfold_subject_title_tv!!.text = item.name
-        viewHolder.unfolded_grade_recycler_view!!.layoutManager = layoutManager
-        viewHolder.fold_percentage_grade_tv!!.text = period?.getPercentageString() ?: "--"
-        viewHolder.floating_action_button!!.setOnClickListener(fabOnClickListener)
-        viewHolder.unfold_percentage_grade_tv!!.text = period?.getPercentageString() ?: "--"
-        viewHolder.unfold_header_view!!.setBackgroundColor(utils.getColorByLetterGrade(period?.letter ?: "--"))
-        viewHolder.fold_grade_background!!.setBackgroundColor(utils.getColorByLetterGrade(period?.letter ?: "--"))
-        viewHolder.detail_header_background!!.setBackgroundColor(utils.getCardBackground())
-        viewHolder.unfold_trend_card!!.visibility = View.GONE
-
-        if (item.assignments.any { it -> it.isNew }) { // if any assignment is marked as new
-            viewHolder.fold_subject_title_tv!!.setTextColor(ContextCompat.getColor(context, R.color.white))
-            viewHolder.fold_teacher_name_tv!!.setTextColor(ContextCompat.getColor(context, R.color.white_0_10))
-            viewHolder.fold_block_letter_tv!!.setTextColor(ContextCompat.getColor(context, R.color.white_0_10))
-            viewHolder.fold_background!!.setBackgroundColor(utils.getAccentColor())
-
-            // Show increase/decrease margin badge
-            viewHolder.unfold_trend_card!!.visibility = View.VISIBLE
-            if (item.margin > 0) {
-                // Increased
-                viewHolder.unfold_trend_image!!.setImageResource(R.drawable.ic_trending_up_green_24dp)
-                viewHolder.unfold_trend_text!!.setTextColor(ContextCompat.getColor(context, R.color.B_score_green_dark))
-            } else if (item.margin < 0) {
-                // Decreased
-                viewHolder.unfold_trend_image!!.setImageResource(R.drawable.ic_trending_down_red_24dp)
-                viewHolder.unfold_trend_text!!.setTextColor(ContextCompat.getColor(context, R.color.Cm_score_red))
             } else {
-                // Not changed
-                viewHolder.unfold_trend_image!!.setImageResource(R.drawable.ic_trending_flat_gray_24dp)
-                viewHolder.unfold_trend_text!!.setTextColor(ContextCompat.getColor(context, R.color.gray))
-            }
-            viewHolder.unfold_trend_text!!.text = Math.abs(item.margin).toString()
 
-        } else {
-            viewHolder.fold_subject_title_tv!!.setTextColor(utils.getPrimaryTextColor())
-            viewHolder.fold_teacher_name_tv!!.setTextColor(utils.getSecondaryTextColor())
-            viewHolder.fold_block_letter_tv!!.setTextColor(utils.getSecondaryTextColor())
-            viewHolder.fold_background!!.setBackgroundColor(utils.getCardBackground())
+                if (unfoldedIndexes.contains(position)) {
+                    cell.unfold(true)
+                    popUpFAB(cell, 300)
+                } else cell.fold(true)
+                viewHolder = cell.tag as ViewHolder
+            }
+
+            val adapter = PeriodGradeAdapter(context, item.grades)
+            val layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            val period = utils.getLatestTermGrade(item)
+
+            viewHolder.fold_letter_grade_tv!!.text = period?.letter ?: "--"
+            viewHolder.fold_teacher_name_tv!!.text = item.teacherName
+            viewHolder.fold_block_letter_tv!!.text = item.blockLetter
+            viewHolder.unfolded_grade_recycler_view!!.adapter = adapter
+            viewHolder.fold_subject_title_tv!!.text = item.name
+            viewHolder.unfold_teacher_name_tv!!.text = item.teacherName
+            viewHolder.unfold_subject_title_tv!!.text = item.name
+            viewHolder.unfolded_grade_recycler_view!!.layoutManager = layoutManager
+            viewHolder.fold_percentage_grade_tv!!.text = period?.getPercentageString() ?: "--"
+            viewHolder.floating_action_button!!.setOnClickListener(fabOnClickListener)
+            viewHolder.unfold_percentage_grade_tv!!.text = period?.getPercentageString() ?: "--"
+            viewHolder.unfold_header_view!!.setBackgroundColor(utils.getColorByLetterGrade(period?.letter
+                    ?: "--"))
+            viewHolder.fold_grade_background!!.setBackgroundColor(utils.getColorByLetterGrade(period?.letter
+                    ?: "--"))
+            viewHolder.detail_header_background!!.setBackgroundColor(utils.getCardBackground())
+            viewHolder.unfold_trend_card!!.visibility = View.GONE
+
+            if (item.assignments.any { it -> it.isNew }) { // if any assignment is marked as new
+                viewHolder.fold_subject_title_tv!!.setTextColor(ContextCompat.getColor(context, R.color.white))
+                viewHolder.fold_teacher_name_tv!!.setTextColor(ContextCompat.getColor(context, R.color.white_0_10))
+                viewHolder.fold_block_letter_tv!!.setTextColor(ContextCompat.getColor(context, R.color.white_0_10))
+                viewHolder.fold_background!!.setBackgroundColor(utils.getAccentColor())
+
+                // Show increase/decrease margin badge
+                viewHolder.unfold_trend_card!!.visibility = View.VISIBLE
+                if (item.margin > 0) {
+                    // Increased
+                    viewHolder.unfold_trend_image!!.setImageResource(R.drawable.ic_trending_up_green_24dp)
+                    viewHolder.unfold_trend_text!!.setTextColor(ContextCompat.getColor(context, R.color.B_score_green_dark))
+                } else if (item.margin < 0) {
+                    // Decreased
+                    viewHolder.unfold_trend_image!!.setImageResource(R.drawable.ic_trending_down_red_24dp)
+                    viewHolder.unfold_trend_text!!.setTextColor(ContextCompat.getColor(context, R.color.Cm_score_red))
+                } else {
+                    // Not changed
+                    viewHolder.unfold_trend_image!!.setImageResource(R.drawable.ic_trending_flat_gray_24dp)
+                    viewHolder.unfold_trend_text!!.setTextColor(ContextCompat.getColor(context, R.color.gray))
+                }
+                viewHolder.unfold_trend_text!!.text = Math.abs(item.margin).toString()
+
+            } else {
+                viewHolder.fold_subject_title_tv!!.setTextColor(utils.getPrimaryTextColor())
+                viewHolder.fold_teacher_name_tv!!.setTextColor(utils.getSecondaryTextColor())
+                viewHolder.fold_block_letter_tv!!.setTextColor(utils.getSecondaryTextColor())
+                viewHolder.fold_background!!.setBackgroundColor(utils.getCardBackground())
+            }
+
+            viewHolder.unfolded_grade_recycler_view!!.addOnItemClickListener(termOnClickListener!!)
+
+            Handler().post { refreshPeriodRecycler(cell, position) }
+
+        } catch (e: Exception) {
+            utils.errorHandler(e)
         }
 
-        viewHolder.unfolded_grade_recycler_view!!.addOnItemClickListener(termOnClickListener!!)
-
-        Handler().post { refreshPeriodRecycler(cell, position) }
-
-        return cell
+        return cell!!
     }
 
     private fun initAnim(_delay: Int) {

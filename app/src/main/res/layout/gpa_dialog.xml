@@ -93,7 +93,6 @@
             android:minHeight="10dp"
             android:textAllCaps="false"
             app:sb_text="@string/gpa_segments_all"
-            app:sb_textColor="@color/white"
             app:sb_textColor_onSelection="@color/white" />
 
         <co.ceryle.segmentedbutton.SegmentedButton
@@ -104,7 +103,6 @@
             android:minHeight="10dp"
             android:textAllCaps="false"
             app:sb_text="@string/gpa_segments_custom"
-            app:sb_textColor="@color/white"
             app:sb_textColor_onSelection="@color/white" />
 
         <co.ceryle.segmentedbutton.SegmentedButton
@@ -115,7 +113,6 @@
             android:minHeight="10dp"
             android:textAllCaps="false"
             app:sb_text="@string/gpa_segments_official"
-            app:sb_textColor="@color/white"
             app:sb_textColor_onSelection="@color/white" />
 
     </co.ceryle.segmentedbutton.SegmentedButtonGroup>

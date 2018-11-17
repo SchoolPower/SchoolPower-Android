@@ -30,11 +30,14 @@ class CategoryActivity : BaseActivity() {
 
         utils = Utils(this)
         categoriesWeights = CategoryWeightData(utils)
-
         val subject = intent.getSerializableExtra("subject") as Subject
-        subject.recalculateGrades(categoriesWeights)
-        initChart(subject)
-        initRecycler(subject)
+        try {
+            subject.recalculateGrades(categoriesWeights)
+            initChart(subject)
+            initRecycler(subject)
+        } catch (e: Exception) {
+            utils.errorHandler(e)
+        }
 
         fab.setOnClickListener {
             CategorySettingsDialog(this, categoriesWeights, subject,

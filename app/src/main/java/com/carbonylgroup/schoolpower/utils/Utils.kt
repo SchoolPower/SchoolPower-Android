@@ -167,7 +167,7 @@ class Utils(private val context: Context) {
     /* Color Handler */
     fun getColorByLetterGrade(letterGrade: String): Int {
         val colorIndex = indexOfString(letterGrade, arrayOf("A", "B", "C+", "C", "C-", "F", "I", "--"))
-        return ContextCompat.getColor(context, if (colorIndex != -1) gradeColorIds[colorIndex] else 7)
+        return ContextCompat.getColor(context, gradeColorIds[if (colorIndex != -1) colorIndex else 7] )
     }
 
     fun getDarkColorByPrimary(originalPrimary: Int) = ContextCompat.getColor(context,
@@ -259,11 +259,14 @@ class Utils(private val context: Context) {
                 grades["T3"]?.hasGrade() == true -> return "T3"
                 grades["T2"]?.hasGrade() == true -> return "T2"
                 termsList.contains("T1") -> return "T1"
+                grades["S2"]?.hasGrade() == true -> return "S2"
+                grades["S1"]?.hasGrade() == true -> return "S1"
                 grades["Q4"]?.hasGrade() == true -> return "Q4"
                 grades["Q3"]?.hasGrade() == true -> return "Q3"
                 grades["Q2"]?.hasGrade() == true -> return "Q2"
                 termsList.contains("Q1") -> return "Q1"
                 grades["Y1"]?.hasGrade() == true -> return "Y1"
+                termsList.contains("S1") -> return "S1"
             }
         }
 

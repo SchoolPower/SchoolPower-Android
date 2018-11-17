@@ -37,10 +37,12 @@ class CalculatedGrade(subject: Subject, term: String, weightData: CategoryWeight
     }
 }
 
-class Grade(private val _percentage: String, val letter: String,
+class Grade(_percentage: String, _letter: String,
                  val comment: String, val evaluation: String,
                  var calculatedGrade: CalculatedGrade) : Serializable {
+    val letter: String = if (_letter != "null")  _letter else "--"
     val percentage : Int? = _percentage.toIntOrNull()
+
     fun getGrade() : Int? = if(letter!="--") percentage else null
     fun hasGrade() : Boolean = getGrade() != null
     fun getPercentageString() = percentage?.toString()?:"--"

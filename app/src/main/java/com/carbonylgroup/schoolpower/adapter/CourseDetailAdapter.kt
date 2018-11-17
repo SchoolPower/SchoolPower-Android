@@ -28,7 +28,7 @@ import java.util.*
 
 @SuppressLint("ClickableViewAccessibility")
 class CourseDetailAdapter(private val context: Context, private val subject: Subject, private val showHeader: Boolean,
-                          private val filterList: List<String>,
+                          private val filters: List<String>,
                           private val filter: (List<AssignmentItem>, String)->List<AssignmentItem>)
     : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -37,7 +37,7 @@ class CourseDetailAdapter(private val context: Context, private val subject: Sub
     private var list: ArrayList<AssignmentItem>? = null
 
     init{
-        filterList(filterList[0])
+        if(filters.isNotEmpty()) filterList(filters[0])
     }
 
     private fun filterList(filterStr: String){
@@ -86,14 +86,14 @@ class CourseDetailAdapter(private val context: Context, private val subject: Sub
 
         } else if (holder is HeaderViewHolder) {
 
-            val termAdapter = ArrayAdapter(context, R.layout.term_selection_spinner, filterList)
+            val termAdapter = ArrayAdapter(context, R.layout.term_selection_spinner, filters)
             holder.detail_term_select_spinner.adapter = termAdapter
             holder.detail_term_select_spinner.setSelection(presentingTermPos)
             holder.detail_term_select_spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(parent: AdapterView<*>, view: View, pos: Int, id: Long) {
                     if (pos != presentingTermPos) {
                         presentingTermPos = pos
-                        filterList(filterList[pos])
+                        filterList(filters[pos])
                         refreshAdapter()
                     }
                 }
