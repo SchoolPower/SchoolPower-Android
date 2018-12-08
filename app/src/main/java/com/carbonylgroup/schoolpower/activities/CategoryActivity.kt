@@ -41,7 +41,7 @@ class CategoryActivity : BaseActivity() {
 
         fab.setOnClickListener {
             CategorySettingsDialog(this, categoriesWeights, subject,
-                    subject.grades[subject.getLatestTermName(utils)]!!) {
+                    subject.grades[subject.getLatestTermName(utils, false, true)]!!) {
                 categoriesWeights = CategoryWeightData(utils)
                 subject.recalculateGrades(categoriesWeights)
                 initChart(subject)
@@ -53,7 +53,7 @@ class CategoryActivity : BaseActivity() {
 
         assignmentsRecycler.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
-        val categories = subject.grades[subject.getLatestTermName(utils)]!!.calculatedGrade.categories.keys.toList()
+        val categories = subject.grades[subject.getLatestTermName(utils, false, true)]!!.calculatedGrade.categories.keys.toList()
 
         assignmentsRecycler.adapter = CourseDetailAdapter(this, subject, false, categories,
                 fun(assignments:List<AssignmentItem>, filter:String):List<AssignmentItem> {
@@ -64,7 +64,7 @@ class CategoryActivity : BaseActivity() {
 
     private fun initChart(subject: Subject) {
 
-        val name = subject.getLatestTermName(utils) ?: return
+        val name = subject.getLatestTermName(utils, false, true) ?: return
         val grade = subject.grades[name] ?: return
 
         toolbar_layout.title = "$name %.2f%%".format(

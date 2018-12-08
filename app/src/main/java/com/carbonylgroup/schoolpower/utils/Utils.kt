@@ -234,12 +234,12 @@ class Utils(private val context: Context) {
         return getLatestTermName(latestPeriods)
     }
 
-    fun getLatestTermName(grades: Map<String, Grade>, forceLastTerm: Boolean = false): String? {
+    fun getLatestTermName(grades: Map<String, Grade>, forceLastTerm: Boolean = false, preferSemester: Boolean = false): String? {
         val termsList = grades.keys
         val forLatestSemester = getPreferences()
                 .getString("list_preference_dashboard_display", "0") == "1"
 
-        if (forLatestSemester && !forceLastTerm) {
+        if ((forLatestSemester && !forceLastTerm) || preferSemester) {
             when {
                 grades["S2"]?.hasGrade() == true -> return "S2"
                 grades["S1"]?.hasGrade() == true -> return "S1"
