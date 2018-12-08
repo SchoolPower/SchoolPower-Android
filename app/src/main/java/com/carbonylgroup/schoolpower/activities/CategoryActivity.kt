@@ -64,13 +64,11 @@ class CategoryActivity : BaseActivity() {
 
     private fun initChart(subject: Subject) {
 
-        val name = subject.getLatestTermName(utils)
-        val grade = subject.grades[name]!!
+        val name = subject.getLatestTermName(utils) ?: return
+        val grade = subject.grades[name] ?: return
 
-        if(name!=null) {
-            toolbar_layout.title = "$name %.2f%%".format(
-                    grade.calculatedGrade.getEstimatedPercentageGrade()*100)
-        }
+        toolbar_layout.title = "$name %.2f%%".format(
+                grade.calculatedGrade.getEstimatedPercentageGrade()*100)
 
         /*
         var text = ""
