@@ -356,67 +356,6 @@ class Utils(private val context: Context) {
     @Throws(IOException::class)
     fun saveDataJson(jsonStr: String) = saveStringToFile(StudentDataFileName, jsonStr)
 
-    fun updateStatisticalData(data: List<Subject>?) {
-        return
-        // it is organized into a json like {"subject-name": [{"sum": 100, "cat-1":100, ...}, ...], ...}
-        /*
-        if (data == null) return
-
-        val json = try {
-            JSONObject(readStringFromFile(StatisticalDataFileName))
-        } catch (e: Exception) {
-            e.printStackTrace()
-            JSONObject("{}")
-        }
-
-        for (subject in data) {
-
-            val term = getLatestTermName(subject.grades, true) ?: continue
-            val percentage = subject.grades[term]!!.getGrade() ?: continue
-
-            class GradeInfo {
-                var grade: Double = 0.0
-                var maxGrade: Double = 0.0
-            }
-
-            val categories = HashMap<String, GradeInfo>()
-            for (assignment in subject.assignments) {
-                if (!categories.containsKey(assignment.category)) categories[assignment.category] = GradeInfo()
-                if (assignment.score==null || assignment.maximumScore==null || assignment.weight==null) continue
-                if (!assignment.terms.contains(term)) continue
-                categories[assignment.category]!!.grade += assignment.score * assignment.weight
-                categories[assignment.category]!!.maxGrade += assignment.maximumScore * assignment.weight
-            }
-            val sample = JSONObject() // categories {"sum": 100, "cat-1":100, ...}
-
-            for (cat in categories.entries)
-                if (cat.value.maxGrade != 0.0)
-                    sample.put(cat.key, cat.value.grade / cat.value.maxGrade)
-            sample.put("sum", percentage)
-
-            if (!json.has(subject.name)) json.put(subject.name, JSONArray())
-            val jsonSubjectSamples = json.getJSONArray(subject.name) // [sample1, sample2, ...]
-            var duplicate = false
-            for (i in 0 until jsonSubjectSamples.length()) {
-                var same = true
-                val tested = jsonSubjectSamples.getJSONObject(i)
-                for (key in tested.keys()) {
-                    if (!sample.has(key) || tested.getDouble(key) != sample.getDouble(key)) {
-                        same = false
-                        break
-                    }
-                }
-                if (same) duplicate = true
-                break
-            }
-            if (duplicate) continue
-            json.getJSONArray(subject.name).put(sample)
-        }
-
-        saveStringToFile(StatisticalDataFileName, json.toString())
-        */
-    }
-
     fun saveHistoryGrade(data: List<Subject>?) {
         // 1. read data into brief info
         // 2. calculate gpa
@@ -649,21 +588,22 @@ class Utils(private val context: Context) {
         return ageStr.toString() + if (withSuffix) getSuffixForNumber(ageStr) else ""
     }
 
-    fun errorHandler(e: Exception) {
+    fun errorHandler(e: Exception, customTitle: String?=null, customContent: String?=null) {
         val sw = StringWriter()
         e.printStackTrace(PrintWriter(sw))
-        if (!(context as Activity).isFinishing && !context.isDestroyed)
+        if(context !is Activity) return
+        if (!context.isFinishing && !context.isDestroyed)
             context.runOnUiThread {
                 val emergencyDialogBuilder = AlertDialog.Builder(context)
-                emergencyDialogBuilder.setTitle(context.getString(R.string.fatel_error))
-                emergencyDialogBuilder.setMessage(context.getString(R.string.fatel_error_message) + sw.toString())
+                emergencyDialogBuilder.setTitle(customTitle ?: context.getString(R.string.fatel_error))
+                emergencyDialogBuilder.setMessage(customContent ?: context.getString(R.string.fatel_error_message) + sw.toString())
                 val sendEmail = DialogInterface.OnClickListener { _, _ ->
                     val version = context.packageManager.getPackageInfo("com.carbonylgroup.schoolpower", 0).versionName
                     val uri = Uri.parse(context.getString(R.string.bug_report_email))
                     val intent = Intent(Intent.ACTION_SENDTO, uri)
                     intent.putExtra(Intent.EXTRA_SUBJECT, context.getString(R.string.bug_report_email_subject))
                     intent.putExtra(Intent.EXTRA_TEXT, String.format(context.getString(R.string.bug_report_email_content), version) +
-                            "\n\nError message: \n" + sw.toString())
+                            "\n\nError message: \n" + (customContent ?: sw.toString()))
                     context.startActivity(Intent.createChooser(intent, context.getString(R.string.choose_email_app)))
                 }
                 emergencyDialogBuilder.setPositiveButton(context.getString(R.string.email), sendEmail)

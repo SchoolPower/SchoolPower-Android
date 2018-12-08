@@ -292,6 +292,11 @@ SchoolPower does not guarantee that the user\'s picture will be permanently save
     <string name="fatel_error_message">We\'ve just encountered an unknown fatal error.
 \nPlease stay calm and report this to the developers. We will resolve the issue ASAP.\n\nError message: \n</string>
 
+    <string name="fatel_error_server_side">Server Error</string>
+    <string name="fatel_error_server_side_message">We\'ve just encountered a server error.
+\nNote that this is sometimes caused by PowerSchool server being unavailable. Please visit the official PowerSchool website and check if they are working.
+\nIf you are sure that PowerSchool server is working properly, please report this to the developers. We will resolve the issue ASAP.\n\nError message: \n</string>
+
     <string name="cancel">Cancel</string>
     <string name="email">Email</string>
 

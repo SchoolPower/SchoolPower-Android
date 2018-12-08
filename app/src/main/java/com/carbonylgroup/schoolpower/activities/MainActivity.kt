@@ -596,8 +596,9 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
             override fun onResponse(call: Call, response: Response) {
                 val strMessage = response.body()!!.string().replace("\n", "")
                 response.close()
-                // Error happened. Usually caused by wrong username/password
-                if (strMessage.contains("Something went wrong!")) {
+
+                // Wrong username/password
+                if (strMessage.contains("Invalid Username or password")) {
                     runOnUiThread {
                         utils.showSnackBar(findViewById(R.id.main_coordinate_layout), getString(R.string.wrong_password), true)
                         signOut()
@@ -608,6 +609,8 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                 // Get response but not a valid JSON
                 if (!strMessage.contains("{")) {
                     runOnUiThread {
+                        utils.errorHandler(java.lang.IllegalArgumentException(), null,
+                                getString(R.string.fatel_error_message) + strMessage)
                         utils.showSnackBar(findViewById(R.id.main_coordinate_layout), getString(R.string.server_problem) + strMessage, true)
                         when (presentFragment) {
                             0 -> dashboardFragment!!.setRefreshing(false)
@@ -619,7 +622,20 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                 }
                 try {
                     utils.saveDataJson(strMessage)
-                    val data = StudentData(this@MainActivity, strMessage, utils)
+                    val data =
+                            try { StudentData(this@MainActivity, strMessage, utils) }
+                            catch (e: IllegalArgumentException){
+                                utils.errorHandler(e, getString(R.string.fatel_error_server_side),
+                                        getString(R.string.fatel_error_server_side_message) + e.message)
+                                runOnUiThread {
+                                    when (presentFragment) {
+                                        0 -> dashboardFragment!!.setRefreshing(false)
+                                        3 -> attendanceFragment!!.setRefreshing(false)
+                                    }
+                                }
+                                noConnection = true
+                                null
+                            } ?: return
                     if (data.disabled) {
                         runOnUiThread {
                             try {
@@ -656,7 +672,6 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                         }
                     }
                     utils.saveHistoryGrade(subjects)
-                    utils.updateStatisticalData(subjects)
 
                     // Mark new or changed assignments
                     if (subjects!!.size == oldSubjects.size) {

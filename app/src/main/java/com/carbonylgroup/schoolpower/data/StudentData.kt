@@ -34,9 +34,13 @@ class StudentData(context: Context, jsonStr: String, utils: Utils) {
 
     init {
         val studentData = JSONObject(jsonStr)
-        if (!studentData.has("information")) { // not successful
-            Log.e("Utils.parseJsonResult", studentData.toString())
-            throw IllegalArgumentException("JSON Format Error")
+        if (studentData.has("err")){
+            Log.e("StudentData", studentData.toString())
+            throw IllegalArgumentException("Server reported an error: " + studentData.getString("description"))
+        }
+        if (!studentData.has("information") || studentData.isNull("information")) { // not successful
+            Log.e("StudentData", studentData.toString())
+            throw IllegalArgumentException("Server returned an incorrect result. PowerSchool server is probably not available")
         }
         studentInfo = StudentInformation(studentData.getJSONObject("information"))
         val attendance = studentData.getJSONArray("attendances")

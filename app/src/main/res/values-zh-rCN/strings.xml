@@ -214,6 +214,9 @@ SchoolPower 不保证上述网站的服务稳定性，不保证用户头像会�
     <string name="fatel_error">未知错误</string>
     <string name="fatel_error_message">我们刚刚遇到了未知错误。这通常是我们的锅。您可以尝试稍后重试或我们强烈建议您将此错误反馈给我们\n\n错误信息: \n</string>
 
+    <string name="fatel_error_server_side">服务器错误</string>
+    <string name="fatel_error_server_side_message">我们无法解析服务器返回的数据。请注意：这可能是因为学校的 PowerSchool 服务器出现故障导致的。请您登录官方的 PowerSchool 平台尝试是否可以正常使用。如果是仅 SchoolPower 无法使用，敬请回报此问题给我们，我们将会尽快修复。\n\n错误信息： \n</string>
+
     <string name="cancel">取消</string>str
     <string name="email">发送</string>
     <string name="advertisement_settings">广告设置</string>

@@ -120,8 +120,8 @@ class LoginActivity : BaseActivity() {
 
                         val strMessage = response.body()!!.string().replace("\n", "")
                         response.close()
-                        // Error happened. Usually caused by wrong username/password
-                        if (strMessage.contains("Something went wrong")) {
+                        // Wrong username/password
+                        if (strMessage.contains("Invalid Username or password")) {
                             runOnUiThread {
                                 utils.showSnackBar(findViewById(R.id.login_coordinate_layout), getString(R.string.wrong_password), true)
                                 Log.w("Login", strMessage)
@@ -144,8 +144,17 @@ class LoginActivity : BaseActivity() {
                             return
                         }
 
-                        val data = StudentData(this@LoginActivity, strMessage, utils)
-
+                        val data =
+                                try { StudentData(this@LoginActivity, strMessage, utils) }
+                                catch (e: IllegalArgumentException){
+                                    utils.errorHandler(e, getString(R.string.fatel_error_server_side),
+                                            getString(R.string.fatel_error_server_side_message) + e.message)
+                                    runOnUiThread {
+                                        utils.showSnackBar(findViewById(R.id.login_coordinate_layout), getString(R.string.no_connection), true)
+                                        hideProgress()
+                                    }
+                                    null
+                                } ?: return
                         utils.getPreferences(Utils.AccountData).edit()
                                 .putString(getString(R.string.usernameKEY), username)
                                 .putString(getString(R.string.passwordKEY), password)
