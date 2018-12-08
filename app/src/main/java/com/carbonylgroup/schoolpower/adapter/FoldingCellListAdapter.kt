@@ -38,9 +38,12 @@ class FoldingCellListAdapter(context: Context, private var subjects: List<Subjec
     private var fabOnClickListener: View.OnClickListener? = null
     private var termOnClickListener: com.carbonylgroup.schoolpower.adapter.OnItemClickListener? = null
 
-    override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
+    override fun getView(_position: Int, convertView: View?, parent: ViewGroup): View {
         var cell = convertView as FoldingCell?
         try {
+            var position = _position
+            if(position >= subjects!!.count())
+                position = subjects!!.count() // dirty fix
             val item = subjects!![position]
             val viewHolder: ViewHolder
 

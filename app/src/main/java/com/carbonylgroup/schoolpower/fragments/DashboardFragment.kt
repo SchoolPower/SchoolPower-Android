@@ -161,12 +161,13 @@ class DashboardFragment : TransitionHelper.BaseFragment() {
             })
 
     private fun initAdapter() {
-        if (subjects != null && utils.getFilteredSubjects(subjects!!).count() != 0) {
+        val filtered = utils.getFilteredSubjects(subjects!!)
+        if (subjects != null && filtered.count() != 0) {
             dashboardListView.visibility = View.VISIBLE
             noGradeView.visibility = View.GONE
         }
 
-        adapter = FoldingCellListAdapter(activity as MainActivity, utils.getFilteredSubjects(subjects!!), unfoldedIndexesBackUp, transformedPosition)
+        adapter = FoldingCellListAdapter(activity as MainActivity, filtered, unfoldedIndexesBackUp, transformedPosition)
         adapterSetFabOnClickListener(adapter!!)
         adapterSetTermOnClickListener(adapter!!)
         dashboardListView.onItemClickListener = AdapterView.OnItemClickListener { _, view, pos, _ ->
