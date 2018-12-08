@@ -357,8 +357,9 @@ class Utils(private val context: Context) {
     fun saveDataJson(jsonStr: String) = saveStringToFile(StudentDataFileName, jsonStr)
 
     fun updateStatisticalData(data: List<Subject>?) {
+        return
         // it is organized into a json like {"subject-name": [{"sum": 100, "cat-1":100, ...}, ...], ...}
-
+        /*
         if (data == null) return
 
         val json = try {
@@ -413,6 +414,7 @@ class Utils(private val context: Context) {
         }
 
         saveStringToFile(StatisticalDataFileName, json.toString())
+        */
     }
 
     fun saveHistoryGrade(data: List<Subject>?) {
