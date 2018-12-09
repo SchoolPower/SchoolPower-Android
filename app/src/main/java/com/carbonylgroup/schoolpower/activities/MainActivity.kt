@@ -7,6 +7,8 @@ package com.carbonylgroup.schoolpower.activities
 import android.animation.ValueAnimator
 import android.app.Activity
 import android.app.AlertDialog
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.app.job.JobInfo
 import android.app.job.JobInfo.NETWORK_TYPE_ANY
 import android.app.job.JobScheduler
@@ -368,6 +370,19 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
             jobScheduler.cancelAll()
             return
         }
+
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val service = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            if (service.notificationChannels.size == 0) {
+                service.createNotificationChannel(NotificationChannel("assignments",
+                        getString(R.string.notification_new_channel),
+                        NotificationManager.IMPORTANCE_DEFAULT))
+                service.createNotificationChannel(NotificationChannel("attendance",
+                        getString(R.string.notification_new_att_channel),
+                        NotificationManager.IMPORTANCE_DEFAULT))
+            }
+        }
+
         if (jobScheduler.allPendingJobs.size != 0) return
         Log.d("PullDataJob", "Job Registered")
 
@@ -376,6 +391,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                 .setRequiredNetworkType(NETWORK_TYPE_ANY)
                 .setPersisted(true)
         jobScheduler.schedule(builder.build())
+
     }
 
     /* Fragments Handler */

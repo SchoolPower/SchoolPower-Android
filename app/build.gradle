@@ -72,9 +72,11 @@ dependencies {
     implementation project(':cropper')
     implementation('com.mikepenz:aboutlibraries:5.9.6@aar') { transitive = true }
     testImplementation 'junit:junit:4.12'
+    implementation 'com.google.firebase:firebase-messaging:17.3.4'
 }
 repositories {
     mavenCentral()
 }
 
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'com.google.gms.google-services'

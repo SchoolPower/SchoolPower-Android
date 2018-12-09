@@ -112,6 +112,8 @@
     <string name="notification_show_grade">Show grades in notification</string>
     <string name="notification_show_no_grade_assignment">Notify ungraded assignments</string>
     <string name="notification_new">New assignments</string>
+    <string name="notification_new_channel">New Assignments Notification</string>
+    <string name="notification_new_att_channel">New Attendance Notification</string>
 
     <string name="attendance_new">New attendances</string>
 
