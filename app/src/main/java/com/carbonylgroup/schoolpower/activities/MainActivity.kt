@@ -362,7 +362,17 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
     }
 
     private fun initScheduler() {
-
+        /*
+        Thread(Runnable {
+            try {
+                Log.d("AppFirebaseService","bef deleted")
+                FirebaseInstanceId.getInstance().deleteInstanceId()
+                Log.d("AppFirebaseService","deleted")
+            } catch (e: IOException) {
+                Log.d("AppFirebaseService","so bad deleted")
+                e.printStackTrace()
+            }
+        }).start()*/
         val jobScheduler = getSystemService(Context.JOB_SCHEDULER_SERVICE) as JobScheduler
         val preferences = utils.getPreferences()
         if (!preferences.getBoolean("preference_enable_notification", true)) {
