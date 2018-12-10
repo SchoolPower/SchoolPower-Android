@@ -362,7 +362,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
     }
 
     private fun initScheduler() {
-        /*
+/*
         Thread(Runnable {
             try {
                 Log.d("AppFirebaseService","bef deleted")
