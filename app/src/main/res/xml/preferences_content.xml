@@ -115,6 +115,14 @@
 
     <PreferenceCategory android:title="@string/support">
 
+        <SwitchPreference
+            android:buttonTint="?android:attr/textColorPrimary"
+            android:defaultValue="false"
+            android:icon="@drawable/ic_cloud_upload_black_24dp"
+            android:key="crash_report_enabled"
+            android:summary="@string/crash_report_enable_summary"
+            android:title="@string/crash_report_enable" />
+
         <PreferenceScreen
             android:icon="@drawable/ic_bug_report_black_24dp"
             android:key="report_bug"

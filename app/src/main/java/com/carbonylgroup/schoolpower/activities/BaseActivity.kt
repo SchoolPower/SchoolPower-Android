@@ -12,6 +12,7 @@ abstract class BaseActivity : AppCompatActivity() {
 
     companion object {
         private lateinit var curActivity: BaseActivity
+        private var crashReportInitialized = false
         fun getCurActivity(): BaseActivity {
             return curActivity
         }
@@ -25,6 +26,10 @@ abstract class BaseActivity : AppCompatActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        if(!crashReportInitialized){
+            Utils(this).crashReportRequest()
+            crashReportInitialized = true
+        }
         ThemeHelper(this).apply()
         setSupportActionBar(null)
         super.onCreate(savedInstanceState)

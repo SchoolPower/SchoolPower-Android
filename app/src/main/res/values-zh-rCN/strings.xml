@@ -110,6 +110,13 @@
     <string name="notification_new_att_channel">新出勤情况</string>
 
     <string name="support">支持</string>
+
+    <string name="crash_report_enable">启用崩溃报告</string>
+    <string name="crash_report_enable_summary">在遇到错误的时候发送报告以帮助我们修复崩溃问题（重启后生效）</string>
+    <string name="send_crash">发送崩溃报告</string>
+    <string name="crash_report_request">向我们发送崩溃报告可以帮助我们更好地修复存在的崩溃问题。如果您选择开启，本应用会且仅会在遇到错误的时候发送报告，且通常不会包含隐私问题。我们强烈建议您建议发送错误报告。该选项可以稍后在设置中开启或关闭。</string>
+
+
     <string name="report_bug">提交Bug</string>
     <string name="report_bug_summary">用电子邮件联系开发者</string>
     <string name="feedback_forum">访问反馈论坛</string>

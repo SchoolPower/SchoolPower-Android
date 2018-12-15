@@ -111,6 +111,10 @@
     <string name="notification_new_att_channel">新出勤情況</string>
 
     <string name="support">支持</string>
+    <string name="crash_report_enable">啟用崩潰報告</string>
+    <string name="crash_report_enable_summary">在遇到錯誤的時候發送報告以幫助我們修復崩潰問題（重啟後生效）</string>
+    <string name="send_crash">發送崩潰報告</string>
+    <string name="crash_report_request">向我們發送崩潰報告可以幫助我們更好地修復存在的崩潰問題。如果您選擇開啟，本應用會​​且僅會在遇到錯誤/崩潰的時候發送報告，且通常不會包含隱私問題。我們強烈建議您建議發送錯誤報告。該選項可以稍後在設置中開啟或關閉。 </string>
     <string name="report_bug">提交Bug</string>
     <string name="report_bug_summary">用電子郵件聯繫開發者</string>
     <string name="feedback_forum">訪問反饋論壇</string>

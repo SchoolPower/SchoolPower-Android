@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'io.fabric'
 
 android {
     compileSdkVersion 28
@@ -73,6 +74,9 @@ dependencies {
     implementation('com.mikepenz:aboutlibraries:5.9.6@aar') { transitive = true }
     testImplementation 'junit:junit:4.12'
     implementation 'com.google.firebase:firebase-messaging:17.3.4'
+    // Don't upgrade to 2.9.7. That version won't work for some reason.
+    implementation 'com.crashlytics.sdk.android:crashlytics:2.9.6'
+
 }
 repositories {
     mavenCentral()

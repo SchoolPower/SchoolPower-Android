@@ -118,6 +118,11 @@
     <string name="attendance_new">New attendances</string>
 
     <string name="support">Support</string>
+    <string name="crash_report_enable">Enable crash report</string>
+    <string name="crash_report_enable_summary">The app will and only will send information to us when there is a crash. It will greatly help us improve our app. (Restart to take effect.)</string>
+    <string name="send_crash">Send bug report</string>
+    <string name="crash_report_request">Sending a crash report to us can help us better fix a crash. If you choose to turn it on, the app will only send reports when an error/crash is encountered, and the report usually will not contain any private information. We strongly recommend enabling it. This option can be turned on or off later in the settings.</string>
+
     <string name="report_bug">Report a bug</string>
     <string name="report_bug_summary">Contact developer with email.</string>
     <string name="feedback_forum">Visit feedback forum</string>

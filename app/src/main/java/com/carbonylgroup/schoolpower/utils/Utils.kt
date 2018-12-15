@@ -25,6 +25,8 @@ import com.carbonylgroup.schoolpower.data.Grade
 import com.carbonylgroup.schoolpower.data.SortableTerm
 import com.carbonylgroup.schoolpower.data.StudentData
 import com.carbonylgroup.schoolpower.data.Subject
+import com.crashlytics.android.Crashlytics
+import io.fabric.sdk.android.Fabric
 import okhttp3.*
 import org.json.JSONArray
 import org.json.JSONException
@@ -589,6 +591,11 @@ class Utils(private val context: Context) {
     }
 
     fun errorHandler(e: Exception, customTitle: String?=null, customContent: String?=null) {
+        val crashReportEnabled = getPreferences().getBoolean("crash_report_enabled", false)
+        if (crashReportEnabled) {
+            Crashlytics.logException(e)
+        }
+
         val sw = StringWriter()
         e.printStackTrace(PrintWriter(sw))
         if(context !is Activity) return
@@ -606,11 +613,40 @@ class Utils(private val context: Context) {
                             "\n\nError message: \n" + (customContent ?: sw.toString()))
                     context.startActivity(Intent.createChooser(intent, context.getString(R.string.choose_email_app)))
                 }
-                emergencyDialogBuilder.setPositiveButton(context.getString(R.string.email), sendEmail)
                 emergencyDialogBuilder.setNegativeButton(context.getString(R.string.cancel), null)
+                if(!crashReportEnabled) {
+                    emergencyDialogBuilder.setNeutralButton(context.getString(R.string.email), sendEmail)
+
+                    emergencyDialogBuilder.setPositiveButton(context.getString(R.string.send_crash)) { _, _ ->
+                        Fabric.with(context, Crashlytics())
+                        Crashlytics.logException(e)
+                    }
+                }else{
+                    emergencyDialogBuilder.setPositiveButton(context.getString(R.string.email), sendEmail)
+                }
                 emergencyDialogBuilder.create().setCanceledOnTouchOutside(false)
                 emergencyDialogBuilder.create().show()
             }
+    }
+
+    fun crashReportRequest(){
+        if (getPreferences().getBoolean("crash_report_enabled", false)) {
+            Fabric.with(context, Crashlytics())
+            return
+        }
+
+        if (getPreferences(Utils.TmpData).getBoolean("crash_report_requested",false))
+            return
+        val builder = AlertDialog.Builder(context)
+        builder.setTitle(context.getString(R.string.crash_report_enable))
+        builder.setMessage(context.getString(R.string.crash_report_enable_summary))
+        builder.setPositiveButton(context.getString(R.string.accept)) { _, _ ->
+            setPreference("crash_report_enabled", true)
+            Fabric.with(context, Crashlytics())
+        }
+        builder.setNegativeButton(context.getString(R.string.decline), null)
+        builder.show()
+        setPreference("crash_report_requested", true, Utils.TmpData)
     }
 
     fun autoAdjustWeekType(){
