@@ -52,14 +52,14 @@ class CategorySettingsDialog(private val activity: Activity, private val categor
         }
 
         // construct dialog
-        val gpaDialogBuilder = AlertDialog.Builder(activity)
-        gpaDialogBuilder.setView(dialog)
-        gpaDialogBuilder.setTitle("GPA")
-        gpaDialogBuilder.setPositiveButton(activity.getString(R.string.sweet)) { _, _ ->
+        val dialogBuilder = AlertDialog.Builder(activity)
+        dialogBuilder.setView(dialog)
+        dialogBuilder.setTitle("Category Weights")
+        dialogBuilder.setPositiveButton(activity.getString(R.string.sweet)) { _, _ ->
             categoryWeights.flush()
             refreshCallback()
         }
-        gpaDialogBuilder.create().setCanceledOnTouchOutside(true)
-        gpaDialogBuilder.create().show()
+        dialogBuilder.create().setCanceledOnTouchOutside(true)
+        dialogBuilder.create().show()
     }
 }

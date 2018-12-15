@@ -620,6 +620,7 @@ class Utils(private val context: Context) {
                     emergencyDialogBuilder.setPositiveButton(context.getString(R.string.send_crash)) { _, _ ->
                         Fabric.with(context, Crashlytics())
                         Crashlytics.logException(e)
+                        Crashlytics.getInstance().core.logException(e)
                     }
                 }else{
                     emergencyDialogBuilder.setPositiveButton(context.getString(R.string.email), sendEmail)
@@ -645,7 +646,9 @@ class Utils(private val context: Context) {
             Fabric.with(context, Crashlytics())
         }
         builder.setNegativeButton(context.getString(R.string.decline), null)
-        builder.show()
+        val dialog = builder.create()
+        dialog.setCanceledOnTouchOutside(false)
+        dialog.show()
         setPreference("crash_report_requested", true, Utils.TmpData)
     }
 

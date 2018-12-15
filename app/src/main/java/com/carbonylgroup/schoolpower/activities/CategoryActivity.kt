@@ -1,7 +1,9 @@
 package com.carbonylgroup.schoolpower.activities
 
+import android.app.AlertDialog
 import android.graphics.Color
 import android.support.v7.widget.LinearLayoutManager
+import android.widget.ArrayAdapter
 import com.carbonylgroup.schoolpower.R
 import com.carbonylgroup.schoolpower.adapter.CourseDetailAdapter
 import com.carbonylgroup.schoolpower.data.AssignmentItem
@@ -15,7 +17,9 @@ import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.formatter.PercentFormatter
 import kotlinx.android.synthetic.main.activity_category.*
+import kotlinx.android.synthetic.main.add_assignment_dialog.view.*
 import kotlinx.android.synthetic.main.content_category.*
+import org.json.JSONObject
 import java.util.*
 
 class CategoryActivity : BaseActivity() {
@@ -46,6 +50,44 @@ class CategoryActivity : BaseActivity() {
                 subject.recalculateGrades(categoriesWeights)
                 initChart(subject)
             }.show()
+        }
+
+        if(utils.isDeveloperMode()) {
+            fab.setOnLongClickListener {
+                val categories = subject.grades[subject.getLatestTermName(utils, false, true)]!!.calculatedGrade.categories.keys.toList()
+
+                // construct view
+                val dialog = this@CategoryActivity.layoutInflater.inflate(R.layout.add_assignment_dialog, null)
+                dialog.categorySpinner.adapter = ArrayAdapter(this@CategoryActivity, R.layout.term_selection_spinner, categories)
+
+                // construct dialog
+                val gpaDialogBuilder = AlertDialog.Builder(this@CategoryActivity)
+                gpaDialogBuilder.setView(dialog)
+                gpaDialogBuilder.setTitle("Add Assignment")
+                gpaDialogBuilder.setPositiveButton(getString(R.string.sweet)) { _, _ ->
+                    val json = JSONObject(
+                            """
+{
+"description": "",
+"name": "dummy",
+"percentage": "86.96",
+"letterGrade": "A",
+"date": "2017-09-11T16:00:00.000Z",
+"weight": "1",
+"includeInFinalGrade": "1",
+"terms": ["T1","T2","S1","S2","Y1"]
+}
+""")
+                    json.put("category", categories[dialog.categorySpinner.selectedItemId.toInt()])
+                    json.put("score",  dialog.mark.text.toString().toInt())
+                    json.put("pointsPossible", dialog.markPossible.text.toString().toInt())
+                    subject.assignments.add(AssignmentItem(json))
+                    subject.recalculateGrades(categoriesWeights)
+                    initChart(subject)
+                }
+                gpaDialogBuilder.create().show()
+                true
+            }
         }
     }
 
