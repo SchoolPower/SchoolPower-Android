@@ -73,7 +73,9 @@ dependencies {
     implementation project(':cropper')
     implementation('com.mikepenz:aboutlibraries:5.9.6@aar') { transitive = true }
     testImplementation 'junit:junit:4.12'
-    implementation 'com.google.firebase:firebase-messaging:17.3.4'
+    //implementation 'com.google.firebase:firebase-messaging:17.3.4'
+    implementation 'com.google.firebase:firebase-core:16.0.6'
+
     // Don't upgrade to 2.9.7. That version won't work for some reason.
     implementation 'com.crashlytics.sdk.android:crashlytics:2.9.6'
 

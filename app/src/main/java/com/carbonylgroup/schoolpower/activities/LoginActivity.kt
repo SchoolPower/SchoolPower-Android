@@ -28,8 +28,6 @@ import java.io.IOException
 
 class LoginActivity : BaseActivity() {
 
-    private lateinit var utils: Utils
-
     override fun initActivity() {
         super.initActivity()
         setContentView(R.layout.login_content)
@@ -38,7 +36,6 @@ class LoginActivity : BaseActivity() {
 
         hideProgress()
         initDialog()
-        utils = Utils(this)
 
         findViewById<View>(R.id.login_fab).setOnClickListener {
             val username = findViewById<EditText>(R.id.input_username).text.toString()

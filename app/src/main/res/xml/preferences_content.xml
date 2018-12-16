@@ -118,6 +118,14 @@
         <SwitchPreference
             android:buttonTint="?android:attr/textColorPrimary"
             android:defaultValue="false"
+            android:icon="@drawable/ic_line_chart_accent_24dp"
+            android:key="analytics_enabled"
+            android:summary="@string/analytics_enable_summary"
+            android:title="@string/analytics_enable" />
+
+        <SwitchPreference
+            android:buttonTint="?android:attr/textColorPrimary"
+            android:defaultValue="false"
             android:icon="@drawable/ic_cloud_upload_black_24dp"
             android:key="crash_report_enabled"
             android:summary="@string/crash_report_enable_summary"

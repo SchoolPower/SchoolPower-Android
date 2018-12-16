@@ -630,8 +630,10 @@ class Utils(private val context: Context) {
             }
     }
 
+    fun isCrashReportEnabled() = getPreferences().getBoolean("crash_report_enabled", false)
+
     fun crashReportRequest(){
-        if (getPreferences().getBoolean("crash_report_enabled", false)) {
+        if (isCrashReportEnabled()) {
             Fabric.with(context, Crashlytics())
             return
         }
@@ -650,6 +652,22 @@ class Utils(private val context: Context) {
         dialog.setCanceledOnTouchOutside(false)
         dialog.show()
         setPreference("crash_report_requested", true, Utils.TmpData)
+    }
+
+    fun analyticsRequest(){
+        if (getPreferences(Utils.TmpData).getBoolean("analytics_requested",false))
+            return
+        val builder = AlertDialog.Builder(context)
+        builder.setTitle(context.getString(R.string.analytics_enable))
+        builder.setMessage(context.getString(R.string.analytics_enable_summary))
+        builder.setPositiveButton(context.getString(R.string.accept)) { _, _ ->
+            setPreference("analytics_enabled", true)
+        }
+        builder.setNegativeButton(context.getString(R.string.decline), null)
+        val dialog = builder.create()
+        dialog.setCanceledOnTouchOutside(false)
+        dialog.show()
+        setPreference("analytics_requested", true, Utils.TmpData)
     }
 
     fun autoAdjustWeekType(){

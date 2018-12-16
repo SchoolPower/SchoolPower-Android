@@ -83,19 +83,19 @@
             android:name=".service.PullDataJob"
             android:label="Fetch student data"
             android:permission="android.permission.BIND_JOB_SERVICE" />
-
+    <!--
         <service android:name=".service.AppFirebaseMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
             android:resource="@drawable/icon_light" />
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/colorAccent" />
+    -->
         <meta-data
             android:name="firebase_crashlytics_collection_enabled"
             android:value="false" />

@@ -67,7 +67,6 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
 
     private var noConnection = false
     private var menuOpenDrawer = true
-    private var utils: Utils = Utils(this)
     private var hideToolBarItemFlag = false
     private var hideCourseDetailItemFlag = false
     private val mainToolBar: Toolbar by bindView(R.id.main_toolbar)
@@ -89,7 +88,6 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
     private val SETTINGS_REQUEST_CODE = 233
 
     override fun initActivity() {
-        utils = Utils(this)
         // Shortcuts could bring users to main activity directly.
         // In this case, bring users to login activity if they are not logged in
         if (!utils.getPreferences(AccountData).getBoolean(getString(R.string.loggedIn), false)) {

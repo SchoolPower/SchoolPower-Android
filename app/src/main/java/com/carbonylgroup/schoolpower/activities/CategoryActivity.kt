@@ -25,14 +25,12 @@ import java.util.*
 class CategoryActivity : BaseActivity() {
 
     private lateinit var categoriesWeights: CategoryWeightData
-    private lateinit var utils : Utils
 
     override fun initActivity() {
         super.initActivity()
         setContentView(R.layout.activity_category)
         setSupportActionBar(toolbar)
 
-        utils = Utils(this)
         categoriesWeights = CategoryWeightData(utils)
         val subject = intent.getSerializableExtra("subject") as Subject
         try {

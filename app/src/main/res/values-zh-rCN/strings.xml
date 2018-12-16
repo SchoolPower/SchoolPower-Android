@@ -237,4 +237,6 @@ SchoolPower 不保证上述网站的服务稳定性，不保证用户头像会�
     <string name="even_odd_filter_title">智能 Block 显示（测试）</string>
     <string name="even_odd_filter_summary">仅显示适用于当前周的 Block 信息</string>
     <string name="even_odd_filter_switch_title">奇偶周调整</string>
+    <string name="analytics_enable">启用统计</string>
+    <string name="analytics_enable_summary">您同意此应用匿名发送一些非隐私的统计数据（例如版本，使用的主题颜色等）来帮助我们改善应用。</string>
 </resources>
