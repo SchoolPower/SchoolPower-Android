@@ -115,7 +115,11 @@
         <activity
             android:name=".activities.CategoryActivity"
             android:label="@string/title_activity_category"
-            android:theme="@style/ThemeLight.Cyan.500"></activity>
+            android:theme="@style/ThemeLight.Cyan.500" />
+
+        <uses-library
+            android:name="org.apache.http.legacy"
+            android:required="false" />
     </application>
 
 </manifest>
