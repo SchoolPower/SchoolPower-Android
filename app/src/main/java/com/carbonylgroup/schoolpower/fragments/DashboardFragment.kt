@@ -238,7 +238,9 @@ class DashboardFragment : TransitionHelper.BaseFragment() {
                 // mark the ILD as displayed
                 val displayedILDs = utils.getPreferences(Utils.TmpData).getStringSet("doNotDisplayTheseILDs", mutableSetOf())!!
                 displayedILDs.add(uuid)
-                utils.setPreference("doNotDisplayTheseILDs", displayedILDs, Utils.TmpData)
+                val edit = utils.getPreferences(Utils.TmpData).edit()
+                edit.putStringSet("doNotDisplayTheseILDs", displayedILDs)
+                edit.apply()
                 utils.setPreference("ildJson", "", Utils.TmpData)
             }
             removeILD(self)

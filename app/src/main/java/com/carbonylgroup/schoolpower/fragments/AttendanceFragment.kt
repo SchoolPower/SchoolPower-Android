@@ -53,7 +53,7 @@ class AttendanceFragment : Fragment() {
     private fun initValue() {
 
         utils = Utils(activity!!)
-        attendance = MainActivity.of(activity).attendances!!
+        attendance = MainActivity.of(activity).attendances
         attendanceRecyclerView = view_private!!.findViewById(R.id.attendance_recycler)
         no_attendance_view = view_private!!.findViewById(R.id.no_attendance_view)
         view_private!!.findViewById<ImageView>(R.id.perfect_attendance_image_view).setImageDrawable(

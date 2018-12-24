@@ -795,7 +795,17 @@ class Utils(private val context: Context) {
                 "#b8517b",
                 "#919652",
                 "#ad5844",
-                "#a49a85"
+                "#a49a85",
+                "#00695c",
+                "#1de9b6",
+                "#cddc39",
+                "#e65100",
+                "#ff3d00",
+                "#37474f",
+                "#cfd8dc",
+                "#6d4c41",
+                "#2e7d32",
+                "#01579b"
         )
 
         // note that the "https://host/api/" part is not included

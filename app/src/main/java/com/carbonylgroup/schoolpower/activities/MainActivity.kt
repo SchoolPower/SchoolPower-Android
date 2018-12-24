@@ -477,7 +477,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
             }
         }
 
-        transaction.commit()
+        transaction.commitAllowingStateLoss()
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
@@ -504,7 +504,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                 .setCustomAnimations(R.animator.do_nothing, R.animator.fade_out)
                 .replace(R.id.content_view, dashboardFragment!!)
                 .addToBackStack(null)
-                .commit()
+                .commitAllowingStateLoss()
 
         MainActivity.of(this).setToolBarColor(
                 utils.getPrimaryColor(), true)
@@ -528,7 +528,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                 .setCustomAnimations(R.animator.slide_to_right_in, R.animator.slide_from_left_out)
                 .replace(R.id.content_view, dashboardFragment!!)
                 .addToBackStack(null)
-                .commit()
+                .commitAllowingStateLoss()
 
         animateDrawerToggle(false)
         hideToolBarItems(false)
@@ -555,7 +555,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                 .beginTransaction()
                 .replace(R.id.content_view, dashboardFragment!!)
                 .addToBackStack(null)
-                .commit()
+                .commitAllowingStateLoss()
 
         hideToolBarItems(false)
         presentFragment = 0
@@ -571,7 +571,7 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
         val fm = supportFragmentManager
         val transaction = fm.beginTransaction()
         gotoFragmentWithMenuItemId(R.id.nav_dashboard)
-        transaction.commit()
+        transaction.commitAllowingStateLoss()
     }
 
     /* Other Methods */
@@ -608,10 +608,12 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                     }
                     return
                 }
-                utils.showSnackBar(findViewById(R.id.main_coordinate_layout), getString(R.string.no_connection), true)
-                when (presentFragment) {
-                    0 -> dashboardFragment?.setRefreshing(false)
-                    3 -> attendanceFragment?.setRefreshing(false)
+                runOnUiThread {
+                    utils.showSnackBar(findViewById(R.id.main_coordinate_layout), getString(R.string.no_connection), true)
+                    when (presentFragment) {
+                        0 -> dashboardFragment?.setRefreshing(false)
+                        3 -> attendanceFragment?.setRefreshing(false)
+                    }
                 }
 
                 noConnection = true
