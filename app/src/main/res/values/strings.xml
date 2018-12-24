@@ -324,4 +324,6 @@ SchoolPower does not guarantee that the user\'s picture will be permanently save
     <string name="even_odd_filter_switch_title">Odd-even week adjustment</string>
     <string name="even_odd_filter_even_week">This week is an even week (F-J)</string>
     <string name="even_odd_filter_odd_week">This week is an odd week (A-E)</string>
+    <string name="account_disabled">Account Disabled</string>
+    <string name="account_disabled_desc">You account is disabled. Please contact your school for details.</string>
 </resources>

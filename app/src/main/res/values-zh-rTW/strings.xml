@@ -238,4 +238,6 @@ SchoolPower 不保證上述網站的服務穩定性，不保證用戶頭像會�
     <string name="even_odd_filter_switch_title">奇偶週調整</string>
     <string name="analytics_enable_summary">您同意此應用匿名發送一些非隱私的統計數據（例如安卓版本，使用的主題顏色等）來幫助我們改善應用。</string>
     <string name="analytics_enable">啟用統計</string>
+    <string name="account_disabled">Account Disabled</string>
+    <string name="account_disabled_desc">You account is disabled. 您的 PowerSchool 账号被禁用了，请联系学校了解详情。</string>
 </resources>

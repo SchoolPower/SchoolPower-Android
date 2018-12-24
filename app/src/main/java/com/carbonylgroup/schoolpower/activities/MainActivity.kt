@@ -653,11 +653,11 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                             catch (e: IllegalArgumentException){
                                 if(e.message?.contains("ERROR_ACCOUNT_DISABLED") == true){
                                     runOnUiThread {
-                                        val builder = AlertDialog.Builder(this@MainActivity)
-                                        builder.setMessage("Account Disabled")
-                                        builder.setTitle("You account is disabled. 您的 PowerSchool 账号被禁用了，请联系学校了解详情。")
-                                        builder.setPositiveButton(getString(R.string.alright), null)
-                                        builder.create().show()
+                                        AlertDialog.Builder(this@MainActivity)
+                                                .setMessage(getString(R.string.account_disabled))
+                                                .setTitle(getString(R.string.account_disabled_desc))
+                                                .setPositiveButton(getString(R.string.alright), null)
+                                                .create().show()
                                     }
                                 } else {
                                     utils.errorHandler(e, getString(R.string.fatel_error_server_side),
@@ -675,11 +675,11 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                     if (data.disabled) {
                         runOnUiThread {
                             try {
-                                val builder = AlertDialog.Builder(this@MainActivity)
-                                builder.setMessage(data.disabledMessage)
-                                builder.setTitle(if (data.disabledTitle == "null") "" else data.disabledTitle)
-                                builder.setPositiveButton(getString(R.string.alright), null)
-                                builder.create().show()
+                                AlertDialog.Builder(this@MainActivity)
+                                        .setMessage(data.disabledMessage)
+                                        .setTitle(if (data.disabledTitle == "null") "" else data.disabledTitle)
+                                        .setPositiveButton(getString(R.string.alright), null)
+                                        .create().show()
                             } catch (e: Exception) {
                                 utils.errorHandler(e)
                             }

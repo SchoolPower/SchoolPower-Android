@@ -144,10 +144,19 @@ class LoginActivity : BaseActivity() {
                         val data =
                                 try { StudentData(this@LoginActivity, strMessage, utils) }
                                 catch (e: IllegalArgumentException){
-                                    utils.errorHandler(e, getString(R.string.fatel_error_server_side),
-                                            getString(R.string.fatel_error_server_side_message) + e.message)
+                                    if(e.message?.contains("ERROR_ACCOUNT_DISABLED") == true) {
+                                        runOnUiThread {
+                                            AlertDialog.Builder(this@LoginActivity)
+                                                    .setMessage(getString(R.string.account_disabled))
+                                                    .setTitle(getString(R.string.account_disabled_desc))
+                                                    .setPositiveButton(getString(R.string.alright), null)
+                                                    .create().show()
+                                        }
+                                    }else {
+                                        utils.errorHandler(e, getString(R.string.fatel_error_server_side),
+                                                getString(R.string.fatel_error_server_side_message) + e.message)
+                                    }
                                     runOnUiThread {
-                                        utils.showSnackBar(findViewById(R.id.login_coordinate_layout), getString(R.string.no_connection), true)
                                         hideProgress()
                                     }
                                     null
