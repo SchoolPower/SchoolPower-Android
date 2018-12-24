@@ -43,7 +43,7 @@ class FoldingCellListAdapter(context: Context, private var subjects: List<Subjec
         try {
             var position = _position
             if(position >= subjects!!.count())
-                position = subjects!!.count() // dirty fix
+                position = subjects!!.count() - 1
             val item = subjects!![position]
             val viewHolder: ViewHolder
 
