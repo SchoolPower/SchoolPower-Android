@@ -651,12 +651,22 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                     val data =
                             try { StudentData(this@MainActivity, strMessage, utils) }
                             catch (e: IllegalArgumentException){
-                                utils.errorHandler(e, getString(R.string.fatel_error_server_side),
-                                        getString(R.string.fatel_error_server_side_message) + e.message)
-                                runOnUiThread {
-                                    when (presentFragment) {
-                                        0 -> dashboardFragment!!.setRefreshing(false)
-                                        3 -> attendanceFragment!!.setRefreshing(false)
+                                if(e.message?.contains("ERROR_ACCOUNT_DISABLED") == true){
+                                    runOnUiThread {
+                                        val builder = AlertDialog.Builder(this@MainActivity)
+                                        builder.setMessage("Account Disabled")
+                                        builder.setTitle("You account is disabled. 您的 PowerSchool 账号被禁用了，请联系学校了解详情。")
+                                        builder.setPositiveButton(getString(R.string.alright), null)
+                                        builder.create().show()
+                                    }
+                                } else {
+                                    utils.errorHandler(e, getString(R.string.fatel_error_server_side),
+                                            getString(R.string.fatel_error_server_side_message) + e.message)
+                                    runOnUiThread {
+                                        when (presentFragment) {
+                                            0 -> dashboardFragment!!.setRefreshing(false)
+                                            3 -> attendanceFragment!!.setRefreshing(false)
+                                        }
                                     }
                                 }
                                 noConnection = true

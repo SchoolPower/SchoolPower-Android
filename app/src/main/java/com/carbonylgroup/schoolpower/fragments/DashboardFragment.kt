@@ -274,8 +274,12 @@ class DashboardFragment : TransitionHelper.BaseFragment() {
                 .getPreferences(Utils.TmpData)
                 .getString("ildJson", "")!!
         if (json.contains("{")) {
-            val data = ILDNotification(json)
-            if (data.show) MainActivity.of(activity).showILD(data)
+            try {
+                val data = ILDNotification(json)
+                if (data.show) MainActivity.of(activity).showILD(data)
+            }catch(e: Exception) {
+                utils.setPreference("ildJson", "", Utils.TmpData)
+            }
         }
     }
 
