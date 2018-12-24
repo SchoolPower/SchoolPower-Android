@@ -149,7 +149,13 @@ class PullDataJob : JobService() {
 
                     override fun onResponse(call: Call, response: Response) {
                         try {
-                            val strMessage = response.body()!!.string().replace("\n", "")
+                            val strMessage = try{
+                                response.body()!!.string().replace("\n", "")
+                            }catch(e: Exception){
+                                Log.d("PullDataJob", "Job Finished Early ${e.message}")
+                                jobFinished(params, true)
+                                return
+                            }
                             response.close()
                             if (strMessage.contains("Something went wrong!") // incorrect username or password
                                     || !strMessage.contains("{")) { // unknown error
@@ -166,11 +172,18 @@ class PullDataJob : JobService() {
                                 jobFinished(params, false)
                                 return
                             }
-                            val oldData = utils.readDataArrayList()
+                            try {
+                                val oldData = utils.readDataArrayList()
 
-                            diffSubjects(oldData.subjects, newData.subjects)
-                            diffAttendances(oldData.attendances, newData.attendances)
+                                diffSubjects(oldData.subjects, newData.subjects)
+                                diffAttendances(oldData.attendances, newData.attendances)
 
+                            }catch(e: Exception){
+                                e.printStackTrace()
+                                Log.d("PullDataJob", "Job Finished Early ${e.message}")
+                                jobFinished(params, false)
+                                return
+                            }
                             Log.d("PullDataJob", "Job Finished Normally")
                             jobFinished(params, false)
                         } catch (e: Exception) {
