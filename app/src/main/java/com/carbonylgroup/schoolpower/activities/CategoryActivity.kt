@@ -93,7 +93,9 @@ class CategoryActivity : BaseActivity() {
 
         assignmentsRecycler.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
-        val categories = subject.grades[subject.getLatestTermName(utils, false, true)]!!.calculatedGrade.categories.keys.toList()
+        val name = subject.getLatestTermName(utils, false, true) ?: return
+        val grades = subject.grades[name] ?: return
+        val categories = grades.calculatedGrade.categories.keys.toList()
 
         assignmentsRecycler.adapter = CourseDetailAdapter(this, subject, false, categories,
                 fun(assignments:List<AssignmentItem>, filter:String):List<AssignmentItem> {
