@@ -43,7 +43,11 @@ class LoginActivity : BaseActivity() {
             utils.getPreferences(Utils.AccountData).edit()
                     .putString(getString(R.string.user_id), username)
                     .apply()
-            loginAction(username, password)
+            if (username != "")
+                loginAction(username, password)
+            else
+                utils.showSnackBar(findViewById(R.id.login_coordinate_layout), getString(R.string.wrong_password), true)
+
         }
     }
 
@@ -152,7 +156,7 @@ class LoginActivity : BaseActivity() {
                                                     .setPositiveButton(getString(R.string.alright), null)
                                                     .create().show()
                                         }
-                                    }else {
+                                    } else {
                                         utils.errorHandler(e, getString(R.string.fatel_error_server_side),
                                                 getString(R.string.fatel_error_server_side_message) + e.message)
                                     }
