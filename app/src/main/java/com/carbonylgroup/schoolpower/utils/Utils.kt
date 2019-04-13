@@ -47,7 +47,8 @@ class Utils(private val context: Context) {
             },
             Locale.ENGLISH,
             Locale.TRADITIONAL_CHINESE,
-            Locale.SIMPLIFIED_CHINESE)
+            Locale.SIMPLIFIED_CHINESE,
+            Locale.JAPANESE)
 
     private val attendanceColorIds = mapOf(
             "A" to R.color.primary_dark,
@@ -707,7 +708,8 @@ class Utils(private val context: Context) {
                 },
                 Locale.ENGLISH,
                 Locale.TRADITIONAL_CHINESE,
-                Locale.SIMPLIFIED_CHINESE)
+                Locale.SIMPLIFIED_CHINESE,
+                Locale.JAPANESE)
 
         private val gradeColorIds = intArrayOf(
                 R.color.A_score_green,

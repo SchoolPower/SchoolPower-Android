@@ -26,7 +26,7 @@
     <string name="version">Version</string>
     <string name="eula">User Agreement</string>
     <string name="changelog">Changelog</string>
-    <string name="author">Author</string>
+    <string name="author">Developers</string>
     <string name="license">License</string>
     <string name="carbonylgroup">CarbonylGroup</string>
     <string name="null_name">Null</string>
@@ -97,6 +97,7 @@
         <item>English</item>
         <item>正體中文</item>
         <item>简体中文</item>
+        <item>日本語</item>
     </string-array>
 
     <string-array name="terms_sample" translatable="false">
