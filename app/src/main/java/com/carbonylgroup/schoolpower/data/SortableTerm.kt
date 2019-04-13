@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2018 SchoolPower Studio
+ * Copyright (C) 2019 SchoolPower Studio
  */
 
 package com.carbonylgroup.schoolpower.data

@@ -8,7 +8,7 @@ import com.carbonylgroup.schoolpower.R
 /**
  * Created on 2017/10/30 13:26:25
  * Copied from Copyright (C) 2017 Kosh.
- * Modified by Copyright (C) 2018 SchoolPower Studio.
+ * Modified by Copyright (C) 2019 SchoolPower Studio.
  */
 
 class ThemeHelper(private val context: Context) {
