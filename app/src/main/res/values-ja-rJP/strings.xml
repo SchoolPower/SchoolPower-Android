@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">SchoolPower</string>
+    <string name="action_refreshing">リフレッシュ</string>
+    <string name="action_gpa">GPA</string>
+    <string name="action_category">カテゴリー</string>
+    <string name="action_show_json">JSON データを表示する</string>
+    <string name="share_as_file">以 JSON 文件分享</string>
+    <string name="share_as_text">JSON ファイルを共有</string>
+
+    <string name="dashboard">ダッシュボード</string>
+    <string name="charts">チャート</string>
+    <string name="attendance">出勤</string>
+    <string name="course_detail">コース詳細</string>
+    <string name="preference">環境設定</string>
+    <string name="about">について</string>
+    <string name="sign_out">ログアウト</string>
+    <string name="settings">設定</string>
+
+    <string name="username">ユーザー名</string>
+    <string name="password">パスワード</string>
+    <string name="copyright">Copyright © 2018 SchoolPower スタジオ</string>
+    <string name="copyright_short">© 2018 SchoolPower スタジオ</string>
+
+    <string name="version">バージョン</string>
+    <string name="eula">ユーザー契約</string>
+    <string name="changelog">変更履歴</string>
+    <string name="author">開発者</string>
+    <string name="license">ライセンス</string>
+    <string name="carbonylgroup">カルボニルグループ</string>
+    <string name="null_name">Null</string>
+
+    <string name="evaluation">評価</string>
+    <string name="comment">コメント</string>
+    <string name="grades">成績</string>
+    <string name="block">ブロック</string>
+    <string name="room">教室</string>
+    <string name="term">学期</string>
+    <string name="assignments">課題</string>
+    <string name="all_terms">全学期</string>
+    <string name="unpublished">未公開</string>
+    <string name="data_updated">データが更新されました</string>
+    <string name="authenticating">認証中&#8230;</string>
+    <string name="wrong_password">パスワードかユーザー名が間違っています</string>
+    <string name="no_connection">サーバーに接続できません</string>
+    <string name="server_problem">サーバーエラーが発生しました: </string>
+    <string name="user_id_indicator">ユーザー ID:</string>
+    <string name="no_username">ユーザー名なし</string>
+    <string name="the_end">終わり</string>
+    <string name="nothing_here">ここには何もない</string>
+    <string name="perfect_attendance">完璧出勤</string>
+
+    <string name="gpa_is">の GPA は</string>
+    <string name="gpa_segments_custom">カスタム</string>
+    <string name="gpa_segments_official">オフィシャル</string>
+    <string name="gpa_segments_all">すべて</string>
+    <string name="sweet">いいね</string>
+    <string name="gpa_not_available">GPA 不可用</string>
+    <string name="gpa_not_available_because">データがないため、GPAは現在利用できません。</string>
+    <string name="alright">いいよ</string>
+
+    <string name="upgrade_title">新しいバージョンです!</string>
+    <string name="upgrade_pos">更新</string>
+    <string name="upgrade_neg">今はやめ</string>
+
+    <string name="i_love_open_source">オープンソースが大好き。</string>
+
+    <string name="signing_out_dialog_title">ログアウトする</string>
+    <string name="signing_out_dialog_message">ログアウトしてよろしいですか？</string>
+    <string name="signing_out_dialog_positive">はい</string>
+    <string name="signing_out_dialog_negative">いいえ</string>
+
+    <string name="navigation_drawer_close">サイドバーを閉じる</string>
+    <string name="navigation_drawer_open">サイドバーを開く</string>
+
+    <string name="title_activity_settings">設定</string>
+
+    <string name="display">表示</string>
+    <string name="dashboard_displays">ダッシュボードに</string>
+    <string name="language">言語</string>
+    <string name="dashboard_display_preference_summary_prefix" />
+    <string name="dashboard_display_preference_summary_suffix">&#160;のコースは表示する</string>
+
+    <string name="notification">お知らせ</string>
+    <string name="notification_settings">通知</string>
+    <string name="only_alert">SchoolPower は現在、中国のメープルリーフインターナショナルスクールでの学生の使用のみをサポートしています。</string>
+    <string name="i_understand">わかった</string>
+
+    <string-array name="list_preference_display_types_entries">
+        <item>この Term</item>
+        <item>この Semester</item>
+    </string-array>
+
+    <string-array name="list_preference_language_entries">
+        <item>システムデフォルト</item>
+        <item>English</item>
+        <item>正體中文</item>
+        <item>简体中文</item>
+        <item>日本語</item>
+    </string-array>
+
+    <string name="show_inactive_title">非アクティブコースを表示</string>
+    <string name="show_inactive_summary">現在作業していないコースを表示する</string>
+
+    <string name="enable_notification">通知を有効にする</string>
+    <string name="notification_show_grade">通知に成績を表示する</string>
+    <string name="notification_show_no_grade_assignment">まだ採点されていない課題を通知する</string>
+    <string name="notification_new">つの新しい課題</string>
+    <string name="notification_new_channel">新しいの課題</string>
+    <string name="notification_new_att_channel">新しいの出勤状況</string>
+
+    <string name="support">サポート</string>
+
+    <string name="crash_report_enable">クラッシュレポートを有効にする</string>
+    <string name="crash_report_enable_summary">クラッシュを修正するためにエラーが発生したときにレポートを送信する（再起動後に有効）</string>
+    <string name="send_crash">クラッシュレポートを送信する</string>
+    <string name="crash_report_request">クラッシュレポートを送っていただければ、クラッシュの修正に役立ちます。あなたがそれをオンにすることを選択した場合、アプリはエラー/クラッシュが発生したときにのみレポートを送信します、そしてレポートは通常個人情報を含みません。有効にすることを強くお勧めします。このオプションは設定でオフにすることができます。</string>
+
+
+    <string name="report_bug">バグを報告する</string>
+    <string name="report_bug_summary">開発者に電子メールで連絡する</string>
+    <string name="feedback_forum">フィードバックフォーラム</string>
+    <string name="feedback_forum_summary">最新の通知を表示し、フォーラムにコメントや提案を投稿する</string>
+    <string name="choose_email_app">メールアプリを選択&#8230;</string>
+    <string name="bug_report_email_subject">SchoolPower にバグがあります</string>
+    <string name="bug_report_email_content">問題の再現方法や予想されるパフォーマンスなど、できるだけ詳細を入力してください。\nデバッグ情報: SchoolPower Android %s.\nPowerSchool ユーザー名とパスワード（オプショナル、より早く問題を解決する手助け）：\n</string>
+
+    <string name="visit_website">公式サイト</string>
+    <string name="source_code">ソースコード</string>
+    <string name="attendance_new">新しいの出勤状況</string>
+    <string name="customize_gpa">カスタム GPA</string>
+    <string name="list_preference_custom_gpa_select">コースを選択</string>
+    <string name="list_preference_custom_gpa_calculate">計算ルール</string>
+    <string name="dashboard_gpa_rule_summary_prefix">選択した</string>
+    <string name="dashboard_gpa_rule_summary_suffix">の科目の成績を計算する</string>
+    <string name="custom_gpa_not_available">カスタム GPA 不可用</string>
+    <string name="custom_gpa_not_available_because">設定にGPA計算ルールをカスタマイズしてください。</string>
+
+    <string-array name="list_preference_gpa_calculate_entries">
+        <item>すべて</item>
+        <item>トップ 3 コース</item>
+        <item>トップ 4 コース</item>
+        <item>トップ 3 コース</item>
+    </string-array>
+
+    <string name="powerschool_disabled">PowerSchool は現在学校によって閉鎖されています。詳しくは学校にお問い合わせください。</string>
+    <string name="collected">出す</string>
+    <string name="late">遅い</string>
+    <string name="missing">出ません</string>
+    <string name="exempt">スコアは最終成績とは無関係です</string>
+    <string name="not_include_in_final">最終成績に含まれていません</string>
+    <string name="unknown_flag">不明なタグ</string>
+    <string name="score">得点</string>
+    <string name="weight">重さ</string>
+    <string name="flags">フラグ</string>
+
+    <string name="chart_line">折れ線</string>
+    <string name="chart_radar">レーダー</string>
+    <string name="chart_bar">棒</string>
+    <string name="chart_not_available">データないよ</string>
+
+    <string name="theme">テーマ</string>
+    <string name="dark_theme">暗いテーマ</string>
+    <string name="accent_color">アクセントカラー</string>
+    <string name="choose_accent_color">アクセントカラーを選択</string>
+
+    <string name="accept">同意する</string>
+    <string name="decline">拒否する</string>
+
+    <string name="avatar_agreement_title">アバターアップロードライセンス契約</string>
+    <string name="avatar_agreement_message">SchoolPowerは、サードパーティのベッドサイトSM.MSを使用してユーザーのアバターを保存します。\n
+[同意する]をクリックすると、選択したアバターが上記のウェブサイトにアップロードされ、上記のウェブサイトのライセンス契約に同意することになります。\n \n
+SM.MSの使用許諾契約書は以下に複製されています（更新がある場合は、このWebサイトの最新バージョンを参照してください）：\n
+{SM.MS契約はここから} \n
+法律で認められているように、この絵壇を自由に使用してください。\n
+次の種類の画像をアップロードして共有することは固く禁じられています。\n
+ポルノ、暴力、およびテロリズムを含む写真\n
+著作権侵害、未承認の画像\n
+中華人民共和国の法律に違反するその他の写真\n
+香港の法律に違反するその他の写真\n
+{SM.MS契約はここで} \n \n
+SchoolPowerは、上記のいずれのWebサイトによっても、スポンサー、スポンサー、提携、またはその他の方法で承認されていません。\n
+SchoolPowerは、上記のWebサイトを使用しているユーザーが原因で発生した問題、またはそれらの契約の違反について一切責任を負いません。\n
+SchoolPowerは上記のウェブサイトの安定性を保証するものではなく、ユーザーのアバターが永久に保存されることを保証するものではありません。   </string>
+    <string name="avatar_upload_failed">アバターのアップロードに失敗しました。もう一度お試しください。</string>
+    <string name="change_avatar">アバターを変更</string>
+    <string name="remove_avatar">アバターを削除</string>
+    <string name="support_us">開発者をサポート</string>
+    <string name="promotion">プロモーション</string>
+    <string name="donation">寄付</string>
+    <string name="qr_code">QRコード</string>
+    <string name="server_status">サーバー状態</string>
+    <string name="Alipay">アリペイ</string>
+    <string name="Wechat">WeChat Pay</string>
+    <string name="AlipayNotFound">アリペイがインストールされていないよう。</string>
+    <string name="WechatNotFound">WeChatがインストールされていないよう。</string>
+    <string name="donate_via_bitcoin">Bitcoin で寄付してください</string>
+    <string name="donate_via_eth">Ethereum を使って私たちに寄付する</string>
+    <string name="copied">コピーしました</string>
+
+    <string name="happy_birth">お誕生日おめでとう！</string>
+    <string name="happy_birth_title_builder" formatted="false">ハッピー %s 歳の誕生日！</string>
+    <string name="happy_birth_message">ハッピーバースデートゥーユー、ハッピーバースデートゥーユー。
+        \ハッピーバースデートゥーユー、ハッピーバースデートゥーユー！</string>
+    <string name="happy_birth_thank">ありがとう</string>
+
+    <string name="donation_title">サポートがお願いします…</string>
+    <string name="donation_message">莫大な時間の費用は言うまでもありませんが、高価な Apple 開発者の費用とサーバーは毎年数千元の費用がかかります。私たちは主に私たちの経費を賄うために寄付に頼っていますが、無料でオフにすることができる広告は私たちに年間約100ドルをもたらしました。
+\n \nあなたがこのアプリがあなたを助けていると感じたら、あなたは私たちを寄付するか、あなたの周りの人々にアプリを紹介することを歓迎する以上のものです。任意の助けは大歓迎です (´,,•ω•,,)♡。</string>
+    <string name="donation_cancel">いやじゃん-^-</string>
+    <string name="donation_ok">寄付する</string>
+    <string name="donation_promote">プロモートする</string>
+
+    <string name="wechat_instruction_page1_title">WeChat Pay でスポンサーになる方法</string>
+    <string name="wechat_instruction_page1_des">支払うために、あなたのスマホに支払いコードを保存する必要があります。</string>
+    <string name="wechat_instruction_page2_des">WeChatアプリのスキャンコードインターフェースをポップアップします。</string>
+    <string name="wechat_instruction_page3_des">右上隅のメニューボタンをクリックして</string>
+    <string name="wechat_instruction_page4_des">[アルバムからQRコードを選択]をクリックします</string>
+    <string name="wechat_instruction_page5_des">私たちの支払いコードを選択してください（最初のもの）</string>
+    <string name="storage_permission_denied">すいません、支払いコードを許可なく保管することはできません。</string>
+    <string name="storage_permission_exp_title">許可が必要です</string>
+
+    <string name="fatel_error">不明なエラー</string>
+    <string name="fatel_error_message">未知のエラーが発生しました。これは通常私たちのせいです。後でもう一度やり直すか、このエラーを開発者に送信してください。\n\nエラーメッセージ: \n</string>
+
+    <string name="fatel_error_server_side">サーバーエラー</string>
+    <string name="fatel_error_server_side_message">サーバーから返されたデータを解析できませんでした。 注意してください：これは学校のPowerSchoolサーバーの障害が原因である可能性があります。 公式のPowerSchoolプラットフォームにログインして、正しく使用してください。 SchoolPowerだけが利用できない場合、このエラーを開発者に送信してください、できるだけ早く修正します。\n\nエラーメッセージ： \n</string>
+
+    <string name="cancel">キャンセル</string>
+    <string name="email">送信</string>
+    <string name="advertisement_settings">広告設定</string>
+    <string name="enable_advertisement">広告を有効にする</string>
+    <string name="ad_donation_request">広告は SchoolPower が運営を役立ちます</string>
+    <string name="ad_donation_request_content">私たちはあなたがするのと同じくらい広告や有料会員を嫌うので、広告を閉じることを可能にします。 しかし同時に、広告は私たちが開発とメンテナンスの多額の費用を支払うのに役立ちます。 そのため、広告を閉じた後で、このアプリがあなたを助けてきたものであり、それを維持し続けたいと考えている場合は、サポートすることをお願いします (´,,•ω•,,)♡。</string>
+    <string name="even_odd_filter_even_week">今週は偶数週です (F-J)</string>
+    <string name="even_odd_filter_odd_week">今週は奇数週です (A-E)</string>
+    <string name="even_odd_filter_title">スマートブロックディスプレイ（テスト）</string>
+    <string name="even_odd_filter_summary">今週のブロック情報のみを表示</string>
+    <string name="even_odd_filter_switch_title">奇偶週調整</string>
+    <string name="analytics_enable">統計を有効にする</string>
+    <string name="analytics_enable_summary">あなたは、このアプリケーションが匿名で開発者がアプリを改善するのためにいくつかの非公開統計（使用されるバージョン、テーマの色など）を送ることに同意します。</string>
+    <string name="account_disabled">アカウントが無効になっています</string>
+    <string name="account_disabled_desc">この PowerSchool アカウントが無効になっています。詳細については学校にお問い合わせください。</string>
+</resources>

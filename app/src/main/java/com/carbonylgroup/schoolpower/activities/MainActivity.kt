@@ -802,8 +802,9 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                                         this@MainActivity.resources.configuration.locale
                                     }) {
                                     Locale.ENGLISH -> 0
-                                    Locale.SIMPLIFIED_CHINESE -> 1
-                                    Locale.TRADITIONAL_CHINESE -> 2
+                                    Locale.TRADITIONAL_CHINESE -> 1
+                                    Locale.SIMPLIFIED_CHINESE -> 2
+                                    Locale.JAPANESE -> 3
                                     else -> 0
                                 }
                         dashboardFragment!!.removeAllILD()
