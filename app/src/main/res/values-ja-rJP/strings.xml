@@ -80,7 +80,7 @@
     <string name="dashboard_displays">ダッシュボードに</string>
     <string name="language">言語</string>
     <string name="dashboard_display_preference_summary_prefix" />
-    <string name="dashboard_display_preference_summary_suffix">&#160;のコースは表示する</string>
+    <string name="dashboard_display_preference_summary_suffix">&#160;の得点は表示する</string>
 
     <string name="notification">お知らせ</string>
     <string name="notification_settings">通知</string>
