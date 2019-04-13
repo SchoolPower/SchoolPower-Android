@@ -651,13 +651,17 @@ class MainActivity : TransitionHelper.MainActivity(), NavigationView.OnNavigatio
                     val data =
                             try { StudentData(this@MainActivity, strMessage, utils) }
                             catch (e: IllegalArgumentException){
-                                if(e.message?.contains("ERROR_ACCOUNT_DISABLED") == true){
+                                if (e.message?.contains("ERROR_ACCOUNT_DISABLED") == true){
                                     runOnUiThread {
                                         AlertDialog.Builder(this@MainActivity)
                                                 .setMessage(getString(R.string.account_disabled))
                                                 .setTitle(getString(R.string.account_disabled_desc))
                                                 .setPositiveButton(getString(R.string.alright), null)
                                                 .create().show()
+                                    }
+                                } else if(e.message?.contains("OptimisticLockException") == true){
+                                    runOnUiThread {
+                                        utils.showSnackBar(findViewById(R.id.main_coordinate_layout), getString(R.string.server_problem_retry), true)
                                     }
                                 } else {
                                     utils.errorHandler(e, getString(R.string.fatel_error_server_side),

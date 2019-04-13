@@ -241,4 +241,6 @@ SchoolPower 不保證上述網站的服務穩定性，不保證用戶頭像會�
     <string name="analytics_enable">啟用統計</string>
     <string name="account_disabled">賬號被禁用</string>
     <string name="account_disabled_desc">您的 PowerSchool 賬號被禁用了，請聯繫學校了解詳情。</string>
+    <string name="server_problem_retry">遇到了服務器錯誤。請稍候重試。</string>
+    <string name="qq_group">加入反饋 QQ 群</string>
 </resources>

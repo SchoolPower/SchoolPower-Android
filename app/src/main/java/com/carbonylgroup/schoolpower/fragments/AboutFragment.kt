@@ -70,6 +70,10 @@ class AboutFragment : Fragment() {
             startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.website_address))))
         }
 
+        view.findViewById<View>(R.id.about_qq_cell).setOnClickListener {
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.qq_group_address))))
+        }
+
         view.findViewById<View>(R.id.about_code_cell).setOnClickListener {
             startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.source_code_address))))
         }

@@ -49,6 +49,7 @@
     <string name="carbon_address" translatable="false">https://github.com/HITGIF</string>
     <string name="null_address" translatable="false">https://github.com/harrynull</string>
     <string name="website_address" translatable="false">https://schoolpower.tech</string>
+    <string name="qq_group_address" translatable="false">https://jq.qq.com/?_wv=1027&amp;k=5mWt9hW</string>
     <string name="server_status_address" translatable="false">https://status.schoolpower.tech</string>
     <string name="source_code_address" translatable="false">https://github.com/SchoolPower</string>
     <string name="default_android_download_address" translatable="false">https://api.schoolpower.tech/dist/latest.php</string>
@@ -99,6 +100,7 @@
     <string name="wrong_password">Invalid Username or Password</string>
     <string name="no_connection">Cannot connect to server</string>
     <string name="server_problem">Server error encountered: </string>
+    <string name="server_problem_retry">Server error encountered. Please retry again later.</string>
     <string name="user_id_indicator">User ID:</string>
     <string name="no_username">No Username</string>
     <string name="the_end">THIS IS THE END</string>
@@ -328,4 +330,5 @@ SchoolPower does not guarantee that the user\'s picture will be permanently save
     <string name="even_odd_filter_odd_week">This week is an odd week (A-E)</string>
     <string name="account_disabled">Account Disabled</string>
     <string name="account_disabled_desc">You account is disabled. Please contact your school for details.</string>
+    <string name="qq_group">JoinFeedback QQ Group</string>
 </resources>

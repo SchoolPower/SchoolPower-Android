@@ -31,6 +31,7 @@ class CalculatedGrade(subject: Subject, term: String, weightData: CategoryWeight
         }
 
         for((_, category) in categories){
+            if (category.getWeightedPercentage().isNaN()) continue
             sumScorePercentage += category.getWeightedPercentage()
             sumMaxScorePercentage += category.weight
         }

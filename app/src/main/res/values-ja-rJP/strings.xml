@@ -242,4 +242,6 @@ SchoolPowerは上記のウェブサイトの安定性を保証するものでは
     <string name="analytics_enable_summary">あなたは、このアプリケーションが匿名で開発者がアプリを改善するのためにいくつかの非公開統計（使用されるバージョン、テーマの色など）を送ることに同意します。</string>
     <string name="account_disabled">アカウントが無効になっています</string>
     <string name="account_disabled_desc">この PowerSchool アカウントが無効になっています。詳細については学校にお問い合わせください。</string>
+    <string name="server_problem_retry">サーバーエラーが発生しました。しばらくしてからもう一度お試しください。</string>
+    <string name="qq_group">"フィードバック QQ グループに参加する "</string>
 </resources>

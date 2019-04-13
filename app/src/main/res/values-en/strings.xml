@@ -255,5 +255,7 @@ SchoolPower does not guarantee that the user\'s picture will be permanently save
     <string name="analytics_enable_summary">You agree to let the app send anonymous information (e.g. app version, theme used, etc.) to us to improve this app.</string>
     <string name="account_disabled">Account Disabled</string>
     <string name="account_disabled_desc">You account is disabled. Please contact your school for details.</string>
+    <string name="server_problem_retry">Server error encountered. Please retry again later.</string>
+    <string name="qq_group">Join Feedback QQ Group</string>
 
 </resources>

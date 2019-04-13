@@ -439,7 +439,8 @@ class Utils(private val context: Context) {
                         if (!message.contains("{")) return
                         val updateJSON = JSONObject(message)
                         setPreference("app_download_url", updateJSON.getString("url"), TmpData)
-                        if (updateJSON.getString("version") != getAppVersion()) {
+                        if (updateJSON.getString("version") != getAppVersion()
+                                && (!updateJSON.has("prompt") || updateJSON.getBoolean("prompt")) ) {
                             if (!(context as Activity).isFinishing && !context.isDestroyed) {
                                 context.runOnUiThread {
                                     val builder = AlertDialog.Builder(context)

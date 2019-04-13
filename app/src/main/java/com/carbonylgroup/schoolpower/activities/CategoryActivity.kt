@@ -77,8 +77,9 @@ class CategoryActivity : BaseActivity() {
 }
 """)
                     json.put("category", categories[dialog.categorySpinner.selectedItemId.toInt()])
-                    json.put("score",  dialog.mark.text.toString().toInt())
-                    json.put("pointsPossible", dialog.markPossible.text.toString().toInt())
+                    json.put("score",  dialog.mark.text.toString().toDoubleOrNull() ?: 100)
+                    json.put("pointsPossible", dialog.markPossible.text.toString().toDoubleOrNull()?: 100)
+                    json.put("weight", dialog.weight.text.toString().toDoubleOrNull() ?: 1.0)
                     subject.assignments.add(AssignmentItem(json))
                     subject.recalculateGrades(categoriesWeights)
                     initChart(subject)
@@ -129,12 +130,13 @@ class CategoryActivity : BaseActivity() {
         for ((cname, cate) in grade.calculatedGrade.categories){
             entries.add(PieEntry(cate.weight.toFloat(), cname))
             percentages.add(android.util.Pair(cate.score.toFloat(), cate.maxScore.toFloat()))
-            colors.add(Color.parseColor(Utils.chartColorList[count++]))
+            colors.add(Color.parseColor(Utils.chartColorList[count++ % Utils.chartColorList.size]))
         }
         setRadarPieChartData(entries, percentages, colors)
 
         val entries2 = ArrayList<PieEntry>()
         for ((cname, cate) in grade.calculatedGrade.categories){
+            if(cate.getPercentage().isNaN()) continue
             entries2.add(PieEntry((cate.weight * (1.0f - cate.getPercentage())).toFloat(), cname))
         }
         setPieChartData(entries2, colors)

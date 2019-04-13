@@ -127,6 +127,7 @@
     <string name="bug_report_email_content">请提供尽可能详细的信息，比如怎么复现问题，预期的表现是什么。\n调试信息: SchoolPower Android %s.\nPowerSchool用户名与密码（可选，有助于我们更快修复问题）：\n</string>
 
     <string name="visit_website">访问官网</string>
+    <string name="qq_group">加入反馈 QQ 群</string>
     <string name="source_code">获取源码</string>
     <string name="attendance_new">新出勤情况</string>
     <string name="customize_gpa">自定义 GPA</string>
@@ -242,4 +243,5 @@ SchoolPower 不保证上述网站的服务稳定性，不保证用户头像会�
     <string name="analytics_enable_summary">您同意此应用匿名发送一些非隐私的统计数据（例如版本，使用的主题颜色等）来帮助我们改善应用。</string>
     <string name="account_disabled">账号被禁用</string>
     <string name="account_disabled_desc">您的 PowerSchool 账号被禁用了，请联系学校了解详情。</string>
+    <string name="server_problem_retry">遇到了服务器错误。请稍候重试。</string>
 </resources>

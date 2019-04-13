@@ -87,7 +87,7 @@ class LineChartFragment : Fragment() {
 
         for ((count, subjectName) in organizedData.keys.withIndex()) {
             val dataSet = LineDataSet(organizedData[subjectName], subjectName)
-            val intColor = Color.parseColor(Utils.chartColorList[count])
+            val intColor = Color.parseColor(Utils.chartColorList[count % Utils.chartColorList.size])
             dataSet.color = intColor
             dataSet.valueTextColor = utils.getAccentColor()
             dataSet.circleColors = List((organizedData[subjectName] as ArrayList<Entry>).size) { intColor }

@@ -8,27 +8,37 @@
     android:paddingStart="24dp"
     android:id="@+id/addAssignmentContainer">
 
-    <TextView
+    <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Mark" />
+        android:layout_height="match_parent">
 
-    <EditText
-        android:id="@+id/mark"
+        <android.support.design.widget.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/mark"
+            android:hint="Mark"
+            android:inputType="numberDecimal" />
+    </android.support.design.widget.TextInputLayout>
+    <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="number"/>
-
-    <TextView
+        android:layout_height="match_parent">
+        <android.support.design.widget.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/markPossible"
+            android:hint="Mark Possible"
+            android:inputType="numberDecimal" />
+    </android.support.design.widget.TextInputLayout>
+    <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Out of" />
-
-    <EditText
-        android:id="@+id/markPossible"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="number"/>
+        android:layout_height="match_parent">
+        <android.support.design.widget.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/weight"
+            android:hint="Weight"
+            android:inputType="numberDecimal" />
+    </android.support.design.widget.TextInputLayout>
 
     <TextView
         android:layout_width="match_parent"
