@@ -78,7 +78,7 @@
 
     <string name="display">表示</string>
     <string name="dashboard_displays">ダッシュボードに</string>
-    <string name="language">语言</string>
+    <string name="language">言語</string>
     <string name="dashboard_display_preference_summary_prefix" />
     <string name="dashboard_display_preference_summary_suffix">&#160;のコースは表示する</string>
 
