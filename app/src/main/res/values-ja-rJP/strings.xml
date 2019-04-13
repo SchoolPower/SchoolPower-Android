@@ -129,7 +129,7 @@
     <string name="visit_website">公式サイト</string>
     <string name="source_code">ソースコード</string>
     <string name="attendance_new">新しいの出勤状況</string>
-    <string name="customize_gpa">カスタム GPA</string>
+    <string name="customize_gpa">カスタマイズ GPA</string>
     <string name="list_preference_custom_gpa_select">コースを選択</string>
     <string name="list_preference_custom_gpa_calculate">計算ルール</string>
     <string name="dashboard_gpa_rule_summary_prefix">選択した</string>
@@ -148,9 +148,9 @@
     <string name="collected">出す</string>
     <string name="late">遅い</string>
     <string name="missing">出ません</string>
-    <string name="exempt">スコアは最終成績とは無関係です</string>
+    <string name="exempt">最終成績とは無関係</string>
     <string name="not_include_in_final">最終成績に含まれていません</string>
-    <string name="unknown_flag">不明なタグ</string>
+    <string name="unknown_flag">不明なフラグ</string>
     <string name="score">得点</string>
     <string name="weight">重さ</string>
     <string name="flags">フラグ</string>
@@ -165,12 +165,12 @@
     <string name="accent_color">アクセントカラー</string>
     <string name="choose_accent_color">アクセントカラーを選択</string>
 
-    <string name="accept">同意する</string>
-    <string name="decline">拒否する</string>
+    <string name="accept">同意</string>
+    <string name="decline">拒否</string>
 
     <string name="avatar_agreement_title">アバターアップロードライセンス契約</string>
     <string name="avatar_agreement_message">SchoolPowerは、サードパーティのベッドサイトSM.MSを使用してユーザーのアバターを保存します。\n
-[同意する]をクリックすると、選択したアバターが上記のウェブサイトにアップロードされ、上記のウェブサイトのライセンス契約に同意することになります。\n \n
+[同意]をクリックすると、選択したアバターが上記のウェブサイトにアップロードされ、上記のウェブサイトのライセンス契約に同意することになります。\n \n
 SM.MSの使用許諾契約書は以下に複製されています（更新がある場合は、このWebサイトの最新バージョンを参照してください）：\n
 {SM.MS契約はここから} \n
 法律で認められているように、この絵壇を自由に使用してください。\n
@@ -182,7 +182,7 @@ SM.MSの使用許諾契約書は以下に複製されています（更新があ
 {SM.MS契約はここで} \n \n
 SchoolPowerは、上記のいずれのWebサイトによっても、スポンサー、スポンサー、提携、またはその他の方法で承認されていません。\n
 SchoolPowerは、上記のWebサイトを使用しているユーザーが原因で発生した問題、またはそれらの契約の違反について一切責任を負いません。\n
-SchoolPowerは上記のウェブサイトの安定性を保証するものではなく、ユーザーのアバターが永久に保存されることを保証するものではありません。   </string>
+SchoolPowerは上記のウェブサイトの安定性を保証するものではなく、ユーザーのアバターが永久に保存されることを保証するものではありません。</string>
     <string name="avatar_upload_failed">アバターのアップロードに失敗しました。もう一度お試しください。</string>
     <string name="change_avatar">アバターを変更</string>
     <string name="remove_avatar">アバターを削除</string>
@@ -191,18 +191,18 @@ SchoolPowerは上記のウェブサイトの安定性を保証するものでは
     <string name="donation">寄付</string>
     <string name="qr_code">QRコード</string>
     <string name="server_status">サーバー状態</string>
-    <string name="Alipay">アリペイ</string>
+    <string name="Alipay">Alipay</string>
     <string name="Wechat">WeChat Pay</string>
     <string name="AlipayNotFound">アリペイがインストールされていないよう。</string>
     <string name="WechatNotFound">WeChatがインストールされていないよう。</string>
-    <string name="donate_via_bitcoin">Bitcoin で寄付してください</string>
-    <string name="donate_via_eth">Ethereum を使って私たちに寄付する</string>
+    <string name="donate_via_bitcoin">Bitcoin で寄付する</string>
+    <string name="donate_via_eth">Ethereum で寄付する</string>
     <string name="copied">コピーしました</string>
 
     <string name="happy_birth">お誕生日おめでとう！</string>
     <string name="happy_birth_title_builder" formatted="false">ハッピー %s 歳の誕生日！</string>
     <string name="happy_birth_message">ハッピーバースデートゥーユー、ハッピーバースデートゥーユー。
-        \ハッピーバースデートゥーユー、ハッピーバースデートゥーユー！</string>
+        \nハッピーバースデートゥーユー、ハッピーバースデートゥーユー！</string>
     <string name="happy_birth_thank">ありがとう</string>
 
     <string name="donation_title">サポートがお願いします…</string>
@@ -212,13 +212,13 @@ SchoolPowerは上記のウェブサイトの安定性を保証するものでは
     <string name="donation_ok">寄付する</string>
     <string name="donation_promote">プロモートする</string>
 
-    <string name="wechat_instruction_page1_title">WeChat Pay でスポンサーになる方法</string>
+    <string name="wechat_instruction_page1_title">WeChat Pay で寄付するになる方法</string>
     <string name="wechat_instruction_page1_des">支払うために、あなたのスマホに支払いコードを保存する必要があります。</string>
-    <string name="wechat_instruction_page2_des">WeChatアプリのスキャンコードインターフェースをポップアップします。</string>
+    <string name="wechat_instruction_page2_des">WeChat アプリのスキャンコードインターフェースをポップアップします。</string>
     <string name="wechat_instruction_page3_des">右上隅のメニューボタンをクリックして</string>
-    <string name="wechat_instruction_page4_des">[アルバムからQRコードを選択]をクリックします</string>
+    <string name="wechat_instruction_page4_des">[アルバムからQRコードを選ぶ]をクリックします</string>
     <string name="wechat_instruction_page5_des">私たちの支払いコードを選択してください（最初のもの）</string>
-    <string name="storage_permission_denied">すいません、支払いコードを許可なく保管することはできません。</string>
+    <string name="storage_permission_denied">すいません、支払いコードを許可なく保存することはできません。</string>
     <string name="storage_permission_exp_title">許可が必要です</string>
 
     <string name="fatel_error">不明なエラー</string>
