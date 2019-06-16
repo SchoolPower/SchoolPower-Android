@@ -40,7 +40,7 @@ class PullDataJob : JobService() {
                 for (item in newAssignmentListCollection) {
                     var newItem = true
                     var newGrade = true
-                    var grade : String = ""
+                    var grade = "--"
                     val maxGrade = item.maximumScore
 
                     for (it in oldAssignmentListCollection) {
@@ -48,7 +48,8 @@ class PullDataJob : JobService() {
                         if (it.title == item.title && it.date == item.date) {
                             newItem = false
                             if (it.score == item.score) newGrade = false
-                            else grade = it.score?.toString() ?: "--"
+                            else grade = item.getScoreString()
+                            break
                         }
                     }
                     if (newItem && item.score != null) {
@@ -58,6 +59,9 @@ class PullDataJob : JobService() {
 
                     val preference = utils.getPreferences()
 
+                    // send a notification when
+                    // 1. there is a new grade (either because of a new assignment with a grade or an old assignment with a new grade)
+                    // 2. there is a new assignment without grade but the user opts to display it
                     if (newGrade || (newItem && preference.getBoolean("notification_show_no_grade_assignment", true))) {
                         if (newGrade && preference.getBoolean("notification_show_grade", true))
                             updatedGradedSubjects.add(item.title + " ($grade/$maxGrade)")
@@ -92,7 +96,7 @@ class PullDataJob : JobService() {
         val updatedAttendances = ArrayList<String>()
 
         for (item in newAttendances) {
-            val newItem = oldAttendances.none { it -> it.name == item.name && it.date == item.date && it.code == item.code }
+            val newItem = oldAttendances.none { it.name == item.name && it.date == item.date && it.code == item.code }
 
             if (newItem) updatedAttendances.add(item.name + " - " + item.description)
         }
