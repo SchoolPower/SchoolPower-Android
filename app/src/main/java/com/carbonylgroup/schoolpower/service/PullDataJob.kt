@@ -52,9 +52,11 @@ class PullDataJob : JobService() {
                             break
                         }
                     }
-                    if (newItem && item.score != null) {
-                        newGrade = true
-                        grade = item.getScoreString()
+                    if (newItem) {
+                        if(item.score != null) {
+                            newGrade = true
+                            grade = item.getScoreString()
+                        } else newGrade = false
                     }
 
                     val preference = utils.getPreferences()
