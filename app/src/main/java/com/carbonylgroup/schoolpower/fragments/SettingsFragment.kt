@@ -104,11 +104,11 @@ class SettingsFragment : PreferenceFragmentCompat(),
         findPreference("website").onPreferenceClickListener = Preference.OnPreferenceClickListener {
             startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.website_address))))
             true
-        }
+        }/*
         findPreference("qq_group").onPreferenceClickListener = Preference.OnPreferenceClickListener {
             startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.qq_group_address))))
             true
-        }
+        }*/
         findPreference("source_code").onPreferenceClickListener = Preference.OnPreferenceClickListener {
             startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.source_code_address))))
             true

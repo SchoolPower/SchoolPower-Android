@@ -147,10 +147,11 @@
             android:key="website"
             android:title="@string/visit_website" />
 
+        <!--
         <PreferenceScreen
             android:icon="@drawable/ic_qq_feedback"
             android:key="qq_group"
-            android:title="@string/qq_group" />
+            android:title="@string/qq_group" />-->
 
         <PreferenceScreen
             android:icon="@drawable/ic_code_black_24dp"

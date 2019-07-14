@@ -576,7 +576,7 @@
                     </LinearLayout>
 
                 </LinearLayout>
-
+<!--
                 <LinearLayout
                     android:id="@+id/about_qq_cell"
                     android:layout_width="match_parent"
@@ -600,7 +600,6 @@
                         android:scaleType="centerInside"
                         android:tint="?android:textColorPrimary"
                         android:src="@drawable/ic_qq_feedback" />
-
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -622,9 +621,8 @@
                             android:textColor="?android:textColorPrimary" />
 
                     </LinearLayout>
-
                 </LinearLayout>
-
+-->
                 <LinearLayout
                     android:id="@+id/about_code_cell"
                     android:layout_width="match_parent"
