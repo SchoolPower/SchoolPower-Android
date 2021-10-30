@@ -7,8 +7,8 @@ package com.carbonylgroup.schoolpower.activities
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
-import android.support.v4.content.ContextCompat
-import android.support.v7.widget.AppCompatTextView
+import androidx.core.content.ContextCompat
+import androidx.appcompat.widget.AppCompatTextView
 import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager

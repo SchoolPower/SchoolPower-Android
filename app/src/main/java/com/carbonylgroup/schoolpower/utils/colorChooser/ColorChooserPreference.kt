@@ -2,9 +2,9 @@ package com.carbonylgroup.schoolpower.utils.colorChooser
 
 import android.content.Context
 import android.graphics.PorterDuff
-import android.support.annotation.ColorInt
-import android.support.v7.preference.Preference
-import android.support.v7.preference.PreferenceViewHolder
+import androidx.annotation.ColorInt
+import androidx.preference.Preference
+import androidx.preference.PreferenceViewHolder
 import android.util.AttributeSet
 import com.carbonylgroup.schoolpower.R
 import com.carbonylgroup.schoolpower.activities.BaseActivity

@@ -2,8 +2,8 @@ package com.carbonylgroup.schoolpower.fragments
 
 import android.graphics.Color
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v7.widget.CardView
+import androidx.fragment.app.Fragment
+import androidx.cardview.widget.CardView
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View

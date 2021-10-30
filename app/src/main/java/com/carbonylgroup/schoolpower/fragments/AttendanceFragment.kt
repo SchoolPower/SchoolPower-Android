@@ -1,11 +1,11 @@
 package com.carbonylgroup.schoolpower.fragments
 
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v4.content.res.ResourcesCompat
-import android.support.v4.widget.SwipeRefreshLayout
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
+import androidx.fragment.app.Fragment
+import androidx.core.content.res.ResourcesCompat
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -78,7 +78,12 @@ class AttendanceFragment : Fragment() {
             attendanceRecyclerView.visibility = View.VISIBLE
             no_attendance_view.visibility = View.GONE
         }
-        attendanceRecyclerView.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
+        attendanceRecyclerView.layoutManager =
+            LinearLayoutManager(
+                activity,
+                LinearLayoutManager.VERTICAL,
+                false
+            )
 //        Handler().postDelayed({
             attendanceRecyclerView.adapter = AttendanceAdapter(activity as MainActivity, attendance)
 //        }, 500)

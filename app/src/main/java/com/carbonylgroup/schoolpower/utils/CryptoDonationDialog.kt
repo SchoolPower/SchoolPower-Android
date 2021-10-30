@@ -5,7 +5,7 @@ import android.app.AlertDialog
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
-import android.support.v7.widget.CardView
+import androidx.cardview.widget.CardView
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
@@ -36,7 +36,7 @@ class CryptoDonationDialog(private val activity: Activity, private val crypto: C
         cryptoDonationDialogView.findViewById<TextView>(R.id.crypto_address).text = address
         cryptoDonationDialogView.findViewById<CardView>(R.id.crypto_address_wrapper).setOnClickListener {
             val clipboard = activity.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-            clipboard.primaryClip = ClipData.newPlainText("crypto address", address)
+            clipboard.setPrimaryClip(ClipData.newPlainText("crypto address", address))
             Toast.makeText(activity, activity.getString(R.string.copied), Toast.LENGTH_SHORT).show()
         }
         cryptoDonationDialogBuilder.setView(cryptoDonationDialogView)

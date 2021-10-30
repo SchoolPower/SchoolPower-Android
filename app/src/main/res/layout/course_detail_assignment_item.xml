@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tool="http://schemas.android.com/tools"
     android:id="@+id/heading_card"
@@ -86,7 +86,7 @@
                     android:textSize="12sp"
                     tool:text="6666/66/66" />
 
-                <android.support.v7.widget.RecyclerView
+                <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/detail_assignment_flag_rv"
                     android:layout_width="match_parent"
                     android:layout_height="15dp"
@@ -95,7 +95,7 @@
                     android:layout_marginTop="2dp"
                     android:overScrollMode="never">
 
-                </android.support.v7.widget.RecyclerView>
+                </androidx.recyclerview.widget.RecyclerView>
 
             </RelativeLayout>
 
@@ -103,4 +103,4 @@
 
     </RelativeLayout>
 
-</android.support.v7.widget.CardView>
+</androidx.cardview.widget.CardView>

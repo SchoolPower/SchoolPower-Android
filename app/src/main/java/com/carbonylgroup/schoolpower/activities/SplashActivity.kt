@@ -3,7 +3,7 @@ package com.carbonylgroup.schoolpower.activities
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import com.carbonylgroup.schoolpower.R
 import com.carbonylgroup.schoolpower.utils.Utils
 
