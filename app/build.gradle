@@ -77,6 +77,8 @@ dependencies {
     implementation 'com.google.firebase:firebase-core:16.0.6'
     implementation 'com.crashlytics.sdk.android:crashlytics:2.9.8'
 
+    testImplementation("org.assertj:assertj-core:3.21.0")
+
 }
 repositories {
     mavenCentral()

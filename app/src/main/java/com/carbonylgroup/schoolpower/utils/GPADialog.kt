@@ -24,7 +24,7 @@ class GPADialog(private val activity: Activity, private val subjects: List<Subje
     fun show(): Boolean {
         if (subjects.count() == 0) return false
 
-        val allPeriods = utils.sortTerm(utils.getAllPeriods(subjects))
+        val allPeriods = Utils.sortTerm(utils.getAllPeriods(subjects))
         val temp = utils.getLatestTermNameOverall(subjects)
         currentTerm = if (temp != null) allPeriods.indexOf(temp) else -1
         if (currentTerm == -1) {
@@ -66,7 +66,7 @@ class GPADialog(private val activity: Activity, private val subjects: List<Subje
         }
     }
 
-    private fun constructView(allPeriods: ArrayList<String>) {
+    private fun constructView(allPeriods: List<String>) {
 
         // construct view
         val gpaDialog = activity.layoutInflater.inflate(R.layout.gpa_dialog, null)

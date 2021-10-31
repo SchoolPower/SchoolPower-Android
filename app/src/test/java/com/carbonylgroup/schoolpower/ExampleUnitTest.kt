@@ -1,18 +1,18 @@
 package com.carbonylgroup.schoolpower
 
+import com.carbonylgroup.schoolpower.utils.Utils
 import org.junit.Test
 
-import org.junit.Assert.*
+import org.assertj.core.api.Assertions.assertThat
 
-/**
- * Example local unit test, which will execute on the development machine (host).
-
- * @see [Testing documentation](http://d.android.com/tools/testing)
- */
-class ExampleUnitTest {
+class UtilsTest {
     @Test
     @Throws(Exception::class)
-    fun addition_isCorrect() {
-        assertEquals(4, (2 + 2).toLong())
+    fun `sort terms works`() {
+        val terms = arrayListOf("L1", "F2", "E1", "F1", "S1", "F3", "E2", "F4", "L2", "X2")
+        assertThat(Utils.sortTerm(terms))
+            .containsExactlyElementsOf(mutableListOf("F4", "F3", "F2", "L2", "E2", "X2", "F1", "L1", "E1", "S1"))
+        assertThat(Utils.sortTermsByLatest(terms.toSet()))
+            .containsExactlyElementsOf(mutableListOf("F4", "F3", "F2", "F1", "L2", "L1", "E2", "E1", "S1", "X2"))
     }
 }

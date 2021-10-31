@@ -63,10 +63,10 @@ class CourseDetailFragment : TransitionHelper.BaseFragment() {
 
             // Init adapter
             val subject = dataList!![transformedPosition]
-            var termsList = ArrayList<String>()
+            val termsList = ArrayList<String>()
             val allTerm = getString(R.string.all_terms)
-            subject.grades.keys.mapTo(termsList) { it }
-            termsList = utils.sortTerm(termsList)
+
+            termsList.addAll(Utils.sortTerm(subject.grades.keys.map { it }))
             termsList.add(0, allTerm)
 
             courseDetailRecycler.adapter = CourseDetailAdapter(context!!, subject, true, termsList,

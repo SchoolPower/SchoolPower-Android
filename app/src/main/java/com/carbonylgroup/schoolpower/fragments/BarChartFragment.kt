@@ -52,7 +52,7 @@ class BarChartFragment : Fragment() {
         val gradedSubjects = utils.getGradedSubjects(subjects)
         val dataSets = ArrayList<IBarDataSet>()
         val subjectStrings = HashSet<String>()
-        val termStrings = utils.sortTerm(utils.getAllPeriods(gradedSubjects))
+        val termStrings = Utils.sortTerm(utils.getAllPeriods(gradedSubjects))
 
         // or let's just do T1,T2,T3,T4
 //        val termStrings = arrayListOf("T1","T2","T3","T4")
