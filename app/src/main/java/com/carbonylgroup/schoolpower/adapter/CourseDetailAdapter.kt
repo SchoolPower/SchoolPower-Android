@@ -9,10 +9,10 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.support.v4.content.ContextCompat
-import android.support.v7.widget.CardView
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
+import androidx.core.content.ContextCompat
+import androidx.cardview.widget.CardView
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -64,7 +64,11 @@ class CourseDetailAdapter(private val context: Context, private val subject: Sub
             holder.detail_assignment_flag_rv.adapter = DetailAssignmentFlagAdapter(context, assignmentItem)
             holder.detail_assignment_grade_background.setBackgroundColor(utils.getColorByLetterGrade(assignmentItem.letterGrade))
             holder.detail_assignment_flag_rv.layoutManager =
-                    LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+                LinearLayoutManager(
+                    context,
+                    LinearLayoutManager.HORIZONTAL,
+                    false
+                )
 
             if (assignmentItem.isNew) {
                 holder.detail_header_background.setBackgroundColor(utils.getAccentColor())
@@ -158,7 +162,11 @@ class CourseDetailAdapter(private val context: Context, private val subject: Sub
 
         assignmentDialogView.findViewById<RecyclerView>(R.id.assignment_flag_rv).adapter = AssignmentFlagAdapter(context, assignmentItem)
         assignmentDialogView.findViewById<RecyclerView>(R.id.assignment_flag_rv).layoutManager =
-                LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+            LinearLayoutManager(
+                context,
+                LinearLayoutManager.VERTICAL,
+                false
+            )
 
         assignmentDialogView.findViewById<TextView>(R.id.assignment_score_title_tv).text = context.getString(R.string.score)
         assignmentDialogView.findViewById<TextView>(R.id.assignment_weight_title_tv).text = context.getString(R.string.weight)

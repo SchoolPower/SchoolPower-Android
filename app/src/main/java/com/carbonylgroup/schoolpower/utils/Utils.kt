@@ -15,9 +15,9 @@ import android.graphics.Color
 import android.net.Uri
 import android.os.Build
 import android.preference.PreferenceManager
-import android.support.annotation.ColorInt
-import android.support.design.widget.Snackbar
-import android.support.v4.content.ContextCompat
+import androidx.annotation.ColorInt
+import com.google.android.material.snackbar.Snackbar
+import androidx.core.content.ContextCompat
 import android.util.DisplayMetrics
 import android.view.View
 import com.carbonylgroup.schoolpower.R

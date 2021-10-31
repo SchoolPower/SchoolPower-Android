@@ -5,8 +5,8 @@
 package com.carbonylgroup.schoolpower.fragments
 
 import android.os.Bundle
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -59,7 +59,12 @@ class CourseDetailFragment : TransitionHelper.BaseFragment() {
                 courseDetailRecycler.smoothScrollToPosition(0)
             }
             view.findViewById<TextView>(R.id.detail_subject_title_tv).text = itemToPresent.name
-            courseDetailRecycler.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
+            courseDetailRecycler.layoutManager =
+                LinearLayoutManager(
+                    activity,
+                    LinearLayoutManager.VERTICAL,
+                    false
+                )
 
             // Init adapter
             val subject = dataList!![transformedPosition]

@@ -4,12 +4,12 @@ import android.app.Activity
 import android.app.Dialog
 import android.app.DialogFragment
 import android.app.Fragment
-import android.support.v7.widget.RecyclerView.ViewHolder
+import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import android.view.View
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
-import android.support.v4.app.DialogFragment as SupportDialogFragment
-import android.support.v4.app.Fragment as SupportFragment
+import androidx.fragment.app.DialogFragment as SupportDialogFragment
+import androidx.fragment.app.Fragment as SupportFragment
 
 public fun <V : View> View.bindView(id: Int)
         : ReadOnlyProperty<View, V> = required(id, viewFinder)
@@ -19,12 +19,12 @@ public fun <V : View> Dialog.bindView(id: Int)
         : ReadOnlyProperty<Dialog, V> = required(id, viewFinder)
 public fun <V : View> DialogFragment.bindView(id: Int)
         : ReadOnlyProperty<DialogFragment, V> = required(id, viewFinder)
-public fun <V : View> SupportDialogFragment.bindView(id: Int)
-        : ReadOnlyProperty<SupportDialogFragment, V> = required(id, viewFinder)
+public fun <V : View> androidx.fragment.app.DialogFragment.bindView(id: Int)
+        : ReadOnlyProperty<androidx.fragment.app.DialogFragment, V> = required(id, viewFinder)
 public fun <V : View> Fragment.bindView(id: Int)
         : ReadOnlyProperty<Fragment, V> = required(id, viewFinder)
-public fun <V : View> SupportFragment.bindView(id: Int)
-        : ReadOnlyProperty<SupportFragment, V> = required(id, viewFinder)
+public fun <V : View> androidx.fragment.app.Fragment.bindView(id: Int)
+        : ReadOnlyProperty<androidx.fragment.app.Fragment, V> = required(id, viewFinder)
 public fun <V : View> ViewHolder.bindView(id: Int)
         : ReadOnlyProperty<ViewHolder, V> = required(id, viewFinder)
 
@@ -36,12 +36,12 @@ public fun <V : View> Dialog.bindOptionalView(id: Int)
         : ReadOnlyProperty<Dialog, V?> = optional(id, viewFinder)
 public fun <V : View> DialogFragment.bindOptionalView(id: Int)
         : ReadOnlyProperty<DialogFragment, V?> = optional(id, viewFinder)
-public fun <V : View> SupportDialogFragment.bindOptionalView(id: Int)
-        : ReadOnlyProperty<SupportDialogFragment, V?> = optional(id, viewFinder)
+public fun <V : View> androidx.fragment.app.DialogFragment.bindOptionalView(id: Int)
+        : ReadOnlyProperty<androidx.fragment.app.DialogFragment, V?> = optional(id, viewFinder)
 public fun <V : View> Fragment.bindOptionalView(id: Int)
         : ReadOnlyProperty<Fragment, V?> = optional(id, viewFinder)
-public fun <V : View> SupportFragment.bindOptionalView(id: Int)
-        : ReadOnlyProperty<SupportFragment, V?> = optional(id, viewFinder)
+public fun <V : View> androidx.fragment.app.Fragment.bindOptionalView(id: Int)
+        : ReadOnlyProperty<androidx.fragment.app.Fragment, V?> = optional(id, viewFinder)
 public fun <V : View> ViewHolder.bindOptionalView(id: Int)
         : ReadOnlyProperty<ViewHolder, V?> = optional(id, viewFinder)
 
@@ -53,12 +53,12 @@ public fun <V : View> Dialog.bindViews(vararg ids: Int)
         : ReadOnlyProperty<Dialog, List<V>> = required(ids, viewFinder)
 public fun <V : View> DialogFragment.bindViews(vararg ids: Int)
         : ReadOnlyProperty<DialogFragment, List<V>> = required(ids, viewFinder)
-public fun <V : View> SupportDialogFragment.bindViews(vararg ids: Int)
-        : ReadOnlyProperty<SupportDialogFragment, List<V>> = required(ids, viewFinder)
+public fun <V : View> androidx.fragment.app.DialogFragment.bindViews(vararg ids: Int)
+        : ReadOnlyProperty<androidx.fragment.app.DialogFragment, List<V>> = required(ids, viewFinder)
 public fun <V : View> Fragment.bindViews(vararg ids: Int)
         : ReadOnlyProperty<Fragment, List<V>> = required(ids, viewFinder)
-public fun <V : View> SupportFragment.bindViews(vararg ids: Int)
-        : ReadOnlyProperty<SupportFragment, List<V>> = required(ids, viewFinder)
+public fun <V : View> androidx.fragment.app.Fragment.bindViews(vararg ids: Int)
+        : ReadOnlyProperty<androidx.fragment.app.Fragment, List<V>> = required(ids, viewFinder)
 public fun <V : View> ViewHolder.bindViews(vararg ids: Int)
         : ReadOnlyProperty<ViewHolder, List<V>> = required(ids, viewFinder)
 
@@ -70,12 +70,12 @@ public fun <V : View> Dialog.bindOptionalViews(vararg ids: Int)
         : ReadOnlyProperty<Dialog, List<V>> = optional(ids, viewFinder)
 public fun <V : View> DialogFragment.bindOptionalViews(vararg ids: Int)
         : ReadOnlyProperty<DialogFragment, List<V>> = optional(ids, viewFinder)
-public fun <V : View> SupportDialogFragment.bindOptionalViews(vararg ids: Int)
-        : ReadOnlyProperty<SupportDialogFragment, List<V>> = optional(ids, viewFinder)
+public fun <V : View> androidx.fragment.app.DialogFragment.bindOptionalViews(vararg ids: Int)
+        : ReadOnlyProperty<androidx.fragment.app.DialogFragment, List<V>> = optional(ids, viewFinder)
 public fun <V : View> Fragment.bindOptionalViews(vararg ids: Int)
         : ReadOnlyProperty<Fragment, List<V>> = optional(ids, viewFinder)
-public fun <V : View> SupportFragment.bindOptionalViews(vararg ids: Int)
-        : ReadOnlyProperty<SupportFragment, List<V>> = optional(ids, viewFinder)
+public fun <V : View> androidx.fragment.app.Fragment.bindOptionalViews(vararg ids: Int)
+        : ReadOnlyProperty<androidx.fragment.app.Fragment, List<V>> = optional(ids, viewFinder)
 public fun <V : View> ViewHolder.bindOptionalViews(vararg ids: Int)
         : ReadOnlyProperty<ViewHolder, List<V>> = optional(ids, viewFinder)
 
@@ -87,11 +87,11 @@ private val Dialog.viewFinder: Dialog.(Int) -> View?
     get() = { findViewById(it) }
 private val DialogFragment.viewFinder: DialogFragment.(Int) -> View?
     get() = { dialog.findViewById(it) }
-private val SupportDialogFragment.viewFinder: SupportDialogFragment.(Int) -> View?
+private val androidx.fragment.app.DialogFragment.viewFinder: androidx.fragment.app.DialogFragment.(Int) -> View?
     get() = { dialog.findViewById(it) }
 private val Fragment.viewFinder: Fragment.(Int) -> View?
-    get() = { view.findViewById(it) }
-private val SupportFragment.viewFinder: SupportFragment.(Int) -> View?
+    get() = { view?.findViewById(it) }
+private val androidx.fragment.app.Fragment.viewFinder: androidx.fragment.app.Fragment.(Int) -> View?
     get() = { view!!.findViewById(it) }
 private val ViewHolder.viewFinder: ViewHolder.(Int) -> View?
     get() = { itemView.findViewById(it) }

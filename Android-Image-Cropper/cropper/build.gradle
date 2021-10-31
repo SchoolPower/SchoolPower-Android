@@ -23,7 +23,7 @@ android {
 }
 
 dependencies {
-    api "com.android.support:appcompat-v7:$support_lib_version"
-    implementation "com.android.support:exifinterface:$support_lib_version"
+    api "androidx.appcompat:appcompat:1.0.0"
+    implementation "androidx.exifinterface:exifinterface:1.0.0"
 }
 

@@ -20,7 +20,7 @@ class ContextWrapper(base: Context) : android.content.ContextWrapper(base) {
                 configuration.setLocale(newLocale)
                 val localeList = LocaleList(newLocale)
                 LocaleList.setDefault(localeList)
-                configuration.locales = localeList
+                configuration.setLocales(localeList)
                 context = context.createConfigurationContext(configuration)
 
             } else if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {

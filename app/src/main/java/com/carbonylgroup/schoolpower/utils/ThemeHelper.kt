@@ -1,7 +1,7 @@
 package com.carbonylgroup.schoolpower.utils
 
 import android.content.Context
-import android.support.annotation.StyleRes
+import androidx.annotation.StyleRes
 import com.carbonylgroup.schoolpower.R
 
 

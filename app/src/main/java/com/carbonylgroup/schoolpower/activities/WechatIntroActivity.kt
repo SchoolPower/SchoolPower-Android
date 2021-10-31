@@ -9,10 +9,10 @@ import android.didikee.donate.WeiXinDonate
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.os.Environment
-import android.support.annotation.Nullable
-import android.support.v13.app.ActivityCompat
-import android.support.v4.app.Fragment
-import android.support.v4.content.ContextCompat
+import androidx.annotation.Nullable
+import androidx.legacy.app.ActivityCompat
+import androidx.fragment.app.Fragment
+import androidx.core.content.ContextCompat
 import android.view.WindowManager
 import android.widget.Toast
 import com.carbonylgroup.schoolpower.R

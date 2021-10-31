@@ -6,10 +6,10 @@ package com.carbonylgroup.schoolpower.fragments
 
 import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.support.transition.TransitionManager
-import android.support.v4.content.ContextCompat
-import android.support.v4.content.res.ResourcesCompat.getDrawable
-import android.support.v4.widget.SwipeRefreshLayout
+import androidx.transition.TransitionManager
+import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat.getDrawable
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup

@@ -2,8 +2,8 @@ package com.carbonylgroup.schoolpower.activities
 
 import android.content.Context
 import android.os.Bundle
-import android.support.annotation.CallSuper
-import android.support.v7.app.AppCompatActivity
+import androidx.annotation.CallSuper
+import androidx.appcompat.app.AppCompatActivity
 import com.carbonylgroup.schoolpower.utils.ContextWrapper
 import com.carbonylgroup.schoolpower.utils.ThemeHelper
 import com.carbonylgroup.schoolpower.utils.Utils

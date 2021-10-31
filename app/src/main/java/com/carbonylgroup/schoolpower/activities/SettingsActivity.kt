@@ -7,9 +7,9 @@ package com.carbonylgroup.schoolpower.activities
 import android.animation.AnimatorListenerAdapter
 import android.app.Activity
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v4.app.NavUtils
-import android.support.v7.widget.Toolbar
+import androidx.fragment.app.Fragment
+import androidx.core.app.NavUtils
+import androidx.appcompat.widget.Toolbar
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewAnimationUtils

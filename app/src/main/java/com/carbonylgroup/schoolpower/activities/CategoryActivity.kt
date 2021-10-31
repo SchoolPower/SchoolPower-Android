@@ -2,7 +2,7 @@ package com.carbonylgroup.schoolpower.activities
 
 import android.app.AlertDialog
 import android.graphics.Color
-import android.support.v7.widget.LinearLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import android.widget.ArrayAdapter
 import com.carbonylgroup.schoolpower.R
 import com.carbonylgroup.schoolpower.adapter.CourseDetailAdapter
@@ -92,7 +92,12 @@ class CategoryActivity : BaseActivity() {
 
     private fun initRecycler(subject: Subject) {
 
-        assignmentsRecycler.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        assignmentsRecycler.layoutManager =
+            LinearLayoutManager(
+                this,
+                LinearLayoutManager.VERTICAL,
+                false
+            )
 
         val name = subject.getLatestTermName(utils) ?: return
         val grades = subject.grades[name] ?: return
