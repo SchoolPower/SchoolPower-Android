@@ -3,7 +3,7 @@ package com.carbonylgroup.schoolpower.adapter
 /**
  * Created by carbonyl on 12/11/2017.
  */
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import android.view.View
 
 interface OnItemClickListener {

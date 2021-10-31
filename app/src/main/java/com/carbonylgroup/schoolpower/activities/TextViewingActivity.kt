@@ -16,7 +16,7 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import com.carbonylgroup.schoolpower.utils.Utils
 import java.io.File
-import android.support.v4.content.FileProvider
+import androidx.core.content.FileProvider
 
 
 class TextViewingActivity : BaseActivity() {
@@ -74,7 +74,7 @@ class TextViewingActivity : BaseActivity() {
         }
     }
 
-    private fun sharePlainText(text: String) {
+    private fun sharePlainText(text: String?) {
         val sharingIntent = Intent(ACTION_SEND)
         sharingIntent.type = "text/plain"
         sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, text)

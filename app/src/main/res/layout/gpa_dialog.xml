@@ -31,7 +31,7 @@
 
     </LinearLayout>
 
-    <android.support.percent.PercentFrameLayout
+    <androidx.percentlayout.widget.PercentFrameLayout
         android:id="@+id/gpa_dialog_frame"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -64,7 +64,7 @@
             android:textColor="@color/white_0_15"
             android:textSize="30sp" />
 
-    </android.support.percent.PercentFrameLayout>
+    </androidx.percentlayout.widget.PercentFrameLayout>
 
     <co.ceryle.segmentedbutton.SegmentedButtonGroup
         android:id="@+id/gpa_dialog_segmented"

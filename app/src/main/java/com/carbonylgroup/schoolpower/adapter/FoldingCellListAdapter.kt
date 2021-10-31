@@ -4,11 +4,11 @@ package com.carbonylgroup.schoolpower.adapter
 import android.app.AlertDialog
 import android.content.Context
 import android.os.Handler
-import android.support.design.widget.FloatingActionButton
-import android.support.v4.content.ContextCompat
-import android.support.v7.widget.CardView
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import androidx.core.content.ContextCompat
+import androidx.cardview.widget.CardView
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -31,7 +31,7 @@ import java.util.*
  * Simple example of ListAdapter for using with Folding Cell
  * Adapter holds indexes of unfolded elements for correct work with default reusable views behavior
  */
-class FoldingCellListAdapter(context: Context, private var subjects: List<Subject>?, val unfoldedIndexes: HashSet<Int>, private val transformedPosition: Int) : ArrayAdapter<Subject>(context, 0, subjects) {
+class FoldingCellListAdapter(context: Context, private var subjects: List<Subject>, val unfoldedIndexes: HashSet<Int>, private val transformedPosition: Int) : ArrayAdapter<Subject>(context, 0, subjects) {
 
     private var fab_in: Animation? = null
     private var utils: Utils = Utils(getContext())
@@ -95,7 +95,11 @@ class FoldingCellListAdapter(context: Context, private var subjects: List<Subjec
             }
 
             val adapter = PeriodGradeAdapter(context, item.grades)
-            val layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            val layoutManager = LinearLayoutManager(
+                context,
+                LinearLayoutManager.HORIZONTAL,
+                false
+            )
             val period = utils.getLatestTermGrade(item)
 
             viewHolder.fold_letter_grade_tv!!.text = period?.letter ?: "--"
