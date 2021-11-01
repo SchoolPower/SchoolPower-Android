@@ -5,6 +5,7 @@
 package com.carbonylgroup.schoolpower.data
 
 import com.carbonylgroup.schoolpower.utils.Utils
+import com.carbonylgroup.schoolpower.utils.Utils.Companion.roundTo
 import org.json.JSONException
 import org.json.JSONObject
 import java.io.Serializable
@@ -94,6 +95,6 @@ class AssignmentItem(json: JSONObject) : Serializable {
     }
 
     fun getDividedScore() = getScoreString()+"/"+maximumScore
-    fun getPercentageString() = percentage?.toString()?:"--"
+    fun getPercentageString() = percentage?.roundTo(2).toString() ?: "--"
     fun getScoreString() = score?.toString()?:"--"
 }

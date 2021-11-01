@@ -61,10 +61,6 @@ class SettingsFragment : PreferenceFragmentCompat(),
 
     private fun updatePerferencesStatus(sharedPreferences: SharedPreferences) {
 
-        val dashboardDisplay = (findPreference("list_preference_dashboard_display") as ListPreference)
-        dashboardDisplay.summary = activity!!.getString(R.string.dashboard_display_preference_summary_prefix) +
-                dashboardDisplay.entry + activity!!.getString(R.string.dashboard_display_preference_summary_suffix)
-
         val gpaRule = findPreference("list_preference_custom_gpa_calculate") as ListPreference
         gpaRule.summary = getString(R.string.dashboard_gpa_rule_summary_prefix) +
                 gpaRule.entry.toString().toLowerCase() + activity!!.getString(R.string.dashboard_gpa_rule_summary_suffix)

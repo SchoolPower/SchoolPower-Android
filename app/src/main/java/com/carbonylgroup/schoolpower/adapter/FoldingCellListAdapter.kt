@@ -31,18 +31,23 @@ import java.util.*
  * Simple example of ListAdapter for using with Folding Cell
  * Adapter holds indexes of unfolded elements for correct work with default reusable views behavior
  */
-class FoldingCellListAdapter(context: Context, private var subjects: List<Subject>, val unfoldedIndexes: HashSet<Int>, private val transformedPosition: Int) : ArrayAdapter<Subject>(context, 0, subjects) {
+class FoldingCellListAdapter(
+    context: Context,
+    private var subjects: List<Subject>,
+    val unfoldedIndexes: HashSet<Int>,
+    private val transformedPosition: Int
+) : ArrayAdapter<Subject>(context, 0, subjects) {
 
     private var fab_in: Animation? = null
     private var utils: Utils = Utils(getContext())
     private var fabOnClickListener: View.OnClickListener? = null
-    private var termOnClickListener: com.carbonylgroup.schoolpower.adapter.OnItemClickListener? = null
+    private var termOnClickListener: OnItemClickListener? = null
 
     override fun getView(_position: Int, convertView: View?, parent: ViewGroup): View {
         var cell = convertView as FoldingCell?
         try {
             var position = _position
-            if(position >= subjects!!.count())
+            if (position >= subjects!!.count())
                 position = subjects!!.count() - 1
             val item = subjects!![position]
             val viewHolder: ViewHolder
@@ -66,16 +71,22 @@ class FoldingCellListAdapter(context: Context, private var subjects: List<Subjec
                 viewHolder.floating_action_button = cell.findViewById(R.id.floating_action_button)
                 viewHolder.unfold_teacher_name_tv = cell.findViewById(R.id.unfold_teacher_name_tv)
                 viewHolder.unfold_subject_title_tv = cell.findViewById(R.id.detail_subject_title_tv)
-                viewHolder.detail_header_background = cell.findViewById(R.id.detail_header_background)
-                viewHolder.fold_percentage_grade_tv = cell.findViewById(R.id.fold_percentage_grade_tv)
-                viewHolder.unfold_percentage_grade_tv = cell.findViewById(R.id.unfold_percentage_grade_tv)
-                viewHolder.unfolded_grade_recycler_view = cell.findViewById(R.id.unfolded_grade_recycler_view)
+                viewHolder.detail_header_background =
+                    cell.findViewById(R.id.detail_header_background)
+                viewHolder.fold_percentage_grade_tv =
+                    cell.findViewById(R.id.fold_percentage_grade_tv)
+                viewHolder.unfold_percentage_grade_tv =
+                    cell.findViewById(R.id.unfold_percentage_grade_tv)
+                viewHolder.unfolded_grade_recycler_view =
+                    cell.findViewById(R.id.unfolded_grade_recycler_view)
 
                 if (transformedPosition != -1)
                     if (position == transformedPosition) {
 
-                        viewHolder.unfold_header_view!!.transitionName = context.getString(R.string.shared_element_course_header)
-                        viewHolder.floating_action_button!!.transitionName = context.getString(R.string.shared_element_course_fab)
+                        viewHolder.unfold_header_view!!.transitionName =
+                            context.getString(R.string.shared_element_course_header)
+                        viewHolder.floating_action_button!!.transitionName =
+                            context.getString(R.string.shared_element_course_fab)
                     }
 
                 cell.tag = viewHolder
@@ -113,17 +124,40 @@ class FoldingCellListAdapter(context: Context, private var subjects: List<Subjec
             viewHolder.fold_percentage_grade_tv!!.text = period?.getPercentageString() ?: "--"
             viewHolder.floating_action_button!!.setOnClickListener(fabOnClickListener)
             viewHolder.unfold_percentage_grade_tv!!.text = period?.getPercentageString() ?: "--"
-            viewHolder.unfold_header_view!!.setBackgroundColor(utils.getColorByLetterGrade(period?.letter
-                    ?: "--"))
-            viewHolder.fold_grade_background!!.setBackgroundColor(utils.getColorByLetterGrade(period?.letter
-                    ?: "--"))
+            viewHolder.unfold_header_view!!.setBackgroundColor(
+                utils.getColorByLetterGrade(
+                    period?.letter
+                        ?: "--"
+                )
+            )
+            viewHolder.fold_grade_background!!.setBackgroundColor(
+                utils.getColorByLetterGrade(
+                    period?.letter
+                        ?: "--"
+                )
+            )
             viewHolder.detail_header_background!!.setBackgroundColor(utils.getCardBackground())
             viewHolder.unfold_trend_card!!.visibility = View.GONE
 
             if (item.assignments.any { it -> it.isNew }) { // if any assignment is marked as new
-                viewHolder.fold_subject_title_tv!!.setTextColor(ContextCompat.getColor(context, R.color.white))
-                viewHolder.fold_teacher_name_tv!!.setTextColor(ContextCompat.getColor(context, R.color.white_0_10))
-                viewHolder.fold_block_letter_tv!!.setTextColor(ContextCompat.getColor(context, R.color.white_0_10))
+                viewHolder.fold_subject_title_tv!!.setTextColor(
+                    ContextCompat.getColor(
+                        context,
+                        R.color.white
+                    )
+                )
+                viewHolder.fold_teacher_name_tv!!.setTextColor(
+                    ContextCompat.getColor(
+                        context,
+                        R.color.white_0_10
+                    )
+                )
+                viewHolder.fold_block_letter_tv!!.setTextColor(
+                    ContextCompat.getColor(
+                        context,
+                        R.color.white_0_10
+                    )
+                )
                 viewHolder.fold_background!!.setBackgroundColor(utils.getAccentColor())
 
                 // Show increase/decrease margin badge
@@ -131,15 +165,30 @@ class FoldingCellListAdapter(context: Context, private var subjects: List<Subjec
                 if (item.margin > 0) {
                     // Increased
                     viewHolder.unfold_trend_image!!.setImageResource(R.drawable.ic_trending_up_green_24dp)
-                    viewHolder.unfold_trend_text!!.setTextColor(ContextCompat.getColor(context, R.color.B_score_green_dark))
+                    viewHolder.unfold_trend_text!!.setTextColor(
+                        ContextCompat.getColor(
+                            context,
+                            R.color.B_score_green_dark
+                        )
+                    )
                 } else if (item.margin < 0) {
                     // Decreased
                     viewHolder.unfold_trend_image!!.setImageResource(R.drawable.ic_trending_down_red_24dp)
-                    viewHolder.unfold_trend_text!!.setTextColor(ContextCompat.getColor(context, R.color.Cm_score_red))
+                    viewHolder.unfold_trend_text!!.setTextColor(
+                        ContextCompat.getColor(
+                            context,
+                            R.color.Cm_score_red
+                        )
+                    )
                 } else {
                     // Not changed
                     viewHolder.unfold_trend_image!!.setImageResource(R.drawable.ic_trending_flat_gray_24dp)
-                    viewHolder.unfold_trend_text!!.setTextColor(ContextCompat.getColor(context, R.color.gray))
+                    viewHolder.unfold_trend_text!!.setTextColor(
+                        ContextCompat.getColor(
+                            context,
+                            R.color.gray
+                        )
+                    )
                 }
                 viewHolder.unfold_trend_text!!.text = Math.abs(item.margin).toString()
 
@@ -163,7 +212,16 @@ class FoldingCellListAdapter(context: Context, private var subjects: List<Subjec
 
     private fun initAnim(_delay: Int) {
 
-        fab_in = ScaleAnimation(0.0f, 1.0f, 0.0f, 1.0f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f)
+        fab_in = ScaleAnimation(
+            0.0f,
+            1.0f,
+            0.0f,
+            1.0f,
+            Animation.RELATIVE_TO_SELF,
+            0.5f,
+            Animation.RELATIVE_TO_SELF,
+            0.5f
+        )
         fab_in!!.duration = 200
         fab_in!!.startOffset = _delay.toLong()
         fab_in!!.interpolator = DecelerateInterpolator()
@@ -224,19 +282,23 @@ class FoldingCellListAdapter(context: Context, private var subjects: List<Subjec
         val termDialogBuilder = AlertDialog.Builder(context)
 
         termDialogView.findViewById<RelativeLayout>(R.id.term_header_view).setBackgroundColor(
-                utils.getColorByLetterGrade(term.letter))
+            utils.getColorByLetterGrade(term.letter)
+        )
 
-        termDialogView.findViewById<TextView>(R.id.term_percentage_grade_tv).text = term.getPercentageString()
+        termDialogView.findViewById<TextView>(R.id.term_percentage_grade_tv).text =
+            term.getPercentageString()
         termDialogView.findViewById<TextView>(R.id.term_name_tv).text = termIndicator
         termDialogView.findViewById<TextView>(R.id.term_subject_tv).text = subject.name
         termDialogView.findViewById<TextView>(R.id.term_eval_body_tv).text =
-                if (evaluation == "--") "N/A"
-                else String.format("%s (%s)", evaluation, Utils.citizenshipCodes[evaluation])
+            if (evaluation == "--") "N/A"
+            else String.format("%s (%s)", evaluation, Utils.citizenshipCodes[evaluation])
         termDialogView.findViewById<TextView>(R.id.term_comment_body_tv).text =
-                if (comment == "null") "N/A" else comment
+            if (comment == "null") "N/A" else comment
 
-        termDialogView.findViewById<TextView>(R.id.term_eval_title_tv).text = context.getString(R.string.evaluation)
-        termDialogView.findViewById<TextView>(R.id.term_comment_title_tv).text = context.getString(R.string.comment)
+        termDialogView.findViewById<TextView>(R.id.term_eval_title_tv).text =
+            context.getString(R.string.evaluation)
+        termDialogView.findViewById<TextView>(R.id.term_comment_title_tv).text =
+            context.getString(R.string.comment)
 
         termDialogBuilder.setView(termDialogView)
         termDialogBuilder.setPositiveButton(context.getString(R.string.sweet), null)

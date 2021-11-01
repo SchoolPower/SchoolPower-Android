@@ -28,15 +28,6 @@
             android:summary="%s"
             android:title="@string/language" />
 
-        <ListPreference
-            android:defaultValue="0"
-            android:entries="@array/list_preference_display_types_entries"
-            android:entryValues="@array/list_preference_display_types_values"
-            android:icon="@drawable/ic_dashboard_black_24dp"
-            android:key="list_preference_dashboard_display"
-            android:summary="%s"
-            android:title="@string/dashboard_displays" />
-
         <SwitchPreference
             android:defaultValue="true"
             android:icon="@drawable/ic_archive_black_24dp"

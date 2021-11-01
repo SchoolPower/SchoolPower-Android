@@ -11,7 +11,7 @@ android {
         minSdkVersion 26
         targetSdkVersion 30
         versionCode 28
-        versionName '1.5.7'
+        versionName '1.5.8'
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
     buildTypes {
@@ -76,6 +76,8 @@ dependencies {
     //implementation 'com.google.firebase:firebase-messaging:17.3.4'
     implementation 'com.google.firebase:firebase-core:16.0.6'
     implementation 'com.crashlytics.sdk.android:crashlytics:2.9.8'
+
+    testImplementation("org.assertj:assertj-core:3.21.0")
 
 }
 repositories {

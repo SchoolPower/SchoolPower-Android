@@ -180,8 +180,8 @@ class Subject(json: JSONObject, utils: Utils) : Serializable {
 
     fun getShortName() = Utils.getShortName(name)
 
-    fun getLatestTermName(utils: Utils, forceLastTerm: Boolean = false, preferSemester: Boolean = false): String? =
-            utils.getLatestTermName(this.grades, forceLastTerm, preferSemester)
+    fun getLatestTermName(utils: Utils): String? =
+            utils.getLatestTermName(this.grades)
 
     fun getLatestTermGrade(utils: Utils) = utils.getLatestTermGrade(this)
 }

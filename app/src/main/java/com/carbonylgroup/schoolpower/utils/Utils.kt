@@ -40,44 +40,45 @@ import kotlin.collections.HashSet
 class Utils(private val context: Context) {
 
     val localeSet = arrayListOf(
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                Resources.getSystem().configuration.locales[0]
-            } else {
-                Resources.getSystem().configuration.locale
-            },
-            Locale.ENGLISH,
-            Locale.TRADITIONAL_CHINESE,
-            Locale.SIMPLIFIED_CHINESE,
-            Locale.JAPANESE)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            Resources.getSystem().configuration.locales[0]
+        } else {
+            Resources.getSystem().configuration.locale
+        },
+        Locale.ENGLISH,
+        Locale.TRADITIONAL_CHINESE,
+        Locale.SIMPLIFIED_CHINESE,
+        Locale.JAPANESE
+    )
 
     private val attendanceColorIds = mapOf(
-            "A" to R.color.primary_dark,
-            "E" to R.color.A_score_green_dark,
-            "L" to R.color.Cp_score_yellow,
-            "R" to R.color.Cp_score_yellow_dark,
-            "H" to R.color.C_score_orange_dark,
-            "T" to R.color.C_score_orange,
-            "S" to R.color.primary,
-            "I" to R.color.Cm_score_red,
-            "X" to R.color.A_score_green,
-            "M" to R.color.Cm_score_red_dark,
-            "C" to R.color.B_score_green_dark,
-            "D" to R.color.B_score_green,
-            "P" to R.color.A_score_green,
-            "NR" to R.color.C_score_orange,
-            "TW" to R.color.primary,
-            "RA" to R.color.Cp_score_yellow_darker,
-            "NE" to R.color.Cp_score_yellow_light,
-            "U" to R.color.Cp_score_yellow_lighter,
-            "RS" to R.color.primary_light,
-            "ISS" to R.color.primary,
-            "FT" to R.color.B_score_green_dark
+        "A" to R.color.primary_dark,
+        "E" to R.color.A_score_green_dark,
+        "L" to R.color.Cp_score_yellow,
+        "R" to R.color.Cp_score_yellow_dark,
+        "H" to R.color.C_score_orange_dark,
+        "T" to R.color.C_score_orange,
+        "S" to R.color.primary,
+        "I" to R.color.Cm_score_red,
+        "X" to R.color.A_score_green,
+        "M" to R.color.Cm_score_red_dark,
+        "C" to R.color.B_score_green_dark,
+        "D" to R.color.B_score_green,
+        "P" to R.color.A_score_green,
+        "NR" to R.color.C_score_orange,
+        "TW" to R.color.primary,
+        "RA" to R.color.Cp_score_yellow_darker,
+        "NE" to R.color.Cp_score_yellow_light,
+        "U" to R.color.Cp_score_yellow_lighter,
+        "RS" to R.color.primary_light,
+        "ISS" to R.color.primary,
+        "FT" to R.color.B_score_green_dark
     )
 
     val citizenshipCodes: HashMap<String, String> = hashMapOf(
-            "M" to "Meeting Expectations",
-            "P" to "Partially Meeting Expectations",
-            "N" to "Not Yet Meeting Expectations"
+        "M" to "Meeting Expectations",
+        "P" to "Partially Meeting Expectations",
+        "N" to "Not Yet Meeting Expectations"
     )
 
     fun getAssignmentFlag(key: String): Pair<Int, String> {
@@ -121,8 +122,9 @@ class Utils(private val context: Context) {
         return getPreferences().getString(THEME, LIGHT)!!
     }
 
-    fun getAccentColorIndex() = getPreferences().getInt(ACCENT_COLOR,
-            ThemeHelper(context).lightArray.indexOf(R.style.ThemeLight_Cyan_500)
+    fun getAccentColorIndex() = getPreferences().getInt(
+        ACCENT_COLOR,
+        ThemeHelper(context).lightArray.indexOf(R.style.ThemeLight_Cyan_500)
     )
 
     @ColorInt
@@ -169,35 +171,36 @@ class Utils(private val context: Context) {
 
     /* Color Handler */
     fun getColorByLetterGrade(letterGrade: String): Int {
-        val colorIndex = indexOfString(letterGrade, arrayOf("A", "B", "C+", "C", "C-", "F", "I", "--"))
-        return ContextCompat.getColor(context, gradeColorIds[if (colorIndex != -1) colorIndex else 7] )
+        val colorIndex =
+            indexOfString(letterGrade, arrayOf("A", "B", "C+", "C", "C-", "F", "I", "--"))
+        return ContextCompat.getColor(
+            context,
+            gradeColorIds[if (colorIndex != -1) colorIndex else 7]
+        )
     }
 
     fun getDarkColorByPrimary(originalPrimary: Int) = ContextCompat.getColor(context,
-            gradeDarkColorIdsPlain[gradeColorIdsPlain.takeWhile { originalPrimary != ContextCompat.getColor(context, it) }.count()])
+        gradeDarkColorIdsPlain[gradeColorIdsPlain.takeWhile {
+            originalPrimary != ContextCompat.getColor(
+                context,
+                it
+            )
+        }.count()]
+    )
 
-    fun getColorByAttendance(context: Context, attendanceCode: String) = ContextCompat.getColor(context,
-            attendanceColorIds[attendanceCode] ?: R.color.gray)
+    fun getColorByAttendance(context: Context, attendanceCode: String) = ContextCompat.getColor(
+        context,
+        attendanceColorIds[attendanceCode] ?: R.color.gray
+    )
 
     /* Others */
     fun isDeveloperMode(): Boolean {
         return getPreferences(TmpData).getBoolean("developer_mode", false)
     }
 
-    fun dpToPx(dp: Int) = Math.round(dp * (context.resources.displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT))
+    fun dpToPx(dp: Int) =
+        Math.round(dp * (context.resources.displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT))
 
-    fun sortTerm(terms: ArrayList<String>): ArrayList<String> {
-        val sortableTerms = arrayListOf<SortableTerm>()
-        for (term in terms) {
-            sortableTerms.add(SortableTerm(term))
-        }
-        val sortedTerms = sortableTerms.sortedWith(compareBy { it.getValue() })
-        val result = arrayListOf<String>()
-        for (term in sortedTerms) {
-            result.add(term.getRaw())
-        }
-        return result
-    }
 
     fun getAllPeriods(subjects: List<Subject>): HashSet<String> {
         val allPeriods = HashSet<String>()
@@ -205,19 +208,6 @@ class Utils(private val context: Context) {
             subjects[i].grades.keys.filterTo(allPeriods) { subjects[i].grades[it]!!.hasGrade() }
         }
         return allPeriods
-    }
-
-    fun sortTerm(terms: HashSet<String>): ArrayList<String> {
-        val sortableTerms = arrayListOf<SortableTerm>()
-        for (term in terms) {
-            sortableTerms.add(SortableTerm(term))
-        }
-        val sortedTerms = sortableTerms.sortedWith(compareBy { it.getValue() })
-        val result = arrayListOf<String>()
-        for (term in sortedTerms) {
-            result.add(term.getRaw())
-        }
-        return result
     }
 
     fun getLatestTermNameOverall(subjects: List<Subject>): String? {
@@ -237,43 +227,9 @@ class Utils(private val context: Context) {
         return getLatestTermName(latestPeriods)
     }
 
-    fun getLatestTermName(grades: Map<String, Grade>, forceLastTerm: Boolean = false, preferSemester: Boolean = false): String? {
-        val termsList = grades.keys
-        val forLatestSemester = getPreferences()
-                .getString("list_preference_dashboard_display", "0") == "1"
-
-        if ((forLatestSemester && !forceLastTerm) || preferSemester) {
-            when {
-                grades["S2"]?.hasGrade() == true -> return "S2"
-                grades["S1"]?.hasGrade() == true -> return "S1"
-                grades["T4"]?.hasGrade() == true -> return "T4"
-                grades["T3"]?.hasGrade() == true -> return "T3"
-                grades["T2"]?.hasGrade() == true -> return "T2"
-                termsList.contains("T1") -> return "T1"
-                grades["Q4"]?.hasGrade() == true -> return "Q4"
-                grades["Q3"]?.hasGrade() == true -> return "Q3"
-                grades["Q2"]?.hasGrade() == true -> return "Q2"
-                termsList.contains("Q1") -> return "Q1"
-                grades["Y1"]?.hasGrade() == true -> return "Y1"
-            }
-        } else {
-            when {
-                grades["T4"]?.hasGrade() == true -> return "T4"
-                grades["T3"]?.hasGrade() == true -> return "T3"
-                grades["T2"]?.hasGrade() == true -> return "T2"
-                termsList.contains("T1") -> return "T1"
-                grades["S2"]?.hasGrade() == true -> return "S2"
-                grades["S1"]?.hasGrade() == true -> return "S1"
-                grades["Q4"]?.hasGrade() == true -> return "Q4"
-                grades["Q3"]?.hasGrade() == true -> return "Q3"
-                grades["Q2"]?.hasGrade() == true -> return "Q2"
-                termsList.contains("Q1") -> return "Q1"
-                grades["Y1"]?.hasGrade() == true -> return "Y1"
-                termsList.contains("S1") -> return "S1"
-            }
-        }
-
-        return null
+    fun getLatestTermName(grades: Map<String, Grade>): String? {
+        return sortTermsByLatest(grades.keys)
+            .firstOrNull { grades[it]?.hasGrade() == true }
     }
 
     fun getLatestTermGrade(subject: Subject) = subject.grades[getLatestTermName(subject.grades)]
@@ -292,20 +248,32 @@ class Utils(private val context: Context) {
 
     fun showSnackBar(view: View, msg: String, colorRed: Boolean) {
         val snackBar = Snackbar.make(view, msg, Snackbar.LENGTH_SHORT)
-        if (colorRed) snackBar.view.setBackgroundColor(ContextCompat.getColor(context, R.color.Cm_score_red_dark))
+        if (colorRed) snackBar.view.setBackgroundColor(
+            ContextCompat.getColor(
+                context,
+                R.color.Cm_score_red_dark
+            )
+        )
         else snackBar.view.setBackgroundColor(ContextCompat.getColor(context, R.color.accent))
         snackBar.show()
     }
 
-    fun getAppVersion() = context.packageManager.getPackageInfo("com.carbonylgroup.schoolpower", 0).versionName!!
+    fun getAppVersion() =
+        context.packageManager.getPackageInfo("com.carbonylgroup.schoolpower", 0).versionName!!
 
-    fun getPreferences(database: String = "") : SharedPreferences =
-            if(database != "") context.getSharedPreferences(database, Activity.MODE_PRIVATE)
-            else PreferenceManager.getDefaultSharedPreferences(context.applicationContext)
+    fun getPreferences(database: String = ""): SharedPreferences =
+        if (database != "") context.getSharedPreferences(database, Activity.MODE_PRIVATE)
+        else PreferenceManager.getDefaultSharedPreferences(context.applicationContext)
 
     fun setPreference(key: String, value: Any, database: String = "") {
         if (key == "") {
-            throw NullPointerException(String.format("Key and value not be null key=%s, value=%s", key, value))
+            throw NullPointerException(
+                String.format(
+                    "Key and value not be null key=%s, value=%s",
+                    key,
+                    value
+                )
+            )
         }
         val edit = getPreferences(database).edit()
 
@@ -315,7 +283,13 @@ class Utils(private val context: Context) {
             is Long -> edit.putLong(key, value)
             is Boolean -> edit.putBoolean(key, value)
             is Float -> edit.putFloat(key, value)
-            else -> throw IllegalArgumentException(String.format("Type of value unsupported key=%s, value=%s", key, value))
+            else -> throw IllegalArgumentException(
+                String.format(
+                    "Type of value unsupported key=%s, value=%s",
+                    key,
+                    value
+                )
+            )
         }
         edit.apply()
     }
@@ -377,7 +351,7 @@ class Utils(private val context: Context) {
                 val leastPeriod = getLatestTermGrade(subject) ?: continue
 
                 subInfo.put("name", subject.name)
-                subInfo.put("grade", leastPeriod.getGrade()?:continue)
+                subInfo.put("grade", leastPeriod.getGrade() ?: continue)
                 if (!subject.name.contains("Homeroom")) {
                     pointSum += leastPeriod.getGrade()!!
                     count++
@@ -417,10 +391,10 @@ class Utils(private val context: Context) {
 
     fun buildNetworkRequest(url: String, method: String, body: MultipartBody?): Call {
         val request = Request.Builder()
-                .url(url)
-                .method(method, body)
-                .header("User-Agent", "SchoolPower Android")
-                .build()
+            .url(url)
+            .method(method, body)
+            .header("User-Agent", "SchoolPower Android")
+            .build()
 
         val client = OkHttpClient.Builder().build()
         return client.newCall(request)
@@ -428,38 +402,45 @@ class Utils(private val context: Context) {
 
     fun checkApplicationUpdate() {
         buildNetworkRequest(context.getString(R.string.updateURL), "GET", null)
-                .enqueue(object : Callback {
-                    override fun onFailure(call: Call, e: IOException) {
-                        e.printStackTrace()
-                    }
+            .enqueue(object : Callback {
+                override fun onFailure(call: Call, e: IOException) {
+                    e.printStackTrace()
+                }
 
-                    override fun onResponse(call: Call, response: Response) {
-                        val message = response.body()!!.string()
-                        response.close()
-                        if (!message.contains("{")) return
-                        val updateJSON = JSONObject(message)
-                        setPreference("app_download_url", updateJSON.getString("url"), TmpData)
-                        if (updateJSON.getString("version") != getAppVersion()
-                                && (!updateJSON.has("prompt") || updateJSON.getBoolean("prompt")) ) {
-                            if (!(context as Activity).isFinishing && !context.isDestroyed) {
-                                context.runOnUiThread {
-                                    val builder = AlertDialog.Builder(context)
-                                    builder.setTitle(context.getString(R.string.upgrade_title))
-                                    builder.setMessage(updateJSON.getString("description"))
-                                    builder.setPositiveButton(context.getString(R.string.upgrade_pos)) { dialog, _ ->
-                                        run {
-                                            dialog.dismiss()
-                                            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(updateJSON.getString("url")))
-                                            context.startActivity(intent)
-                                        }
+                override fun onResponse(call: Call, response: Response) {
+                    val message = response.body()!!.string()
+                    response.close()
+                    if (!message.contains("{")) return
+                    val updateJSON = JSONObject(message)
+                    setPreference("app_download_url", updateJSON.getString("url"), TmpData)
+                    if (updateJSON.getString("version") != getAppVersion()
+                        && (!updateJSON.has("prompt") || updateJSON.getBoolean("prompt"))
+                    ) {
+                        if (!(context as Activity).isFinishing && !context.isDestroyed) {
+                            context.runOnUiThread {
+                                val builder = AlertDialog.Builder(context)
+                                builder.setTitle(context.getString(R.string.upgrade_title))
+                                builder.setMessage(updateJSON.getString("description"))
+                                builder.setPositiveButton(context.getString(R.string.upgrade_pos)) { dialog, _ ->
+                                    run {
+                                        dialog.dismiss()
+                                        val intent = Intent(
+                                            Intent.ACTION_VIEW,
+                                            Uri.parse(updateJSON.getString("url"))
+                                        )
+                                        context.startActivity(intent)
                                     }
-                                    builder.setNegativeButton(context.getString(R.string.upgrade_neg), null)
-                                    builder.create().show()
                                 }
+                                builder.setNegativeButton(
+                                    context.getString(R.string.upgrade_neg),
+                                    null
+                                )
+                                builder.create().show()
                             }
                         }
                     }
-                })
+                }
+            })
     }
 
     fun getGradedSubjects(subjects: List<Subject>): List<Subject> {
@@ -470,7 +451,7 @@ class Utils(private val context: Context) {
             if (!getPreferences().getBoolean("list_preference_dashboard_show_inactive", true)) {
                 val currentTime = System.currentTimeMillis()
                 val it = subjects.find { it.name == subjectNow.name }
-                        ?: continue
+                    ?: continue
                 if (currentTime < it.startDate || currentTime > it.endDate) continue
             }
             val grade = getLatestTermGrade(subjectNow)
@@ -485,11 +466,11 @@ class Utils(private val context: Context) {
 
             filteredSubjects = ArrayList()
             subjects
-                    .filter {
-                        val currentTime = System.currentTimeMillis()
-                        currentTime > it.startDate && currentTime < it.endDate
-                    }
-                    .forEach { filteredSubjects.add(it) }
+                .filter {
+                    val currentTime = System.currentTimeMillis()
+                    currentTime > it.startDate && currentTime < it.endDate
+                }
+                .forEach { filteredSubjects.add(it) }
 
         } else {
             filteredSubjects = subjects
@@ -499,7 +480,8 @@ class Utils(private val context: Context) {
 
     fun getActionBarSizePx(): Int {
         val styledAttributes = context.theme.obtainStyledAttributes(
-                intArrayOf(android.R.attr.actionBarSize))
+            intArrayOf(android.R.attr.actionBarSize)
+        )
         val actionBarSize = styledAttributes.getDimension(0, 0f).toInt()
         styledAttributes.recycle()
         return actionBarSize
@@ -507,9 +489,12 @@ class Utils(private val context: Context) {
 
     fun getLastDonateShowedDate(): Date {
         val dateStr = getPreferences(Utils.TmpData)
-                .getString("LastTimeDonateShowed", "")
+            .getString("LastTimeDonateShowed", "")
 
-        return if (dateStr != "") SimpleDateFormat("yyyy-MM-dd", Locale.CHINA).parse(dateStr) else Date(0)
+        return if (dateStr != "") SimpleDateFormat(
+            "yyyy-MM-dd",
+            Locale.CHINA
+        ).parse(dateStr) else Date(0)
     }
 
     fun isEarlyDonators(): Boolean {
@@ -537,8 +522,9 @@ class Utils(private val context: Context) {
     // See getRouteFromString for valid routes
     fun getBackupServerUrl(route: String): String? {
         val serversStr = try {
-            buildNetworkRequest(context.getString(R.string.backupServersURL), "GET", null).execute().body()?.string()
-                    ?: return null
+            buildNetworkRequest(context.getString(R.string.backupServersURL), "GET", null).execute()
+                .body()?.string()
+                ?: return null
         } catch (e: IOException) {
             return null
         } // return null when we can't even fetch server list. usually it's because of network issue
@@ -592,7 +578,7 @@ class Utils(private val context: Context) {
         return ageStr.toString() + if (withSuffix) getSuffixForNumber(ageStr) else ""
     }
 
-    fun errorHandler(e: Exception, customTitle: String?=null, customContent: String?=null) {
+    fun errorHandler(e: Exception, customTitle: String? = null, customContent: String? = null) {
         val crashReportEnabled = getPreferences().getBoolean("crash_report_enabled", false)
         if (crashReportEnabled) {
             Crashlytics.logException(e)
@@ -600,32 +586,59 @@ class Utils(private val context: Context) {
 
         val sw = StringWriter()
         e.printStackTrace(PrintWriter(sw))
-        if(context !is Activity) return
+        if (context !is Activity) return
         if (!context.isFinishing && !context.isDestroyed)
             context.runOnUiThread {
                 val emergencyDialogBuilder = AlertDialog.Builder(context)
-                emergencyDialogBuilder.setTitle(customTitle ?: context.getString(R.string.fatel_error))
-                emergencyDialogBuilder.setMessage(customContent ?: context.getString(R.string.fatel_error_message) + sw.toString())
+                emergencyDialogBuilder.setTitle(
+                    customTitle ?: context.getString(R.string.fatel_error)
+                )
+                emergencyDialogBuilder.setMessage(
+                    customContent ?: context.getString(R.string.fatel_error_message) + sw.toString()
+                )
                 val sendEmail = DialogInterface.OnClickListener { _, _ ->
-                    val version = context.packageManager.getPackageInfo("com.carbonylgroup.schoolpower", 0).versionName
+                    val version = context.packageManager.getPackageInfo(
+                        "com.carbonylgroup.schoolpower",
+                        0
+                    ).versionName
                     val uri = Uri.parse(context.getString(R.string.bug_report_email))
                     val intent = Intent(Intent.ACTION_SENDTO, uri)
-                    intent.putExtra(Intent.EXTRA_SUBJECT, context.getString(R.string.bug_report_email_subject))
-                    intent.putExtra(Intent.EXTRA_TEXT, String.format(context.getString(R.string.bug_report_email_content), version) +
-                            "\n\nError message: \n" + (customContent ?: sw.toString()))
-                    context.startActivity(Intent.createChooser(intent, context.getString(R.string.choose_email_app)))
+                    intent.putExtra(
+                        Intent.EXTRA_SUBJECT,
+                        context.getString(R.string.bug_report_email_subject)
+                    )
+                    intent.putExtra(
+                        Intent.EXTRA_TEXT,
+                        String.format(
+                            context.getString(R.string.bug_report_email_content),
+                            version
+                        ) +
+                                "\n\nError message: \n" + (customContent ?: sw.toString())
+                    )
+                    context.startActivity(
+                        Intent.createChooser(
+                            intent,
+                            context.getString(R.string.choose_email_app)
+                        )
+                    )
                 }
                 emergencyDialogBuilder.setNegativeButton(context.getString(R.string.cancel), null)
-                if(!crashReportEnabled) {
-                    emergencyDialogBuilder.setNeutralButton(context.getString(R.string.email), sendEmail)
+                if (!crashReportEnabled) {
+                    emergencyDialogBuilder.setNeutralButton(
+                        context.getString(R.string.email),
+                        sendEmail
+                    )
 
                     emergencyDialogBuilder.setPositiveButton(context.getString(R.string.send_crash)) { _, _ ->
                         Fabric.with(context, Crashlytics())
                         Crashlytics.logException(e)
                         Crashlytics.getInstance().core.logException(e)
                     }
-                }else{
-                    emergencyDialogBuilder.setPositiveButton(context.getString(R.string.email), sendEmail)
+                } else {
+                    emergencyDialogBuilder.setPositiveButton(
+                        context.getString(R.string.email),
+                        sendEmail
+                    )
                 }
                 emergencyDialogBuilder.create().setCanceledOnTouchOutside(false)
                 emergencyDialogBuilder.create().show()
@@ -634,13 +647,13 @@ class Utils(private val context: Context) {
 
     fun isCrashReportEnabled() = getPreferences().getBoolean("crash_report_enabled", false)
 
-    fun crashReportRequest(){
+    fun crashReportRequest() {
         if (isCrashReportEnabled()) {
             Fabric.with(context, Crashlytics())
             return
         }
 
-        if (getPreferences(Utils.TmpData).getBoolean("crash_report_requested",false))
+        if (getPreferences(Utils.TmpData).getBoolean("crash_report_requested", false))
             return
         val builder = AlertDialog.Builder(context)
         builder.setTitle(context.getString(R.string.crash_report_enable))
@@ -656,8 +669,8 @@ class Utils(private val context: Context) {
         setPreference("crash_report_requested", true, Utils.TmpData)
     }
 
-    fun analyticsRequest(){
-        if (getPreferences(Utils.TmpData).getBoolean("analytics_requested",false))
+    fun analyticsRequest() {
+        if (getPreferences(Utils.TmpData).getBoolean("analytics_requested", false))
             return
         val builder = AlertDialog.Builder(context)
         builder.setTitle(context.getString(R.string.analytics_enable))
@@ -672,26 +685,29 @@ class Utils(private val context: Context) {
         setPreference("analytics_requested", true, Utils.TmpData)
     }
 
-    fun autoAdjustWeekType(){
+    fun autoAdjustWeekType() {
         val storeKey = "week_last_updated_date"
         val weekTypeStoreKey = "list_preference_is_even_week"
 
         val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.CHINA)
         val lastUpdatedDate =
-                try {
-                    sdf.parse(getPreferences(TmpData).getString(storeKey, ""))
-                } catch(e: Exception) {
-                    Date()
-                }
+            try {
+                sdf.parse(getPreferences(TmpData).getString(storeKey, ""))
+            } catch (e: Exception) {
+                Date()
+            }
         setPreference(storeKey, sdf.format(Date()), TmpData)
         val lastUpdatedCal = Calendar.getInstance()
         lastUpdatedCal.time = lastUpdatedDate
         val currentCal = Calendar.getInstance()
         currentCal.time = Date()
-        if(lastUpdatedCal.get(Calendar.WEEK_OF_YEAR) % 2 !=
-                currentCal.get(Calendar.WEEK_OF_YEAR) % 2)
-            setPreference(weekTypeStoreKey,
-                    !getPreferences().getBoolean(weekTypeStoreKey, false))
+        if (lastUpdatedCal.get(Calendar.WEEK_OF_YEAR) % 2 !=
+            currentCal.get(Calendar.WEEK_OF_YEAR) % 2
+        )
+            setPreference(
+                weekTypeStoreKey,
+                !getPreferences().getBoolean(weekTypeStoreKey, false)
+            )
     }
 
     companion object {
@@ -701,78 +717,79 @@ class Utils(private val context: Context) {
         const val LIGHT = "LIGHT"
         const val DARK = "DARK"
 
-        val localeSet = arrayListOf(
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                    Resources.getSystem().configuration.locales[0]
-                } else {
-                    Resources.getSystem().configuration.locale
-                },
-                Locale.ENGLISH,
-                Locale.TRADITIONAL_CHINESE,
-                Locale.SIMPLIFIED_CHINESE,
-                Locale.JAPANESE)
+        fun getLocaleSet(): ArrayList<Locale> = arrayListOf(
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                Resources.getSystem().configuration.locales[0]
+            } else {
+                Resources.getSystem().configuration.locale
+            },
+            Locale.ENGLISH,
+            Locale.TRADITIONAL_CHINESE,
+            Locale.SIMPLIFIED_CHINESE,
+            Locale.JAPANESE
+        )
 
         private val gradeColorIds = intArrayOf(
-                R.color.A_score_green,
-                R.color.B_score_green,
-                R.color.Cp_score_yellow,
-                R.color.C_score_orange,
-                R.color.Cm_score_red,
-                R.color.primary_dark,
-                R.color.primary,
-                R.color.primary
+            R.color.A_score_green,
+            R.color.B_score_green,
+            R.color.Cp_score_yellow,
+            R.color.C_score_orange,
+            R.color.Cm_score_red,
+            R.color.primary_dark,
+            R.color.primary,
+            R.color.primary
         )
 
         private val gradeColorIdsPlain = intArrayOf(
-                R.color.A_score_green,
-                R.color.B_score_green,
-                R.color.Cp_score_yellow,
-                R.color.C_score_orange,
-                R.color.Cm_score_red,
-                R.color.primary_dark,
-                R.color.primary,
-                R.color.dark_color_primary
+            R.color.A_score_green,
+            R.color.B_score_green,
+            R.color.Cp_score_yellow,
+            R.color.C_score_orange,
+            R.color.Cm_score_red,
+            R.color.primary_dark,
+            R.color.primary,
+            R.color.dark_color_primary
         )
 
         private val gradeDarkColorIdsPlain = intArrayOf(
-                R.color.A_score_green_dark,
-                R.color.B_score_green_dark,
-                R.color.Cp_score_yellow_dark,
-                R.color.C_score_orange_dark,
-                R.color.Cm_score_red_dark,
-                R.color.primary_darker,
-                R.color.primary_dark,
-                R.color.dark_color_primary_dark
+            R.color.A_score_green_dark,
+            R.color.B_score_green_dark,
+            R.color.Cp_score_yellow_dark,
+            R.color.C_score_orange_dark,
+            R.color.Cm_score_red_dark,
+            R.color.primary_darker,
+            R.color.primary_dark,
+            R.color.dark_color_primary_dark
         )
 
         private val attendanceColorIds = mapOf(
-                "A" to R.color.primary_dark,
-                "E" to R.color.A_score_green_dark,
-                "L" to R.color.Cp_score_yellow,
-                "R" to R.color.Cp_score_yellow_dark,
-                "H" to R.color.C_score_orange_dark,
-                "T" to R.color.C_score_orange,
-                "S" to R.color.primary,
-                "I" to R.color.Cm_score_red,
-                "X" to R.color.A_score_green,
-                "M" to R.color.Cm_score_red_dark,
-                "C" to R.color.B_score_green_dark,
-                "D" to R.color.B_score_green,
-                "P" to R.color.A_score_green,
-                "NR" to R.color.C_score_orange,
-                "TW" to R.color.primary,
-                "RA" to R.color.Cp_score_yellow_darker,
-                "NE" to R.color.Cp_score_yellow_light,
-                "U" to R.color.Cp_score_yellow_lighter,
-                "RS" to R.color.primary_light,
-                "ISS" to R.color.primary,
-                "FT" to R.color.B_score_green_dark
+            "A" to R.color.primary_dark,
+            "E" to R.color.A_score_green_dark,
+            "L" to R.color.Cp_score_yellow,
+            "R" to R.color.Cp_score_yellow_dark,
+            "H" to R.color.C_score_orange_dark,
+            "T" to R.color.C_score_orange,
+            "S" to R.color.primary,
+            "I" to R.color.Cm_score_red,
+            "X" to R.color.A_score_green,
+            "M" to R.color.Cm_score_red_dark,
+            "C" to R.color.B_score_green_dark,
+            "D" to R.color.B_score_green,
+            "P" to R.color.A_score_green,
+            "NR" to R.color.C_score_orange,
+            "TW" to R.color.primary,
+            "RA" to R.color.Cp_score_yellow_darker,
+            "NE" to R.color.Cp_score_yellow_light,
+            "U" to R.color.Cp_score_yellow_lighter,
+            "RS" to R.color.primary_light,
+            "ISS" to R.color.primary,
+            "FT" to R.color.B_score_green_dark
         )
 
         val citizenshipCodes: HashMap<String, String> = hashMapOf(
-                "M" to "Meeting Expectations",
-                "P" to "Partially Meeting Expectations",
-                "N" to "Not Yet Meeting Expectations"
+            "M" to "Meeting Expectations",
+            "P" to "Partially Meeting Expectations",
+            "N" to "Not Yet Meeting Expectations"
         )
 
         const val AccountData: String = "accountData"
@@ -784,31 +801,31 @@ class Utils(private val context: Context) {
         const val StatisticalDataFileName: String = "statistics.json"
 
         val chartColorList = arrayOf(
-                "#534550",
-                "#c0de32",
-                "#904cdb",
-                "#76ca52",
-                "#c953b8",
-                "#67bc84",
-                "#5d4da6",
-                "#c3a83f",
-                "#858fbf",
-                "#d7552d",
-                "#65bebe",
-                "#b8517b",
-                "#919652",
-                "#ad5844",
-                "#a49a85",
-                "#00695c",
-                "#1de9b6",
-                "#cddc39",
-                "#e65100",
-                "#ff3d00",
-                "#37474f",
-                "#cfd8dc",
-                "#6d4c41",
-                "#2e7d32",
-                "#01579b"
+            "#534550",
+            "#c0de32",
+            "#904cdb",
+            "#76ca52",
+            "#c953b8",
+            "#67bc84",
+            "#5d4da6",
+            "#c3a83f",
+            "#858fbf",
+            "#d7552d",
+            "#65bebe",
+            "#b8517b",
+            "#919652",
+            "#ad5844",
+            "#a49a85",
+            "#00695c",
+            "#1de9b6",
+            "#cddc39",
+            "#e65100",
+            "#ff3d00",
+            "#37474f",
+            "#cfd8dc",
+            "#6d4c41",
+            "#2e7d32",
+            "#01579b"
         )
 
         // note that the "https://host/api/" part is not included
@@ -842,7 +859,10 @@ class Utils(private val context: Context) {
         // convert date like "2018-01-21T16:00:00.000Z" to timestamp (unit: MILLISECOND)
         fun convertDateToTimestamp(date: String): Long {
             return try {
-                val temp = SimpleDateFormat("yyyy-MM-dd", Locale.CHINA).parse(date.replace("T16:00:00.000Z", ""))
+                val temp = SimpleDateFormat(
+                    "yyyy-MM-dd",
+                    Locale.CHINA
+                ).parse(date.replace("T16:00:00.000Z", ""))
 
                 temp.time += 24 * 60 * 60 * 1000
                 temp.time
@@ -853,18 +873,18 @@ class Utils(private val context: Context) {
 
         fun getShortName(subjectTitle: String): String {
             val shorts = mapOf(
-                    "Homeroom" to "HR",
-                    "Planning" to "PL",
-                    "Mandarin" to "CN",
-                    "Chinese" to "CSS",
-                    "Foundations" to "Maths",
-                    "Physical" to "PE",
-                    "English" to "ENG",
-                    "Moral" to "ME",
-                    "Physics" to "PHY",
-                    "Chemistry" to "CHEM",
-                    "Exercise" to "EXE",
-                    "Social" to "SS"
+                "Homeroom" to "HR",
+                "Planning" to "PL",
+                "Mandarin" to "CN",
+                "Chinese" to "CSS",
+                "Foundations" to "Maths",
+                "Physical" to "PE",
+                "English" to "ENG",
+                "Moral" to "ME",
+                "Physics" to "PHY",
+                "Chemistry" to "CHEM",
+                "Exercise" to "EXE",
+                "Social" to "SS"
             )
             val splitSubject = subjectTitle.split(" ")
             var short = shorts[splitSubject[0]]
@@ -892,5 +912,40 @@ class Utils(private val context: Context) {
             }
         }
 
+        fun sortTerm(terms: List<String>): List<String> {
+            return terms
+                .map { SortableTerm(it) }
+                .sortedBy { it.letterValue }
+                .sortedByDescending { it.index }
+                .map { it.getRaw() }
+        }
+
+        fun sortTerm(terms: ArrayList<String>): List<String> {
+            return terms
+                .map { SortableTerm(it) }
+                .sortedBy { it.letterValue }
+                .sortedByDescending { it.index }
+                .map { it.getRaw() }
+        }
+
+        fun sortTerm(terms: HashSet<String>): List<String> {
+            return terms
+                .map { SortableTerm(it) }
+                .sortedBy { it.letterValue }
+                .sortedByDescending { it.index }
+                .map { it.getRaw() }
+        }
+
+        fun sortTermsByLatest(terms: Set<String>): List<String> {
+            return terms
+                .map { SortableTerm(it) }
+                .sortedByDescending { it.index }
+                .sortedBy { it.letterValue }
+                .map { it.getRaw() }
+        }
+
+        fun Double.roundTo(n : Int) : Double {
+            return "%.${n}f".format(this).toDouble()
+        }
     }
 }

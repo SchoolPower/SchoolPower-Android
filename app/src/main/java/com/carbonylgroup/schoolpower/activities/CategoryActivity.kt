@@ -43,7 +43,7 @@ class CategoryActivity : BaseActivity() {
 
         fab.setOnClickListener {
             CategorySettingsDialog(this, categoriesWeights, subject,
-                    subject.grades[subject.getLatestTermName(utils, false, true)]!!) {
+                    subject.grades[subject.getLatestTermName(utils)]!!) {
                 categoriesWeights = CategoryWeightData(utils)
                 subject.recalculateGrades(categoriesWeights)
                 initChart(subject)
@@ -52,7 +52,7 @@ class CategoryActivity : BaseActivity() {
 
         if(utils.isDeveloperMode()) {
             fab.setOnLongClickListener {
-                val categories = subject.grades[subject.getLatestTermName(utils, false, true)]!!.calculatedGrade.categories.keys.toList()
+                val categories = subject.grades[subject.getLatestTermName(utils)]!!.calculatedGrade.categories.keys.toList()
 
                 // construct view
                 val dialog = this@CategoryActivity.layoutInflater.inflate(R.layout.add_assignment_dialog, null)
@@ -99,7 +99,7 @@ class CategoryActivity : BaseActivity() {
                 false
             )
 
-        val name = subject.getLatestTermName(utils, false, true) ?: return
+        val name = subject.getLatestTermName(utils) ?: return
         val grades = subject.grades[name] ?: return
         val categories = grades.calculatedGrade.categories.keys.toList()
 
@@ -112,7 +112,7 @@ class CategoryActivity : BaseActivity() {
 
     private fun initChart(subject: Subject) {
 
-        val name = subject.getLatestTermName(utils, false, true) ?: return
+        val name = subject.getLatestTermName(utils) ?: return
         val grade = subject.grades[name] ?: return
 
         toolbar_layout.title = "$name %.2f%%".format(
